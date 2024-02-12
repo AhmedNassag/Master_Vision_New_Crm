@@ -15,6 +15,10 @@ class CityController extends Controller
     public function __construct(CityInterface $city)
     {
         $this->city = $city;
+        $this->middleware('permission:عرض المدن', ['only' => ['index']]);
+        $this->middleware('permission:إضافة المدن', ['only' => ['store']]);
+        $this->middleware('permission:تعديل المدن', ['only' => ['update']]);
+        $this->middleware('permission:حذف المدن', ['only' => ['destroy']]);
     }
 
 

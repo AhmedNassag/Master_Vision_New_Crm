@@ -12,27 +12,78 @@ class NotificationRepository implements NotificationInterface
 {
     public function index($request)
     {
-        $data = Notification::with(['createdBy','department','employee'])
-        ->when($request->notification != null,function ($q) use($request){
-            return $q->where('notification','like', '%'.$request->notification.'%');
-        })
-        ->when($request->employee_id != null,function ($q) use($request){
-            return $q->where('employee_id','like', '%'.$request->employee_id.'%');
-        })
-        ->when($request->dept != null,function ($q) use($request){
-            return $q->where('dept','like', '%'.$request->dept.'%');
-        })
-        ->when($request->created_by != null,function ($q) use($request){
-            return $q->where('created_by','like', '%'.$request->created_by.'%');
-        })
-        ->when($request->from_date != null,function ($q) use($request){
-            return $q->whereDate('created_at', '>=', $request->from_date);
-        })
-        ->when($request->to_date != null,function ($q) use($request){
-            return $q->whereDate('created_at', '<=', $request->to_date);
-        })
-        ->paginate(config('myConfig.paginationCount'));
-
+        if(Auth::user()->roles_name[0] == "Admin")
+        {
+            $data = Notification::with(['createdBy','department','employee'])
+            ->when($request->notification != null,function ($q) use($request){
+                return $q->where('notification','like', '%'.$request->notification.'%');
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id','like', '%'.$request->employee_id.'%');
+            })
+            ->when($request->dept != null,function ($q) use($request){
+                return $q->where('dept','like', '%'.$request->dept.'%');
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by','like', '%'.$request->created_by.'%');
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '<=', $request->to_date);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+        {
+            $data = Notification::with(['createdBy','department','employee'])
+            ->whereRelation('employee','branch_id', auth()->user()->employee->branch_id)
+            ->when($request->notification != null,function ($q) use($request){
+                return $q->where('notification','like', '%'.$request->notification.'%');
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id','like', '%'.$request->employee_id.'%');
+            })
+            ->when($request->dept != null,function ($q) use($request){
+                return $q->where('dept','like', '%'.$request->dept.'%');
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by','like', '%'.$request->created_by.'%');
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '<=', $request->to_date);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else
+        {
+            $data = Notification::with(['createdBy','department','employee'])
+            ->whereRelation('employee','id', auth()->user()->employee->id)
+            ->orWhere('dept', auth()->user()->employee->dept)
+            ->when($request->notification != null,function ($q) use($request){
+                return $q->where('notification','like', '%'.$request->notification.'%');
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id','like', '%'.$request->employee_id.'%');
+            })
+            ->when($request->dept != null,function ($q) use($request){
+                return $q->where('dept','like', '%'.$request->dept.'%');
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by','like', '%'.$request->created_by.'%');
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '<=', $request->to_date);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
         return view('dashboard.notification.index',compact('data'))
         ->with([
             'notification' => $request->notification,

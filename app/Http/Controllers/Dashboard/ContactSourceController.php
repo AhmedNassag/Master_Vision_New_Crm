@@ -15,6 +15,10 @@ class ContactSourceController extends Controller
     public function __construct(ContactSourceInterface $contactSource)
     {
         $this->contactSource = $contactSource;
+        $this->middleware('permission:عرض مصادر جهات الإتصال', ['only' => ['index']]);
+        $this->middleware('permission:إضافة مصادر جهات الإتصال', ['only' => ['store']]);
+        $this->middleware('permission:تعديل مصادر جهات الإتصال', ['only' => ['update']]);
+        $this->middleware('permission:حذف مصادر جهات الإتصال', ['only' => ['destroy']]);
     }
 
 

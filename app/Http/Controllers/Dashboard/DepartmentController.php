@@ -15,6 +15,10 @@ class DepartmentController extends Controller
     public function __construct(DepartmentInterface $department)
     {
         $this->department = $department;
+        $this->middleware('permission:عرض الأقسام', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الأقسام', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الأقسام', ['only' => ['update']]);
+        $this->middleware('permission:حذف الأقسام', ['only' => ['destroy']]);
     }
 
 

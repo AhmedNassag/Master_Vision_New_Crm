@@ -15,6 +15,10 @@ class SavedReplyController extends Controller
     public function __construct(SavedReplyInterface $savedReply)
     {
         $this->savedReply = $savedReply;
+        $this->middleware('permission:عرض الردود المحفوظة', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الردود المحفوظة', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الردود المحفوظة', ['only' => ['update']]);
+        $this->middleware('permission:حذف الردود المحفوظة', ['only' => ['destroy']]);
     }
 
 

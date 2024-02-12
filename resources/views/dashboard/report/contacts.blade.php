@@ -154,15 +154,26 @@
                                         </label>
                                         <select name="created_by" data-control="select2" data-dropdown-parent="#employee" data-placeholder="{{ trans('main.Employee') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Employee') }}...</option>
-                                            <?php $employees = App\Models\Employee::get(['id', 'name']); ?>
+                                            <?php 
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $employees = \App\Models\Employee::get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                            ?>
                                             @foreach( $employees as $employee )
                                             <option value="{{ $employee->id }}" {{ $employee->id == @$created_by ? 'selected' : '' }}>{{ $employee->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="d-flex align-items-center col-1">
-                                        <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
-                                    </div>
+                                    @can('عرض تقارير جهات الإتصال')
+                                        <div class="d-flex align-items-center col-1">
+                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
@@ -225,69 +236,55 @@
                         @endif
 
                         @if(Request::is('admin/report/contactsReport'))
-                        <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                            <div class="table-responsive">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
-                                    <thead>
-                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="text-center">#</th>
-                                            <th class="text-center">{{ trans('main.Name') }}</th>
-                                            <th class="text-center">{{ trans('main.Mobile') }}</th>
-                                            <th class="text-center">{{ trans('main.Mobile2') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.Email') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.Company Name') }}</th>
-                                            <th class="text-center min-w-150px">{{ trans('main.JobTitle') }}</th>
-                                            <th class="text-center min-w-150px">{{ trans('main.ContactCategory') }}</th>
-                                            <th class="text-center min-w-150px">{{ trans('main.ContactSource') }}</th>
-                                            <th class="text-center " >{{ trans('main.City') }}</th>
-                                            <th class="text-center">{{ trans('main.Area') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.Industry') }}</th>
-                                            <th class="text-center ">{{ trans('main.Major') }}</th>
-                                            <th class="text-center">{{ trans('main.Activity') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.CreatedBy') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="fw-semibold text-gray-600">
-                                        @if(@$data->count() > 0)
-                                        @foreach (@$data as $key=>$item)
-                                        <tr>
-                                            <td class="text-center">
-                                                {{ $key+1 }}
-                                            </td>
-                                            <td class="text-center">{{ @$item->name }}</td>
-                                            <td class="text-center">{{ @$item->mobile }}</td>
-                                            <td class="text-center">{{ @$item->mobile2 }}</td>
-                                            <td class="text-center">{{ @$item->email }}</td>
-                                            <td class="text-center">{{ @$item->company_name }}</td>
-                                            <td class="text-center">{{ @$item->jobTitle->name }}</td>
-                                            <td class="text-center">{{ @$item->contactCategory->name }}</td>
-                                            <td class="text-center">{{ @$item->contactSource->name }}</td>
-                                            <td class="text-center">{{ @$item->city->name }}</td>
-                                            <td class="text-center">{{ @$item->area->name }}</td>
-                                            <td class="text-center">{{ @$item->industry->name }}</td>
-                                            <td class="text-center">{{ @$item->major->name }}</td>
-                                            <td class="text-center">{{ @$item->activity->name }}</td>
-                                            <td class="text-center">{{ @$item->createdBy->name }}</td>
-                                        </tr>
-                                        @endforeach
-                                        @else
-                                        <tr>
-                                            <th class="text-center" colspan="10">
-                                                <div class="col mb-3 d-flex">
-                                                    <div class="card flex-fill">
-                                                        <div class="card-body p-3 text-center">
-                                                            <p class="card-text f-12">{{ trans('main.No Data Founded') }}</p>
+                            <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
+                                        <thead>
+                                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">{{ trans('main.Name') }}</th>
+                                                <th class="text-center">{{ trans('main.Mobile') }}</th>
+                                                <th class="text-center">{{ trans('main.Mobile2') }}</th>
+                                                <th class="text-center " >{{ trans('main.City') }}</th>
+                                                <th class="text-center">{{ trans('main.Area') }}</th>
+                                                <th class="text-center">{{ trans('main.Activity') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.CreatedBy') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="fw-semibold text-gray-600">
+                                            @if(@$data->count() > 0)
+                                                @foreach (@$data as $key=>$item)
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            {{ $key+1 }}
+                                                        </td>
+                                                        <td class="text-center">{{ @$item->name }}</td>
+                                                        <td class="text-center">{{ @$item->mobile }}</td>
+                                                        <td class="text-center">{{ @$item->mobile2 }}</td>
+                                                        <td class="text-center">{{ @$item->city->name }}</td>
+                                                        <td class="text-center">{{ @$item->area->name }}</td>
+                                                        <td class="text-center">{{ @$item->activity->name }}</td>
+                                                        <td class="text-center">{{ @$item->createdBy->name }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <th class="text-center" colspan="10">
+                                                        <div class="col mb-3 d-flex">
+                                                            <div class="card flex-fill">
+                                                                <div class="card-body p-3 text-center">
+                                                                    <p class="card-text f-12">{{ trans('main.No Data Founded') }}</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                                {{ $data->links() }}
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                    {{ $data->links() }}
+                                </div>
                             </div>
-                        </div>
                         @endif
                     </div>
                 </div>

@@ -15,6 +15,10 @@ class SubActivityController extends Controller
     public function __construct(SubActivityInterface $subActivity)
     {
         $this->subActivity = $subActivity;
+        $this->middleware('permission:عرض الأنشطة الفرعية', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الأنشطة الفرعية', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الأنشطة الفرعية', ['only' => ['update']]);
+        $this->middleware('permission:حذف الأنشطة الفرعية', ['only' => ['destroy']]);
     }
 
 

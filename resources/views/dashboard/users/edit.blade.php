@@ -91,7 +91,16 @@
                                         </label>
                                         <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
-                                            <?php $branches = \App\Models\Branch::get(['id','name']); ?>
+                                            <?php
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $branches = \App\Models\Branch::get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $branches = \App\Models\Branch::where('id', Auth::user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                            ?>
                                             @foreach($branches as $branch)
                                                 <option value="{{ $branch->id }}" {{ $user->employee->branch_id == $branch->id ? 'selected' :''}}>{{ $branch->name }}</option>
                                             @endforeach
@@ -123,7 +132,7 @@
                                     <!-- roles_name -->
                                     <div class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Role') }}</label>
-                                        {!! Form::select('roles_name[]', $roles, $userRole, array('class' => 'form-control','multiple')) !!}
+                                        {!! Form::select('roles_name[]', $roles, $userRole, array('class' => 'form-control')) !!}
                                     </div>
                                     <!-- photo -->
                                     <div class="col-md-6 fv-row">
@@ -134,6 +143,11 @@
                                                 <img src="{{ asset('attachments/user/'.@$user->media->file_name) }}" alt="image" />
                                             </div>
                                         @endif
+                                    </div>
+                                    <!-- has_branch_access -->
+                                    <div class="col-md-6 fv-row form-check form-check-custom form-check-solid m-4">
+                                        <input name="has_branch_access" class="form-check-input" type="checkbox" value="" id="same_as_billing" @if(@$user->employee->has_branch_access == 1) checked="checked" @endif>
+                                        <label class="form-check-label" for="same_as_billing">{{ trans('main.Has Branch Access') }}</label>
                                     </div>
                                 </div>
                             <!-- </div> -->

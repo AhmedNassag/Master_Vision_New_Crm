@@ -5,7 +5,7 @@
             <form class="form" action="{{ route('customer.addReminder') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header">
-                    <h2>{{ trans('main.CreateReminders') }}</h2>
+                    <h2>{{ trans('main.CreateReminder') }}</h2>
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal"><i class="ki-outline ki-cross fs-1"></i></div>
                 </div>
                 <div class="modal-body py-10 px-lg-17">

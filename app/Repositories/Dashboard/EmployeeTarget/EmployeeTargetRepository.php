@@ -13,26 +13,77 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
 {
     public function index($request)
     {
-        $data = EmployeeTarget::with(['targets','employee'])
-        ->when($request->month != null,function ($q) use($request){
-            return $q->where('month',$request->month);
-        })
-        ->when($request->target_amount != null,function ($q) use($request){
-            return $q->where('target_amount',$request->target_amount);
-        })
-        ->when($request->target_meeting != null,function ($q) use($request){
-            return $q->where('target_meeting',$request->target_meeting);
-        })
-        ->when($request->employee_id != null,function ($q) use($request){
-            return $q->where('employee_id',$request->employee_id);
-        })
-        ->when($request->from_date != null,function ($q) use($request){
-            return $q->whereDate('created_at', '>=', $request->from_date);
-        })
-        ->when($request->to_date != null,function ($q) use($request){
-            return $q->whereDate('created_at', '<=', $request->to_date);
-        })
-        ->paginate(config('myConfig.paginationCount'));
+        if(Auth::user()->roles_name[0] == "Admin")
+        {
+            $data = EmployeeTarget::with(['targets','employee'])
+            ->when($request->month != null,function ($q) use($request){
+                return $q->where('month',$request->month);
+            })
+            ->when($request->target_amount != null,function ($q) use($request){
+                return $q->where('target_amount',$request->target_amount);
+            })
+            ->when($request->target_meeting != null,function ($q) use($request){
+                return $q->where('target_meeting',$request->target_meeting);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '<=', $request->to_date);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+        {
+            $data = EmployeeTarget::with(['targets','employee'])
+            ->whereRelation('employee','branch_id', auth()->user()->employee->branch_id)
+            ->when($request->month != null,function ($q) use($request){
+                return $q->where('month',$request->month);
+            })
+            ->when($request->target_amount != null,function ($q) use($request){
+                return $q->where('target_amount',$request->target_amount);
+            })
+            ->when($request->target_meeting != null,function ($q) use($request){
+                return $q->where('target_meeting',$request->target_meeting);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '<=', $request->to_date);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else
+        {
+            $data = EmployeeTarget::with(['targets','employee'])
+            ->whereRelation('employee','id', auth()->user()->employee->id)
+            ->when($request->month != null,function ($q) use($request){
+                return $q->where('month',$request->month);
+            })
+            ->when($request->target_amount != null,function ($q) use($request){
+                return $q->where('target_amount',$request->target_amount);
+            })
+            ->when($request->target_meeting != null,function ($q) use($request){
+                return $q->where('target_meeting',$request->target_meeting);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->whereDate('created_at', '<=', $request->to_date);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
 
         return view('dashboard.employeeTarget.index',compact('data'))
         ->with([

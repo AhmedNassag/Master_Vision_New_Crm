@@ -94,17 +94,18 @@ return [
     'No Notifications'     => 'No Notifications',
 
     //User
-    'Users'      => 'Users',
-    'User'       => 'User',
-    'Status'     => 'Status',
-    'Role'       => 'Role',
-    'Roles'      => 'Roles',
-    'Back'       => 'Back',
-    'Active'     => 'Active',
-    'InActive'   => 'InActive',
-    'And'        => 'And',
-    'User Roles' => 'User Roles',
-    'Photo'      => 'Photo',
+    'Users'             => 'Users',
+    'User'              => 'User',
+    'Status'            => 'Status',
+    'Role'              => 'Role',
+    'Roles'             => 'Roles',
+    'Back'              => 'Back',
+    'Active'            => 'Active',
+    'InActive'          => 'InActive',
+    'And'               => 'And',
+    'User Roles'        => 'User Roles',
+    'Photo'             => 'Photo',
+    'Has Branch Access' => 'Has Branch Access',
 
     //Category
     'Categories'      => 'Categories',
@@ -158,12 +159,14 @@ return [
     'Reply'        => 'Reply',
 
     //EmployeeTarget
-    'EmployeeTargets' => 'Employee Targets',
-    'EmployeeTarget'  => 'Employee Target',
-    'Month'           => 'Month',
-    'TargetAmount'    => 'Target Amount',
-    'TargetMeeting'   => 'Target Meeting',
-    'Total Calls'     => 'Total Calls',
+    'EmployeeTargets'               => 'Employee Targets',
+    'EmployeeTarget'                => 'Employee Target',
+    'Month'                         => 'Month',
+    'TargetAmount'                  => 'Target Amount',
+    'TargetMeeting'                 => 'Target Meeting',
+    'Total Calls'                   => 'Total Calls',
+    'Total Amount Target'           => 'Total Amount Target',
+    'Total Calls / Meetings Target' => 'Total Calls / Meetings Target',
 
     //Contact
     'Contacts'                            => 'Contacts',

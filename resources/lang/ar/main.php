@@ -94,17 +94,18 @@ return [
     'No Notifications'     => 'لا توجد إشعارات',
 
     //User
-    'Users'      => 'المستخدمين',
-    'User'       => 'المستخدم',
-    'Status'     => 'الحالة',
-    'Role'       => 'الدور',
-    'Roles'      => 'الصلاحيات',
-    'Back'       => 'عودة',
-    'Active'     => 'مفعل',
-    'InActive'   => 'غير مفعل',
-    'And'        => 'و',
-    'User Roles' => 'صلاحيات المستخدمين',
-    'Photo'      => 'الصورة',
+    'Users'             => 'المستخدمين',
+    'User'              => 'المستخدم',
+    'Status'            => 'الحالة',
+    'Role'              => 'الدور',
+    'Roles'             => 'الصلاحيات',
+    'Back'              => 'عودة',
+    'Active'            => 'مفعل',
+    'InActive'          => 'غير مفعل',
+    'And'               => 'و',
+    'User Roles'        => 'صلاحيات المستخدمين',
+    'Photo'             => 'الصورة',
+    'Has Branch Access' => 'لديه صلاحية الفرع',
 
     //Category
     'Category'        => 'الصنف',
@@ -158,12 +159,14 @@ return [
     'Reply'        => 'الرد',
 
     //EmployeeTarget
-    'EmployeeTargets' => 'تارجت الموظفين',
-    'EmployeeTarget'  => 'تارجت الموظف',
-    'Month'           => 'الشهر',
-    'AmountTarget'    => 'المبالغ المسنهدفة',
-    'CallsTarget'     => 'المكالمات المستهدفة',
-    'Total Calls'     => 'إجمالي المكالمات',
+    'EmployeeTargets'               => 'تارجت الموظفين',
+    'EmployeeTarget'                => 'تارجت الموظف',
+    'Month'                         => 'الشهر',
+    'AmountTarget'                  => 'المبالغ المسنهدفة',
+    'CallsTarget'                   => 'المكالمات المستهدفة',
+    'Total Calls'                   => 'إجمالي المكالمات',
+    'Total Amount Target'           => 'إجمالي مبلغ التارجت',
+    'Total Calls / Meetings Target' => 'إجمالي تارجت المكالمات والزيارات',
 
     //Contact
     'Contacts'                            => 'جهات الإتصال',

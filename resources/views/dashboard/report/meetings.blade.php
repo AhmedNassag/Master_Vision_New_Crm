@@ -91,7 +91,20 @@
                                         </label>
                                         <select name="contact_id" data-control="select2" data-dropdown-parent="#contacts" data-placeholder="{{ trans('main.Contact') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Contact') }}...</option>
-                                            <?php $contacts = App\Models\Contact::get(['id','name']); ?>
+                                            <?php
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $contacts = App\Models\Contact::get(['id','name']);
+                                                }
+                                                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                                {
+                                                    $contacts = App\Models\Contact::whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $contacts = App\Models\Contact::where('employee_id', auth()->user()->employee->id)->get(['id','name']);
+                                                }
+                                            ?>
                                             @foreach( $contacts as $contact )
                                                 <option value="{{ $contact->id }}" {{ $contact->id == @$contact_id ? 'selected' : '' }}>{{ $contact->name }}</option>
                                             @endforeach
@@ -104,16 +117,27 @@
                                         </label>
                                         <select name="created_by" data-control="select2" data-dropdown-parent="#employee" data-placeholder="{{ trans('main.Employee') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Employee') }}...</option>
-                                            <?php $employees = App\Models\Employee::get(['id','name']); ?>
+                                            <?php
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $employees = \App\Models\Employee::get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                            ?>
                                             @foreach( $employees as $employee )
                                                 <option value="{{ $employee->id }}" {{ $employee->id == @$created_by ? 'selected' : '' }}>{{ $employee->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- search submit -->
-                                    <div class="d-flex align-items-center col-lg-2">
-                                        <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
-                                    </div>
+                                    @can('عرض تقارير المكالمات والزيارات')
+                                        <div class="d-flex align-items-center col-lg-2">
+                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                         </form>
@@ -190,8 +214,8 @@
                                                             {{ $key+1 }}
                                                         </td>
                                                         <td class="text-center">{{ @$item->contact->name }}</td>
-                                                        <td class="text-center">{{ @$item->type }}</td>
-                                                        <td class="text-center">{{ @$item->meeting_place }}</td>
+                                                        <td class="text-center">@if(@$item->type == 'call') {{ trans('main.Call') }} @else {{ trans('main.Meeting') }}@endif</td>
+                                                        <td class="text-center">@if(@$item->meeting_place == 'in') {{ trans('main.In') }} @else {{ trans('main.Out') }}@endif</td>
                                                         <td class="text-center">{{ @$item->meeting_date }}</td>
                                                         <td class="text-center">{{ @$item->revenue }}</td>
                                                         <td class="text-center">{{ @$item->createdBy->name }}</td>

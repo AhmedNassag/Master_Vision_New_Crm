@@ -54,9 +54,11 @@
                                         </select>
                                     </div>
                                     <!-- search submit -->
-                                    <div class="d-flex align-items-center col-lg-1">
-                                        <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
-                                    </div>
+                                    @can('عرض تقارير مبيعات الفروع')
+                                        <div class="d-flex align-items-center col-lg-1">
+                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                         </form>
@@ -119,7 +121,8 @@
                                                 <th class="text-center">#</th>
                                                 <th class="text-center px-0">{{ trans('main.Branch') }}</th>
                                                 <th class="text-center px-0">{{ trans('main.Target') }}</th>
-                                                <th class="text-center min-w-125px ps-0">{{ trans('main.Actual') }}</th>
+                                                <th class="text-center px-0">{{ trans('main.Actual') }}</th>
+                                                <th class="text-center min-w-125px ps-0">{{ trans('main.Margin') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fw-semibold text-gray-600">
@@ -132,6 +135,7 @@
                                                         <td class="text-center px-0">{{ @$item['branch'] }}</td>
                                                         <td class="text-center px-0">{{ @$item['target'] }}</td>
                                                         <td class="text-center px-0">{{ @$item['actual'] }}</td>
+                                                        <td class="text-center px-0">{{ @$item['margin'] }}</td>
                                                     </tr>
                                                 @endforeach
                                             @else

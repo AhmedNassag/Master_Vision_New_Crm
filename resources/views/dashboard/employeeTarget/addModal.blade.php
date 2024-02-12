@@ -16,7 +16,16 @@
                         </label>
                         <select name="employee_id" data-control="select2" data-dropdown-parent="#add_employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
-                            <?php $employees = \App\Models\Employee::get(['id','name']); ?>
+                            <?php
+                                if(Auth::user()->roles_name[0] == "Admin")
+                                {
+                                    $employees = \App\Models\Employee::get(['id','name']);
+                                }
+                                else
+                                {
+                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                }
+                            ?>
                             @foreach($employees as $employee)
                                 <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                             @endforeach
@@ -63,14 +72,14 @@
                     <!-- target_amount -->
                     <div class="row mb-5">
                         <div class="col-md-12 fv-row">
-                            <label class="required fs-5 fw-semibold mb-2" for="target_amount">{{ trans('admin.Total Amount Target') }}* :</label>
+                            <label class="required fs-5 fw-semibold mb-2" for="target_amount">{{ trans('main.Total Amount Target') }}* :</label>
                             <input class="form-control form-control-solid calls-input" readonly name="target_amount" type="number" value="0">
                         </div>
                     </div>
                     <!-- target_meeting -->
                     <div class="row mb-5">
                         <div class="col-md-12 fv-row">
-                            <label class="required fs-5 fw-semibold mb-2" for="target_meeting">{{ trans('admin.Total Calls / Meetings Target') }}* :</label>
+                            <label class="required fs-5 fw-semibold mb-2" for="target_meeting">{{ trans('main.Total Calls / Meetings Target') }}* :</label>
                             <input class="form-control form-control-solid calls-input" readonly name="target_meeting" type="number" value="0">
                         </div>
                     </div>

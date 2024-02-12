@@ -41,6 +41,71 @@ class UserController extends Controller
         })
         ->paginate(config('myConfig.paginationCount'));
 
+
+
+        if(Auth::user()->roles_name[0] == "Admin")
+        {
+            $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+            ->when($request->name != null,function ($q) use($request){
+                return $q->where('name','like','%'.$request->name.'%');
+            })
+            ->when($request->email != null,function ($q) use($request){
+                return $q->where('email','like','%'.$request->email.'%');
+            })
+            ->when($request->mobile != null,function ($q) use($request){
+                return $q->where('mobile','like','%'.$request->mobile.'%');
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->whereRelation('employee','branch_id',$request->branch_id);
+            })
+            ->when($request->dept != null,function ($q) use($request){
+                return $q->whereRelation('employee','dept',$request->dept);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+        {
+            $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+            ->whereRelation('employee','branch_id', auth()->user()->employee->branch_id)
+            ->when($request->name != null,function ($q) use($request){
+                return $q->where('name','like','%'.$request->name.'%');
+            })
+            ->when($request->email != null,function ($q) use($request){
+                return $q->where('email','like','%'.$request->email.'%');
+            })
+            ->when($request->mobile != null,function ($q) use($request){
+                return $q->where('mobile','like','%'.$request->mobile.'%');
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->whereRelation('employee','branch_id',$request->branch_id);
+            })
+            ->when($request->dept != null,function ($q) use($request){
+                return $q->whereRelation('employee','dept',$request->dept);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else
+        {
+            $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+            ->where('id', auth()->user()->id)
+            ->when($request->name != null,function ($q) use($request){
+                return $q->where('name','like','%'.$request->name.'%');
+            })
+            ->when($request->email != null,function ($q) use($request){
+                return $q->where('email','like','%'.$request->email.'%');
+            })
+            ->when($request->mobile != null,function ($q) use($request){
+                return $q->where('mobile','like','%'.$request->mobile.'%');
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->whereRelation('employee','branch_id',$request->branch_id);
+            })
+            ->when($request->dept != null,function ($q) use($request){
+                return $q->whereRelation('employee','dept',$request->dept);
+            })
+            ->paginate(config('myConfig.paginationCount'));
+        }
+
         /*
         foreach($data as $item)
         {
@@ -109,12 +174,14 @@ class UserController extends Controller
                 return redirect()->back();
             }
 
+
             $employee = Employee::create([
-                'name'       => $request->name,
-                'email'      => $request->email,
-                'mobile'     => $request->mobile,
-                'branch_id'  => $request->branch_id,
-                'dept'       => $request->dept,
+                'name'              => $request->name,
+                'email'             => $request->email,
+                'mobile'            => $request->mobile,
+                'branch_id'         => $request->branch_id,
+                'dept'              => $request->dept,
+                'has_branch_access' => $request->has_branch_access ? 1 : 0,
             ]);
             $user = User::create([
                 'name'       => $request->name,
@@ -188,11 +255,12 @@ class UserController extends Controller
             $employee = Employee::find($user->context_id);
 
             $employee->update([
-                'name'       => $request->name,
-                'email'      => $request->email,
-                'mobile'     => $request->mobile,
-                'branch_id'  => $request->branch_id,
-                'dept'       => $request->dept,
+                'name'              => $request->name,
+                'email'             => $request->email,
+                'mobile'            => $request->mobile,
+                'branch_id'         => $request->branch_id,
+                'dept'              => $request->dept,
+                'has_branch_access' => $request->has_branch_access ? 1 : 0,
             ]);
             $user->update([
                 'name'       => $request->name,

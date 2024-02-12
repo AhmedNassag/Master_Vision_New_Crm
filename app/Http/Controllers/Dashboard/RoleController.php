@@ -13,10 +13,10 @@ class RoleController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:عرض صلاحية', ['only' => ['index']]);
-        $this->middleware('permission:إضافة صلاحية', ['only' => ['create','store']]);
-        $this->middleware('permission:تعديل صلاحية', ['only' => ['edit','update']]);
-        $this->middleware('permission:حذف صلاحية', ['only' => ['destroy']]);
+        $this->middleware('permission:عرض الصلاحيات', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الصلاحيات', ['only' => ['create', 'store']]);
+        $this->middleware('permission:تعديل الصلاحيات', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:حذف الصلاحيات', ['only' => ['destroy']]);
     }
 
 

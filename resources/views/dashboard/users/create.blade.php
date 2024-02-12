@@ -101,7 +101,16 @@
                                         </label>
                                         <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
-                                            <?php $branches = \App\Models\Branch::get(['id','name']); ?>
+                                            <?php
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $branches = \App\Models\Branch::get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $branches = \App\Models\Branch::where('id', Auth::user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                            ?>
                                             @foreach($branches as $branch)
                                                 <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                             @endforeach
@@ -139,6 +148,11 @@
                                     <div class="col-md-6 fv-row">
                                         <label class="fs-5 fw-semibold mb-2">{{ trans('main.Photo') }}</label>
                                         <input type="file" class="form-control form-control-solid" value="{{ old('photo') }}" name="photo" />
+                                    </div>
+                                    <!-- has_branch_access -->
+                                    <div class="col-md-6 fv-row form-check form-check-custom form-check-solid m-4">
+                                        <input name="has_branch_access" class="form-check-input" type="checkbox" checked="checked">
+                                        <label class="form-check-label" for="same_as_billing">{{ trans('main.Has Branch Access') }}</label>
                                     </div>
                                 </div>
                             <!-- </div> -->

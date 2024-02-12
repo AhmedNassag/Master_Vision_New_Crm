@@ -77,7 +77,16 @@
                                         </label>
                                         <select name="employee_id" data-control="select2" data-dropdown-parent="#edit_employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
-                                            <?php $employees = \App\Models\Employee::get(['id','name']); ?>
+                                            <?php
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $employees = \App\Models\Employee::get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                            ?>
                                             @foreach($employees as $employee)
                                                 <option value="{{ $employee->id }}" {{ $employee->id == $employee_target->employee_id ? 'selected' : '' }}>{{ $employee->name }}</option>
                                             @endforeach

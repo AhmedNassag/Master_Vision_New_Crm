@@ -66,7 +66,16 @@
                                                         data-placeholder="{{ trans('main.Select') }}..."
                                                         class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
-                                                        <?php $employees = \App\Models\Employee::get(['id', 'name']); ?>
+                                                        <?php
+                                                            if(Auth::user()->roles_name[0] == "Admin")
+                                                            {
+                                                                $employees = \App\Models\Employee::get(['id','name']);
+                                                            }
+                                                            else
+                                                            {
+                                                                $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                            }
+                                                        ?>
                                                         @foreach ($employees as $employee)
                                                             <option value="{{ $employee->id }}">{{ $employee->name }}
                                                             </option>
@@ -102,8 +111,9 @@
                                         </form>
                                     </div>
                                     <!--begin::Add-->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#add_modal">{{ trans('main.Add New') }}</button>
+                                    @can('إضافة تارجت الموظفين')
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_modal">{{ trans('main.Add New') }}</button>
+                                    @endcan
                                     <!--end::Add-->
                                 </div>
                             </div>
@@ -185,16 +195,19 @@
                                                                 {{ trans('main.Actions') }}
                                                                 <i class="ki-outline ki-down fs-5 ms-1"></i>
                                                             </a>
-                                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                                                                data-kt-menu="true">
-                                                                <div class="menu-item px-3">
-                                                                    <a href="{{ route('employeeTarget.edit', $item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
-                                                                </div>
-                                                                <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
-                                                                </div>
+                                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                                                @can('تعديل تارجت الموظفين')
+                                                                    <div class="menu-item px-3">
+                                                                        <a href="{{ route('employeeTarget.edit', $item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
+                                                                    </div>
+                                                                @endcan
+                                                                @can('حذف تارجت الموظفين')
+                                                                    <div class="menu-item px-3">
+                                                                        <a href="#" class="menu-link px-3"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                                    </div>
+                                                                @endcan
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -216,7 +229,7 @@
                                         </tbody>
                                     </table>
                                     {{ $data->links() }}
-                            </div>        
+                            </div>
                         </div>
                     </div>
 
@@ -361,7 +374,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="pt-6"><button class="btn btn-danger mt-5" onclick="deleteProduct(${list[i].id})">delete</button></td>
+                        <td class="pt-6"><button class="btn btn-danger mt-5" onclick="deleteProduct(${list[i].id})">{{ trans('main.Delete') }}</button></td>
                     </tr>
                 `;
             }
@@ -441,10 +454,8 @@
                 $('input[name="target_meeting"]').val(sumCalls);
             }
 
-
             $(document).on('keyup','.amount-input',updateSums);
             $(document).on('keyup','.calls-input',updateSums);
-
 
         });
     </script>

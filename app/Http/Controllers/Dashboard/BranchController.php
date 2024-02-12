@@ -15,6 +15,10 @@ class BranchController extends Controller
     public function __construct(BranchInterface $branch)
     {
         $this->branch = $branch;
+        $this->middleware('permission:عرض الفروع', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الفروع', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الفروع', ['only' => ['update']]);
+        $this->middleware('permission:حذف الفروع', ['only' => ['destroy']]);
     }
 
 

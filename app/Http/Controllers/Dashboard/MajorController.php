@@ -15,6 +15,10 @@ class MajorController extends Controller
     public function __construct(MajorInterface $major)
     {
         $this->major = $major;
+        $this->middleware('permission:عرض التخصصات', ['only' => ['index']]);
+        $this->middleware('permission:إضافة التخصصات', ['only' => ['store']]);
+        $this->middleware('permission:تعديل التخصصات', ['only' => ['update']]);
+        $this->middleware('permission:حذف التخصصات', ['only' => ['destroy']]);
     }
 
 

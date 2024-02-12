@@ -37,7 +37,16 @@
                                         </label>
                                         <select name="branch_id" data-control="select2" data-dropdown-parent="#branches" data-placeholder="{{ trans('main.Branch') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Branch') }}...</option>
-                                            <?php $branches = App\Models\Branch::get(['id','name']); ?>
+                                            <?php 
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $branches = \App\Models\Branch::get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $branches = \App\Models\Branch::where('id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                            ?>
                                             @foreach( $branches as $branch )
                                                 <option value="{{ $branch->id }}" {{ $branch->id == @$branch_id ? 'selected' : '' }}>{{ $branch->name }}</option>
                                             @endforeach
@@ -67,9 +76,11 @@
                                         </select>
                                     </div>
                                     <!-- search submit -->
-                                    <div class="d-flex align-items-center col-1">
-                                        <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
-                                    </div>
+                                    @can('عرض تقارير مبيعات الموظفين')
+                                        <div class="d-flex align-items-center col-1">
+                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                         </form>

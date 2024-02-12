@@ -50,7 +50,9 @@
                                     </form>
                                 </div>
                                 <!--begin::Add-->
-                                <a type="button" class="btn btn-primary" href="{{ route('role.create') }}">{{ trans('main.Add New') }}</a>
+                                @can('إضافة الصلاحيات')
+                                    <a type="button" class="btn btn-primary" href="{{ route('role.create') }}">{{ trans('main.Add New') }}</a>
+                                @endcan    
                                 <!--end::Add-->
                             </div>
                         </div>
@@ -127,17 +129,17 @@
                                                         <i class="ki-outline ki-down fs-5 ms-1"></i>
                                                     </a>
                                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                                        @can('عرض صلاحية')
+                                                        @can('عرض الصلاحيات')
                                                             <div class="menu-item px-3">
                                                                 <a href="{{ route('role.show', $role->id) }}" class="menu-link px-3">{{ trans('main.Show') }}</a>
                                                             </div>
                                                         @endcan
-                                                        @can('تعديل صلاحية')
+                                                        @can('تعديل الصلاحيات')
                                                             <div class="menu-item px-3">
                                                                 <a href="{{ route('role.edit', $role->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
                                                             </div>
                                                         @endcan
-                                                        @can('حذف صلاحية')
+                                                        @can('حذف الصلاحيات')
                                                             <div class="menu-item px-3">
                                                                 <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $role->id }}">{{ trans('main.Delete') }}</a>
                                                             </div>

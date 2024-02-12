@@ -15,6 +15,10 @@ class CampaignController extends Controller
     public function __construct(CampaignInterface $campaign)
     {
         $this->campaign = $campaign;
+        $this->middleware('permission:عرض الحملات', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الحملات', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الحملات', ['only' => ['update']]);
+        $this->middleware('permission:حذف الحملات', ['only' => ['destroy']]);
     }
 
 

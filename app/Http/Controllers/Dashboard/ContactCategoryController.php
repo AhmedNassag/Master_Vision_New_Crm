@@ -15,6 +15,10 @@ class ContactCategoryController extends Controller
     public function __construct(ContactCategoryInterface $contactCategory)
     {
         $this->contactCategory = $contactCategory;
+        $this->middleware('permission:عرض فئات جهات الإتصال', ['only' => ['index']]);
+        $this->middleware('permission:إضافة فئات جهات الإتصال', ['only' => ['store']]);
+        $this->middleware('permission:تعديل فئات جهات الإتصال', ['only' => ['update']]);
+        $this->middleware('permission:حذف فئات جهات الإتصال', ['only' => ['destroy']]);
     }
 
 

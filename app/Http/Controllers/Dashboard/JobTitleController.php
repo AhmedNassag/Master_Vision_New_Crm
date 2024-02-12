@@ -15,6 +15,10 @@ class JobTitleController extends Controller
     public function __construct(JobTitleInterface $jobTitle)
     {
         $this->jobTitle = $jobTitle;
+        $this->middleware('permission:عرض المسميات الوظيفية', ['only' => ['index']]);
+        $this->middleware('permission:إضافة المسميات الوظيفية', ['only' => ['store']]);
+        $this->middleware('permission:تعديل المسميات الوظيفية', ['only' => ['update']]);
+        $this->middleware('permission:حذف المسميات الوظيفية', ['only' => ['destroy']]);
     }
 
 

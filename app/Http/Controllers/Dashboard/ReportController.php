@@ -18,6 +18,17 @@ use App\Http\Controllers\Controller;
 
 class ReportController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:عرض تقارير المكالمات والزيارات', ['only' => ['meetings', 'meetingsReport']]);
+        $this->middleware('permission:عرض تقارير جهات الإتصال', ['only' => ['contacts', 'contactsReport']]);
+        $this->middleware('permission:عرض تقارير مبيعات الموظفين', ['only' => ['employeeSales', 'employeeSalesReport']]);
+        $this->middleware('permission:عرض تقارير مبيعات الفروع', ['only' => ['branchSales', 'branchSalesReport']]);
+        $this->middleware('permission:عرض تقارير مبيعات الأنشظة', ['only' => ['activitySales', 'activitySalesReport']]);
+    }
+
+
+
     //meetings report
     public function meetings()
     {
@@ -29,33 +40,95 @@ class ReportController extends Controller
     public function meetingsReport(Request $request)
     {
         try {
-            $data = Meeting::with('notes','contact','createdBy')
-            ->when($request->created_by != null,function ($q) use($request){
-                return $q->where('created_by', $request->created_by);
-            })
-            ->when($request->interests_ids != null,function ($q) use($request){
-                return $q->where('interests_ids', $request->interests_ids);
-            })
-            ->when($request->contact_id != null,function ($q) use($request){
-                return $q->where('contact_id', $request->contact_id);
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
-            })
-            ->when($request->follow_date_from != null,function ($q) use($request){
-                return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
-            })
-            ->when($request->follow_date_to != null,function ($q) use($request){
-                return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->paginate(config('myConfig.paginationCount'));
-
+            if(Auth::user()->roles_name[0] == "Admin")
+            {
+                $data = Meeting::with('notes','contact','createdBy')
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->interests_ids != null,function ($q) use($request){
+                    return $q->where('interests_ids', $request->interests_ids);
+                })
+                ->when($request->contact_id != null,function ($q) use($request){
+                    return $q->where('contact_id', $request->contact_id);
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
+                })
+                ->when($request->follow_date_from != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                })
+                ->when($request->follow_date_to != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+            {
+                $data = Meeting::with('notes','contact','createdBy')
+                ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->interests_ids != null,function ($q) use($request){
+                    return $q->where('interests_ids', $request->interests_ids);
+                })
+                ->when($request->contact_id != null,function ($q) use($request){
+                    return $q->where('contact_id', $request->contact_id);
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
+                })
+                ->when($request->follow_date_from != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                })
+                ->when($request->follow_date_to != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else
+            {
+                $data = Meeting::with('notes','contact','createdBy')
+                ->whereRelation('createdBy','id', auth()->user()->employee->id)
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->interests_ids != null,function ($q) use($request){
+                    return $q->where('interests_ids', $request->interests_ids);
+                })
+                ->when($request->contact_id != null,function ($q) use($request){
+                    return $q->where('contact_id', $request->contact_id);
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
+                })
+                ->when($request->follow_date_from != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                })
+                ->when($request->follow_date_to != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
             return view('dashboard.report.meetings',compact('data'))
             ->with([
                 'created_by'        => $request->created_by,
@@ -89,41 +162,122 @@ class ReportController extends Controller
     public function contactsReport(Request $request)
     {
         try {
-            $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
-            ->when($request->created_by != null,function ($q) use($request){
-                return $q->where('created_by', $request->created_by);
-            })
-            ->when($request->city_id != null,function ($q) use($request){
-                return $q->where('city_id', $request->city_id);
-            })
-            ->when($request->area_id != null,function ($q) use($request){
-                return $q->where('area_id', $request->area_id);
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->where('contact_source_id', $request->contact_source_id);
-            })
-            ->when($request->contact_category_id != null,function ($q) use($request){
-                return $q->where('contact_category_id', $request->contact_category_id);
-            })
-            ->when($request->industry_id != null,function ($q) use($request){
-                return $q->where('industry_id', $request->industry_id);
-            })
-            ->when($request->major_id != null,function ($q) use($request){
-                return $q->where('major_id', $request->major_id);
-            })
-            ->when($request->job_title_id != null,function ($q) use($request){
-                return $q->where('job_title_id', $request->job_title_id);
-            })
-            ->when($request->activity_id != null,function ($q) use($request){
-                return $q->where('activity_id', $request->activity_id);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->paginate(config('myConfig.paginationCount'));
+            if(Auth::user()->roles_name[0] == "Admin")
+            {
+                $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id', $request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id', $request->area_id);
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id', $request->contact_source_id);
+                })
+                ->when($request->contact_category_id != null,function ($q) use($request){
+                    return $q->where('contact_category_id', $request->contact_category_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id', $request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id', $request->major_id);
+                })
+                ->when($request->job_title_id != null,function ($q) use($request){
+                    return $q->where('job_title_id', $request->job_title_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id', $request->activity_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+            {
+                $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
+                ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id', $request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id', $request->area_id);
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id', $request->contact_source_id);
+                })
+                ->when($request->contact_category_id != null,function ($q) use($request){
+                    return $q->where('contact_category_id', $request->contact_category_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id', $request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id', $request->major_id);
+                })
+                ->when($request->job_title_id != null,function ($q) use($request){
+                    return $q->where('job_title_id', $request->job_title_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id', $request->activity_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else
+            {
+                $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
+                ->whereRelation('createdBy','id', auth()->user()->employee->id)
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id', $request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id', $request->area_id);
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id', $request->contact_source_id);
+                })
+                ->when($request->contact_category_id != null,function ($q) use($request){
+                    return $q->where('contact_category_id', $request->contact_category_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id', $request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id', $request->major_id);
+                })
+                ->when($request->job_title_id != null,function ($q) use($request){
+                    return $q->where('job_title_id', $request->job_title_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id', $request->activity_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
 
             return view('dashboard.report.contacts',compact('data'))
             ->with([
@@ -161,9 +315,23 @@ class ReportController extends Controller
     public function employeeSalesReport(Request $request)
     {
         try {
-            $employees = Employee::when($request->branch_id, function ($query) use ($request) {
-                return $query->where('branch_id', $request->branch_id);
-            })->get();
+            if($request->branch_id)
+            {
+                $employees = Employee::when($request->branch_id, function ($query) use ($request) {
+                    return $query->where('branch_id', $request->branch_id);
+                })->get();
+            }
+            else
+            {
+                if(Auth::user()->roles_name[0] == "Admin")
+                {
+                    $employees = Employee::get();
+                }
+                else
+                {
+                    $employees = Employee::where('branch_id', auth()->user()->employee->branch_id)->get();
+                }
+            }
             $data = [];
             foreach ($employees as $index=>$employee)
             {
@@ -230,7 +398,14 @@ class ReportController extends Controller
     public function branchSalesReport(Request $request)
     {
         try {
-            $branches = Branch::get();
+            if(Auth::user()->roles_name[0] == "Admin")
+            {
+                $branches = Branch::get();
+            }
+            else
+            {
+                $branches = Branch::where('id', auth()->user()->employee->branch_id)->get();
+            }
             $data = [];
             foreach ($branches as $branch)
             {
@@ -300,10 +475,11 @@ class ReportController extends Controller
             if ($interest_id)
             {
                 $invoices = Invoice::where('activity_id', $activity_id)
-                    ->where('interest_id', $interest_id)
-                    ->when(($from != "" && $to != ""), function ($query) use ($from, $to) {
-                        return $query->whereBetween('invoice_date', [$from, $to]);
-                    })->get();
+                ->where('interest_id', $interest_id)
+                ->when(($from != "" && $to != ""), function ($query) use ($from, $to) {
+                    return $query->whereBetween('invoice_date', [$from, $to]);
+                })->get();
+
                 $data[] = [
                     'activity'          => Activity::find($activity_id)->name ?? "",
                     'sub_activity'      => SubActivity::find($interest_id)->name ?? "",
@@ -315,9 +491,10 @@ class ReportController extends Controller
             elseif ($activity_id && !$interest_id)
             {
                 $invoices = Invoice::where('activity_id', $activity_id)
-                    ->when(($from != "" && $to != ""), function ($query) use ($from, $to) {
-                        return $query->whereBetween('invoice_date', [$from, $to]);
-                    })->get();
+                ->when(($from != "" && $to != ""), function ($query) use ($from, $to) {
+                    return $query->whereBetween('invoice_date', [$from, $to]);
+                })->get();
+
                 $data[] = [
                     'activity'          => Activity::find($activity_id)->name ?? "",
                     'sub_activity'      => "",
@@ -332,9 +509,9 @@ class ReportController extends Controller
                 foreach ($activites as $activity)
                 {
                     $invoices = Invoice::where('activity_id', $activity->id)
-                        ->when(($from != "" && $to != ""), function ($query) use ($from, $to) {
-                            return $query->whereBetween('invoice_date', [$from, $to]);
-                        })->get();
+                    ->when(($from != "" && $to != ""), function ($query) use ($from, $to) {
+                        return $query->whereBetween('invoice_date', [$from, $to]);
+                    })->get();
 
                     $data[] = [
                         'activity'          => $activity->name ?? "",

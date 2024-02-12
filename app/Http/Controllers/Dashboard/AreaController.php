@@ -15,6 +15,10 @@ class AreaController extends Controller
     public function __construct(AreaInterface $area)
     {
         $this->area = $area;
+        $this->middleware('permission:عرض المناطق', ['only' => ['index']]);
+        $this->middleware('permission:إضافة المناطق', ['only' => ['store']]);
+        $this->middleware('permission:تعديل المناطق', ['only' => ['update']]);
+        $this->middleware('permission:حذف المناطق', ['only' => ['destroy']]);
     }
 
 

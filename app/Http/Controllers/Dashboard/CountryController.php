@@ -15,6 +15,10 @@ class CountryController extends Controller
     public function __construct(CountryInterface $country)
     {
         $this->country = $country;
+        $this->middleware('permission:عرض الدول', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الدول', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الدول', ['only' => ['update']]);
+        $this->middleware('permission:حذف الدول', ['only' => ['destroy']]);
     }
 
 

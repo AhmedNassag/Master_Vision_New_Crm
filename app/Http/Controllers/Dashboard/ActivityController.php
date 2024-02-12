@@ -15,6 +15,10 @@ class ActivityController extends Controller
     public function __construct(ActivityInterface $activity)
     {
         $this->activity = $activity;
+        $this->middleware('permission:عرض الأنشطة الرئيسية', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الأنشطة الرئيسية', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الأنشطة الرئيسية', ['only' => ['update']]);
+        $this->middleware('permission:حذف الأنشطة الرئيسية', ['only' => ['destroy']]);
     }
 
 

@@ -15,6 +15,10 @@ class IndustryController extends Controller
     public function __construct(IndustryInterface $industry)
     {
         $this->industry = $industry;
+        $this->middleware('permission:عرض قطاعات الأعمال', ['only' => ['index']]);
+        $this->middleware('permission:إضافة قطاعات الأعمال', ['only' => ['store']]);
+        $this->middleware('permission:تعديل قطاعات الأعمال', ['only' => ['update']]);
+        $this->middleware('permission:حذف قطاعات الأعمال', ['only' => ['destroy']]);
     }
 
 

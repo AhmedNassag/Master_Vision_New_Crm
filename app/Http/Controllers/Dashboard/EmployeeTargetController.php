@@ -15,6 +15,10 @@ class EmployeeTargetController extends Controller
     public function __construct(EmployeeTargetInterface $employeeTarget)
     {
         $this->employeeTarget = $employeeTarget;
+        $this->middleware('permission:عرض تارجت الموظفين', ['only' => ['index']]);
+        $this->middleware('permission:إضافة تارجت الموظفين', ['only' => ['store']]);
+        $this->middleware('permission:تعديل تارجت الموظفين', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:حذف تارجت الموظفين', ['only' => ['destroy']]);
     }
 
 

@@ -15,6 +15,10 @@ class PointSettingController extends Controller
     public function __construct(PointSettingInterface $pointSetting)
     {
         $this->pointSetting = $pointSetting;
+        $this->middleware('permission:عرض أنظمة النقاط', ['only' => ['index']]);
+        $this->middleware('permission:إضافة أنظمة النقاط', ['only' => ['store']]);
+        $this->middleware('permission:تعديل أنظمة النقاط', ['only' => ['update']]);
+        $this->middleware('permission:حذف أنظمة النقاط', ['only' => ['destroy']]);
     }
 
 

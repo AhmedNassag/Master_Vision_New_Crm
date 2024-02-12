@@ -67,11 +67,12 @@
                             </div>
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
                                 <div class="d-flex align-items-center mb-10">
-
                                     <!-- search submit -->
-                                    <div class="d-flex align-items-center">
-                                        <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
-                                    </div>
+                                    @can('عرض تقارير مبيعات الأنشظة')
+                                        <div class="d-flex align-items-center">
+                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                         </form>
@@ -126,50 +127,50 @@
                         @endif
 
                         @if(Request::is('admin/report/activitySalesReport'))
-                        <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                            <div class="table-responsive">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
-                                    <thead>
-                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="text-center">#</th>
-                                            <th class="text-center">{{ trans('main.Activity') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.SubActivity') }}</th>
-                                            <th class="text-center">{{ trans('main.Sales') }}</th>
-                                            <th class="text-center min-w-150px">{{ trans('main.Paid Amounts') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.Remaining Amounts') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="fw-semibold text-gray-600">
-                                        @if(is_array($data))
-                                        @foreach (@$data as $key=>$item)
-                                        <tr>
-                                            <td class="text-center">
-                                                {{ $key+1 }}
-                                            </td>
-                                            <td class="text-center">{{ @$item['activity'] }}</td>
-                                            <td class="text-center">{{ @$item['sub_activity'] }}</td>
-                                            <td class="text-center">{{ @$item['total_sales'] }}</td>
-                                            <td class="text-center">{{ @$item['paid_amount'] }}</td>
-                                            <td class="text-center">{{ @$item['remaining_amounts'] }}</td>
-                                        </tr>
-                                        @endforeach
-                                        @else
-                                        <tr>
-                                            <th class="text-center" colspan="10">
-                                                <div class="col mb-3 d-flex">
-                                                    <div class="card flex-fill">
-                                                        <div class="card-body p-3 text-center">
-                                                            <p class="card-text f-12">{{ trans('main.No Data Founded') }}</p>
+                            <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
+                                        <thead>
+                                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">{{ trans('main.Activity') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.SubActivity') }}</th>
+                                                <th class="text-center">{{ trans('main.Sales') }}</th>
+                                                <th class="text-center min-w-150px">{{ trans('main.Paid Amounts') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.Remaining Amounts') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="fw-semibold text-gray-600">
+                                            @if(is_array($data))
+                                            @foreach (@$data as $key=>$item)
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{ $key+1 }}
+                                                </td>
+                                                <td class="text-center">{{ @$item['activity'] }}</td>
+                                                <td class="text-center">{{ @$item['sub_activity'] }}</td>
+                                                <td class="text-center">{{ @$item['total_sales'] }}</td>
+                                                <td class="text-center">{{ @$item['paid_amount'] }}</td>
+                                                <td class="text-center">{{ @$item['remaining_amounts'] }}</td>
+                                            </tr>
+                                            @endforeach
+                                            @else
+                                            <tr>
+                                                <th class="text-center" colspan="10">
+                                                    <div class="col mb-3 d-flex">
+                                                        <div class="card flex-fill">
+                                                            <div class="card-body p-3 text-center">
+                                                                <p class="card-text f-12">{{ trans('main.No Data Founded') }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </th>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                                </th>
+                                            </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
                         @endif
                     </div>
                 </div>

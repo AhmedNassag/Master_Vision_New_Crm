@@ -643,6 +643,7 @@
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+                                                <hr>
                                                 <h3>{{ trans('main.CompeltionReportByDateAndPercentage') }}</h3>
                                                 <table class="table align-middle table-row-dashed fw-semibold text-gray-600 fs-6 gy-5">
                                                     <thead>

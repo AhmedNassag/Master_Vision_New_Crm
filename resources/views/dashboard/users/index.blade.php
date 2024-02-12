@@ -60,7 +60,16 @@
                                                 </label>
                                                 <select name="branch_id" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <?php $branches = \App\Models\Branch::get(['id','name']); ?>
+                                                    <?php 
+                                                        if(Auth::user()->roles_name[0] == "Admin")
+                                                        {
+                                                            $branches = \App\Models\Branch::get(['id','name']);
+                                                        }
+                                                        else
+                                                        {
+                                                            $branches = \App\Models\Branch::where('id', Auth::user()->employee->branch_id)->get(['id','name']);
+                                                        }
+                                                    ?>
                                                     @foreach($branches as $branch)
                                                         <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                     @endforeach
@@ -87,7 +96,7 @@
                                     </form>
                                 </div>
                                 <!--begin::Add-->
-                                @can('إضافة مستخدم')
+                                @can('إضافة المستخدمين')
                                     <a type="button" class="btn btn-primary" href="{{ route('user.create') }}">{{ trans('main.Add New') }}</a>
                                 @endcan
                                 <!--end::Add-->
@@ -201,12 +210,12 @@
                                                             <i class="ki-outline ki-down fs-5 ms-1"></i>
                                                         </a>
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                                            @can('تعديل مستخدم')
+                                                            @can('تعديل المستخدمين')
                                                                 <div class="menu-item px-3">
                                                                     <a href="{{ route('user.edit', @$item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
                                                                 </div>
                                                             @endcan
-                                                            @can('حذف مستخدم')
+                                                            @can('حذف المستخدمين')
                                                                 <div class="menu-item px-3">
                                                                     <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
                                                                 </div>

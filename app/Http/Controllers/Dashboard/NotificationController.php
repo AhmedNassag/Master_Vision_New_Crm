@@ -15,6 +15,12 @@ class NotificationController extends Controller
     public function __construct(NotificationInterface $notification)
     {
         $this->notification = $notification;
+        $this->middleware('permission:عرض الإشعارات', ['only' => ['index']]);
+        $this->middleware('permission:إضافة الإشعارات', ['only' => ['store']]);
+        $this->middleware('permission:تعديل الإشعارات', ['only' => ['update']]);
+        $this->middleware('permission:حذف الإشعارات', ['only' => ['destroy']]);
+        $this->middleware('permission:عرض تذكيرات اليوم', ['only' => ['todayReminders']]);
+        $this->middleware('permission:عرض تذكيرات الشهر', ['only' => ['monthReminders']]);
     }
 
 

@@ -43,14 +43,40 @@
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
                                         <a href="{{ route('contact.index') }}" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.All') }}</a>
-                                        <?php $all_contacts = App\Models\Contact::count(); ?>
+                                        <?php
+                                            if(Auth::user()->roles_name[0] == "Admin")
+                                            {
+                                                $all_contacts = App\Models\Contact::count();
+                                            }
+                                            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                            {
+                                                $all_contacts = App\Models\Contact::whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                            }
+                                            else
+                                            {
+                                                $all_contacts = App\Models\Contact::where('employee_id', auth()->user()->employee->id)->count();
+                                            }
+                                        ?>
                                         <div class="badge badge-light-primary">{{ $all_contacts }}</div>
                                     </div>
                                     <!--begin::Contact group-->
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
                                         <a href="" onclick="event.preventDefault();document.getElementById('new_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.New') }}</a>
-                                        <?php $new_contacts = App\Models\Contact::where('status', 'new')->count(); ?>
+                                        <?php
+                                            if(Auth::user()->roles_name[0] == "Admin")
+                                            {
+                                                $new_contacts = App\Models\Contact::where('status', 'new')->count();
+                                            }
+                                            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                            {
+                                                $new_contacts = App\Models\Contact::where('status', 'new')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                            }
+                                            else
+                                            {
+                                                $new_contacts = App\Models\Contact::where('status', 'new')->where('employee_id', auth()->user()->employee->id)->count();
+                                            }
+                                        ?>
                                         <div class="badge badge-light-success">{{ $new_contacts}}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="new_contacts" style="display: none">
                                             @csrf
@@ -61,7 +87,20 @@
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
                                         <a href="" onclick="event.preventDefault();document.getElementById('contacted_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Contacted') }}</a>
-                                        <?php $contacted_contacts = App\Models\Contact::where('status', 'contacted')->count(); ?>
+                                        <?php
+                                            if(Auth::user()->roles_name[0] == "Admin")
+                                            {
+                                                $contacted_contacts = App\Models\Contact::where('status', 'contacted')->count();
+                                            }
+                                            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                            {
+                                                $contacted_contacts = App\Models\Contact::where('status', 'contacted')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                            }
+                                            else
+                                            {
+                                                $contacted_contacts = App\Models\Contact::where('status', 'contacted')->where('employee_id', auth()->user()->employee->id)->count();
+                                            }
+                                        ?>
                                         <div class="badge badge-light-secondary">{{ $contacted_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="contacted_contacts" style="display: none">
                                             @csrf
@@ -72,7 +111,20 @@
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
                                         <a href="" onclick="event.preventDefault();document.getElementById('qualified_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Qualified') }}</a>
-                                        <?php $qualified_contacts = App\Models\Contact::where('status', 'qualified')->count(); ?>
+                                        <?php
+                                            if(Auth::user()->roles_name[0] == "Admin")
+                                            {
+                                                $qualified_contacts = App\Models\Contact::where('status', 'qualified')->count();
+                                            }
+                                            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                            {
+                                                $qualified_contacts = App\Models\Contact::where('status', 'qualified')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                            }
+                                            else
+                                            {
+                                                $qualified_contacts = App\Models\Contact::where('status', 'qualified')->where('employee_id', auth()->user()->employee->id)->count();
+                                            }
+                                        ?>
                                         <div class="badge badge-light-warning">{{ $qualified_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="qualified_contacts" style="display: none">
                                             @csrf
@@ -83,7 +135,20 @@
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
                                         <a href="" onclick="event.preventDefault();document.getElementById('converted_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Converted') }}</a>
-                                        <?php $converted_contacts = App\Models\Contact::where('status', 'converted')->count(); ?>
+                                        <?php
+                                            if(Auth::user()->roles_name[0] == "Admin")
+                                            {
+                                                $converted_contacts = App\Models\Contact::where('status', 'converted')->count();
+                                            }
+                                            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                            {
+                                                $converted_contacts = App\Models\Contact::where('status', 'converted')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                            }
+                                            else
+                                            {
+                                                $converted_contacts = App\Models\Contact::where('status', 'converted')->where('employee_id', auth()->user()->employee->id)->count();
+                                            }
+                                        ?>
                                         <div class="badge badge-light-info">{{ $converted_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="converted_contacts" style="display: none">
                                             @csrf
@@ -94,7 +159,20 @@
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
                                         <a href="" onclick="event.preventDefault();document.getElementById('inActive_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.InActive') }}</a>
-                                        <?php $inActive_contacts = App\Models\Contact::where('is_active', 0)->count(); ?>
+                                        <?php
+                                            if(Auth::user()->roles_name[0] == "Admin")
+                                            {
+                                                $inActive_contacts = App\Models\Contact::where('is_active', 0)->count();
+                                            }
+                                            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                            {
+                                                $inActive_contacts = App\Models\Contact::where('is_active', 0)->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                            }
+                                            else
+                                            {
+                                                $inActive_contacts = App\Models\Contact::where('is_active', 0)->where('employee_id', auth()->user()->employee->id)->count();
+                                            }
+                                        ?>
                                         <div class="badge badge-light-dark">{{ $inActive_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="inActive_contacts" style="display: none">
                                             @csrf
@@ -105,7 +183,20 @@
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
                                         <a href="{{ route('contact.trashed') }}" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Trashed') }}</a>
-                                        <?php $trashed_contacts = App\Models\Contact::where('is_trashed', 1)->count(); ?>
+                                        <?php
+                                            if(Auth::user()->roles_name[0] == "Admin")
+                                            {
+                                                $trashed_contacts = App\Models\Contact::where('is_trashed', 1)->count();
+                                            }
+                                            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                            {
+                                                $trashed_contacts = App\Models\Contact::where('is_trashed', 1)->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                            }
+                                            else
+                                            {
+                                                $trashed_contacts = App\Models\Contact::where('is_trashed', 1)->where('employee_id', auth()->user()->employee->id)->count();
+                                            }
+                                        ?>
                                         <div class="badge badge-light-danger">{{ $trashed_contacts }}</div>
                                     </div>
                                     <!--begin::Contact group-->
