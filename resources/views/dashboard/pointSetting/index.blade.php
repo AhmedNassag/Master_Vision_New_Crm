@@ -71,8 +71,8 @@
                                                 </select>
                                             </div>
                                             <div class="d-flex justify-content-end">
-                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                             </div>
                                         </div>
                                     </form>
@@ -80,7 +80,7 @@
                                 <!--begin::Add-->
                                 @can('إضافة أنظمة النقاط')
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_modal">{{ trans('main.Add New') }}</button>
-                                @endcan    
+                                @endcan
                                 <!--end::Add-->
                             </div>
                         </div>

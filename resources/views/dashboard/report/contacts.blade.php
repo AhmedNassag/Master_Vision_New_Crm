@@ -154,7 +154,7 @@
                                         </label>
                                         <select name="created_by" data-control="select2" data-dropdown-parent="#employee" data-placeholder="{{ trans('main.Employee') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Employee') }}...</option>
-                                            <?php 
+                                            <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
                                                 {
                                                     $employees = \App\Models\Employee::get(['id','name']);
@@ -174,6 +174,14 @@
                                             <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
                                         </div>
                                     @endcan
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
+                                <div class="row align-items-center mb-10">
+
+
+                                    <!-- search submit -->
+
                                 </div>
                             </div>
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
@@ -243,9 +251,9 @@
                                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">#</th>
                                                 <th class="text-center">{{ trans('main.Name') }}</th>
-                                                <th class="text-center">{{ trans('main.Mobile') }}</th>
-                                                <th class="text-center">{{ trans('main.Mobile2') }}</th>
-                                                <th class="text-center " >{{ trans('main.City') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.Mobile') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.Mobile2') }}</th>
+                                                <th class="text-center" >{{ trans('main.City') }}</th>
                                                 <th class="text-center">{{ trans('main.Area') }}</th>
                                                 <th class="text-center">{{ trans('main.Activity') }}</th>
                                                 <th class="text-center min-w-125px">{{ trans('main.CreatedBy') }}</th>
@@ -277,14 +285,16 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </th>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                    {{ $data->links() }}
-                                </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                                {{ $data->links() }}
                             </div>
+                        </div>
                         @endif
                     </div>
                 </div>

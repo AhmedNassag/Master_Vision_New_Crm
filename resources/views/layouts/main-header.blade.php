@@ -1,23 +1,23 @@
 <!-- Main Wrapper -->
 <div class="main-wrapper">
-	
+
 	<!-- Header -->
 	<div class="header">
-	
+
 		<!-- Logo -->
 		<div class="header-left">
 			<a href="{{ route('home') }}" class="logo">
-				<img src="{{asset('public/assets_admin/img/logo.png') }}" alt="Logo">
+				<img src="{{asset('assets_admin/img/logo.png') }}" alt="Logo">
 			</a>
 			<a href="{{ route('home') }}" class="logo logo-small">
-				<img src="{{asset('public/assets_admin/img/logo-small.png') }}" alt="Logo" width="30" height="30">
+				<img src="{{asset('assets_admin/img/logo-small.png') }}" alt="Logo" width="30" height="30">
 			</a>
 			<!-- Sidebar Toggle -->
 			<a href="javascript:void(0);" id="toggle_btn">
 				<i class="feather-chevrons-left"></i>
 			</a>
 			<!-- /Sidebar Toggle -->
-			
+
 			<!-- Mobile Menu Toggle -->
 			<a class="mobile_btn" id="mobile_btn">
 				<i class="feather-chevrons-left"></i>
@@ -25,7 +25,7 @@
 			<!-- /Mobile Menu Toggle -->
 		</div>
 		<!-- /Logo -->
-		
+
 		<!-- Search -->
 		<div class="top-nav-search">
 			<!-- <form>
@@ -34,7 +34,7 @@
 			</form> -->
 		</div>
 		<!-- /Search -->
-		
+
 		<!-- Header Menu -->
 		<ul class="nav user-menu">
 
@@ -42,34 +42,34 @@
 			<li class="nav-item dropdown has-arrow main-drop">
 				<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 					@if ( app()->getLocale() == 'ar')
-					<img src="{{ asset('public/assets_admin/img/arabic.png') }}" alt="Arabic">
+					<img src="{{ asset('assets_admin/img/arabic.png') }}" alt="Arabic">
 					<span class="status online">{{ trans('main.Arabic') }}</span>
 					@else
-					<img src="{{ asset('public/assets_admin/img/english.png') }}" alt="English">
+					<img src="{{ asset('assets_admin/img/english.png') }}" alt="English">
 					<span class="status online">{{ trans('main.English') }}</span>
 					@endif
 				</a>
 				<div class="dropdown-menu">
 					@if ( app()->getLocale() == 'en')
 					<a class="dropdown-item" href="{{route('lang.ar') }}">
-						<img src="{{ asset('public/assets_admin/img/arabic.png') }}" alt="">
+						<img src="{{ asset('assets_admin/img/arabic.png') }}" alt="">
 						{{ trans('main.Arabic') }}
 					</a>
 					@else
 					<a class="dropdown-item" href="{{route('lang.en') }}">
-						<img src="{{ asset('public/assets_admin/img/english.png') }}" alt="">
+						<img src="{{ asset('assets_admin/img/english.png') }}" alt="">
 						{{ trans('main.English') }}
 					</a>
 					@endif
-				</div>	
+				</div>
 			</li>
 			<!-- End Languages -->
-				
+
 			<!-- Start Notifications -->
 			@can('الإشعارات')
 			<li class="nav-item dropdown">
 				<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-					<i class="feather-bell"></i> 
+					<i class="feather-bell"></i>
 					@if(auth()->user()->unreadNotifications->count() > 0)
 					<span class="badge badge-pill">{{ auth()->user()->unreadNotifications->count() }}</span>
 					@endif
@@ -105,12 +105,12 @@
 			</li>
 			@endcan
 			<!-- End Notifications -->
-			
+
 			<!-- User Menu -->
 			<li class="nav-item dropdown has-arrow main-drop">
 				<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 					<span class="user-img">
-						<img src="{{ asset('public/assets_admin/img/profiles/logo-01.png') }}" alt="">
+						<img src="{{ asset('assets_admin/img/profiles/logo-01.png') }}" alt="">
 						<span class="status online"></span>
 					</span>
 				</a>
@@ -124,9 +124,9 @@
 				</div>
 			</li>
 			<!-- /User Menu -->
-			
+
 		</ul>
 		<!-- /Header Menu -->
-		
+
 	</div>
 	<!-- /Header -->

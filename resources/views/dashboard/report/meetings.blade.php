@@ -202,8 +202,8 @@
                                                 <th class="text-center">{{ trans('main.Type') }}</th>
                                                 <th class="text-center min-w-125px">{{ trans('main.Meeting Place') }}</th>
                                                 <th class="text-cente min-w-125px">{{ trans('main.Meeting Date') }}</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.Expected Amount') }}</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.CreatedBy') }}</th>
+                                                <th class="text-center min-w-150px">{{ trans('main.Expected Amount') }}</th>
+                                                <th class="text-center min-w-150px">{{ trans('main.CreatedBy') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fw-semibold text-gray-600">

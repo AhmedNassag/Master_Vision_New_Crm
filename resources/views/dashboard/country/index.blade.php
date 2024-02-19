@@ -49,8 +49,8 @@
                                                 <input type="number" class="form-control form-control-solid" placeholder="{{ trans('main.Phonecode') }}" name="phonecode" />
                                             </div>
                                             <div class="d-flex justify-content-end">
-                                                <button type="reset" class="btn btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+                                                <button type="reset" class="btn btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                             </div>
                                         </div>
                                     </form>
@@ -169,7 +169,7 @@
                                 </tbody>
                             </table>
                             {{ $data->links() }}
-                        </div>    
+                        </div>
                     </div>
                 </div>
 

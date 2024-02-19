@@ -456,7 +456,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-6.jpg') }}" alt="Emma Smith" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-6.jpg') }}" alt="Emma Smith" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -552,7 +552,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" alt="Max Smith" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-1.jpg') }}" alt="Max Smith" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -600,7 +600,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-5.jpg') }}" alt="Sean Bean" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-5.jpg') }}" alt="Sean Bean" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -650,7 +650,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" alt="Brian Cox" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-25.jpg') }}" alt="Brian Cox" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -746,7 +746,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-9.jpg') }}" alt="Francis Mitcham" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-9.jpg') }}" alt="Francis Mitcham" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -888,7 +888,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-23.jpg') }}" alt="Dan Wilson" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-23.jpg') }}" alt="Dan Wilson" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -984,7 +984,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-12.jpg') }}" alt="Ana Crown" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-12.jpg') }}" alt="Ana Crown" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -1080,7 +1080,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-13.jpg') }}" alt="John Miller" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-13.jpg') }}" alt="John Miller" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -1222,7 +1222,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" alt="Max Smith" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-1.jpg') }}" alt="Max Smith" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -1270,7 +1270,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-5.jpg') }}" alt="Sean Bean" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-5.jpg') }}" alt="Sean Bean" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -1320,7 +1320,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" alt="Brian Cox" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-25.jpg') }}" alt="Brian Cox" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>
@@ -1416,7 +1416,7 @@
                                         <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                             <a href="apps/user-management/users/view.html">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('public/new-theme/assets/media/avatars/300-9.jpg') }}" alt="Francis Mitcham" class="w-100" />
+                                                    <img src="{{ asset('new-theme/assets/media/avatars/300-9.jpg') }}" alt="Francis Mitcham" class="w-100" />
                                                 </div>
                                             </a>
                                         </div>

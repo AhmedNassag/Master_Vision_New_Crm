@@ -10,7 +10,7 @@ use App\Models\ContactSource;
 use App\Models\City;
 use App\Models\Area;
 use App\Models\SubActivity;
-use App\Models\RecorderReminder;
+use App\Models\ReorderReminder;
 use App\Models\Branch;
 use App\Models\Customer;
 use Carbon\Carbon;
@@ -141,9 +141,9 @@ class HomeController extends Controller
             $meetings_out_month->whereIn("created_by",$emps);
         }
 
-        $todayReminders = RecorderReminder::whereDate('reminder_date',Carbon::today())->count();
+        $todayReminders = ReorderReminder::whereDate('reminder_date',Carbon::today())->count();
 
-        $monthReminders = RecorderReminder::whereYear('reminder_date', Carbon::now()->year)
+        $monthReminders = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)
             ->whereMonth('reminder_date', Carbon::now()->month)
             ->count();
 

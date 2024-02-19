@@ -7,14 +7,40 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Services\PointsCalculationService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Customer extends Model
+
+class Customer extends Authenticatable
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory,SoftDeletes,Notifiable;
 
     protected $table   = 'customers';
     protected $guarded = [];
+
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('branch', function (Builder $builder)
+        {
+            if (auth()->user())
+            {
+                if (auth()->user()->type == "Employee")
+                {
+                    $builder->where(function ($query) {
+                        $query->where('branch_id', auth()->user()->employee->branch_id)->orWhere('created_by', auth()->user()->context_id);
+                    });
+                }
+            }
+        });
+    }
 
 
 
@@ -97,7 +123,7 @@ class Customer extends Model
 
     public function reminders()
 	{
-		return $this->hasMany(RecorderReminder::class, 'customer_id');
+		return $this->hasMany(ReorderReminder::class, 'customer_id');
 	}
 
 

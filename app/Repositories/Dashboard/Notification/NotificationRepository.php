@@ -5,7 +5,7 @@ namespace App\Repositories\Dashboard\Notification;
 
 use Carbon\Carbon;
 use App\Models\Notification;
-use App\Models\RecorderReminder;
+use App\Models\ReorderReminder;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationRepository implements NotificationInterface
@@ -160,7 +160,7 @@ class NotificationRepository implements NotificationInterface
 
     public function todayReminders()
     {
-        $data = RecorderReminder::whereDate('reminder_date',Carbon::today())->paginate(config('myConfig.paginationCount'));
+        $data = ReorderReminder::whereDate('reminder_date',Carbon::today())->paginate(config('myConfig.paginationCount'));
         return view('dashboard.notification.reminder',compact('data'));
     }
 
@@ -168,7 +168,7 @@ class NotificationRepository implements NotificationInterface
 
     public function monthReminders()
     {
-        $data = RecorderReminder::whereYear('reminder_date', Carbon::now()->year)->whereMonth('reminder_date', Carbon::now()->month)->paginate(config('myConfig.paginationCount'));
+        $data = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)->whereMonth('reminder_date', Carbon::now()->month)->paginate(config('myConfig.paginationCount'));
         return view('dashboard.notification.reminder',compact('data'));
     }
 

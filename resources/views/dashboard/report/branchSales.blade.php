@@ -119,9 +119,9 @@
                                         <thead>
                                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">#</th>
-                                                <th class="text-center px-0">{{ trans('main.Branch') }}</th>
-                                                <th class="text-center px-0">{{ trans('main.Target') }}</th>
-                                                <th class="text-center px-0">{{ trans('main.Actual') }}</th>
+                                                <th class="text-center px-0  min-w-100px">{{ trans('main.Branch') }}</th>
+                                                <th class="text-center px-0  min-w-100px">{{ trans('main.Target') }}</th>
+                                                <th class="text-center px-0  min-w-125px">{{ trans('main.Actual') }}</th>
                                                 <th class="text-center min-w-125px ps-0">{{ trans('main.Margin') }}</th>
                                             </tr>
                                         </thead>

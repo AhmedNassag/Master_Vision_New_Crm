@@ -15,6 +15,7 @@ class MeetingController extends Controller
     public function __construct(MeetingInterface $meeting)
     {
         $this->meeting = $meeting;
+        $this->middleware('permission:إضافة مكالمات جهات الإتصال', ['only' => ['store']]);
     }
 
 

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    /************************* Dashboard **************************/
     //General
     'Places'                                => 'Places',
     'Contacts Data'                         => 'Contacts Data',
@@ -369,4 +370,44 @@ return [
     'EmployeeSalesReport' => 'Employee Sales Report',
     'BranchSalesReport'   => 'Branch Sales Report',
     'ActivitySalesReport' => 'Activity Sales Report',
+
+
+
+    /************************* Customer **************************/
+    'Support Tickets'           => 'Support Tickets',
+    'Support Ticket'            => 'Support Ticket',
+    'Lists'                     => 'Lists',
+    'ContactUs'                 => 'Contact Us',
+    'Informations'              => 'Informations',
+    'Projects'                  => 'Projects',
+    'Data'                      => 'Data',
+    'Sent Tickets'              => 'Sent Tickets',
+    'Processed Tickets'         => 'Processed Tickets',
+    'Expired Tickets'           => 'Expired Tickets',
+    'Paid Amounts'              => 'Paid Amounts',
+    'Due Amounts'               => 'Due Amounts',
+    'Id'                        => 'ID',
+    'Customer Name'             => 'Customer Name',
+    'Ticket Type'               => 'Ticket Type',
+    'Created At'                => 'Created At',
+    'Support Tickets You Added' => 'Support Tickets You Added',
+    'Technical Issue'           => 'Technical Issue',
+    'Inquiry'                   => 'Inquiry',
+    'Request'                   => 'Request',
+    'Pending'                   => 'Pending',
+    'Open'                      => 'Open',
+    'In-Progress'               => 'In-Progress',
+    'Resolved'                  => 'Resolved',
+    'Ticket Details'            => 'Ticket Details',
+    'To Support Team'           => 'To Support Team',
+    'Enter Your Message Here'   => 'Enter Your Message Here',
+    'Support Team'              => 'Support Team',
+    'You'                       => 'You',
+    'Project'                   => 'Project',
+    'Priority'                  => 'Priority',
+    'Assigned Agent Name'       => 'Assigned Agent Name',
+    'Updated At'                => 'Updated At',
+    'Ticket Histoy'             => 'Ticket Histoy',
+    'Apply'                     => 'Apply',
+    'Reset'                     => 'Reset',
 ];

@@ -157,21 +157,25 @@
                                                     <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.To Date') }}" value="{{ old('to_date') }}" name="to_date" />
                                                 </div>
                                                 <div class="d-flex justify-content-end me-10">
-                                                    <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                    <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+                                                    <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                    <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                                 <!--begin::Import-->
-                                <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#importModal">
-                                    <i class="ki-outline ki-exit-down fs-2"></i>{{ trans('main.Import') }}
-                                </button>
+                                @can('إستيراد العملاء')
+                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#importModal">
+                                        <i class="ki-outline ki-exit-down fs-2"></i>{{ trans('main.Import') }}
+                                    </button>
+                                @endcan
                                 @include('dashboard.customer.importModal')
                                 <!--end::Import-->
                                 <!--begin::Add-->
-                                <a type="button" class="btn btn-primary" href="{{ route('customer.create') }}">{{ trans('main.Add New') }}</a>
+                                @can('إضافة العملاء')
+                                    <a type="button" class="btn btn-primary" href="{{ route('customer.create') }}">{{ trans('main.Add New') }}</a>
+                                @endcan
                                 <!--end::Add-->
                             </div>
                         </div>
@@ -245,7 +249,11 @@
                                         <td class="text-center">
                                             {{ $key+1 }}
                                         </td>
-                                        <td class="text-center"><a href="{{ route('customer.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a></td>
+                                        <td class="text-center">
+                                            @can('عرض العملاء')
+                                                <a href="{{ route('customer.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a>
+                                            @endcan
+                                        </td>
                                         <td class="text-center">{{ @$item->mobile }}</td>
                                         <td class="text-center">{{ @$item->mobile2 }}</td>
                                         <td class="text-center">{{ @$item->city->name }}</td>
@@ -258,13 +266,19 @@
                                             </a>
                                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                 <div class="menu-item px-3">
-                                                    <a href="{{ route('customer.show', $item->id) }}" class="menu-link px-3">{{ trans('main.Show') }}</a>
+                                                    @can('عرض العملاء')
+                                                        <a href="{{ route('customer.show', $item->id) }}" class="menu-link px-3">{{ trans('main.Show') }}</a>
+                                                    @endcan
                                                 </div>
                                                 <div class="menu-item px-3">
-                                                    <a href="{{ route('customer.edit', $item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
+                                                    @can('تعديل العملاء')
+                                                        <a href="{{ route('customer.edit', $item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
+                                                    @endcan
                                                 </div>
                                                 <div class="menu-item px-3">
-                                                    <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                    @can('حذف العملاء')
+                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </td>

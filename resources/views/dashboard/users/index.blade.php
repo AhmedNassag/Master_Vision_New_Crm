@@ -60,7 +60,7 @@
                                                 </label>
                                                 <select name="branch_id" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <?php 
+                                                    <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
                                                         {
                                                             $branches = \App\Models\Branch::get(['id','name']);
@@ -89,8 +89,8 @@
                                                 </select>
                                             </div>
                                             <div class="d-flex justify-content-end">
-                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                             </div>
                                         </div>
                                     </form>
@@ -157,7 +157,7 @@
                                         <th class="text-center">#</th>
                                         <th class="text-center">{{ trans('main.Name') }}</th>
                                         <th class="text-center">{{ trans('main.Email') }}</th>
-                                        <th class="text-center">{{ trans('main.Mobile') }}</th>
+                                        <th class="text-center  min-w-150px">{{ trans('main.Mobile') }}</th>
                                         <th class="text-center">{{ trans('main.Branch') }}</th>
                                         <th class="text-center">{{ trans('main.Department') }}</th>
                                         <th class="text-center">{{ trans('main.Status') }}</th>

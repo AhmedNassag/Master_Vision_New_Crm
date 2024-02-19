@@ -226,7 +226,6 @@ class CustomerRepository implements CustomerInterface
         {
             return view('404');
         }
-
     }
 
 
@@ -253,7 +252,7 @@ class CustomerRepository implements CustomerInterface
                 $file_name = time() . '.' . $file->getClientOriginalName();
                 $file->storeAs('customer', $file_name, 'attachments');
                 $data->media()->create([
-                    'file_path' => asset('public/attachments/customer/' . $file_name),
+                    'file_path' => asset('attachments/customer/' . $file_name),
                     'file_name' => $file_name,
                     'file_size' => $file_size,
                     'file_type' => $file_type,
@@ -306,7 +305,7 @@ class CustomerRepository implements CustomerInterface
                 $file_name = time() . '.' . $file->getClientOriginalName();
                 $file->storeAs('customer', $file_name, 'attachments');
                 $data->media()->create([
-                    'file_path' => asset('public/attachments/customer/' . $file_name),
+                    'file_path' => asset('attachments/customer/' . $file_name),
                     'file_name' => $file_name,
                     'file_size' => $file_size,
                     'file_type' => $file_type,

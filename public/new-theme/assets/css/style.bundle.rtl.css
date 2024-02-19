@@ -49115,3 +49115,9 @@ body,
 .start-18 {
     right:17.5%;
 }
+
+@media (max-width:767px){
+    .timeline-item{
+        flex-direction: column!important;
+    }
+}

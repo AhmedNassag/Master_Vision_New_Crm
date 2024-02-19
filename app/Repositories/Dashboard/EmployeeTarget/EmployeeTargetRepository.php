@@ -4,6 +4,7 @@ namespace App\Repositories\Dashboard\EmployeeTarget;
 
 
 use Carbon\Carbon;
+use App\Models\ReorderReminder;
 use App\Models\EmployeeTarget;
 use App\Models\Activity;
 use App\Models\Target;
@@ -232,7 +233,7 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
 
     public function todayReminders()
     {
-        $data = RecorderReminder::whereDate('reminder_date',Carbon::today())->paginate(config('myConfig.paginationCount'));
+        $data = ReorderReminder::whereDate('reminder_date',Carbon::today())->paginate(config('myConfig.paginationCount'));
         return view('dashboard.notification.reminder',compact('data'));
     }
 
@@ -240,7 +241,7 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
 
     public function monthReminders()
     {
-        $data = RecorderReminder::whereYear('reminder_date', Carbon::now()->year)->whereMonth('reminder_date', Carbon::now()->month)->paginate(config('myConfig.paginationCount'));
+        $data = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)->whereMonth('reminder_date', Carbon::now()->month)->paginate(config('myConfig.paginationCount'));
         return view('dashboard.notification.reminder',compact('data'));
     }
 

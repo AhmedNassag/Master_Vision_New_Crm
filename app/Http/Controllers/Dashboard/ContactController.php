@@ -32,6 +32,16 @@ class ContactController extends Controller
     public function __construct(ContactInterface $contact)
     {
         $this->contact = $contact;
+        $this->middleware('permission:عرض جهات الإتصال', ['only' => ['index','show']]);
+        $this->middleware('permission:إضافة جهات الإتصال', ['only' => ['create','store']]);
+        $this->middleware('permission:تعديل جهات الإتصال', ['only' => ['edit','update','relateSelected','relateEmployee']]);
+        $this->middleware('permission:حذف جهات الإتصال', ['only' => ['destroy','deleteSelected']]);
+        $this->middleware('permission:أرشفة جهات الإتصال', ['only' => ['trashed','trashSelected','changeTrash']]);
+        $this->middleware('permission:تصدير جهات الإتصال', ['only' => ['exportView','exportData']]);
+        $this->middleware('permission:إستيراد جهات الإتصال', ['only' => ['importData']]);
+        $this->middleware('permission:تغيير حالات تنشيط جهات الإتصال', ['only' => ['activateSelected','changeActive','changeStatus']]);
+        // $this->middleware('permission:إضافة مكالمات جهات الإتصال', ['only' => ['index']]);
+        // $this->middleware('permission:إرسال رسائل جهات الإتصال', ['only' => ['index']]);
     }
 
 

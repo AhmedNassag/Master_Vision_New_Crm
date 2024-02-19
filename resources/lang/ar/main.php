@@ -1,6 +1,7 @@
 <?php
 
 return [
+    /************************* Dashboard **************************/
     //General
     'Places'                                => 'الأماكن',
     'Contacts Data'                         => 'بيانات جهات الإتصال',
@@ -375,4 +376,44 @@ return [
     'Customers Number'    => 'عدد العملاء',
     'Margin'              => 'نسبة التحقيق',
     'Sales'               => 'المبيعات',
+
+
+
+    /************************* Customer **************************/
+    'Support Tickets'           => 'تذاكر الدعم',
+    'Support Ticket'            => 'تذكرة دعم',
+    'Lists'                     => 'قائمة',
+    'ContactUs'                 => 'تواصل معنا',
+    'Informations'              => 'المعلومات',
+    'Projects'                  => 'المشاريع',
+    'Data'                      => 'البيانات',
+    'Sent Tickets'              => 'التذاكر المرسلة',
+    'Processed Tickets'         => 'التذاكر قيد المعالجة',
+    'Expired Tickets'           => 'التذاكر المنتهية',
+    'Paid Amounts'              => 'مبالغ مدفوعة',
+    'Due Amounts'               => 'مبالغ مستحقة',
+    'Id'                        => 'مسلسل',
+    'Customer Name'             => 'اسم العميل',
+    'Ticket Type'               => 'نوع التذكرة',
+    'Created At'                => 'تاريخ الإنشاء',
+    'Support Tickets You Added' => 'تذاكر الدعم التي قمت بإنشائها',
+    'Technical Issue'           => 'مشكلة تقنية',
+    'Inquiry'                   => 'إستفسار',
+    'Request'                   => 'طلب جديد',
+    'Pending'                   => 'قيد الإنتظار',
+    'Open'                      => 'تم التواصل',
+    'In-Progress'               => 'قيد المعالجة',
+    'Resolved'                  => 'تم الحل',
+    'Ticket Details'            => 'تفاصيل التذكرة',
+    'To Support Team'           => 'إلي فريق الدعم',
+    'Enter Your Message Here'   => 'اكتب رسالتك هنا',
+    'Support Team'              => 'فريق الدعم',
+    'You'                       => 'انت',
+    'Project'                   => 'المشروع',
+    'Priority'                  => 'الأولوية',
+    'Assigned Agent Name'       => 'الموظف المكلف',
+    'Updated At'                => 'تاريخ التحديث',
+    'Ticket Histoy'             => 'سجل التذكرة',
+    'Apply'                     => 'بحث',
+    'Reset'                     => 'إغلاق',
 ];

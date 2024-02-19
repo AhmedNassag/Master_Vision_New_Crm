@@ -31,6 +31,7 @@ use App\Http\Controllers\Dashboard\DepartmentController;
 use App\Http\Controllers\Dashboard\ReportController;
 use App\Http\Controllers\Dashboard\ImportController;
 use App\Http\Controllers\Dashboard\AttachmentsController;
+use App\Http\Controllers\Dashboard\TicketController;
 
 use App\Http\Controllers\Dashboard\CategoryController;
 
@@ -199,6 +200,14 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     Route::resource('notification', NotificationController::class);
     Route::get('todayReminders', [NotificationController::class, 'todayReminders'])->name('todayReminders.index');
     Route::get('monthReminders', [NotificationController::class, 'monthReminders'])->name('monthReminders.index');
+
+
+
+    //tickets
+    Route::resource('tickets', TicketController::class);
+    Route::post('tickets/{ticket}/change-status',[TicketController::class,'changeStatus'])->name('ticket.status.change');
+    Route::post('tickets/{ticket}/assign-agent',[TicketController::class,'assignAgent'])->name('ticket.assign.agent');
+    Route::post('tickets/{ticket}/reply',[TicketController::class,'replyToTicket'])->name('ticket.reply');
 
 
 

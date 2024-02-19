@@ -61,7 +61,7 @@ class SubActivity extends Model
 
     public function recorderReminders()
     {
-        return $this->hasMany(RecorderReminder::class, 'interest_id');
+        return $this->hasMany(ReorderReminder::class, 'interest_id');
     }
 
 

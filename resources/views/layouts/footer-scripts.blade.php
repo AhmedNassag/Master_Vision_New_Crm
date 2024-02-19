@@ -1,53 +1,53 @@
 <!-- jQuery -->
-<script src="{{ URL::asset('public/assets_admin/js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/jquery-3.6.0.min.js') }}"></script>
 
 <!-- Bootstrap Core JS -->
-<script src="{{ URL::asset('public/assets_admin/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/bootstrap.bundle.min.js') }}"></script>
 
 <!-- Feather Icon JS -->
-<script src="{{ URL::asset('public/assets_admin/js/feather.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/feather.min.js') }}"></script>
 
 <!-- Slimscroll JS -->
-<script src="{{ URL::asset('public/assets_admin/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
 <!-- Select2 JS -->
-<script src="{{ URL::asset('public/assets_admin/plugins/select2/js/select2.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/plugins/select2/js/select2.min.js') }}"></script>
 
 <!-- Datatables JS -->
-<script src="{{ URL::asset('public/assets_admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ URL::asset('public/assets_admin/plugins/datatables/datatables.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/plugins/datatables/datatables.min.js') }}"></script>
 
 <!-- Datepicker Core JS -->
-<script src="{{ URL::asset('public/assets_admin/js/moment.min.js') }}"></script>
-<script src="{{ URL::asset('public/assets_admin/js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/moment.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/bootstrap-datetimepicker.min.js') }}"></script>
 
 <!-- Mask JS -->
-<script src="{{ URL::asset('public/assets_admin/js/jquery.maskedinput.min.js') }}"></script>
-<script src="{{ URL::asset('public/assets_admin/js/mask.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/jquery.maskedinput.min.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/mask.js') }}"></script>
 
 <!-- Form Validation JS -->
-<script src="{{ URL::asset('public/assets_admin/js/form-validation.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/form-validation.js') }}"></script>
 
 
-<script src="{{ URL::asset('public/assets_admin/js/apexcharts1.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/apexcharts1.js') }}"></script>
 
 <!-- Ck Editor JS -->
-<script src="{{ URL::asset('public/assets_admin/js/ckeditor.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/ckeditor.js') }}"></script>
 
 <!-- Custom JS -->
-<script src="{{ URL::asset('public/assets_admin/js/script.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/js/script.js') }}"></script>
 
 <!--Internal  Notify js -->
-<script src="{{ URL::asset('public/assets_admin/plugins/notify/js/notifIt.js') }}"></script>
-<script src="{{ URL::asset('public/assets_admin/plugins/notify/js/notifit-custom.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/plugins/notify/js/notifIt.js') }}"></script>
+<script src="{{ URL::asset('assets_admin/plugins/notify/js/notifit-custom.js') }}"></script>
 
 <!-- Sweet-alert js  -->
-<script src="{{URL::asset('public/assets_admin/js/sweet-alert.js')}}"></script>
-<script src="{{URL::asset('public/assets_admin/plugins/sweet-alert/sweetalert.min.js')}}"></script>
-<script src="{{URL::asset('public/assets_admin/plugins/sweet-alert/jquery.sweet-alert.js')}}"></script>
+<script src="{{URL::asset('assets_admin/js/sweet-alert.js')}}"></script>
+<script src="{{URL::asset('assets_admin/plugins/sweet-alert/sweetalert.min.js')}}"></script>
+<script src="{{URL::asset('assets_admin/plugins/sweet-alert/jquery.sweet-alert.js')}}"></script>
 
 <!-- Select2  -->
-<script  src="{{ asset('public/assets_admin/plugins/select2/js/select2.full.min.js') }}"> </script>
+<script  src="{{ asset('assets_admin/plugins/select2/js/select2.full.min.js') }}"> </script>
 <script>
     //Initialize Select2 Elements
     $('.select2').select2({

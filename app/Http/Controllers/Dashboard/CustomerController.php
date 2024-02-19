@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Validator;
-use App\Models\RecorderReminder;
+use App\Models\ReorderReminder;
 use App\Models\Activity;
 use App\Models\SubActivity;
 use App\Models\Campaign;
@@ -31,6 +31,16 @@ class CustomerController extends Controller
     public function __construct(CustomerInterface $customer)
     {
         $this->customer = $customer;
+        $this->middleware('permission:عرض العملاء', ['only' => ['index','show','addAttachment','deleteAttachment']]);
+        $this->middleware('permission:إضافة العملاء', ['only' => ['create','store']]);
+        $this->middleware('permission:تعديل العملاء', ['only' => ['edit','update']]);
+        $this->middleware('permission:حذف العملاء', ['only' => ['destroy']]);
+        $this->middleware('permission:إضافة عملاء مرتبط العملاء', ['only' => ['addParent','storeParent']]);
+        $this->middleware('permission:إستيراد العملاء', ['only' => ['importData']]);
+        $this->middleware('permission:إضافة فواتير العملاء', ['only' => ['addInvoice']]);
+        $this->middleware('permission:تعديل فواتير العملاء', ['only' => ['editInvoice','updateInvoice']]);
+        $this->middleware('permission:إضافة تذكيرات العملاء', ['only' => ['addReminder']]);
+        $this->middleware('permission:إضافة إعادة إستهداف العملاء', ['only' => ['postRetargetResults']]);
     }
 
 
@@ -192,7 +202,7 @@ class CustomerController extends Controller
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
         $data             = $request->reminder;
-        $recorderReminder = RecorderReminder::create($data);
+        $recorderReminder = ReorderReminder::create($data);
         if(!$recorderReminder)
         {
             session()->flash('error');
@@ -226,7 +236,7 @@ class CustomerController extends Controller
                 $file_name = time() . $i . '.' . $file->getClientOriginalName();
                 $file->storeAs('customer', $file_name, 'attachments');
                 $data->files()->create([
-                    'file_path' => asset('public/attachments/customer/' . $file_name),
+                    'file_path' => asset('attachments/customer/' . $file_name),
                     'file_name' => $file_name,
                     'file_size' => $file_size,
                     'file_type' => $file_type,
@@ -380,7 +390,7 @@ class CustomerController extends Controller
 		// Define the path to the stored temporary file
 		$filePath = storage_path('app/temp/' . $filename);
 
-        
+
 		Excel::import(new CustomerImport($columnMappings,$request->contact_source_id,$request->activity_id), $filePath);
 
 		return redirect()->back()->with('success', 'Contacts imported successfully.');

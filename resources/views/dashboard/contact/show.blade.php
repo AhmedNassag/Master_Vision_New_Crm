@@ -140,32 +140,40 @@
                                         <!--begin::Card toolbar-->
                                         <div class="card-toolbar mb-3 row">
                                             <!--begin::Call-->
-                                            <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#call_modal_{{ $item->id }}">
-                                                {{-- <i class="ki-outline ki-telephone-square fs-3"></i> --}}
-                                                {{ trans('main.Add Call') }}
-                                            </button>
+                                            @can('إضافة مكالمات جهات الإتصال')
+                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#call_modal_{{ $item->id }}">
+                                                    {{-- <i class="ki-outline ki-telephone-square fs-3"></i> --}}
+                                                    {{ trans('main.Add Call') }}
+                                                </button>
+                                            @endcan
                                             @include('dashboard.contact.callModal')
                                             <div class="col-1"></div>
                                             <!--end::Call-->
-                                            <!--begin::Call-->
-                                            <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#changeStatus">
-                                                {{-- <i class="ki-outline ki-close-square fs-3"></i> --}}
-                                                {{ trans('main.Change Status') }}
-                                            </button>
+                                            <!--begin::Change Status-->
+                                            @can('تغيير حالات تنشيط جهات الإتصال')
+                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#changeStatus">
+                                                    {{-- <i class="ki-outline ki-close-square fs-3"></i> --}}
+                                                    {{ trans('main.Change Status') }}
+                                                </button>
+                                            @endcan
                                             @include('dashboard.contact.changeStatusModal')
                                             <div class="col-1"></div>
-                                            <!--end::Call-->
+                                            <!--end::Change Status-->
                                             <!--begin::Relate Employee-->
-                                            <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ $item->id }}">
-                                            {{-- <i class="ki-outline ki-user-square fs-3"></i>--}}
-                                                {{ trans('main.Relate Employee') }}
-                                            </button>
+                                            @can('تعديل جهات الإتصال')
+                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ $item->id }}">
+                                                {{-- <i class="ki-outline ki-user-square fs-3"></i>--}}
+                                                    {{ trans('main.Relate Employee') }}
+                                                </button>
+                                            @endcan
                                             @include('dashboard.contact.relateEmployeeModal')
                                             <div class="col-1"></div>
-                                            <a href="{{ route('contact.edit', $item->id) }}" class="btn btn-sm btn-light-primary col-5 text-center mb-3">
-                                                {{-- <i class="ki-outline ki-plus-square fs-3"></i>--}}
-                                                {{ trans('main.Edit') }}
-                                            </a>
+                                            @can('تعديل جهات الإتصال')
+                                                <a href="{{ route('contact.edit', $item->id) }}" class="btn btn-sm btn-light-primary col-5 text-center mb-3">
+                                                    {{-- <i class="ki-outline ki-plus-square fs-3"></i>--}}
+                                                    {{ trans('main.Edit') }}
+                                                </a>
+                                            @endcan
                                             <!--end::Relate Employee-->
                                         </div>
                                         @if($item->customer_id)

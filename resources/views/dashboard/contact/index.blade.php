@@ -342,26 +342,32 @@
                                                         <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.To Date') }}" value="{{ old('to_date') }}" name="to_date" />
                                                     </div>
                                                     <div class="d-flex justify-content-end">
-                                                        <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                        <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+                                                        <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                        <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                     <!--begin::Import-->
-                                    <button type="button" class="btn btn-light-primary me-3 col-sm-2 col-lg-4 col-xl-4  fs-6" data-bs-toggle="modal" data-bs-target="#importModal">
-                                        <i class="ki-outline ki-exit-down fs-2"></i>{{ trans('main.Import') }}
-                                    </button>
+                                    @can('إستيراد جهات الإتصال')
+                                        <button type="button" class="btn btn-light-primary me-3 col-sm-2 col-lg-4 col-xl-4  fs-6" data-bs-toggle="modal" data-bs-target="#importModal">
+                                            <i class="ki-outline ki-exit-down fs-2"></i>{{ trans('main.Import') }}
+                                        </button>
+                                    @endcan
                                     @include('dashboard.contact.importModal')
                                     <!--end::Import-->
                                     <!--begin::Export-->
-                                    <a type="button" class="btn btn-light-primary me-3 col-sm-2 col-lg-4 col-xl-4  fs-6" href="{{ route('contact.exportView') }}">
-                                        <i class="ki-outline ki-exit-up fs-2"></i>{{ trans('main.Export') }}
-                                    </a>
+                                    @can('تصدير جهات الإتصال')
+                                        <a type="button" class="btn btn-light-primary me-3 col-sm-2 col-lg-4 col-xl-4  fs-6" href="{{ route('contact.exportView') }}">
+                                            <i class="ki-outline ki-exit-up fs-2"></i>{{ trans('main.Export') }}
+                                        </a>
+                                    @endcan
                                     <!--end::Export-->
                                     <!--begin::Add-->
-                                    <a type="button" class="btn btn-primary col-sm-2 col-lg-4 col-xl-4  px-2 fs-6" href="{{ route('contact.create') }}">{{ trans('main.Add New') }}</a>
+                                    @can('إضافة جهات الإتصال')
+                                        <a type="button" class="btn btn-primary col-sm-2 col-lg-4 col-xl-4 px-2 fs-6" href="{{ route('contact.create') }}">{{ trans('main.Add New') }}</a>
+                                    @endcan
                                     <!--end::Add-->
                                 </div>
                             </div>
@@ -372,41 +378,53 @@
                             <div class="card-toolbar">
                                 <div id="multi_selected_div" class="d-flex justify-content-sm-start  justify-content-lg-end flex-wrap" data-kt-customer-table-toolbar="base" style="display: none">
                                     <div class="m-1">
-                                    <button id="btn_message_selected" type="button" class="btn btn-sm btn-light-success" data-bs-toggle="modal" data-bs-target="#message_selected" style="display: none">
-                                        <i class="ki-duotone ki-whatsapp ">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        {{ trans('main.Send') }} {{ trans('main.Message') }}
-                                    </button>
-                                </div>
-                                @if(Request::is('admin/contactTrashed','admin/contactTrashed/*'))
-                                    <div class="m-1">
-                                        <button id="btn_trash_selected" type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#trash_selected" style="display: none">
-                                            {{ trans('main.Restore From Trash') }}
-                                        </button>
+                                        @can('إرسال رسائل جهات الإتصال')
+                                            <button id="btn_message_selected" type="button" class="btn btn-sm btn-light-success" data-bs-toggle="modal" data-bs-target="#message_selected" style="display: none">
+                                                <i class="ki-duotone ki-whatsapp ">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                {{ trans('main.Send') }} {{ trans('main.Message') }}
+                                            </button>
+                                        @endcan
                                     </div>
-                                    @else
-                                    <div class="m-1">
-                                        <button id="btn_trash_selected" type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#trash_selected" style="display: none">
-                                            {{ trans('main.Send To Trash') }}
-                                        </button>
-                                    </div>
+                                    @if(Request::is('admin/contactTrashed','admin/contactTrashed/*'))
+                                        <div class="m-1">
+                                            @can('أرشفة جهات الإتصال')
+                                                <button id="btn_trash_selected" type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#trash_selected" style="display: none">
+                                                    {{ trans('main.Restore From Trash') }}
+                                                </button>
+                                            @endcan
+                                        </div>
+                                        @else
+                                        <div class="m-1">
+                                            @can('أرشفة جهات الإتصال')
+                                                <button id="btn_trash_selected" type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#trash_selected" style="display: none">
+                                                    {{ trans('main.Send To Trash') }}
+                                                </button>
+                                            @endcan
+                                        </div>
                                     @endif
                                     <div class="m-1">
-                                        <button id="btn_activate_selected" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#activate_selected" style="display: none">
-                                            {{ trans('main.Change Active Status') }}
-                                        </button>
+                                        @can('تغيير حالات تنشيط جهات الإتصال')
+                                            <button id="btn_activate_selected" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#activate_selected" style="display: none">
+                                                {{ trans('main.Change Active Status') }}
+                                            </button>
+                                        @endcan
                                     </div>
                                     <div class="m-1">
-                                        <button id="btn_relate_selected" type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#relate_selected" style="display: none">
-                                            {{ trans('main.Relate Employee') }}
-                                        </button>
+                                        @can('تعديل جهات الإتصال')
+                                            <button id="btn_relate_selected" type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#relate_selected" style="display: none">
+                                                {{ trans('main.Relate Employee') }}
+                                            </button>
+                                        @endcan
                                     </div>
                                     <div class="m-1">
-                                        <button id="btn_delete_selected" type="button" class="btn btn-sm btn-danger" style="display: none">
-                                            {{ trans('main.Delete') }}
-                                        </button>
+                                        @can('حذف جهات الإتصال')
+                                            <button id="btn_delete_selected" type="button" class="btn btn-sm btn-danger" style="display: none">
+                                                {{ trans('main.Delete') }}
+                                            </button>
+                                        @endcan
                                     </div>
                                 </div>
                             </div>
@@ -491,25 +509,25 @@
                                             <td class="text-center">
                                                 <a href="{{ route('contact.show', $item->id) }}">
                                                     @if (@$item->status == 'new')
-                                                    <label class="badge badge-light-success">
-                                                        {{ app()->getLocale() == 'ar' ? 'جديد' : 'New' }}
-                                                    </label>
+                                                        <label class="badge badge-light-success">
+                                                            {{ app()->getLocale() == 'ar' ? 'جديد' : 'New' }}
+                                                        </label>
                                                     @elseif(@$item->status == 'contacted')
-                                                    <label class="badge badge-light-primary">
-                                                        {{ app()->getLocale() == 'ar' ? 'تم التواصل' : 'Contacted' }}
-                                                    </label>
+                                                        <label class="badge badge-light-primary">
+                                                            {{ app()->getLocale() == 'ar' ? 'تم التواصل' : 'Contacted' }}
+                                                        </label>
                                                     @elseif(@$item->status == 'qualified')
-                                                    <label class="badge badge-light-info">
-                                                        {{ app()->getLocale() == 'ar' ? 'مؤهل' : 'Qualified' }}
-                                                    </label>
+                                                        <label class="badge badge-light-info">
+                                                            {{ app()->getLocale() == 'ar' ? 'مؤهل' : 'Qualified' }}
+                                                        </label>
                                                     @elseif(@$item->status == 'converted')
-                                                    <label class="badge badge-light-dark">
-                                                        {{ app()->getLocale() == 'ar' ? 'تم التحويل' : 'Converted' }}
-                                                    </label>
+                                                        <label class="badge badge-light-dark">
+                                                            {{ app()->getLocale() == 'ar' ? 'تم التحويل' : 'Converted' }}
+                                                        </label>
                                                     @else
-                                                    <div class="btn ripple btn-purple-gradient" id='swal-success'>
-                                                        <span class="label text-center"></span>
-                                                    </div>
+                                                        <div class="btn ripple btn-purple-gradient" id='swal-success'>
+                                                            <span class="label text-center"></span>
+                                                        </div>
                                                     @endif
                                                 </a>
                                             </td>
@@ -525,36 +543,52 @@
                                                     <i class="ki-outline ki-down fs-5 ms-1"></i>
                                                 </a>
                                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ $item->id }}">{{ trans('main.Relate Employee') }}</a>
-                                                    </div>
-                                                    <div class="menu-item px-3">
-                                                        <a href="{{ route('contact.show', $item->id) }}" class="menu-link px-3">{{ trans('main.Show') }}</a>
-                                                    </div>
-                                                    <div class="menu-item px-3">
-                                                        <a href="{{ route('contact.edit', $item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
-                                                    </div>
+                                                    @can('تعديل جهات الإتصال')
+                                                        <div class="menu-item px-3">
+                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ $item->id }}">{{ trans('main.Relate Employee') }}</a>
+                                                        </div>
+                                                    @endcan
+                                                    @can('عرض جهات الإتصال')
+                                                        <div class="menu-item px-3">
+                                                            <a href="{{ route('contact.show', $item->id) }}" class="menu-link px-3">{{ trans('main.Show') }}</a>
+                                                        </div>
+                                                    @endcan
+                                                    @can('تعديل جهات الإتصال')
+                                                        <div class="menu-item px-3">
+                                                            <a href="{{ route('contact.edit', $item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
+                                                        </div>
+                                                    @endcan
                                                     @if($item->is_active == 1)
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ $item->id }}">{{ trans('main.DisActivate') }}</a>
-                                                    </div>
+                                                        @can('تغيير حالات تنشيط جهات الإتصال')
+                                                            <div class="menu-item px-3">
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ $item->id }}">{{ trans('main.DisActivate') }}</a>
+                                                            </div>
+                                                        @endcan
                                                     @else
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ $item->id }}">{{ trans('main.Activate') }}</a>
-                                                    </div>
+                                                        @can('تغيير حالات تنشيط جهات الإتصال')
+                                                            <div class="menu-item px-3">
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ $item->id }}">{{ trans('main.Activate') }}</a>
+                                                            </div>
+                                                        @endcan
                                                     @endif
                                                     @if($item->is_trashed == 1)
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ $item->id }}">{{ trans('main.Restore') }}</a>
-                                                    </div>
+                                                        @can('أرشفة جهات الإتصال')
+                                                            <div class="menu-item px-3">
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ $item->id }}">{{ trans('main.Restore') }}</a>
+                                                            </div>
+                                                        @endcan
                                                     @else
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ $item->id }}">{{ trans('main.Trash') }}</a>
-                                                    </div>
+                                                        @can('أرشفة جهات الإتصال')
+                                                            <div class="menu-item px-3">
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ $item->id }}">{{ trans('main.Trash') }}</a>
+                                                            </div>
+                                                        @endcan
                                                     @endif
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
-                                                    </div>
+                                                    @can('حذف جهات الإتصال')
+                                                        <div class="menu-item px-3">
+                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                        </div>
+                                                    @endcan
                                                 </div>
                                             </td>
                                         </tr>

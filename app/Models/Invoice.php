@@ -45,7 +45,7 @@ class Invoice extends Model
 
     public function recorderReminders()
     {
-        return $this->hasMany(RecorderReminder::class, 'invoice_id');
+        return $this->hasMany(ReorderReminder::class, 'invoice_id');
     }
 
 

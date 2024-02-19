@@ -27,33 +27,33 @@ License: For each use you must have a valid license purchased only from above li
             <meta property="og:site_name" content="Master Vision CRM" />
 			<meta name="csrf-token" content="{{ csrf_token() }}">
             <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-            <link rel="shortcut icon" href="{{ asset('public/new-theme/assets/media/logos/favicon.png') }}" />
+            <link rel="shortcut icon" href="{{ asset('new-theme/assets/media/logos/favicon.png') }}" />
             <!--begin::Fonts(mandatory for all pages)-->
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
             <!--end::Fonts-->
             <!--begin::Vendor Stylesheets(used for this page only)-->
             @if ( app()->getLocale() == 'ar')
-                <link href="{{ asset('public/new-theme/assets/plugins/custom/prismjs/prismjs.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
+                <link href="{{ asset('new-theme/assets/plugins/custom/prismjs/prismjs.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
             @else
-                <link href="{{ asset('public/new-theme/assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
+                <link href="{{ asset('new-theme/assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
             @endif
-            <link href="{{ asset('public/new-theme/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('new-theme/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
             <!--end::Vendor Stylesheets-->
             <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
             @if ( app()->getLocale() == 'ar')
-                <link href="{{ asset('public/new-theme/assets/plugins/global/plugins.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
-                <link href="{{ asset('public/new-theme/assets/css/style.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
+                <link href="{{ asset('new-theme/assets/plugins/global/plugins.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
+                <link href="{{ asset('new-theme/assets/css/style.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
             @else
-                <link href="{{ asset('public/new-theme/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
-                <link href="{{ asset('public/new-theme/assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+                <link href="{{ asset('new-theme/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+                <link href="{{ asset('new-theme/assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
             @endif
             <!--end::Global Stylesheets Bundle-->
             <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 			<!--Internal Notify -->
-			<link href="{{ asset('public/assets_admin/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+			<link href="{{ asset('assets_admin/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
 			<!--- Internal Sweet-Alert css-->
-			<link href="{{ asset('public/assets_admin/plugins/sweet-alert/sweetalert.css')}}" rel="stylesheet">
-            <link href="{{ asset('public/new-theme/assets/css/font.css')}}" rel="stylesheet">
+			<link href="{{ asset('assets_admin/plugins/sweet-alert/sweetalert.css')}}" rel="stylesheet">
+            <link href="{{ asset('new-theme/assets/css/font.css')}}" rel="stylesheet">
 
 			@yield('css')
 
@@ -75,7 +75,7 @@ License: For each use you must have a valid license purchased only from above li
                                 </div>
                                 <!--begin::Logo image-->
                                 <a href="{{ route('home') }}">
-                                    <img alt="Logo" src="{{asset('public/new-theme/assets/media/logos/favicon.png') }}" class="h-50px" />
+                                    <img alt="Logo" src="{{asset('new-theme/assets/media/logos/favicon.png') }}" class="h-50px" />
                                 </a>
                                 <!--end::Logo image-->
                             </div>
@@ -244,7 +244,7 @@ License: For each use you must have a valid license purchased only from above li
                                                         </div>
                                                     </div>
                                                     <div class="text-center px-4">
-                                                        <img class="mw-100 mh-200px" alt="image" src="{{asset('public/new-theme/assets/media/illustrations/sketchy-1/1.png') }}" />
+                                                        <img class="mw-100 mh-200px" alt="image" src="{{asset('new-theme/assets/media/illustrations/sketchy-1/1.png') }}" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -412,7 +412,7 @@ License: For each use you must have a valid license purchased only from above li
 										$notifications_count = \App\Models\Notification::where('employee_id', Auth::user()->employee->id)->orWhere('dept', Auth::user()->employee->dept)->count();
 									?>
                                     <a href="{{ route('notification.index') }}">
-                                        <div class="btn btn-icon btn-custom btn-color-gray-600 btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px position-relative" id="kt_drawer_chat_togglee">
+                                        <div class="btn btn-icon btn-custom btn-color-gray-600 btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px position-relative " id="kt_drawer_chat_togglee">
                                             <i class="ki-outline ki-notification-on fs-1"></i>
 											@if(@$notifications_count > 0)
 	                                            <span class="position-absolute top-0 start-100 translate-middle badge badge-circle badge-danger w-15px h-15px ms-n4 mt-3">{{ @$notifications_count }}</span>
@@ -423,16 +423,16 @@ License: For each use you must have a valid license purchased only from above li
                                 </div>
                                 <!--end::Chat-->
                                 <!--begin::Footer-->
-                                    <div class="app-sidebar-footer  d-flex align-items-center p-lg-0 ms-lg-5" id="kt_app_sidebar_footer">
+                                    <div class="app-sidebar-footer  d-flex align-items-center p-lg-0 ms-lg-5 ps-5" id="kt_app_sidebar_footer">
                                         <!--begin::User-->
                                         <div class="">
                                             <!--begin::User info-->
                                             <div class="d-flex align-items-center" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-overflow="true" data-kt-menu-placement="top-start">
                                                 <div class="d-flex flex-center cursor-pointer symbol symbol-circle symbol-40px">
                                                     @if(Auth()->user()->media != null)
-                                                        <img alt="Logo" src="{{ asset('public/attachments/user/'.Auth()->user()->media->file_name) }}" />
+                                                        <img alt="Logo" src="{{ asset('attachments/user/'.Auth()->user()->media->file_name) }}" />
                                                     @else
-                                                        <img alt="Logo" src="{{asset('public/attachments/user/blank.png') }}" />
+                                                        <img alt="Logo" src="{{asset('attachments/user/blank.png') }}" />
                                                     @endif
                                                 </div>
                                                 <!--begin::Name-->
@@ -451,9 +451,9 @@ License: For each use you must have a valid license purchased only from above li
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-50px me-5">
                                                             @if(Auth()->user()->media)
-                                                                <img alt="Logo" src="{{ asset('public/attachments/user/'.Auth()->user()->media->file_name) }}" />
+                                                                <img alt="Logo" src="{{ asset('attachments/user/'.Auth()->user()->media->file_name) }}" />
                                                             @else
-                                                                <img alt="Logo" src="{{asset('public/attachments/user/blank.png') }}" />
+                                                                <img alt="Logo" src="{{asset('attachments/user/blank.png') }}" />
                                                             @endif
                                                         </div>
                                                         <!--end::Avatar-->
@@ -522,10 +522,10 @@ License: For each use you must have a valid license purchased only from above li
                                                             <span class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">
                                                                 @if ( app()->getLocale() == 'ar')
                                                                     {{ trans('main.Arabic') }}
-                                                                    <img class="w-15px h-15px rounded-1 ms-2" src="{{asset('public/new-theme/assets/media/flags/egypt.svg') }}" alt="" />
+                                                                    <img class="w-15px h-15px rounded-1 ms-2" src="{{asset('new-theme/assets/media/flags/egypt.svg') }}" alt="" />
                                                                 @else
                                                                     {{ trans('main.English') }}
-                                                                    <img class="w-15px h-15px rounded-1 ms-2" src="{{asset('public/new-theme/assets/media/flags/united-states.svg') }}" alt="" />
+                                                                    <img class="w-15px h-15px rounded-1 ms-2" src="{{asset('new-theme/assets/media/flags/united-states.svg') }}" alt="" />
                                                                 @endif
                                                             </span>
                                                         </span>
@@ -536,7 +536,7 @@ License: For each use you must have a valid license purchased only from above li
                                                         <div class="menu-item px-3">
                                                             <a href="{{ route('lang.ar') }}" class="menu-link d-flex px-5 @if ( app()->getLocale() == 'ar') active @endif">
                                                             <span class="symbol symbol-20px me-4">
-                                                                <img class="rounded-1" src="{{asset('public/new-theme/assets/media/flags/egypt.svg') }}" alt="" />
+                                                                <img class="rounded-1" src="{{asset('new-theme/assets/media/flags/egypt.svg') }}" alt="" />
                                                             </span>{{ trans('main.Arabic') }}</a>
                                                         </div>
                                                         <!--end::Menu item-->
@@ -544,7 +544,7 @@ License: For each use you must have a valid license purchased only from above li
                                                         <div class="menu-item px-3">
                                                             <a href="{{ route('lang.en') }}" class="menu-link d-flex px-5 @if ( app()->getLocale() == 'en') active @endif">
                                                             <span class="symbol symbol-20px me-4">
-                                                                <img class="rounded-1" src="{{asset('public/new-theme/assets/media/flags/united-states.svg') }}" alt="" />
+                                                                <img class="rounded-1" src="{{asset('new-theme/assets/media/flags/united-states.svg') }}" alt="" />
                                                             </span>{{ trans('main.English') }}</a>
                                                         </div>
                                                         <!--end::Menu item-->
@@ -656,7 +656,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Info-->
 											<!--begin::User-->
 											<div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Nina Nilson">
-												<img src="{{asset('public/new-theme/assets/media/avatars/300-14.jpg') }}" alt="img" />
+												<img src="{{asset('new-theme/assets/media/avatars/300-14.jpg') }}" alt="img" />
 											</div>
 											<!--end::User-->
 										</div>
@@ -679,12 +679,12 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px pe-2">
 												<!--begin::User-->
 												<div class="symbol symbol-circle symbol-25px">
-													<img src="{{asset('public/new-theme/assets/media/avatars/300-2.jpg') }}" alt="img" />
+													<img src="{{asset('new-theme/assets/media/avatars/300-2.jpg') }}" alt="img" />
 												</div>
 												<!--end::User-->
 												<!--begin::User-->
 												<div class="symbol symbol-circle symbol-25px">
-													<img src="{{asset('public/new-theme/assets/media/avatars/300-14.jpg') }}" alt="img" />
+													<img src="{{asset('new-theme/assets/media/avatars/300-14.jpg') }}" alt="img" />
 												</div>
 												<!--end::User-->
 												<!--begin::User-->
@@ -718,7 +718,7 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px">
 												<!--begin::User-->
 												<div class="symbol symbol-circle symbol-25px">
-													<img src="{{asset('public/new-theme/assets/media/avatars/300-20.jpg') }}" alt="img" />
+													<img src="{{asset('new-theme/assets/media/avatars/300-20.jpg') }}" alt="img" />
 												</div>
 												<!--end::User-->
 												<!--begin::User-->
@@ -768,7 +768,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Info-->
 											<!--begin::User-->
 											<div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Alan Nilson">
-												<img src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" alt="img" />
+												<img src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" alt="img" />
 											</div>
 											<!--end::User-->
 										</div>
@@ -803,7 +803,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Info-->
 											<!--begin::User-->
 											<div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Jan Hummer">
-												<img src="{{asset('public/new-theme/assets/media/avatars/300-23.jpg') }}" alt="img" />
+												<img src="{{asset('new-theme/assets/media/avatars/300-23.jpg') }}" alt="img" />
 											</div>
 											<!--end::User-->
 										</div>
@@ -816,7 +816,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Item-->
 											<div class="d-flex flex-aligns-center pe-10 pe-lg-20">
 												<!--begin::Icon-->
-												<img alt="" class="w-30px me-3" src="{{asset('public/new-theme/assets/media/svg/files/pdf.svg') }}" />
+												<img alt="" class="w-30px me-3" src="{{asset('new-theme/assets/media/svg/files/pdf.svg') }}" />
 												<!--end::Icon-->
 												<!--begin::Info-->
 												<div class="ms-1 fw-semibold">
@@ -833,7 +833,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Item-->
 											<div class="d-flex flex-aligns-center pe-10 pe-lg-20">
 												<!--begin::Icon-->
-												<img alt="apps/projects/project.html" class="w-30px me-3" src="{{asset('public/new-theme/assets/media/svg/files/doc.svg') }}" />
+												<img alt="apps/projects/project.html" class="w-30px me-3" src="{{asset('new-theme/assets/media/svg/files/doc.svg') }}" />
 												<!--end::Icon-->
 												<!--begin::Info-->
 												<div class="ms-1 fw-semibold">
@@ -850,7 +850,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Item-->
 											<div class="d-flex flex-aligns-center">
 												<!--begin::Icon-->
-												<img alt="apps/projects/project.html" class="w-30px me-3" src="{{asset('public/new-theme/assets/media/svg/files/css.svg') }}" />
+												<img alt="apps/projects/project.html" class="w-30px me-3" src="{{asset('new-theme/assets/media/svg/files/css.svg') }}" />
 												<!--end::Icon-->
 												<!--begin::Info-->
 												<div class="ms-1 fw-semibold">
@@ -897,7 +897,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Info-->
 											<!--begin::User-->
 											<div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Nina Nilson">
-												<img src="{{asset('public/new-theme/assets/media/avatars/300-14.jpg') }}" alt="img" />
+												<img src="{{asset('new-theme/assets/media/avatars/300-14.jpg') }}" alt="img" />
 											</div>
 											<!--end::User-->
 										</div>
@@ -932,7 +932,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Info-->
 											<!--begin::User-->
 											<div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Marcus Dotson">
-												<img src="{{asset('public/new-theme/assets/media/avatars/300-2.jpg') }}" alt="img" />
+												<img src="{{asset('new-theme/assets/media/avatars/300-2.jpg') }}" alt="img" />
 											</div>
 											<!--end::User-->
 										</div>
@@ -946,7 +946,7 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="overlay me-10">
 												<!--begin::Image-->
 												<div class="overlay-wrapper">
-													<img alt="img" class="rounded w-150px" src="{{asset('public/new-theme/assets/media/stock/600x400/img-29.jpg') }}" />
+													<img alt="img" class="rounded w-150px" src="{{asset('new-theme/assets/media/stock/600x400/img-29.jpg') }}" />
 												</div>
 												<!--end::Image-->
 												<!--begin::Link-->
@@ -960,7 +960,7 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="overlay me-10">
 												<!--begin::Image-->
 												<div class="overlay-wrapper">
-													<img alt="img" class="rounded w-150px" src="{{asset('public/new-theme/assets/media/stock/600x400/img-31.jpg') }}" />
+													<img alt="img" class="rounded w-150px" src="{{asset('new-theme/assets/media/stock/600x400/img-31.jpg') }}" />
 												</div>
 												<!--end::Image-->
 												<!--begin::Link-->
@@ -974,7 +974,7 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="overlay">
 												<!--begin::Image-->
 												<div class="overlay-wrapper">
-													<img alt="img" class="rounded w-150px" src="{{asset('public/new-theme/assets/media/stock/600x400/img-40.jpg') }}" />
+													<img alt="img" class="rounded w-150px" src="{{asset('new-theme/assets/media/stock/600x400/img-40.jpg') }}" />
 												</div>
 												<!--end::Image-->
 												<!--begin::Link-->
@@ -1053,7 +1053,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Info-->
 											<!--begin::User-->
 											<div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Robert Rich">
-												<img src="{{asset('public/new-theme/assets/media/avatars/300-4.jpg') }}" alt="img" />
+												<img src="{{asset('new-theme/assets/media/avatars/300-4.jpg') }}" alt="img" />
 											</div>
 											<!--end::User-->
 										</div>
@@ -1242,7 +1242,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center mb-2">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Details-->
@@ -1274,7 +1274,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -1294,7 +1294,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center mb-2">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Details-->
@@ -1326,7 +1326,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -1346,7 +1346,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center mb-2">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Details-->
@@ -1379,7 +1379,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -1399,7 +1399,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center mb-2">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Details-->
@@ -1431,7 +1431,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -1451,7 +1451,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex align-items-center mb-2">
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+										<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 									</div>
 									<!--end::Avatar-->
 									<!--begin::Details-->
@@ -1550,7 +1550,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Wrapper-->
 						<!--begin::Pic-->
 						<div class="symbol symbol-70px symbol-2by3 flex-shrink-0">
-							<img src="{{asset('public/new-theme/assets/media/stock/600x400/img-1.jpg') }}" alt="" />
+							<img src="{{asset('new-theme/assets/media/stock/600x400/img-1.jpg') }}" alt="" />
 						</div>
 						<!--end::Pic-->
 					</div>
@@ -1585,7 +1585,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Wrapper-->
 						<!--begin::Pic-->
 						<div class="symbol symbol-70px symbol-2by3 flex-shrink-0">
-							<img src="{{asset('public/new-theme/assets/media/stock/600x400/img-3.jpg') }}" alt="" />
+							<img src="{{asset('new-theme/assets/media/stock/600x400/img-3.jpg') }}" alt="" />
 						</div>
 						<!--end::Pic-->
 					</div>
@@ -1620,7 +1620,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Wrapper-->
 						<!--begin::Pic-->
 						<div class="symbol symbol-70px symbol-2by3 flex-shrink-0">
-							<img src="{{asset('public/new-theme/assets/media/stock/600x400/img-8.jpg') }}" alt="" />
+							<img src="{{asset('new-theme/assets/media/stock/600x400/img-8.jpg') }}" alt="" />
 						</div>
 						<!--end::Pic-->
 					</div>
@@ -1655,7 +1655,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Wrapper-->
 						<!--begin::Pic-->
 						<div class="symbol symbol-70px symbol-2by3 flex-shrink-0">
-							<img src="{{asset('public/new-theme/assets/media/stock/600x400/img-26.jpg') }}" alt="" />
+							<img src="{{asset('new-theme/assets/media/stock/600x400/img-26.jpg') }}" alt="" />
 						</div>
 						<!--end::Pic-->
 					</div>
@@ -1690,7 +1690,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Wrapper-->
 						<!--begin::Pic-->
 						<div class="symbol symbol-70px symbol-2by3 flex-shrink-0">
-							<img src="{{asset('public/new-theme/assets/media/stock/600x400/img-21.jpg') }}" alt="" />
+							<img src="{{asset('new-theme/assets/media/stock/600x400/img-21.jpg') }}" alt="" />
 						</div>
 						<!--end::Pic-->
 					</div>
@@ -1725,7 +1725,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Wrapper-->
 						<!--begin::Pic-->
 						<div class="symbol symbol-70px symbol-2by3 flex-shrink-0">
-							<img src="{{asset('public/new-theme/assets/media/stock/600x400/img-34.jpg') }}" alt="" />
+							<img src="{{asset('new-theme/assets/media/stock/600x400/img-34.jpg') }}" alt="" />
 						</div>
 						<!--end::Pic-->
 					</div>
@@ -1760,7 +1760,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Wrapper-->
 						<!--begin::Pic-->
 						<div class="symbol symbol-70px symbol-2by3 flex-shrink-0">
-							<img src="{{asset('public/new-theme/assets/media/stock/600x400/img-27.jpg') }}" alt="" />
+							<img src="{{asset('new-theme/assets/media/stock/600x400/img-27.jpg') }}" alt="" />
 						</div>
 						<!--end::Pic-->
 					</div>
@@ -2243,7 +2243,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-6.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-6.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -2311,7 +2311,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -2345,7 +2345,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-5.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-5.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -2379,7 +2379,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -2447,7 +2447,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-9.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-9.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -2549,7 +2549,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-23.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-23.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -2617,7 +2617,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-12.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-12.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -2981,7 +2981,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="d-flex align-items-center">
 														<!--begin::Avatar-->
 														<div class="symbol symbol-35px">
-															<img src="{{asset('public/new-theme/assets/media/svg/files/pdf.svg') }}" alt="icon" />
+															<img src="{{asset('new-theme/assets/media/svg/files/pdf.svg') }}" alt="icon" />
 														</div>
 														<!--end::Avatar-->
 														<!--begin::Details-->
@@ -3008,7 +3008,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="d-flex align-items-center">
 														<!--begin::Avatar-->
 														<div class="symbol symbol-35px">
-															<img src="{{asset('public/new-theme/assets/media/svg/files/tif.svg') }}" alt="icon" />
+															<img src="{{asset('new-theme/assets/media/svg/files/tif.svg') }}" alt="icon" />
 														</div>
 														<!--end::Avatar-->
 														<!--begin::Details-->
@@ -3035,7 +3035,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="d-flex align-items-center">
 														<!--begin::Avatar-->
 														<div class="symbol symbol-35px">
-															<img src="{{asset('public/new-theme/assets/media/svg/files/folder-document.svg') }}" alt="icon" />
+															<img src="{{asset('new-theme/assets/media/svg/files/folder-document.svg') }}" alt="icon" />
 														</div>
 														<!--end::Avatar-->
 														<!--begin::Details-->
@@ -3062,7 +3062,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="d-flex align-items-center">
 														<!--begin::Avatar-->
 														<div class="symbol symbol-35px">
-															<img src="{{asset('public/new-theme/assets/media/svg/files/css.svg') }}" alt="icon" />
+															<img src="{{asset('new-theme/assets/media/svg/files/css.svg') }}" alt="icon" />
 														</div>
 														<!--end::Avatar-->
 														<!--begin::Details-->
@@ -3089,7 +3089,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="d-flex align-items-center">
 														<!--begin::Avatar-->
 														<div class="symbol symbol-35px">
-															<img src="{{asset('public/new-theme/assets/media/svg/files/ai.svg') }}" alt="icon" />
+															<img src="{{asset('new-theme/assets/media/svg/files/ai.svg') }}" alt="icon" />
 														</div>
 														<!--end::Avatar-->
 														<!--begin::Details-->
@@ -3116,7 +3116,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="d-flex align-items-center">
 														<!--begin::Avatar-->
 														<div class="symbol symbol-35px">
-															<img src="{{asset('public/new-theme/assets/media/svg/files/doc.svg') }}" alt="icon" />
+															<img src="{{asset('new-theme/assets/media/svg/files/doc.svg') }}" alt="icon" />
 														</div>
 														<!--end::Avatar-->
 														<!--begin::Details-->
@@ -3255,7 +3255,7 @@ License: For each use you must have a valid license purchased only from above li
 											</span></label>
 											<!--End::Label-->
 											<!--begin::Tagify-->
-											<input class="form-control d-flex align-items-center" value="" id="kt_modal_create_campaign_location" data-kt-flags-path="{{asset('public/new-theme/assets/media/flags/') }}" />
+											<input class="form-control d-flex align-items-center" value="" id="kt_modal_create_campaign_location" data-kt-flags-path="{{asset('new-theme/assets/media/flags/') }}" />
 											<!--end::Tagify-->
 										</div>
 										<!--end::Input group-->
@@ -3351,7 +3351,7 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end::Actions-->
 										<!--begin::Illustration-->
 										<div class="text-center px-4">
-											<img src="{{asset('public/new-theme/assets/media/illustrations/sketchy-1/9.png') }}" alt="" class="mww-100 mh-350px" />
+											<img src="{{asset('new-theme/assets/media/illustrations/sketchy-1/9.png') }}" alt="" class="mww-100 mh-350px" />
 										</div>
 										<!--end::Illustration-->
 									</div>
@@ -3450,7 +3450,7 @@ License: For each use you must have a valid license purchased only from above li
 										<a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
 											<!--begin::Avatar-->
 											<div class="symbol symbol-35px symbol-circle me-5">
-												<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-6.jpg') }}" />
+												<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-6.jpg') }}" />
 											</div>
 											<!--end::Avatar-->
 											<!--begin::Info-->
@@ -3480,7 +3480,7 @@ License: For each use you must have a valid license purchased only from above li
 										<a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
 											<!--begin::Avatar-->
 											<div class="symbol symbol-35px symbol-circle me-5">
-												<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+												<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 											</div>
 											<!--end::Avatar-->
 											<!--begin::Info-->
@@ -3495,7 +3495,7 @@ License: For each use you must have a valid license purchased only from above li
 										<a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
 											<!--begin::Avatar-->
 											<div class="symbol symbol-35px symbol-circle me-5">
-												<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-5.jpg') }}" />
+												<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-5.jpg') }}" />
 											</div>
 											<!--end::Avatar-->
 											<!--begin::Info-->
@@ -3510,7 +3510,7 @@ License: For each use you must have a valid license purchased only from above li
 										<a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
 											<!--begin::Avatar-->
 											<div class="symbol symbol-35px symbol-circle me-5">
-												<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+												<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 											</div>
 											<!--end::Avatar-->
 											<!--begin::Info-->
@@ -3540,7 +3540,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-6.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-6.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -3612,7 +3612,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -3648,7 +3648,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-5.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-5.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -3684,7 +3684,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -3756,7 +3756,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-9.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-9.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -3864,7 +3864,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-23.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-23.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -3936,7 +3936,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-12.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-12.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -4008,7 +4008,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-13.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-13.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -4080,7 +4080,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-21.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-21.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -4116,7 +4116,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-9.jpg') }}" />
+													<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-9.jpg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
@@ -4158,7 +4158,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Message-->
 									<!--begin::Illustration-->
 									<div class="text-center px-5">
-										<img src="{{asset('public/new-theme/assets/media/illustrations/sketchy-1/1.png') }}" alt="" class="w-100 h-200px h-sm-325px" />
+										<img src="{{asset('new-theme/assets/media/illustrations/sketchy-1/1.png') }}" alt="" class="w-100 h-200px h-sm-325px" />
 									</div>
 									<!--end::Illustration-->
 								</div>
@@ -4205,7 +4205,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Heading-->
 						<!--begin::Google Contacts Invite-->
 						<div class="btn btn-light-primary fw-bold w-100 mb-8">
-						<img alt="Logo" src="{{asset('public/new-theme/assets/media/svg/brand-logos/google-icon.svg') }}" class="h-20px me-3" />Invite Gmail Contacts</div>
+						<img alt="Logo" src="{{asset('new-theme/assets/media/svg/brand-logos/google-icon.svg') }}" class="h-20px me-3" />Invite Gmail Contacts</div>
 						<!--end::Google Contacts Invite-->
 						<!--begin::Separator-->
 						<div class="separator d-flex flex-center mb-8">
@@ -4228,7 +4228,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-6.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-6.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4284,7 +4284,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4312,7 +4312,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-5.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-5.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4340,7 +4340,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-25.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-25.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4396,7 +4396,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-9.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-9.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4480,7 +4480,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-23.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-23.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4536,7 +4536,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-12.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-12.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4592,7 +4592,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-13.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-13.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4648,7 +4648,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-21.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-21.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4676,7 +4676,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{asset('public/new-theme/assets/media/avatars/300-23.jpg') }}" />
+											<img alt="Pic" src="{{asset('new-theme/assets/media/avatars/300-23.jpg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
@@ -4728,35 +4728,35 @@ License: For each use you must have a valid license purchased only from above li
 		<!--end::Modal - Invite Friend-->
 		<!--end::Modals-->
 		<!--begin::Javascript-->
-		<script>var hostUrl = "{{asset('public/new-theme/assets/') }}";</script>
+		<script>var hostUrl = "{{asset('new-theme/assets/') }}";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="{{asset('public/new-theme/assets/plugins/global/plugins.bundle.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/scripts.bundle.js') }}"></script>
+		<script src="{{asset('new-theme/assets/plugins/global/plugins.bundle.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/scripts.bundle.js') }}"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="{{asset('public/new-theme/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+		<script src="{{asset('new-theme/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="{{asset('public/new-theme/assets/js/custom/apps/customers/list/export.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/custom/apps/customers/list/list.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/custom/apps/customers/add.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/widgets.bundle.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/custom/widgets.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/custom/apps/chat/chat.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/custom/utilities/modals/create-campaign.js') }}"></script>
-		<script src="{{asset('public/new-theme/assets/js/custom/utilities/modals/users-search.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/apps/customers/list/export.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/apps/customers/list/list.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/apps/customers/add.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/widgets.bundle.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/widgets.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/apps/chat/chat.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/utilities/modals/create-campaign.js') }}"></script>
+		<script src="{{asset('new-theme/assets/js/custom/utilities/modals/users-search.js') }}"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
-        <script src="{{asset('public/new-theme/src/js/layouts/sidebar.js') }}"></script>
+        <script src="{{asset('new-theme/src/js/layouts/sidebar.js') }}"></script>
 
 		<!--Internal  Notify js -->
-		<script src="{{ asset('public/assets_admin/plugins/notify/js/notifIt.js') }}"></script>
-		<script src="{{ asset('public/assets_admin/plugins/notify/js/notifit-custom.js') }}"></script>
+		<script src="{{ asset('assets_admin/plugins/notify/js/notifIt.js') }}"></script>
+		<script src="{{ asset('assets_admin/plugins/notify/js/notifit-custom.js') }}"></script>
 		<!-- Sweet-alert js  -->
-		<script src="{{ asset('public/assets_admin/js/sweet-alert.js')}}"></script>
-		<script src="{{ asset('public/assets_admin/plugins/sweet-alert/sweetalert.min.js')}}"></script>
-		<script src="{{ asset('public/assets_admin/plugins/sweet-alert/jquery.sweet-alert.js')}}"></script>
+		<script src="{{ asset('assets_admin/js/sweet-alert.js')}}"></script>
+		<script src="{{ asset('assets_admin/plugins/sweet-alert/sweetalert.min.js')}}"></script>
+		<script src="{{ asset('assets_admin/plugins/sweet-alert/jquery.sweet-alert.js')}}"></script>
 
         <!--Open And Close Sidebar Menu-->
         <script type="text/javascript">
@@ -4924,6 +4924,28 @@ License: For each use you must have a valid license purchased only from above li
             });
 		</script>
 
+		<script type="text/javascript">
+					function addClassByTagName(tagName, className) {
+
+			Array.from(document.getElementsByTagName(tagName)).forEach(function(element) {
+				element.classList.add(className);
+			});
+			}
+
+
+			addClassByTagName('th', 'fs-3');
+		</script>
+		<script type="text/javascript">
+					function addClassByTagName(tagName, className) {
+
+			Array.from(document.getElementsByTagName(tagName)).forEach(function(element) {
+				element.classList.add(className);
+			});
+			}
+
+
+			addClassByTagName('h1', 'fs-2x');
+		</script>
 		<script type="text/javascript">
 					function addClassByTagName(tagName, className) {
 

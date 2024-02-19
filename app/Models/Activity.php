@@ -54,7 +54,7 @@ class Activity extends Model
 
     public function recorderReminders()
     {
-        return $this->hasMany(RecorderReminder::class, 'activity_id');
+        return $this->hasMany(ReorderReminder::class, 'activity_id');
     }
 
 

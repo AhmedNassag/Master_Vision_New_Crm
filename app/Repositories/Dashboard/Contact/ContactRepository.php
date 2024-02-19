@@ -266,7 +266,7 @@ class ContactRepository implements ContactInterface
                 $file_name = time() . '.' . $file->getClientOriginalName();
                 $file->storeAs('contact', $file_name, 'attachments');
                 $data->media()->create([
-                    'file_path' => asset('public/attachments/contact/' . $file_name),
+                    'file_path' => asset('attachments/contact/' . $file_name),
                     'file_name' => $file_name,
                     'file_size' => $file_size,
                     'file_type' => $file_type,
@@ -321,7 +321,7 @@ class ContactRepository implements ContactInterface
                 $file_name = time() . '.' . $file->getClientOriginalName();
                 $file->storeAs('contact', $file_name, 'attachments');
                 $data->media()->create([
-                    'file_path' => asset('public/attachments/contact/' . $file_name),
+                    'file_path' => asset('attachments/contact/' . $file_name),
                     'file_name' => $file_name,
                     'file_size' => $file_size,
                     'file_type' => $file_type,

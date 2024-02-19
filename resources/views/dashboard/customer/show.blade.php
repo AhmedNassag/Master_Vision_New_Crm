@@ -79,29 +79,37 @@
                                         <div class="fs-5 fw-semibold text-muted mb-6">{{ @$item->mobile }} - {{ @$item->mobile2 }}</div>
                                         <div class="card-toolbar mb-3 row">
                                             <!--begin::Call-->
-                                            <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#createReminder">
-                                                {{-- <i class="ki-outline ki-telephone-square fs-3"></i> --}}
-                                                {{ trans('main.CreateReminder') }}
-                                            </button>
+                                            @can('إضافة تذكيرات العملاء')
+                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#createReminder">
+                                                    {{-- <i class="ki-outline ki-telephone-square fs-3"></i> --}}
+                                                    {{ trans('main.CreateReminder') }}
+                                                </button>
+                                            @endcan
                                             @include('dashboard.customer.createReminderModal')
                                             <div class="col-1"></div>
                                             <!--end::Call-->
                                             <!--begin::AddParent-->
-                                            <a href="{{ route('customer.addParent', $item->id) }}" type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3">
-                                                {{ trans('main.AddParent') }}
-                                            </a>
+                                            @can('إضافة عملاء مرتبط العملاء')
+                                                <a href="{{ route('customer.addParent', $item->id) }}" type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3">
+                                                    {{ trans('main.AddParent') }}
+                                                </a>
+                                            @endcan
                                             <div class="col-1"></div>
                                             <!--end::AddParent-->
-                                            <!--begin::Relate Employee-->
-                                            <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#retargetModal">
-                                            {{-- <i class="ki-outline ki-user-square fs-3"></i>--}}
-                                                {{ trans('main.Retarget') }}
-                                            </button>
+                                            <!--begin::Retarget-->
+                                            @can('إضافة إعادة إستهداف العملاء')
+                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#retargetModal">
+                                                {{-- <i class="ki-outline ki-user-square fs-3"></i>--}}
+                                                    {{ trans('main.Retarget') }}
+                                                </button>
+                                            @endcan
                                             @include('dashboard.customer.retargetModal')
                                             <div class="col-1"></div>
-                                            <!--end::Relate Employee-->
+                                            <!--end::Retarget-->
                                             <!--begin::Edit-->
-                                            <a href="{{ route('customer.edit', $item->id) }}" class="btn btn-sm btn-light-primary col-5 text-center mb-3">{{ trans('main.Edit') }}</a>
+                                            @can('تعديل العملاء')
+                                                <a href="{{ route('customer.edit', $item->id) }}" class="btn btn-sm btn-light-primary col-5 text-center mb-3">{{ trans('main.Edit') }}</a>
+                                            @endcan
                                             <!--end::Edit-->
                                         </div>
                                     </div>
@@ -336,7 +344,7 @@
                                             <div class="card-title">
                                                 <div class="text-center">
                                                     <div class="text-center fs-5x fw-semibold d-flex justify-content-center align-items-start lh-sm">
-                                                        {{ number_format($item->invoices->sum('amount_paid'), 0) }}
+                                                        {{ number_format(@$item->invoices->sum('amount_paid'), 0) }}
                                                     </div>
                                                     <div class="text-center text-muted fw-bold mb-7">{{ trans('main.Paid Amounts') }}</div>
                                                 </div>
@@ -344,7 +352,7 @@
                                             <div class="card-title">
                                                 <div class="text-center">
                                                     <div class="text-center fs-5x fw-semibold d-flex justify-content-center align-items-start lh-sm">
-                                                        {{ number_format($item->invoices->sum('total_amount') - $item->invoices->sum('amount_paid'), 0) }}
+                                                        {{ number_format(@$item->invoices->sum('total_amount') - @$item->invoices->sum('amount_paid'), 0) }}
                                                     </div>
                                                     <div class="text-center text-muted fw-bold mb-7">{{ trans('main.Remaining Amounts') }}</div>
                                                 </div>
@@ -384,12 +392,14 @@
                                                             <td class="text-center">{{ number_format($invoice->amount_paid, 0) }}</td>
                                                             <td class="text-center">{{ number_format($invoice->debt, 0) }}</td>
                                                             <td class="text-center">{{ $invoice->activity->name }}</td>
-                                                            <td class="text-center">{{ $invoice->sub_activity->name ?? '' }}</td>
+                                                            <td class="text-center">{{ $invoice->subActivity->name ?? '' }}</td>
                                                             <td class="text-center">{{ ucfirst($invoice->status) }}</td>
                                                             <td class="text-center">
-                                                                <a type="button" class="btn btn-sm btn-edit btn-info btn-block" href="{{ route('customer.edit.invoice',$invoice->id) }}">
-                                                                    <i class="fa fa-pencil"></i>
-                                                                </a>
+                                                                @can('تعديل فواتير العملاء')
+                                                                    <a type="button" class="btn btn-sm btn-edit btn-info btn-block" href="{{ route('customer.edit.invoice',$invoice->id) }}">
+                                                                        <i class="fa fa-pencil"></i>
+                                                                    </a>
+                                                                @endcan
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -642,7 +652,7 @@
                                             <div class="card-title">
                                                 <div class="text-center">
                                                     <div class="text-center fs-5x fw-semibold d-flex justify-content-center align-items-start lh-sm">
-                                                        {{ number_format($item->calculateSumOfPoints(), 0) }}
+                                                        {{ number_format(@$item->calculateSumOfPoints(), 0) }}
                                                     </div>
                                                     <div class="text-center text-muted fw-bold mb-7">{{ trans('main.Points') }}</div>
                                                     <p>{{ trans('main.Valid Points') }}</p>
@@ -651,7 +661,7 @@
                                             <div class="card-title">
                                                 <div class="text-center">
                                                     <div class="text-center fs-5x fw-semibold d-flex justify-content-center align-items-start lh-sm">
-                                                        {{ number_format($item->calculatePointsValue(), 0) }}
+                                                        {{ number_format(@$item->calculatePointsValue(), 0) }}
                                                     </div>
                                                     <div class="text-center text-muted fw-bold mb-7">{{ trans('main.EGP') }}</div>
                                                     <p>{{ trans('main.Points Value') }}</p>

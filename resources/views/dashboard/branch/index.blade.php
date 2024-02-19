@@ -43,8 +43,8 @@
                                                 <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" />
                                             </div>
                                             <div class="d-flex justify-content-end">
-                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                             </div>
                                         </div>
                                     </form>
@@ -132,7 +132,7 @@
                                                         @can('تعديل الفروع')
                                                             <div class="menu-item px-3">
                                                                 <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ $item->id }}">{{ trans('main.Edit') }}</a>
-                                                            </div>    
+                                                            </div>
                                                         @can('حذف الفروع')
                                                         @endcan
                                                             <div class="menu-item px-3">

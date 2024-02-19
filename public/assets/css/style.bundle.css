@@ -50136,6 +50136,9 @@ body,
   .app-header .page-title {
     display: none !important;
   }
+  .timeline .timeline-item {
+    flex-direction: column !important;
+  }
 }
 .min-w-120px
 {

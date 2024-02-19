@@ -4,8 +4,8 @@
             <div class="app-sidebar-logo flex-shrink-0 d-none d-md-flex align-items-center px-8" id="kt_app_sidebar_logo">
                 <!--begin::Logo-->
                 <a href="{{ route('home') }}">
-                    <img alt="Logo" src="{{asset('public/new-theme/assets/media/logos/favicon.png') }}" class="h-55px h-lg-75px d-none d-sm-inline app-sidebar-logo-default theme-light-show" />
-                    <img alt="Logo" src="{{asset('public/new-theme/assets/media/logos/favicon.png') }}" class="h-55px h-lg-75px theme-dark-show" />
+                    <img alt="Logo" src="{{asset('new-theme/assets/media/logos/favicon.png') }}" class="h-55px h-lg-75px d-none d-sm-inline app-sidebar-logo-default theme-light-show" />
+                    <img alt="Logo" src="{{asset('new-theme/assets/media/logos/favicon.png') }}" class="h-55px h-lg-75px theme-dark-show" />
                 </a>
                 <!--end::Logo-->
                 <!--begin::Aside toggle-->
@@ -19,7 +19,7 @@
             <!--begin::sidebar menu-->
             <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
                 <!--begin::Menu wrapper-->
-                <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper hover-scroll-overlay-y my-5 mx-3 h-650px" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px">
+                <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper hover-scroll-overlay-y my-5 mx-3 " data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px">
                     <!--begin::Menu-->
                     <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold px-1" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
                         <!--begin:Menu item-->
@@ -254,7 +254,7 @@
                                                 <span class="menu-title">{{ trans('main.Contacts') }}</span>
                                             </a>
                                         </div>
-                                    @endcan  
+                                    @endcan
                                     <!--Customer-->
                                     @can('عرض العملاء')
                                         <div class="menu-item">
@@ -443,6 +443,42 @@
                             @endcan
                         @endcan
                         <!--end:Alerts-->
+
+
+
+                        <!--Support Tickets-->
+                        {{-- @can('عرض تذاكر الدعم') --}}
+                            <div class="menu-item pt-2">
+                                <div class="menu-content">
+                                    <span class="menu-heading fw-bold text-uppercase fs-7">{{ trans('main.Support Tickets') }}</span>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <?php
+                                    if(Auth::user()->roles_name[0] == "Admin")
+                                    {
+                                        $tickets_count = App\Models\Ticket::where('status', '!=', 'Resolved')->count();
+                                    }
+
+                                    else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                    {
+                                        $tickets_count = App\Models\Ticket::whereRelation('agent','branch_id', auth()->user()->employee->branch_id)->where('status', '!=', 'Resolved')->count();
+                                    }
+
+                                    else
+                                    {
+                                        $tickets_count = App\Models\Ticket::where('agent', auth()->user()->employee->id)->where('status', '!=', 'Resolved')->count();
+                                    }
+                                ?>
+                                <a class="menu-link {{ Request::is('admin/tickets') ? 'active' : '' }}" href="{{ route('tickets.index') }}">
+                                    <span class="menu-icon">
+                                        <i class="ki-outline ki-file fs-2"></i>
+                                    </span>
+                                    <span class="menu-title">{{ trans('main.Support Tickets') }}</span>
+                                    <span class="badge badge-circle badge-danger">{{ $tickets_count }}</span>
+                                </a>
+                            </div>
+                        {{-- @endcan --}}
 
 
 

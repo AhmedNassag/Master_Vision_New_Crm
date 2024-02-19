@@ -37,7 +37,7 @@
                                         </label>
                                         <select name="branch_id" data-control="select2" data-dropdown-parent="#branches" data-placeholder="{{ trans('main.Branch') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Branch') }}...</option>
-                                            <?php 
+                                            <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
                                                 {
                                                     $branches = \App\Models\Branch::get(['id','name']);

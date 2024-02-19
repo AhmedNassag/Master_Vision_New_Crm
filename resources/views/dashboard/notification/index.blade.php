@@ -88,8 +88,8 @@
                                                 </select>
                                             </div>
                                             <div class="d-flex justify-content-end">
-                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                             </div>
                                         </div>
                                     </form>
@@ -157,7 +157,7 @@
                                         <th class="text-center">{{ trans('main.Notification') }}</th>
                                         <th class="text-center">{{ trans('main.Employee') }}</th>
                                         <th class="text-center">{{ trans('main.Department') }}</th>
-                                        <th class="text-center">{{ trans('main.Created By') }}</th>
+                                        <th class="text-center min-w-150px">{{ trans('main.Created By') }}</th>
                                         <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
                                     </tr>
                                 </thead>

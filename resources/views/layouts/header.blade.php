@@ -9,7 +9,7 @@
             </div>
             <!--begin::Logo image-->
             <a href="index.html">
-                <img alt="Logo" src="{{ asset('public/new-theme/assets/media/logos/demo42-small.svg') }}" class="h-30px" />
+                <img alt="Logo" src="{{ asset('new-theme/assets/media/logos/demo42-small.svg') }}" class="h-30px" />
             </a>
             <!--end::Logo image-->
         </div>
@@ -64,7 +64,7 @@
                                     <a href="#" class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
-                                            <img src="{{ asset('public/new-theme/assets/media/avatars/300-6.jpg') }}" alt="" />
+                                            <img src="{{ asset('new-theme/assets/media/avatars/300-6.jpg') }}" alt="" />
                                         </div>
                                         <!--end::Symbol-->
                                         <!--begin::Title-->
@@ -79,7 +79,7 @@
                                     <a href="#" class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
-                                            <img src="{{ asset('public/new-theme/assets/media/avatars/300-2.jpg') }}" alt="" />
+                                            <img src="{{ asset('new-theme/assets/media/avatars/300-2.jpg') }}" alt="" />
                                         </div>
                                         <!--end::Symbol-->
                                         <!--begin::Title-->
@@ -94,7 +94,7 @@
                                     <a href="#" class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
-                                            <img src="{{ asset('public/new-theme/assets/media/avatars/300-9.jpg') }}" alt="" />
+                                            <img src="{{ asset('new-theme/assets/media/avatars/300-9.jpg') }}" alt="" />
                                         </div>
                                         <!--end::Symbol-->
                                         <!--begin::Title-->
@@ -109,7 +109,7 @@
                                     <a href="#" class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
-                                            <img src="{{ asset('public/new-theme/assets/media/avatars/300-14.jpg') }}" alt="" />
+                                            <img src="{{ asset('new-theme/assets/media/avatars/300-14.jpg') }}" alt="" />
                                         </div>
                                         <!--end::Symbol-->
                                         <!--begin::Title-->
@@ -124,7 +124,7 @@
                                     <a href="#" class="d-flex text-gray-900 text-hover-primary align-items-center mb-5">
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
-                                            <img src="{{ asset('public/new-theme/assets/media/avatars/300-11.jpg') }}" alt="" />
+                                            <img src="{{ asset('new-theme/assets/media/avatars/300-11.jpg') }}" alt="" />
                                         </div>
                                         <!--end::Symbol-->
                                         <!--begin::Title-->
@@ -143,7 +143,7 @@
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
                                             <span class="symbol-label bg-light">
-                                                <img class="w-20px h-20px" src="{{ asset('public/new-theme/assets/media/svg/brand-logos/volicity-9.svg') }}" alt="" />
+                                                <img class="w-20px h-20px" src="{{ asset('new-theme/assets/media/svg/brand-logos/volicity-9.svg') }}" alt="" />
                                             </span>
                                         </div>
                                         <!--end::Symbol-->
@@ -160,7 +160,7 @@
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
                                             <span class="symbol-label bg-light">
-                                                <img class="w-20px h-20px" src="{{ asset('public/new-theme/assets/media/svg/brand-logos/tvit.svg') }}" alt="" />
+                                                <img class="w-20px h-20px" src="{{ asset('new-theme/assets/media/svg/brand-logos/tvit.svg') }}" alt="" />
                                             </span>
                                         </div>
                                         <!--end::Symbol-->
@@ -177,7 +177,7 @@
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
                                             <span class="symbol-label bg-light">
-                                                <img class="w-20px h-20px" src="{{ asset('public/new-theme/assets/media/svg/misc/infography.svg') }}" alt="" />
+                                                <img class="w-20px h-20px" src="{{ asset('new-theme/assets/media/svg/misc/infography.svg') }}" alt="" />
                                             </span>
                                         </div>
                                         <!--end::Symbol-->
@@ -194,7 +194,7 @@
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
                                             <span class="symbol-label bg-light">
-                                                <img class="w-20px h-20px" src="{{ asset('public/new-theme/assets/media/svg/brand-logos/leaf.svg') }}" alt="" />
+                                                <img class="w-20px h-20px" src="{{ asset('new-theme/assets/media/svg/brand-logos/leaf.svg') }}" alt="" />
                                             </span>
                                         </div>
                                         <!--end::Symbol-->
@@ -211,7 +211,7 @@
                                         <!--begin::Symbol-->
                                         <div class="symbol symbol-40px me-4">
                                             <span class="symbol-label bg-light">
-                                                <img class="w-20px h-20px" src="{{ asset('public/new-theme/assets/media/svg/brand-logos/tower.svg') }}" alt="" />
+                                                <img class="w-20px h-20px" src="{{ asset('new-theme/assets/media/svg/brand-logos/tower.svg') }}" alt="" />
                                             </span>
                                         </div>
                                         <!--end::Symbol-->
@@ -864,7 +864,7 @@
                                 <!--end::Section-->
                                 <!--begin::Illustration-->
                                 <div class="text-center px-4">
-                                    <img class="mw-100 mh-200px" alt="image" src="{{ asset('public/new-theme/assets/media/illustrations/sketchy-1/1.png') }}" />
+                                    <img class="mw-100 mh-200px" alt="image" src="{{ asset('new-theme/assets/media/illustrations/sketchy-1/1.png') }}" />
                                 </div>
                                 <!--end::Illustration-->
                             </div>

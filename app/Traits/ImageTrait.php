@@ -23,7 +23,7 @@ Trait ImageTrait
     public function uploadMedia($modelRecord, $folder, $request)
     {
         //remove old file
-        if($modelRecord->media) 
+        if($modelRecord->media)
         {
             Storage::disk('attachments')->delete($folder . '/' . $modelRecord->media->file_name);
             $modelRecord->media->delete();
@@ -34,7 +34,7 @@ Trait ImageTrait
         $file_name = time() . '.webp' /*. $request->getClientOriginalName()*/;
         $request->storeAs($folder, $file_name, 'attachments');
         $modelRecord->media()->create([
-            'file_path' => asset('public/attachments/' . $folder . '/' . $file_name),
+            'file_path' => asset('attachments/' . $folder . '/' . $file_name),
             'file_name' => $file_name,
             'file_size' => $file_size,
             'file_type' => $file_type,
@@ -49,7 +49,7 @@ Trait ImageTrait
     {
         //remove old files
         if($modelRecord->media) {
-            foreach($modelRecord->media as $media) 
+            foreach($modelRecord->media as $media)
             {
                 Storage::disk('attachments')->delete($folder . '/' . $media->file_name);
                 $media->delete();
@@ -64,7 +64,7 @@ Trait ImageTrait
             $file_name = time() . $i . '.webp' /*. $file->getClientOriginalName()*/;
             $file->storeAs($folder, $file_name, 'attachments');
             $modelRecord->media()->create([
-                'file_path' => asset('public/attachments/' . $folder . '/' . $file_name),
+                'file_path' => asset('attachments/' . $folder . '/' . $file_name),
                 'file_name' => $file_name,
                 'file_size' => $file_size,
                 'file_type' => $file_type,

@@ -201,7 +201,7 @@ class UserController extends Controller
                 $file_name = time() . '.' . $file->getClientOriginalName();
                 $file->storeAs('user', $file_name, 'attachments');
                 $user->media()->create([
-                    'file_path' => asset('public/attachments/user/' . $file_name),
+                    'file_path' => asset('attachments/user/' . $file_name),
                     'file_name' => $file_name,
                     'file_size' => $file_size,
                     'file_type' => $file_type,
@@ -284,7 +284,7 @@ class UserController extends Controller
                 $file_name = time() . '.' . $file->getClientOriginalName();
                 $file->storeAs('user', $file_name, 'attachments');
                 $user->media()->create([
-                    'file_path' => asset('public/attachments/user/' . $file_name),
+                    'file_path' => asset('attachments/user/' . $file_name),
                     'file_name' => $file_name,
                     'file_size' => $file_size,
                     'file_type' => $file_type,

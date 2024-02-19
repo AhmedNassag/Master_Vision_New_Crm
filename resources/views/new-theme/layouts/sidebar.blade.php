@@ -4,8 +4,8 @@
         <div class="app-sidebar-logo flex-shrink-0 d-none d-md-flex align-items-center px-8" id="kt_app_sidebar_logo">
             <!--begin::Logo-->
             <a href="index.html">
-                <img alt="Logo" src="{{ asset('public/new-theme/assets/media/logos/demo42.svg') }}" class="h-25px d-none d-sm-inline app-sidebar-logo-default theme-light-show" />
-                <img alt="Logo" src="{{ asset('public/new-theme/assets/media/logos/demo42-dark.svg') }}" class="h-25px h-lg-25px theme-dark-show" />
+                <img alt="Logo" src="{{ asset('new-theme/assets/media/logos/demo42.svg') }}" class="h-25px d-none d-sm-inline app-sidebar-logo-default theme-light-show" />
+                <img alt="Logo" src="{{ asset('new-theme/assets/media/logos/demo42-dark.svg') }}" class="h-25px h-lg-25px theme-dark-show" />
             </a>
             <!--end::Logo-->
             <!--begin::Aside toggle-->
@@ -3128,7 +3128,7 @@
                 <!--begin::User info-->
                 <div class="d-flex align-items-center" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-overflow="true" data-kt-menu-placement="top-start">
                     <div class="d-flex flex-center cursor-pointer symbol symbol-circle symbol-40px">
-                        <img src="{{ asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" alt="image" />
+                        <img src="{{ asset('new-theme/assets/media/avatars/300-1.jpg') }}" alt="image" />
                     </div>
                     <!--begin::Name-->
                     <div class="d-flex flex-column align-items-start justify-content-center ms-3">
@@ -3145,7 +3145,7 @@
                         <div class="menu-content d-flex align-items-center px-3">
                             <!--begin::Avatar-->
                             <div class="symbol symbol-50px me-5">
-                                <img alt="Logo" src="{{ asset('public/new-theme/assets/media/avatars/300-1.jpg') }}" />
+                                <img alt="Logo" src="{{ asset('new-theme/assets/media/avatars/300-1.jpg') }}" />
                             </div>
                             <!--end::Avatar-->
                             <!--begin::Username-->
@@ -3282,7 +3282,7 @@
                         <a href="#" class="menu-link px-5">
                             <span class="menu-title position-relative">Language
                             <span class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">English
-                            <img class="w-15px h-15px rounded-1 ms-2" src="{{ asset('public/new-theme/assets/media/flags/united-states.svg') }}" alt="" /></span></span>
+                            <img class="w-15px h-15px rounded-1 ms-2" src="{{ asset('new-theme/assets/media/flags/united-states.svg') }}" alt="" /></span></span>
                         </a>
                         <!--begin::Menu sub-->
                         <div class="menu-sub menu-sub-dropdown w-175px py-4">
@@ -3290,7 +3290,7 @@
                             <div class="menu-item px-3">
                                 <a href="account/settings.html" class="menu-link d-flex px-5 active">
                                 <span class="symbol symbol-20px me-4">
-                                    <img class="rounded-1" src="{{ asset('public/new-theme/assets/media/flags/united-states.svg') }}" alt="" />
+                                    <img class="rounded-1" src="{{ asset('new-theme/assets/media/flags/united-states.svg') }}" alt="" />
                                 </span>English</a>
                             </div>
                             <!--end::Menu item-->
@@ -3298,7 +3298,7 @@
                             <div class="menu-item px-3">
                                 <a href="account/settings.html" class="menu-link d-flex px-5">
                                 <span class="symbol symbol-20px me-4">
-                                    <img class="rounded-1" src="{{ asset('public/new-theme/assets/media/flags/spain.svg') }}" alt="" />
+                                    <img class="rounded-1" src="{{ asset('new-theme/assets/media/flags/spain.svg') }}" alt="" />
                                 </span>Spanish</a>
                             </div>
                             <!--end::Menu item-->
@@ -3306,7 +3306,7 @@
                             <div class="menu-item px-3">
                                 <a href="account/settings.html" class="menu-link d-flex px-5">
                                 <span class="symbol symbol-20px me-4">
-                                    <img class="rounded-1" src="{{ asset('public/new-theme/assets/media/flags/germany.svg') }}" alt="" />
+                                    <img class="rounded-1" src="{{ asset('new-theme/assets/media/flags/germany.svg') }}" alt="" />
                                 </span>German</a>
                             </div>
                             <!--end::Menu item-->
@@ -3314,7 +3314,7 @@
                             <div class="menu-item px-3">
                                 <a href="account/settings.html" class="menu-link d-flex px-5">
                                 <span class="symbol symbol-20px me-4">
-                                    <img class="rounded-1" src="{{ asset('public/new-theme/assets/media/flags/japan.svg') }}" alt="" />
+                                    <img class="rounded-1" src="{{ asset('new-theme/assets/media/flags/japan.svg') }}" alt="" />
                                 </span>Japanese</a>
                             </div>
                             <!--end::Menu item-->
@@ -3322,7 +3322,7 @@
                             <div class="menu-item px-3">
                                 <a href="account/settings.html" class="menu-link d-flex px-5">
                                 <span class="symbol symbol-20px me-4">
-                                    <img class="rounded-1" src="{{ asset('public/new-theme/assets/media/flags/france.svg') }}" alt="" />
+                                    <img class="rounded-1" src="{{ asset('new-theme/assets/media/flags/france.svg') }}" alt="" />
                                 </span>French</a>
                             </div>
                             <!--end::Menu item-->

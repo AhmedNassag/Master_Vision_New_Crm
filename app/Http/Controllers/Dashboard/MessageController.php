@@ -45,11 +45,13 @@ class MessageController extends Controller
 	protected $contactFilterService;
 
 
-	/**
-	 * Display a listing of the Contacts.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
+	public function __construct()
+    {
+        $this->middleware('permission:إرسال رسائل جهات الإتصال', ['only' => ['store']]);
+    }
+
+
+
 	public function index()
 	{
 		if (Module::hasAccess("Contacts", "view")) {
