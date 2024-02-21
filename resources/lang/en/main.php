@@ -410,4 +410,6 @@ return [
     'Ticket Histoy'             => 'Ticket Histoy',
     'Apply'                     => 'Apply',
     'Reset'                     => 'Reset',
+    'Login As Customer'         => 'Login As Customer',
+    'Login As Admin'            => 'Login As Admin',
 ];

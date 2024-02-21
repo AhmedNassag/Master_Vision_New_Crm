@@ -69,6 +69,14 @@
                                             </span>
 										</button>
 									</div>
+
+                                    <a href="{{ route('customer.login') }}" style="font-weight: bold; font-size:15px;">
+                                        <span class="indicator-label">{{ trans('main.To') }} {{ trans('main.Login As Customer') }}</span>
+                                        <span class="indicator-progress">
+                                            {{ trans('main.Please wait') }}...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </a>
 									<!--end::Submit button-->
 								</form>
 								<!--end::Form-->

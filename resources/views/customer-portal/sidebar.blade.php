@@ -27,7 +27,7 @@
                             <!--begin:Home-->
                             <div class="menu-item">
                                 <!--Home-->
-                                <a class="menu-link {{ Request::is('portals/customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
+                                <a class="menu-link {{ Request::is('customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
                                     <span class="menu-icon">
                                         <i class="ki-outline ki-element-11 fs-2"></i>
                                     </span>
@@ -46,10 +46,10 @@
                             </div>
                         </div>
                         <!--end:Main Data-->
-                        
+
                         <!--Tickets-->
                         <div class="menu-item">
-                            <a class="menu-link {{ Request::is('portals/customer/tickets') ? 'active' : '' }}" href="{{ route('customer.tickets') }}">
+                            <a class="menu-link {{ Request::is('customer/tickets') ? 'active' : '' }}" href="{{ route('customer.tickets') }}">
                                 <span class="menu-icon">
                                     <i class="ki-outline ki-color-swatch fs-2"></i>
                                 </span>
@@ -58,7 +58,7 @@
                         </div>
                         <!--SupportTicket-->
                         <div class="menu-item">
-                            <a class="menu-link {{ Request::is('portals/customer/tickets/create') ? 'active' : '' }}" href="{{ route('customer.tickets.create') }}">
+                            <a class="menu-link {{ Request::is('customer/tickets/create') ? 'active' : '' }}" href="{{ route('customer.tickets.create') }}">
                                 <span class="menu-icon">
                                     <i class="ki-outline ki-element-plus fs-2"></i>
                                 </span>
@@ -67,7 +67,7 @@
                         </div>
                         <!--ContactUs-->
                         {{-- <div class="menu-item">
-                            <a class="menu-link {{ Request::is('portals/customer/tickets/create') ? 'active' : '' }}" href="{{ route('customer.tickets.create') }}">
+                            <a class="menu-link {{ Request::is('customer/tickets/create') ? 'active' : '' }}" href="{{ route('customer.tickets.create') }}">
                                 <span class="menu-icon">
                                     <i class="ki-outline ki-message-text-2 fs-2"></i>
                                 </span>
@@ -85,10 +85,10 @@
                         </div> --}}
                         <!--end:Main Data-->
 
-                        
+
                         <!--Projects-->
                         {{-- <div class="menu-item">
-                            <a class="menu-link {{ Request::is('portals/customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
+                            <a class="menu-link {{ Request::is('customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
                                 <span class="menu-icon">
                                     <i class="ki-outline ki-element-7 fs-2"></i>
                                 </span>
@@ -97,7 +97,7 @@
                         </div> --}}
                         <!--Invoices-->
                         {{-- <div class="menu-item">
-                            <a class="menu-link {{ Request::is('portals/customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
+                            <a class="menu-link {{ Request::is('customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
                                 <span class="menu-icon">
                                     <i class="ki-outline ki-abstract-26 fs-2"></i>
                                 </span>
@@ -106,21 +106,21 @@
                         </div> --}}
                         <!--Data-->
                         {{-- <div class="menu-item">
-                            <a class="menu-link {{ Request::is('portals/customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
+                            <a class="menu-link {{ Request::is('customer/home') ? 'active' : '' }}" href="{{ route('customer.home') }}">
                                 <span class="menu-icon">
                                     <i class="ki-outline ki-address-book fs-2"></i>
                                 </span>
                                 <span class="menu-title">{{ trans('main.Data') }}</span>
                             </a>
                         </div> --}}
-                        
+
                     </div>
                     <!--end::Menu-->
                 </div>
                 <!--end::Menu wrapper-->
             </div>
             <!--end::sidebar menu-->
-            
+
             <div class="aside-footer flex-column-auto pt-5 pb-7 px-10" id="kt_aside_footer">
                 <a href="{{ route('customer.tickets.create') }}" class="btn btn-success w-100" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="" data-bs-original-title="إذا كنت تريد التواصل مع الدعم قم بانشاء تذكرة دعم وسيتم التواصل معك">
                     <span class="btn-label">{{ trans('main.Add') }} {{ trans('main.Support Ticket') }}</span>

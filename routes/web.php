@@ -23,13 +23,13 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/portals/customer/login', function () {
+Route::get('/customer/login', function () {
     return view('customer-portal.login');
 });
 
-Route::get('/portals/customer/login', [LoginCustomerController::class, 'showLoginForm'])->name('customer.login');
-Route::post('/portals/customer/login', [LoginCustomerController::class, 'login']);
-Route::middleware(['auth:customer'])->prefix('/portals/customer')->group(function () {
+Route::get('/customer/login', [LoginCustomerController::class, 'showLoginForm'])->name('customer.login');
+Route::post('/customer/login', [LoginCustomerController::class, 'login']);
+Route::middleware(['auth:customer'])->prefix('/customer')->group(function () {
     // Home route
     Route::get('home', [CustomerPortalController::class, 'home'])->name('customer.home');
 

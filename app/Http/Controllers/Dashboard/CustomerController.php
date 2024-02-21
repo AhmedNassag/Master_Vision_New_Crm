@@ -33,7 +33,7 @@ class CustomerController extends Controller
         $this->customer = $customer;
         $this->middleware('permission:عرض العملاء', ['only' => ['index','show','addAttachment','deleteAttachment']]);
         $this->middleware('permission:إضافة العملاء', ['only' => ['create','store']]);
-        $this->middleware('permission:تعديل العملاء', ['only' => ['edit','update']]);
+        $this->middleware('permission:تعديل العملاء', ['only' => ['edit','update','makePassword']]);
         $this->middleware('permission:حذف العملاء', ['only' => ['destroy']]);
         $this->middleware('permission:إضافة عملاء مرتبط العملاء', ['only' => ['addParent','storeParent']]);
         $this->middleware('permission:إستيراد العملاء', ['only' => ['importData']]);
@@ -394,5 +394,36 @@ class CustomerController extends Controller
 		Excel::import(new CustomerImport($columnMappings,$request->contact_source_id,$request->activity_id), $filePath);
 
 		return redirect()->back()->with('success', 'Contacts imported successfully.');
+    }
+
+
+
+    public function makePassword(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'email'    => 'required|email|unique:customers,email,'.$request->id,
+                'password' => 'required',
+                'id'       => 'required',
+            ]);
+            if ($validator->fails())
+            {
+                session()->flash('error');
+                return redirect()->back()->withErrors($validator)->withInput();;
+            }
+            $data = Customer::findOrFail($request->id);
+            if (!$data) {
+                session()->flash('error');
+                return redirect()->back();
+            }
+            $data->update([
+                'email'    => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+            session()->flash('success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

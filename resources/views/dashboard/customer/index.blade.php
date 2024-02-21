@@ -280,10 +280,16 @@
                                                         <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
                                                     @endcan
                                                 </div>
+                                                <div class="menu-item px-3">
+                                                    @can('تعديل العملاء')
+                                                        <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#makePasswordModal_{{ $item->id }}">{{ trans('main.Password') }}</a>
+                                                    @endcan
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
                                     @include('dashboard.customer.deleteModal')
+                                    @include('dashboard.customer.makePasswordModal')
                                     @endforeach
                                     @else
                                     <tr>

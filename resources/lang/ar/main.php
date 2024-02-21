@@ -416,4 +416,6 @@ return [
     'Ticket Histoy'             => 'سجل التذكرة',
     'Apply'                     => 'بحث',
     'Reset'                     => 'إغلاق',
+    'Login As Customer'         => 'تسجيل دخول عميل',
+    'Login As Admin'            => 'تسجيل دخول لوحة التحكم',
 ];

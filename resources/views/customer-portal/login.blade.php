@@ -43,6 +43,16 @@
 						<div class="d-flex flex-center flex-column align-items-stretch h-lg-100 w-md-400px">
                             <img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px" src="{{ asset('new-theme/assets/media/logos/favicon.png') }}" alt="" />
 							<div class="d-flex flex-center flex-column flex-column-fluid pb-15 pb-lg-20">
+                                <!-- validationNotify -->
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 								<!--begin::Form-->
 								<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="{{ route('customer.home') }}" action="{{ route('customer.login') }}">
 									<div class="text-center mb-11">
@@ -78,6 +88,14 @@
                                             </span>
 										</button>
 									</div>
+
+                                    <a href="{{ route('admin.login') }}" style="font-weight: bold; font-size:15px;">
+                                        <span class="indicator-label">{{ trans('main.To') }} {{ trans('main.Login As Admin') }}</span>
+                                        <span class="indicator-progress">
+                                            {{ trans('main.Please wait') }}...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </a>
 									<!--end::Submit button-->
 								</form>
 								<!--end::Form-->

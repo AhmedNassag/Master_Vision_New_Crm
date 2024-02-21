@@ -50,7 +50,7 @@ use App\Http\Controllers\Dashboard\CategoryController;
 
 Route::get('/', function () {
     return view('auth.login');
-});
+})->name('admin.login');
 
 Auth::routes(['register' => false]);
 
@@ -160,6 +160,7 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     Route::post('customer/marketingRetargetResults', [CustomerController::class, 'postRetargetResults'])->name('customer.marketingPostRetargetResults');
     Route::post('customer/import', [CustomerController::class, 'import'])->name('customer.import');
     Route::post('customer/importData', [CustomerController::class, 'importData'])->name('customer.importData');
+    Route::post('customer/makePassword', [CustomerController::class, 'makePassword'])->name('customer.makePassword');
 
 
 
