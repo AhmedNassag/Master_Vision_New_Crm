@@ -234,6 +234,7 @@
                     </div>
 
                     @include('dashboard.employeeTarget.addModal')
+                    @include('dashboard.employeeTarget.deleteModal')
 
                 </div>
             </div>

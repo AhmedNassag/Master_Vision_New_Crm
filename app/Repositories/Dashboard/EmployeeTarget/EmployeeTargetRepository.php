@@ -216,33 +216,22 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
     public function destroy($request)
     {
         try {
-            $data = Notification::findOrFail($request->id);
-            if (!$data) {
+            $employeeTarget = EmployeeTarget::findOrFail($request->id);
+            $targets        = Target::where('employee_target_id', $request->id)->get();
+            if (!$employeeTarget) {
                 session()->flash('error');
                 return redirect()->back();
             }
-            $data->delete();
+            foreach($targets as $target)
+            {
+                $target->delete();
+            }
+            $employeeTarget->delete();
             session()->flash('success');
             return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-    }
-
-
-
-    public function todayReminders()
-    {
-        $data = ReorderReminder::whereDate('reminder_date',Carbon::today())->paginate(config('myConfig.paginationCount'));
-        return view('dashboard.notification.reminder',compact('data'));
-    }
-
-
-
-    public function monthReminders()
-    {
-        $data = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)->whereMonth('reminder_date', Carbon::now()->month)->paginate(config('myConfig.paginationCount'));
-        return view('dashboard.notification.reminder',compact('data'));
     }
 
 }
