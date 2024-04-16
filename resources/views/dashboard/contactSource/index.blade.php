@@ -63,7 +63,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -117,11 +117,9 @@
                                     @foreach ($data as $key=>$item)
                                         <tr>
                                             <td class="text-center">
-                                                {{ $key+1 }}
+                                                {{ @$key+1 }}
                                             </td>
-                                            <td class="text-center">
-                                                <a href="#" class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a>
-                                            </td>
+                                            <td class="text-center text-gray-800 text-hover-primary mb-1">{{ @$item->name }}</td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                     {{ trans('main.Actions') }}
@@ -130,12 +128,12 @@
                                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                     @can('تعديل مصادر جهات الإتصال')
                                                         <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ $item->id }}">{{ trans('main.Edit') }}</a>
+                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ @$item->id }}">{{ trans('main.Edit') }}</a>
                                                         </div>
                                                     @endcan
                                                     @can('حذف مصادر جهات الإتصال')
                                                         <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                            <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                         </div>
                                                     @endcan
                                                 </div>
@@ -159,7 +157,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        {{ $data->links() }}
+                        {{ @$data->links() }}
                     </div>
                 </div>
 

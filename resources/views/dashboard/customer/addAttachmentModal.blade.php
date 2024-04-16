@@ -18,7 +18,7 @@
                     </div>
                     <!-- id -->
                     <div class="form-group">
-                        <input class="form-control" type="hidden" name="id" value="{{ $item->id }}">
+                        <input class="form-control" type="hidden" name="id" value="{{ @$item->id }}">
                     </div>
                 </div>
                 <div class="modal-footer flex-center">

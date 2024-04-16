@@ -15,7 +15,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{{ @$error }}</li>
             @endforeach
         </ul>
     </div>
@@ -49,7 +49,7 @@
     <div class="card">
         <div class="card-header align-items-center py-5 gap-5">
             <h3 class="card-title align-items-start flex-column">
-                <span class="card-label fw-bolder fs-3 mb-1">TK-{{ $ticket->id }} </span>
+                <span class="card-label fw-bolder fs-3 mb-1">TK-{{ @$ticket->id }} </span>
                 <span class="text-muted mt-1 fw-bold fs-7">{{ trans('main.Ticket Details') }}</span>
                 <span> <span class="badge badge-light-primary my-1 me-2">
                     {{ trans('main.Status') }}:
@@ -63,8 +63,8 @@
                         {{ trans('main.Resolved') }}
                     @endif
                 </span>
-                <span class="badge badge-light-primary my-1 me-2">{{ trans('main.Activity') }}: {{ $ticket->activity->name ?? "" }}</span>
-                <span class="badge badge-light-primary my-1 me-2">{{ trans('main.SubActivity') }}: {{ $ticket->subActivity->name ?? "" }}</span></span>
+                <span class="badge badge-light-primary my-1 me-2">{{ trans('main.Activity') }}: {{ @$ticket->activity->name ?? "" }}</span>
+                <span class="badge badge-light-primary my-1 me-2">{{ trans('main.SubActivity') }}: {{ @$ticket->subActivity->name ?? "" }}</span></span>
             </h3>
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <a href="{{ route('customer.tickets') }}" type="button" class="btn btn-primary me-2" id="filter_search">
@@ -95,7 +95,7 @@
                         <div class="pe-5">
                             <!--begin::Author details-->
                             <div class="d-flex align-items-center flex-wrap gap-1">
-                                <a href="#" class="fw-bolder text-dark text-hover-primary">{{$ticket->customer->name}}</a>
+                                <a class="fw-bolder text-dark text-hover-primary">{{$ticket->customer->name}}</a>
                                 <!--begin::Svg Icon | path: icons/duotune/abstract/abs050.svg-->
                                 <span class="svg-icon svg-icon-7 svg-icon-success mx-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -103,7 +103,7 @@
                                     </svg>
                                 </span>
                                 <!--end::Svg Icon-->
-                                <span class="text-muted fw-bolder">{{ $ticket->created_at->diffForHumans() }}</span>
+                                <span class="text-muted fw-bolder">{{ @$ticket->created_at->diffForHumans() }}</span>
                             </div>
                             <!--end::Author details-->
                             <!--begin::Message details-->
@@ -118,7 +118,7 @@
                     <!--begin::Actions-->
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <!--begin::Date-->
-                        <span class="fw-bold text-muted text-end me-3">{{ $ticket->created_at->format('Y-m-d H:i:s') }}</span>
+                        <span class="fw-bold text-muted text-end me-3">{{ @$ticket->created_at->format('Y-m-d H:i:s') }}</span>
                         <!--end::Date-->
 
                     </div>
@@ -150,7 +150,7 @@
                             <div class="pe-5">
                                 <!--begin::Author details-->
                                 <div class="d-flex align-items-center flex-wrap gap-1">
-                                    <a href="#" class="fw-bolder text-dark text-hover-primary">
+                                    <a class="fw-bolder text-dark text-hover-primary">
                                         @if($log->user_type =='agent')
                                             {{ trans('main.Support Team') }}
                                         @else
@@ -164,7 +164,7 @@
                                         </svg>
                                     </span>
                                     <!--end::Svg Icon-->
-                                    <span class="text-muted fw-bolder">{{ $log->created_at->diffForHumans() }}</span>
+                                    <span class="text-muted fw-bolder">{{ @$log->created_at->diffForHumans() }}</span>
                                 </div>
                                 <!--end::Author details-->
 
@@ -179,7 +179,7 @@
                         <!--begin::Actions-->
                         <div class="d-flex align-items-center flex-wrap gap-2">
                             <!--begin::Date-->
-                            <span class="fw-bold text-muted text-end me-3">{{ $log->created_at->format('Y-m-d H:i:s') }}</span>
+                            <span class="fw-bold text-muted text-end me-3">{{ @$log->created_at->format('Y-m-d H:i:s') }}</span>
                             <!--end::Date-->
 
                         </div>

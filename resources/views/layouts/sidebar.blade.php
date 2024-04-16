@@ -459,12 +459,10 @@
                                     {
                                         $tickets_count = App\Models\Ticket::where('status', '!=', 'Resolved')->count();
                                     }
-
                                     else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                     {
                                         $tickets_count = App\Models\Ticket::whereRelation('agent','branch_id', auth()->user()->employee->branch_id)->where('status', '!=', 'Resolved')->count();
                                     }
-
                                     else
                                     {
                                         $tickets_count = App\Models\Ticket::where('agent', auth()->user()->employee->id)->where('status', '!=', 'Resolved')->count();

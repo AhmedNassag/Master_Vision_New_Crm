@@ -8,7 +8,7 @@
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <li>{{ @$error }}</li>
                 @endforeach
             </ul>
         </div>
@@ -211,7 +211,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $jobTitles = \App\Models\JobTitle::get(['id','name']); ?>
                                     @foreach($jobTitles as $jobTitle)
-                                        <option value="{{ @$jobTitle->id }}"  {{ @$jobTitle->id == @$customer->job_title_id ? 'selected' : '' }}>{{ $jobTitle->name }}</option>
+                                        <option value="{{ @$jobTitle->id }}"  {{ @$jobTitle->id == @$customer->job_title_id ? 'selected' : '' }}>{{ @$jobTitle->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

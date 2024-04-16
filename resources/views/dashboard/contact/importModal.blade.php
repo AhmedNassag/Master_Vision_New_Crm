@@ -18,7 +18,7 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $contactSources = \App\Models\ContactSource::get(['id','name']); ?>
                             @foreach($contactSources as $contactSource)
-                                <option value="{{ $contactSource->id }}">{{ $contactSource->name }}</option>
+                                <option value="{{ @$contactSource->id }}">{{ @$contactSource->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -31,7 +31,7 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                             @foreach($activities as $activity)
-                                <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                             @endforeach
                         </select>
                     </div>

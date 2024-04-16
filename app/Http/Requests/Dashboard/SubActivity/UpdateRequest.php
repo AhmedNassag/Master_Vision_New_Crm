@@ -16,6 +16,14 @@ class UpdateRequest extends FormRequest
         return true;
     }
 
+
+
+    public function other_validations()
+    {
+        $count = \App\Models\SubActivity::where(['name' => request()->name, 'activity_id' => request()->activity_id])->whereNull('deleted_at')->where('id', '!=', request()->id)->get();
+        return $count;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,6 +31,12 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->other_validations()->count() > 0)
+        {
+            return [
+                'name' => 'unique:interests,name,NULL,id,deleted_at,NULL',
+            ];
+        }
         return [
             'name'        => 'required|string',
             'activity_id' => 'required|integer|exists:activates,id',

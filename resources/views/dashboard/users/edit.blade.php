@@ -8,7 +8,7 @@
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <li>{{ @$error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -72,17 +72,17 @@
                                     <!-- name -->
                                     <div class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Name') }}</label>
-                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ $user->name, old('name') }}" name="name" />
+                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ @$user->name, old('name') }}" name="name" />
                                     </div>
                                     <!-- mobile -->
                                     <div class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Mobile') }}</label>
-                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ $user->mobile, old('mobile') }}" name="mobile" />
+                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ @$user->mobile, old('mobile') }}" name="mobile" />
                                     </div>
                                     <!-- email -->
                                     <div class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Email') }}</label>
-                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Email') }}" value="{{ $user->email, old('email') }}" name="email" />
+                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Email') }}" value="{{ @$user->email, old('email') }}" name="email" />
                                     </div>
                                     <!-- branch_id -->
                                     <div class="col-md-6 fv-row" id="branch_id">
@@ -102,7 +102,7 @@
                                                 }
                                             ?>
                                             @foreach($branches as $branch)
-                                                <option value="{{ $branch->id }}" {{ $user->employee->branch_id == $branch->id ? 'selected' :''}}>{{ $branch->name }}</option>
+                                                <option value="{{ @$branch->id }}" {{ @$user->employee->branch_id == $branch->id ? 'selected' :''}}>{{ @$branch->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -115,7 +115,7 @@
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                             @foreach($departments as $department)
-                                                <option value="{{ $department->id }}" {{ $user->employee->dept == $department->id ? 'selected' :''}}>{{ $department->name }}</option>
+                                                <option value="{{ @$department->id }}" {{ @$user->employee->dept == $department->id ? 'selected' :''}}>{{ @$department->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -125,9 +125,14 @@
                                             <span class="required">{{ trans('main.Status') }}</span>
                                         </label>
                                         <select name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                            <option value="1" {{ $user->active == 1 ? 'selected' : '' }}>{{ trans('main.Active') }}</option>
-                                            <option value="0" {{ $user->active == 0 ? 'selected' : '' }}>{{ trans('main.InActive') }}</option>
+                                            <option value="1" {{ @$user->active == 1 ? 'selected' : '' }}>{{ trans('main.Active') }}</option>
+                                            <option value="0" {{ @$user->active == 0 ? 'selected' : '' }}>{{ trans('main.InActive') }}</option>
                                         </select>
+                                    </div>
+                                    <!-- password -->
+                                    <div class="col-md-6 fv-row">
+                                        <label class="fs-5 fw-semibold mb-2">{{ trans('main.Password') }}</label>
+                                        <input type="password" class="form-control form-control-solid" placeholder="{{ trans('main.Password') }}" value="{{ old('password') }}" name="password" />
                                     </div>
                                     <!-- roles_name -->
                                     <div class="col-md-6 fv-row">
@@ -154,7 +159,7 @@
                         </div>
                         <!-- id -->
                     <div class="form-group">
-                        <input class="form-control" type="hidden" name="id" value="{{ $user->id }}">
+                        <input class="form-control" type="hidden" name="id" value="{{ @$user->id }}">
                     </div>
                         <div class="modal-footer flex-center">
                             <button type="submit" class="btn btn-primary">

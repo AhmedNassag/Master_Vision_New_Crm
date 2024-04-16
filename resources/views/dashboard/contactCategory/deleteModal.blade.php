@@ -1,5 +1,5 @@
 <!--begin::Add Modal-->
-<div class="modal fade" id="delete_modal_{{ $item->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="delete_modal_{{ @$item->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form class="form" action="{{ route('contactCategory.destroy', 'test') }}" method="POST" enctype="multipart/form-data">
@@ -14,7 +14,7 @@
                 </div>
                 <!-- id -->
                 <div class="form-group">
-                    <input class="form-control" type="hidden" name="id" value="{{ $item->id }}">
+                    <input class="form-control" type="hidden" name="id" value="{{ @$item->id }}">
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">{{ trans('main.Close') }}</button>

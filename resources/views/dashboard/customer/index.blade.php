@@ -63,7 +63,7 @@
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <?php $contactSources = \App\Models\ContactSource::get(['id', 'name']); ?>
                                                         @foreach($contactSources as $contactSource)
-                                                        <option value="{{ $contactSource->id }}">{{ $contactSource->name }}</option>
+                                                        <option value="{{ @$contactSource->id }}">{{ @$contactSource->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -86,7 +86,7 @@
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                                         @foreach($activities as $activity)
-                                                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                                        <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -109,7 +109,7 @@
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <?php $cities = \App\Models\City::get(['id', 'name']); ?>
                                                         @foreach($cities as $city)
-                                                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                                        <option value="{{ @$city->id }}">{{ @$city->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -132,7 +132,7 @@
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <?php $industries = \App\Models\Industry::get(['id', 'name']); ?>
                                                         @foreach($industries as $industry)
-                                                        <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                                                        <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -187,7 +187,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -247,11 +247,11 @@
                                     @foreach ($data as $key=>$item)
                                     <tr>
                                         <td class="text-center">
-                                            {{ $key+1 }}
+                                            {{ @$key+1 }}
                                         </td>
                                         <td class="text-center">
                                             @can('عرض العملاء')
-                                                <a href="{{ route('customer.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a>
+                                                <a href="{{ route('customer.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ @$item->name }}</a>
                                             @endcan
                                         </td>
                                         <td class="text-center">{{ @$item->mobile }}</td>
@@ -277,12 +277,12 @@
                                                 </div>
                                                 <div class="menu-item px-3">
                                                     @can('حذف العملاء')
-                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                     @endcan
                                                 </div>
                                                 <div class="menu-item px-3">
                                                     @can('تعديل العملاء')
-                                                        <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#makePasswordModal_{{ $item->id }}">{{ trans('main.Password') }}</a>
+                                                        <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#makePasswordModal_{{ @$item->id }}">{{ trans('main.Password') }}</a>
                                                     @endcan
                                                 </div>
                                             </div>
@@ -306,7 +306,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

@@ -9,13 +9,8 @@
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal"><i class="ki-outline ki-cross fs-1"></i></div>
                 </div>
                 <div class="modal-body py-10 px-lg-17">
-                    <div class="form-header">
-                        <p>{{ trans('main.Change Active Status') }}</p>
-                    </div>
-                    <div class="modal-btn delete-action">
-                        <!-- activate_selected_id -->
-                        <input class="text" type="hidden" id="activate_selected_id" name="activate_selected_id" value=''>
-                    </div>
+                    <!-- activate_selected_id -->
+                    <input class="text" type="hidden" id="activate_selected_id" name="activate_selected_id" value=''>
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">{{ trans('main.Close') }}</button>

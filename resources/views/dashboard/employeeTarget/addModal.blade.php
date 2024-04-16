@@ -27,7 +27,7 @@
                                 }
                             ?>
                             @foreach($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -36,21 +36,31 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Month') }}</span>
                         </label>
-                        <?php $year = date('Y'); ?>
+                        <?php
+                            $today = now();
+                            $currentMonth = $today->format('n'); // Get the current month number
+                            $currentYear  = $today->year;
+                            // If it's December, get months for the next year
+                            $year = ($currentMonth == 12) ? $currentYear + 1 : $currentYear;
+                            // Create an array to hold the month names
+                            $months = [];
+                            // Loop through the months
+                            for ($i = $currentMonth; $i <= 12; $i++) {
+                                $months[] = date('M', mktime(0, 0, 0, $i, 1));
+                            }
+                            // If it's December, also get the months for the next year
+                            if ($currentMonth == 12) {
+                                for ($i = 1; $i <= 12; $i++) {
+                                    $months[] = date('M', mktime(0, 0, 0, $i, 1, $year));
+                                }
+                            }
+                            // $year  = date('Y');
+                        ?>
                         <select name="month" data-control="select2" data-dropdown-parent="#add_month" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
-                            <option value="Jan-{{ $year }}">{{ trans('main.Jan') }} - {{ $year }}</option>
-                            <option value="Feb-{{ $year }}">{{ trans('main.Feb') }} - {{ $year }}</option>
-                            <option value="Mar-{{ $year }}">{{ trans('main.Mar') }} - {{ $year }}</option>
-                            <option value="Apr-{{ $year }}">{{ trans('main.Apr') }} - {{ $year }}</option>
-                            <option value="May-{{ $year }}">{{ trans('main.May') }} - {{ $year }}</option>
-                            <option value="Jun-{{ $year }}">{{ trans('main.Jun') }} - {{ $year }}</option>
-                            <option value="Jul-{{ $year }}">{{ trans('main.Jul') }} - {{ $year }}</option>
-                            <option value="Aug-{{ $year }}">{{ trans('main.Aug') }} - {{ $year }}</option>
-                            <option value="Sep-{{ $year }}">{{ trans('main.Sep') }} - {{ $year }}</option>
-                            <option value="Oct-{{ $year }}">{{ trans('main.Oct') }} - {{ $year }}</option>
-                            <option value="Nov-{{ $year }}">{{ trans('main.Nov') }} - {{ $year }}</option>
-                            <option value="Dec-{{ $year }}">{{ trans('main.Dec') }} - {{ $year }}</option>
+                            @foreach($months as $month)
+                                <option value="{{ @$month }}-{{ @$year }}">{{ trans('main.'.$month) }} - {{ @$year }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div>

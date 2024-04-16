@@ -1,3 +1,8 @@
+.
+
+
+
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -24,6 +29,7 @@ class CreateCustomersTable extends Migration
             $table->string('gender')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('national_id')->nullable();
+            $table->string('firebase_token')->nullable();
             $table->foreignId('city_id')->nullable()->constrained('cities')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('area_id')->nullable()->constrained('areas')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('contact_source_id')->nullable()->constrained('contact_sources')->cascadeOnDelete()->cascadeOnUpdate();

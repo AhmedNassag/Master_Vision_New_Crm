@@ -25,9 +25,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'conversion_rate'       => 'required|numeric',
-            'sales_conversion_rate' => 'nullable|numeric',
-            'points'                => 'nullable|numeric',
-            'expiry_days'           => 'nullable|numeric',
+            'sales_conversion_rate' => 'required|numeric',
+            'points'                => 'required|numeric',
+            'expiry_days'           => 'required|numeric',
             'activity_id'           => 'required|integer|exists:activates,id',
             'sub_activity_id'       => 'required|integer|exists:interests,id',
         ];

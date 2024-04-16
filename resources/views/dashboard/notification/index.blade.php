@@ -50,7 +50,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $users = \App\Models\User::get(['id','name']); ?>
                                                     @foreach($users as $user)
-                                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        <option value="{{ @$user->id }}">{{ @$user->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -71,7 +71,7 @@
                                                         }
                                                     ?>
                                                     @foreach($employees as $employee)
-                                                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                        <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -83,7 +83,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                                     @foreach($departments as $department)
-                                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                        <option value="{{ @$department->id }}">{{ @$department->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -108,7 +108,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -166,9 +166,9 @@
                                         @foreach ($data as $key=>$item)
                                             <tr>
                                                 <td class="text-center">
-                                                    {{ $key+1 }}
+                                                    {{ @$key+1 }}
                                                 </td>
-                                                <td class="text-center">{{ $item->notification }}</td>
+                                                <td class="text-center">{{ @$item->notification }}</td>
                                                 <td class="text-center">{{ @$item->employee->name }}</td>
                                                 <td class="text-center">{{ @$item->department->name }}</td>
                                                 <td class="text-center">{{ @$item->createdBy->name }}</td>
@@ -180,12 +180,12 @@
                                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                         @can('تعديل الإشعارات')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ $item->id }}">{{ trans('main.Edit') }}</a>
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ @$item->id }}">{{ trans('main.Edit') }}</a>
                                                             </div>
                                                         @endcan
                                                         @can('حذف الإشعارات')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                             </div>
                                                         @endcan
                                                     </div>
@@ -209,7 +209,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

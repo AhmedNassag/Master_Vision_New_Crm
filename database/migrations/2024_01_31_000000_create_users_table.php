@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->boolean('status')->default(1)->nullable();
             $table->boolean('active')->default(1)->nullable();
             $table->string('type')->default('Employee')->nullable();
+            $table->string('firebase_token')->nullable();
             $table->foreignId('context_id')->nullable()->constrained('employees')->cascadeOnDelete()->cascadeOnUpdate();
             $table->rememberToken();
             $table->timestamps();

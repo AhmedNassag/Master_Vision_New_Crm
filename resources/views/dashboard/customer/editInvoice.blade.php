@@ -8,7 +8,7 @@
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <li>{{ @$error }}</li>
                 @endforeach
             </ul>
         </div>
@@ -72,38 +72,38 @@
                             <!-- invoice_number -->
                             <div class="col-md-6 fv-row mb-6">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Invoice Number') }}</label>
-                                <input required type="text" class="form-control form-control-solid" id="invoice_number" name="invoice_number" value="{{ $invoice->invoice_number }}">
+                                <input required type="text" class="form-control form-control-solid" id="invoice_number" name="invoice_number" value="{{ @$invoice->invoice_number }}" required>
                             </div>
                             <!-- invoice_date -->
                             <div class="col-md-6 fv-row mb-6">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Invoice Date') }}</label>
-                                <input type="date" required class="form-control form-control-solid" id="invoice_date" name="invoice_date" value="{{ $invoice->invoice_date }}">
+                                <input type="date" required class="form-control form-control-solid" id="invoice_date" name="invoice_date" value="{{ @$invoice->invoice_date }}" required>
                             </div>
                             <!-- total_amount -->
                             <div class="col-md-6 fv-row mb-6">
-                                <label class="fs-5 fw-semibold mb-2">{{ trans('main.Total Amount') }}</label>
-                                <input type="number" required step="0.01" class="form-control form-control-solid" id="total_amount" name="total_amount" value="{{ $invoice->total_amount }}">
+                                <label class="fs-5 fw-semibold mb-2 required">{{ trans('main.Total Amount') }}</label>
+                                <input type="number" required step="0.01" class="form-control form-control-solid" id="total_amount" name="total_amount" value="{{ @$invoice->total_amount }}" required>
                             </div>
                             <!-- amount_paid -->
                             <div class="col-md-6 fv-row mb-6">
-                                <label class="fs-5 fw-semibold mb-2">{{ trans('main.Amount Paid') }}</label>
-                                <input type="number" required step="0.01" class="form-control form-control-solid" id="amount_paid" name="amount_paid"  value="{{ $invoice->amount_paid }}">
+                                <label class="fs-5 fw-semibold mb-2 required">{{ trans('main.Amount Paid') }}</label>
+                                <input type="number" required step="0.01" class="form-control form-control-solid" id="amount_paid" name="amount_paid"  value="{{ @$invoice->amount_paid }}" required>
                             </div>
                             <!-- debt -->
                             <div class="col-md-6 fv-row mb-6">
-                                <label class="fs-5 fw-semibold mb-2">{{ trans('main.Dept') }}</label>
-                                <input type="number" step="0.01" class="form-control form-control-solid" id="debt"name="debt" value="{{ $invoice->debt }}" readonly>
+                                <label class="fs-5 fw-semibold mb-2 required">{{ trans('main.Dept') }}</label>
+                                <input type="number" step="0.01" class="form-control form-control-solid" id="debt"name="debt" value="{{ @$invoice->debt }}" readonly>
                             </div>
                             <!-- activity_id -->
                             <div id="activity_id" class="col-md-6 fv-row mb-6">
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Activity') }}</span>
                                 </label>
-                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                     @foreach($activities as $activity)
-                                        <option value="{{ $activity->id }}" @if($invoice->activity_id == $activity->id ) selected  @endif>{{ $activity->name }}</option>
+                                        <option value="{{ @$activity->id }}" @if($invoice->activity_id == $activity->id ) selected  @endif>{{ @$activity->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -112,8 +112,8 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.SubActivity') }}</span>
                                 </label>
-                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                    <option value="{{ $invoice->interest_id  }}">{{ $invoice->interest ? $invoice->interest->name : " ---- " }} </option>
+                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                                    <option value="{{ @$invoice->interest_id  }}">{{ @$invoice->interest ? $invoice->interest->name : " ---- " }} </option>
                                 </select>
                             </div>
                             <!-- status -->
@@ -121,7 +121,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Status') }}</span>
                                 </label>
-                                <select name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
                                     <option @if($invoice->status == 'draft' ) selected  @endif value="draft">{{ trans('main.Draft') }}</option>
                                     <option @if($invoice->status == 'sent' ) selected  @endif value="sent">{{ trans('main.Sent') }}</option>
                                     <option @if($invoice->status == 'paid' ) selected  @endif value="paid">{{ trans('main.Paid') }}</option>
@@ -130,11 +130,11 @@
                             </div>
                             <!-- description -->
                             <div class="col-md-12 fv-row mb-6">
-                                <label class="fs-5 fw-semibold mb-2">{{ trans('main.Description') }}</label>
-                                <textarea class="form-control form-control-solid" id="description" name="description" rows="3">{{ $invoice->description }}</textarea>
+                                <label class="fs-5 fw-semibold mb-2 required">{{ trans('main.Description') }}</label>
+                                <textarea class="form-control form-control-solid" id="description" name="description" rows="3" required >{{ @$invoice->description }}</textarea>
                             </div>
                             <!-- id -->
-                            <input type="hidden" class="form-control form-control-solid" id="id" name="id" value="{{ $invoice->id }}">
+                            <input type="hidden" class="form-control form-control-solid" id="id" name="id" value="{{ @$invoice->id }}">
                         </div>
                     <!-- </div> -->
                 </div>

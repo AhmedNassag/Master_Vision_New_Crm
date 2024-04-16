@@ -8,7 +8,7 @@
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <li>{{ @$error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -91,7 +91,7 @@
                                     </div>
                                     <!-- confirm-password -->
                                     <div class="col-md-6 fv-row">
-                                        <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Confirm') }} {{ trans('main.Password') }}</label>
+                                        <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Confirm Password') }}</label>
                                         <input type="password" class="confirm-password form-control form-control-solid" placeholder="{{ trans('main.Confirm') }} {{ trans('main.Password') }}" value="{{ old('confirm-password') }}" name="confirm-password" />
                                     </div>
                                     <!-- branch_id -->
@@ -112,7 +112,7 @@
                                                 }
                                             ?>
                                             @foreach($branches as $branch)
-                                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -125,7 +125,7 @@
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                             @foreach($departments as $department)
-                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                <option value="{{ @$department->id }}">{{ @$department->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

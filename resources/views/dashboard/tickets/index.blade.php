@@ -55,7 +55,7 @@
                                                         }
                                                     ?>
                                                     @foreach($employees as $employee)
-                                                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                        <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -65,7 +65,7 @@
                                                 </label>
                                                 <select name="customer_id" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <?php 
+                                                    <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
                                                         {
                                                             $customers = \App\Models\Customer::get(['id','name']);
@@ -80,7 +80,7 @@
                                                         }
                                                     ?>
                                                     @foreach($customers as $customer)
-                                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                                        <option value="{{ @$customer->id }}">{{ @$customer->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -123,7 +123,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -181,9 +181,9 @@
                                         @foreach ($data as $key=>$item)
                                             <tr>
                                                 <td class="text-center">
-                                                    TK_{{ $item->id }}
+                                                    TK_{{ @$item->id }}
                                                 </td>
-                                                <td class="text-center">{{ $item->customer->name }}</td>
+                                                <td class="text-center">{{ @$item->customer->name }}</td>
                                                 <td class="text-center">
                                                     @if($item->ticket_type == 'Technical Issue')
                                                         {{ trans('main.Technical Issue') }}
@@ -213,7 +213,7 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $item->created_at->format('Y-m-d') }}
+                                                    {{ @$item->created_at->format('Y-m-d') }}
                                                 </td>
                                                 <td class="text-center">
                                                     <a href="{{ route('tickets.show', $item->id) }}" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -238,7 +238,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

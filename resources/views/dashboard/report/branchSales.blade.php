@@ -49,7 +49,7 @@
                                                 }
                                             ?>
                                             @foreach($year_month as $key => $value)
-                                                <option value="{{ $key }}" {{ $key == @$month ? 'selected' : '' }}>{{ $value }}</option>
+                                                <option value="{{ @$key }}" {{ @$key == @$month ? 'selected' : '' }}>{{ @$value }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -70,7 +70,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -130,7 +130,7 @@
                                                 @foreach (@$data as $key=>$item)
                                                     <tr>
                                                         <td class="text-center">
-                                                            {{ $key+1 }}
+                                                            {{ @$key+1 }}
                                                         </td>
                                                         <td class="text-center px-0">{{ @$item['branch'] }}</td>
                                                         <td class="text-center px-0">{{ @$item['target'] }}</td>

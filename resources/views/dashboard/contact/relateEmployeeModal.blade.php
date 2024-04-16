@@ -1,5 +1,5 @@
 <!--begin::Modal-->
-<div class="modal fade" id="relateEmployee_modal_{{ $item->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="relateEmployee_modal_{{ @$item->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form class="form" action="{{ route('contact.relateEmployee', 'test') }}" method="POST" enctype="multipart/form-data">
@@ -10,11 +10,11 @@
                 </div>
                 <div class="modal-body py-10 px-lg-17">
                     <!-- branch_id -->
-                    <div id="branch_id" class="col-md-12 fv-row">
+                    <div id="branch_id_{{ @$item->id }}" class="col-md-12 fv-row">
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Branch') }}</span>
                         </label>
-                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id_{{ @$item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php
                                 if(Auth::user()->roles_name[0] == "Admin")
@@ -27,16 +27,16 @@
                                 }
                             ?>
                             @foreach($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <!-- employee_id -->
-                    <div id="employee_id" class="col-md-12 fv-row">
+                    <div id="employee_id_{{ @$item->id }}" class="col-md-12 fv-row">
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Employee') }}</span>
                         </label>
-                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id_{{ @$item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
                         </select>
@@ -44,7 +44,7 @@
                     <!-- id -->
                     <div class="row mb-5">
                         <div class="col-md-12 fv-row">
-                            <input class="form-control form-control-solid" type="hidden" name="id" value="{{ $item->id }}">
+                            <input class="form-control form-control-solid" type="hidden" name="id" value="{{ @$item->id }}">
                         </div>
                     </div>
                 </div>

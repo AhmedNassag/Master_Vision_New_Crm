@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CustomerPortalController;
 use App\Http\Controllers\AuthController as LoginCustomerController;
@@ -18,6 +19,13 @@ use App\Http\Controllers\AuthController as LoginCustomerController;
 */
 
 
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('route:clear');
+
+    return "Cache cleared successfully";
+});
 
 Route::get('/', function () {
     return view('home');

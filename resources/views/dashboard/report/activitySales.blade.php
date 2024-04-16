@@ -39,7 +39,7 @@
                                             <option value="">{{ trans('main.Activity') }}...</option>
                                             <?php $activities = App\Models\Activity::get(['id', 'name']); ?>
                                             @foreach( $activities as $activity )
-                                            <option value="{{ $activity->id }}" {{ $activity->id == @$activity_id ? 'selected' : '' }}>{{ $activity->name }}</option>
+                                            <option value="{{ @$activity->id }}" {{ @$activity->id == @$activity_id ? 'selected' : '' }}>{{ @$activity->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -84,7 +84,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -145,7 +145,7 @@
                                             @foreach (@$data as $key=>$item)
                                             <tr>
                                                 <td class="text-center">
-                                                    {{ $key+1 }}
+                                                    {{ @$key+1 }}
                                                 </td>
                                                 <td class="text-center">{{ @$item['activity'] }}</td>
                                                 <td class="text-center">{{ @$item['sub_activity'] }}</td>

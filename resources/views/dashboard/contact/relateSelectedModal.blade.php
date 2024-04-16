@@ -5,13 +5,10 @@
             <form action="{{ route('contact.relateSelected') }}" method="POST" id="delete_multi_category_form">
                 @csrf
                 <div class="modal-header">
-                    <h2>{{ trans('main.Delete Selected') }}</h2>
+                    <h2>{{ trans('main.Relate Employee') }}</h2>
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal"><i class="ki-outline ki-cross fs-1"></i></div>
                 </div>
                 <div class="modal-body py-10 px-lg-17">
-                    <div class="form-header">
-                        <p>{{ trans('main.Relate Employee') }}</p>
-                    </div>
                     <!-- employee_id -->
                     <div class="d-flex flex-column mb-5 fv-row" id="add_employee_id">
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -30,7 +27,7 @@
                                 }
                             ?>
                             @foreach($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
                             @endforeach
                         </select>
                     </div>

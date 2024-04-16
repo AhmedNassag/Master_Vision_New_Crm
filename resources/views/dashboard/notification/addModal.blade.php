@@ -18,9 +18,7 @@
                     </div>
                     <!-- employee_id -->
                     <div class="d-flex flex-column mb-5 fv-row" id="add_employee_id">
-                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                            <span class="required">{{ trans('main.Employee') }}</span>
-                        </label>
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Employee') }}</label>
                         <select name="employee_id" data-control="select2" data-dropdown-parent="#add_employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php
@@ -34,20 +32,18 @@
                                 }
                             ?>
                             @foreach($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <!-- dept -->
                     <div class="d-flex flex-column mb-5 fv-row" id="add_dept">
-                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                            <span class="required">{{ trans('main.Department') }}</span>
-                        </label>
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Department') }}</label>
                         <select name="dept" data-control="select2" data-dropdown-parent="#add_dept" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $departments = \App\Models\Department::get(['id','name']); ?>
                             @foreach($departments as $department)
-                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                <option value="{{ @$department->id }}">{{ @$department->name }}</option>
                             @endforeach
                         </select>
                     </div>

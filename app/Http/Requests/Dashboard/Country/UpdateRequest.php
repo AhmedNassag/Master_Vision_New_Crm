@@ -24,7 +24,11 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
+            'name' => [
+                'required', 'string',
+                \Illuminate\Validation\Rule::unique('countries', 'name')->whereNull('deleted_at')->ignore(request()->id),
+            ],
+            'phonecode' => 'required',
         ];
     }
 
@@ -37,8 +41,10 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => trans('validation.required'),
-            'name.string'   => trans('validation.string'),
+            'name.required'      => trans('validation.required'),
+            'name.string'        => trans('validation.string'),
+            'name.unique'        => trans('validation.unique'),
+            'phonecode.required' => trans('validation.required'),
         ];
     }
 }

@@ -9,7 +9,7 @@
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <li>{{ @$error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -75,7 +75,7 @@
 
                                     <div class="form-group">
                                         <label>{{ trans('main.Name') }}</label>
-                                        <input type="text" class="form-control" name="name" value="{{ $role->name }}" disabled>
+                                        <input type="text" class="form-control" name="name" value="{{ @$role->name }}" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -93,11 +93,11 @@
                                                 <div class="col mb-3 d-flex">
                                                     <div class="card flex-fill">
                                                         <div class="card-body p-3 text-center">
-                                                            <p class="card-text f-12">{{ $value->name }}</p>
+                                                            <p class="card-text f-12">{{ @$value->name }}</p>
                                                         </div>
                                                         <div class="card-footer p-3 text-center">
                                                             <label class="form-group toggle-switch mb-0">
-                                                                <input type="checkbox" class="toggle-switch-input" name="permission[]" value="{{ $value->name }}" checked disabled>
+                                                                <input type="checkbox" class="toggle-switch-input" name="permission[]" value="{{ @$value->name }}" checked disabled>
                                                                 <span class="toggle-switch-label mx-auto">
                                                                     <span class="toggle-switch-indicator"></span>
                                                                 </span>

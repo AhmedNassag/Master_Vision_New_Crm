@@ -5,7 +5,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{{ @$error }}</li>
             @endforeach
         </ul>
     </div>
@@ -75,13 +75,12 @@
                                                 <img src="assets/media/avatars/blank.png" alt="image" />
                                             @endif
                                         </div>
-                                        <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$item->name }}</a>
+                                        <div class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$item->name }}</div>
                                         <div class="fs-5 fw-semibold text-muted mb-6">{{ @$item->mobile }} - {{ @$item->mobile2 }}</div>
                                         <div class="card-toolbar mb-3 row">
                                             <!--begin::Call-->
                                             @can('إضافة تذكيرات العملاء')
                                                 <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#createReminder">
-                                                    {{-- <i class="ki-outline ki-telephone-square fs-3"></i> --}}
                                                     {{ trans('main.CreateReminder') }}
                                                 </button>
                                             @endcan
@@ -99,7 +98,6 @@
                                             <!--begin::Retarget-->
                                             @can('إضافة إعادة إستهداف العملاء')
                                                 <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#retargetModal">
-                                                {{-- <i class="ki-outline ki-user-square fs-3"></i>--}}
                                                     {{ trans('main.Retarget') }}
                                                 </button>
                                             @endcan
@@ -386,14 +384,14 @@
                                                 <tbody class="fw-semibold text-gray-600">
                                                     @foreach ($item->invoices as $invoice)
                                                         <tr>
-                                                            <td class="text-center">{{ $invoice->invoice_number }}</td>
-                                                            <td class="text-center">{{ $invoice->invoice_date }}</td>
+                                                            <td class="text-center">{{ @$invoice->invoice_number }}</td>
+                                                            <td class="text-center">{{ @$invoice->invoice_date }}</td>
                                                             <td class="text-center">{{ number_format($invoice->total_amount, 0) }}</td>
                                                             <td class="text-center">{{ number_format($invoice->amount_paid, 0) }}</td>
                                                             <td class="text-center">{{ number_format($invoice->debt, 0) }}</td>
-                                                            <td class="text-center">{{ $invoice->activity->name }}</td>
-                                                            <td class="text-center">{{ $invoice->subActivity->name ?? '' }}</td>
-                                                            <td class="text-center">{{ ucfirst($invoice->status) }}</td>
+                                                            <td class="text-center">{{ @$invoice->activity->name }}</td>
+                                                            <td class="text-center">{{ @$invoice->subActivity->name ?? '' }}</td>
+                                                            <td class="text-center">{{ trans('main.'.ucfirst($invoice->status).'') }}</td>
                                                             <td class="text-center">
                                                                 @can('تعديل فواتير العملاء')
                                                                     <a type="button" class="btn btn-sm btn-edit btn-info btn-block" href="{{ route('customer.edit.invoice',$invoice->id) }}">
@@ -417,7 +415,7 @@
                                     <div class="card pt-4 mb-6 mb-xl-9">
                                         <!--begin::Card body-->
                                         <div class="card-body py-0">
-                                            <input type="hidden" value="{{ $item->id }}" name="customer_id" />
+                                            <input type="hidden" value="{{ @$item->id }}" name="customer_id" />
                                             <!--begin::Table wrapper-->
                                             <div class="table-responsive">
                                                 <table class="table align-middle table-row-dashed fs-6 gy-5 table-bordered" id="attachmentTable">
@@ -443,7 +441,7 @@
                                                             <td class="text-center">
                                                                 @foreach ($item->files as $file)
                                                                  <div class="d-flex flex-column">
-                                                                    <a href="{{ $file->file_path }}" target="_blank" class="">
+                                                                    <a href="{{ @$file->file_path }}" target="_blank" class="">
                                                                         <img src="{{ asset('attachments/customer/'.@$file->file_name) }}" alt="image" alt="Thumbnail" id="thumbnail" style="max-width: 100px; max-height: 100px;"/>
                                                                     </a>
                                                                     <a type="button" class="btn btn-sm btn-danger my-5 " href="{{ route('customer.deleteAttachment', $file->id) }}">{{ trans('main.Delete') }}</a>
@@ -458,19 +456,19 @@
                                                         {{-- @foreach ($item->attachments as $attachment)
                                                             <tr>
                                                                 <td class="text-center">
-                                                                    {{ $attachment->attachment_name }}
+                                                                    {{ @$attachment->attachment_name }}
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <img src="{{ asset('uploads/thumbnails/' . basename($attachment->attachment)) }}" alt="Thumbnail" id="thumbnail" style="max-width: 100px; max-height: 100px;">
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <a href="{{ asset('uploads/' . basename($attachment->attachment)) }}" download="{{ $item->name }} - {{ $attachment->attachment_name }}" class="btn btn-primary">{{ trans('main.Download') }}</a>
+                                                                    <a href="{{ asset('uploads/' . basename($attachment->attachment)) }}" download="{{ @$item->name }} - {{ @$attachment->attachment_name }}" class="btn btn-primary">{{ trans('main.Download') }}</a>
                                                                 </td>
                                                                 <td class="text-center">
 
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <button type="button" class="btn btn-danger" onclick="removeAttachment(this, {{ $attachment->id }})">{{ trans('main.Remove') }}</button>
+                                                                    <button type="button" class="btn btn-danger" onclick="removeAttachment(this, {{ @$attachment->id }})">{{ trans('main.Remove') }}</button>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -535,10 +533,10 @@
                                                         @foreach (App\Models\Contact::where('customer_id', $item->id)->get() as $contact)
                                                             <tr>
                                                                 <td class="text-center">
-                                                                    <span class="{{ $contact->status_info['class'] }}">{{ $contact->status_info['status'] }}</span>
+                                                                    <span class="{{ @$contact->status_info['class'] }}">{{ @$contact->status_info['status'] }}</span>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <a href="#" class="load-content" data-url="{{ route('contact.show', $contact->id) }}">{{ $contact->name }}</a>
+                                                                    <a href="{{ route('contact.show', $contact->id) }}" class="load-content" data-url="{{ route('contact.show', $contact->id) }}">{{ @$contact->name }}</a>
                                                                 </td>
                                                                 <td class="text-center">{{ @$contact->mobile }} </td>
                                                                 <td class="text-center">{{ @$contact->contactSource->name }}</td>
@@ -629,7 +627,7 @@
                                                             <tr>
                                                                 <td class="text-center">{{ @$r_customer->id }}</td>
                                                                 <td class="text-center">
-                                                                    <a href="{{ route('customer.show', $r_customer->id) }}">{{ $r_customer->name }}</a>
+                                                                    <a href="{{ route('customer.show', $r_customer->id) }}">{{ @$r_customer->name }}</a>
                                                                 </td>
                                                                 <td class="text-center">{{ @$r_customer->created_at->format('Y-m-d') }}</td>
                                                             </tr>
@@ -942,8 +940,10 @@
                                                 <div class="d-flex flex-stack flex-grow-1">
                                                     <!--begin::Content-->
                                                     <div class="fw-semibold">
-                                                        <div class="fs-6 text-gray-700">Updating customer details will receive a privacy audit. For more info, please read our
-                                                        <a href="#">Privacy Policy</a></div>
+                                                        <div class="fs-6 text-gray-700">
+                                                            Updating customer details will receive a privacy audit. For more info, please read our
+                                                            <a>Privacy Policy</a>
+                                                        </div>
                                                     </div>
                                                     <!--end::Content-->
                                                 </div>
@@ -1677,7 +1677,7 @@
             var formData = new FormData();
             formData.append('attachment_name', $(button).closest('tr').find('input[name="attachment_name[]"]').val());
             formData.append('attachment_file', fileInput[0].files[0]);
-            formData.append('customer_id', {{ $item->id }});
+            formData.append('customer_id', {{ @$item->id }});
             formData.append('_token', csrfTokenv);
             // Create a new XMLHttpRequest
             var xhr = new XMLHttpRequest();

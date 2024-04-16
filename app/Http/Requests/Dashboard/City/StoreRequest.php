@@ -16,6 +16,14 @@ class StoreRequest extends FormRequest
         return true;
     }
 
+
+
+    public function other_validations()
+    {
+        $count = \App\Models\City::where(['name' => request()->name, 'country_id' => request()->country_id])->whereNull('deleted_at')->get();
+        return $count;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,6 +31,12 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->other_validations()->count() > 0)
+        {
+            return [
+                'name' => 'unique:cities,name,NULL,id,deleted_at,NULL',
+            ];
+        }
         return [
             'name'       => 'required|string',
             'country_id' => 'required|integer|exists:countries,id',
@@ -38,8 +52,9 @@ class StoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'     => trans('validation.required'),
-            'name.string'       => trans('validation.string'),
+            'name.required'      => trans('validation.required'),
+            'name.string'        => trans('validation.string'),
+            'name.unique'        => trans('validation.unique'),
             'country_id.integer' => trans('validation.required'),
             'country_id.integer' => trans('validation.integer'),
         ];

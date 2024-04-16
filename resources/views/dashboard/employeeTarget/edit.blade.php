@@ -8,7 +8,7 @@
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <li>{{ @$error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -71,7 +71,7 @@
                             <!-- <div class="scroll-y me-n7 pe-7" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_new_address_header" data-kt-scroll-wrappers="#kt_modal_new_address_scroll" data-kt-scroll-offset="300px"> -->
                                 <div class="row">
                                     <!-- employee_id -->
-                                    <div class="col-md-6 fv-row">
+                                    <div id="edit_employee_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Employee') }}</span>
                                         </label>
@@ -88,7 +88,7 @@
                                                 }
                                             ?>
                                             @foreach($employees as $employee)
-                                                <option value="{{ $employee->id }}" {{ $employee->id == $employee_target->employee_id ? 'selected' : '' }}>{{ $employee->name }}</option>
+                                                <option value="{{ @$employee->id }}" {{ @$employee->id == $employee_target->employee_id ? 'selected' : '' }}>{{ @$employee->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -97,21 +97,31 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Month') }}</span>
                                         </label>
-                                        <?php $year = date('Y'); ?>
-                                        <select name="month" data-control="select2" data-dropdown-parent="#edit_month" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <?php
+                                            $today = now();
+                                            $currentMonth = $today->format('n'); // Get the current month number
+                                            $currentYear = $today->year;
+                                            // If it's December, get months for the next year
+                                            $year = ($currentMonth == 12) ? $currentYear + 1 : $currentYear;
+                                            // Create an array to hold the month names
+                                            $months = [];
+                                            // Loop through the months
+                                            for ($i = $currentMonth; $i <= 12; $i++) {
+                                                $months[] = date('M', mktime(0, 0, 0, $i, 1));
+                                            }
+                                            // If it's December, also get the months for the next year
+                                            if ($currentMonth == 12) {
+                                                for ($i = 1; $i <= 12; $i++) {
+                                                    $months[] = date('M', mktime(0, 0, 0, $i, 1, $year));
+                                                }
+                                            }
+                                            // $year  = date('Y');
+                                        ?>
+                                        <select name="month" data-control="select2" data-dropdown-parent="#month" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
-                                            <option value="Jan-{{ $year }}">{{ trans('main.Jan') }} - {{ $year }}</option>
-                                            <option value="Feb-{{ $year }}">{{ trans('main.Feb') }} - {{ $year }}</option>
-                                            <option value="Mar-{{ $year }}">{{ trans('main.Mar') }} - {{ $year }}</option>
-                                            <option value="Apr-{{ $year }}">{{ trans('main.Apr') }} - {{ $year }}</option>
-                                            <option value="May-{{ $year }}">{{ trans('main.May') }} - {{ $year }}</option>
-                                            <option value="Jun-{{ $year }}">{{ trans('main.Jun') }} - {{ $year }}</option>
-                                            <option value="Jul-{{ $year }}">{{ trans('main.Jul') }} - {{ $year }}</option>
-                                            <option value="Aug-{{ $year }}">{{ trans('main.Aug') }} - {{ $year }}</option>
-                                            <option value="Sep-{{ $year }}">{{ trans('main.Sep') }} - {{ $year }}</option>
-                                            <option value="Oct-{{ $year }}">{{ trans('main.Oct') }} - {{ $year }}</option>
-                                            <option value="Nov-{{ $year }}">{{ trans('main.Nov') }} - {{ $year }}</option>
-                                            <option value="Dec-{{ $year }}">{{ trans('main.Dec') }} - {{ $year }}</option>
+                                            @foreach($months as $month)
+                                                <option value="{{ @$month }}-{{ @$year }}">{{ trans('main.'.$month) }} - {{ @$year }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div>
@@ -135,12 +145,12 @@
                                     <!-- target_amount -->
                                     <div id="activity_id" class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2" for="target_amount">{{ trans('main.Total Amount') }}</label>
-                                        <input class="form-control form-control-solid calls-input" readonly name="target_amount" type="number" value="{{ $employee_target->target_amount }}">
+                                        <input class="form-control form-control-solid calls-input" readonly name="target_amount" type="number" value="{{ @$employee_target->target_amount }}">
                                     </div>
                                     <!-- interest_id -->
                                     <div id="interest_id" class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2" for="target_meeting">{{ trans('main.Total Calls') }}</label>
-                                        <input class="form-control form-control-solid calls-input" readonly name="target_meeting" type="number" value="{{ $employee_target->target_amount }}">
+                                        <input class="form-control form-control-solid calls-input" readonly name="target_meeting" type="number" value="{{ @$employee_target->target_amount }}">
                                     </div>
                                 </div>
                             <!-- </div> -->
@@ -240,8 +250,8 @@
                                 <select name="activity_id[]" class="activity-select form-control">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     @foreach ($activities as $activity)
-                                        <option value="{{ $activity->id }}" {{ $activity->id == $target->activity_id ? 'selected' : '' }}>
-                                            {{ $activity->name }}
+                                        <option value="{{ @$activity->id }}" {{ @$activity->id == $target->activity_id ? 'selected' : '' }}>
+                                            {{ @$activity->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -251,7 +261,7 @@
                             <div class="row mb-5">
                                 <div class="col-md-12 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">{{ trans('main.AmountTarget') }}</label>
-                                    <input type="number" class="form-control form-control-solid amount-input" placeholder="{{ trans('main.AmountTarget') }}" value="{{ $target->amount_target }}" name="amount_target[]" />
+                                    <input type="number" class="form-control form-control-solid amount-input" placeholder="{{ trans('main.AmountTarget') }}" value="{{ @$target->amount_target }}" name="amount_target[]" />
                                 </div>
                             </div>
                         </td>
@@ -259,7 +269,7 @@
                             <div class="row mb-5">
                                 <div class="col-md-12 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">{{ trans('main.CallsTarget') }}</label>
-                                    <input type="text" class="form-control form-control-solid calls-input" placeholder="{{ trans('main.CallsTarget') }}" value="{{ $target->calls_target }}" name="calls_target[]" />
+                                    <input type="text" class="form-control form-control-solid calls-input" placeholder="{{ trans('main.CallsTarget') }}" value="{{ @$target->calls_target }}" name="calls_target[]" />
                                 </div>
                             </div>
                         </td>
@@ -278,7 +288,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                     @foreach ($activities as $activity)
-                                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                        <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

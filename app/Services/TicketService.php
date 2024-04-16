@@ -64,9 +64,9 @@ class TicketService
         return DB::transaction(function () use ($ticket, $user, $userType, $comment) {
             $log = CommunicationLog::create([
                 'ticket_id' => $ticket->id,
-                'user_id' => $user->id,
+                'user_id'   => $user->id,
                 'user_type' => $userType,
-                'comment' => $comment,
+                'comment'   => $comment,
             ]);
             // Notify about the reply based on user type
             // if ($userType === 'customer') {

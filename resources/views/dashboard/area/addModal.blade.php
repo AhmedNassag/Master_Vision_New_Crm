@@ -27,7 +27,7 @@
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $cities = \App\Models\City::get(['id','name']); ?>
                                 @foreach($cities as $city)
-                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                    <option value="{{ @$city->id }}">{{ @$city->name }}</option>
                                 @endforeach
                             </select>
                         </div>

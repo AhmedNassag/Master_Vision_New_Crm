@@ -19,7 +19,7 @@ class Branch extends Model
     //start relations
     public function employees()
     {
-        return $this->hasMany(Emploee::class, 'branch_id');
+        return $this->hasMany(Employee::class, 'branch_id');
     }
 
 

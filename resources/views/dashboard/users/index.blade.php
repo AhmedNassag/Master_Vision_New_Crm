@@ -71,7 +71,7 @@
                                                         }
                                                     ?>
                                                     @foreach($branches as $branch)
-                                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                        <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -84,7 +84,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                                     @foreach($departments as $department)
-                                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                        <option value="{{ @$department->id }}">{{ @$department->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -109,7 +109,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -171,7 +171,7 @@
                                         @foreach ($data as $key=>$item)
                                             <tr>
                                                 <td class="text-center">
-                                                    {{ $key+1 }}
+                                                    {{ @$key+1 }}
                                                 </td>
                                                 <td class="text-center">{{ @$item->name }}</td>
                                                 <td class="text-center">{{ @$item->email }}</td>
@@ -198,7 +198,7 @@
                                                 <td class="text-center">
                                                     @if (!empty(@$item->getRoleNames()))
                                                         @foreach (@$item->getRoleNames() as $v)
-                                                            <label class="badge badge-primary">{{ $v }}</label>
+                                                            <label class="badge badge-primary">{{ @$v }}</label>
                                                         @endforeach
                                                     @endif
                                                 </td>
@@ -217,7 +217,7 @@
                                                             @endcan
                                                             @can('حذف المستخدمين')
                                                                 <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                                    <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                                 </div>
                                                             @endcan
                                                         </div>
@@ -241,7 +241,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

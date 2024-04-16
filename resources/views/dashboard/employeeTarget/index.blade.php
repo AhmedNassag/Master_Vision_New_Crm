@@ -77,7 +77,7 @@
                                                             }
                                                         ?>
                                                         @foreach ($employees as $employee)
-                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                            <option value="{{ @$employee->id }}">{{ @$employee->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -89,18 +89,18 @@
                                                     <?php $year = date('Y'); ?>
                                                     <select name="month" data-control="select2" data-dropdown-parent="#month" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
-                                                        <option value="Jan-{{ $year }}">{{ trans('main.Jan') }} - {{ $year }}</option>
-                                                        <option value="Feb-{{ $year }}">{{ trans('main.Feb') }} - {{ $year }}</option>
-                                                        <option value="Mar-{{ $year }}">{{ trans('main.Mar') }} - {{ $year }}</option>
-                                                        <option value="Apr-{{ $year }}">{{ trans('main.Apr') }} - {{ $year }}</option>
-                                                        <option value="May-{{ $year }}">{{ trans('main.May') }} - {{ $year }}</option>
-                                                        <option value="Jun-{{ $year }}">{{ trans('main.Jun') }} - {{ $year }}</option>
-                                                        <option value="Jul-{{ $year }}">{{ trans('main.Jul') }} - {{ $year }}</option>
-                                                        <option value="Aug-{{ $year }}">{{ trans('main.Aug') }} - {{ $year }}</option>
-                                                        <option value="Sep-{{ $year }}">{{ trans('main.Sep') }} - {{ $year }}</option>
-                                                        <option value="Oct-{{ $year }}">{{ trans('main.Oct') }} - {{ $year }}</option>
-                                                        <option value="Nov-{{ $year }}">{{ trans('main.Nov') }} - {{ $year }}</option>
-                                                        <option value="Dec-{{ $year }}">{{ trans('main.Dec') }} - {{ $year }}</option>
+                                                        <option value="Jan-{{ @$year }}">{{ trans('main.Jan') }} - {{ @$year }}</option>
+                                                        <option value="Feb-{{ @$year }}">{{ trans('main.Feb') }} - {{ @$year }}</option>
+                                                        <option value="Mar-{{ @$year }}">{{ trans('main.Mar') }} - {{ @$year }}</option>
+                                                        <option value="Apr-{{ @$year }}">{{ trans('main.Apr') }} - {{ @$year }}</option>
+                                                        <option value="May-{{ @$year }}">{{ trans('main.May') }} - {{ @$year }}</option>
+                                                        <option value="Jun-{{ @$year }}">{{ trans('main.Jun') }} - {{ @$year }}</option>
+                                                        <option value="Jul-{{ @$year }}">{{ trans('main.Jul') }} - {{ @$year }}</option>
+                                                        <option value="Aug-{{ @$year }}">{{ trans('main.Aug') }} - {{ @$year }}</option>
+                                                        <option value="Sep-{{ @$year }}">{{ trans('main.Sep') }} - {{ @$year }}</option>
+                                                        <option value="Oct-{{ @$year }}">{{ trans('main.Oct') }} - {{ @$year }}</option>
+                                                        <option value="Nov-{{ @$year }}">{{ trans('main.Nov') }} - {{ @$year }}</option>
+                                                        <option value="Dec-{{ @$year }}">{{ trans('main.Dec') }} - {{ @$year }}</option>
                                                     </select>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
@@ -124,7 +124,7 @@
                                 <div class="alert alert-danger">
                                     <ul>
                                         @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
+                                            <li>{{ @$error }}</li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -182,7 +182,7 @@
                                                 @foreach ($data as $key => $item)
                                                     <tr>
                                                         <td class="text-center">
-                                                            {{ $key + 1 }}
+                                                            {{ @$key + 1 }}
                                                         </td>
                                                         <td class="text-center">{{ @$item->employee->name }}</td>
                                                         <td class="text-center">{{ @$item->month }}</td>
@@ -205,12 +205,13 @@
                                                                     <div class="menu-item px-3">
                                                                         <a href="#" class="menu-link px-3"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                                            data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                                     </div>
                                                                 @endcan
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    @include('dashboard.employeeTarget.deleteModal')
                                                 @endforeach
                                             @else
                                                 <tr>
@@ -228,14 +229,11 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{ $data->links() }}
+                                    {{ @$data->links() }}
                             </div>
                         </div>
                     </div>
-
                     @include('dashboard.employeeTarget.addModal')
-                    @include('dashboard.employeeTarget.deleteModal')
-
                 </div>
             </div>
         </div>
@@ -319,7 +317,7 @@
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                 @foreach ($activities as $activity)
-                                    <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                    <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -354,7 +352,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                     @foreach ($activities as $activity)
-                                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                        <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

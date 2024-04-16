@@ -9,7 +9,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{{ @$error }}</li>
             @endforeach
         </ul>
     </div>
@@ -78,7 +78,7 @@
                         <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             @foreach ($sub_activities as $sub_activity)
-                                <option value="{{ $sub_activity->id }}">{{ $sub_activity->name }}</option>
+                                <option value="{{ @$sub_activity->id }}">{{ @$sub_activity->name }}</option>
                             @endforeach
                         </select>
                     </div>

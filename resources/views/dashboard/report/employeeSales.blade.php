@@ -48,7 +48,7 @@
                                                 }
                                             ?>
                                             @foreach( $branches as $branch )
-                                                <option value="{{ $branch->id }}" {{ $branch->id == @$branch_id ? 'selected' : '' }}>{{ $branch->name }}</option>
+                                                <option value="{{ @$branch->id }}" {{ @$branch->id == @$branch_id ? 'selected' : '' }}>{{ @$branch->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -69,9 +69,9 @@
                                                     $year_month[$date->format('Y-m')] = $date->format($month_format);
                                                     $date->addMonth();
                                                 }
-                                            ?>
+                                                ?>
                                             @foreach($year_month as $key => $value)
-                                                <option value="{{ $key }}" {{ $key == @$month ? 'selected' : '' }}>{{ $value }}</option>
+                                                <option value="{{ @$key }}" {{ @$key == @$month ? 'selected' : '' }}>{{ @$value }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -92,7 +92,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -154,7 +154,7 @@
                                                 @foreach (@$data as $key=>$item)
                                                     <tr>
                                                         <td class="text-center">
-                                                            {{ $key+1 }}
+                                                            {{ @$key+1 }}
                                                         </td>
                                                         <td class="text-center">{{ @$item['employee'] }}</td>
                                                         <td class="text-center">{{ @$item['target'] }}</td>

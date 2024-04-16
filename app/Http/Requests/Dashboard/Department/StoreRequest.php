@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:departments,name,NULL,id,deleted_at,NULL',
         ];
     }
 
@@ -39,6 +39,7 @@ class StoreRequest extends FormRequest
         return [
             'name.required' => trans('validation.required'),
             'name.string'   => trans('validation.string'),
+            'name.unique'   => trans('validation.unique'),
         ];
     }
 }

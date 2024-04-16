@@ -12,7 +12,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{{ @$error }}</li>
             @endforeach
         </ul>
     </div>
@@ -137,7 +137,7 @@
                                         </div>
                                         <!--end::Avatar-->
                                         <!--begin::Name-->
-                                        <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$customer->name }}</a>
+                                        <div class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$customer->name }}</div>
                                         <!--end::Name-->
                                         <!--begin::Position-->
                                         <div class="fs-5 fw-semibold text-muted mb-3">{{ @$customer->email }}</div>
@@ -411,11 +411,11 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Id') }}</th>
-                                                                    <td class="text-start">TK-{{ $ticket->id }}</td>
+                                                                    <td class="text-start">TK-{{ @$ticket->id }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Customer Name') }}</th>
-                                                                    <td class="text-start">{{ $ticket->customer->name }}</td>
+                                                                    <td class="text-start">{{ @$ticket->customer->name }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Ticket Type') }}</th>
@@ -448,11 +448,11 @@
                                                                 </tr>
                                                                 {{-- <tr>
                                                                     <th class="text-start">{{ trans('main.Priority') }}</th>
-                                                                    <td class="text-start">{{ $ticket->priority }}</td>
+                                                                    <td class="text-start">{{ @$ticket->priority }}</td>
                                                                 </tr> --}}
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Assigned Agent Name') }}</th>
-                                                                    <td class="text-start">{{ $ticket->agent->name ?? '' }}
+                                                                    <td class="text-start">{{ @$ticket->agent->name ?? '' }}
                                                                         <button type="button"  data-bs-toggle="modal" data-bs-target="#assignEmployeeModal" class="btn btn-sm btn-edit  bg-navy">
                                                                             <i class="fa fa-share"></i>
                                                                         </button>
@@ -460,23 +460,23 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Activity') }}</th>
-                                                                    <td class="text-start">{{ $ticket->activity->name ?? '' }}</td>
+                                                                    <td class="text-start">{{ @$ticket->activity->name ?? '' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Interest') }}</th>
-                                                                    <td class="text-start">{{ $ticket->subActivity->name ?? '' }}</td>
+                                                                    <td class="text-start">{{ @$ticket->subActivity->name ?? '' }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Created At') }}</th>
-                                                                    <td class="text-start">{{ $ticket->created_at }}</td>
+                                                                    <td class="text-start">{{ @$ticket->created_at }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Updated At') }}</th>
-                                                                    <td class="text-start">{{ $ticket->updated_at }}</td>
+                                                                    <td class="text-start">{{ @$ticket->updated_at }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-start">{{ trans('main.Description') }}</th>
-                                                                    <td class="text-start">{{ $ticket->description }}</td>
+                                                                    <td class="text-start">{{ @$ticket->description }}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -499,11 +499,11 @@
                                                     <div class="timeline-item flex-column">
                                                         <span class="time">
                                                             <i class="fa fa-clock-o"></i>
-                                                            {{ $ticket->created_at->format('Y-m-d H:i:s') }}
+                                                            {{ @$ticket->created_at->format('Y-m-d H:i:s') }}
                                                         </span>
                                                         <br>
                                                         <div class="timeline-body">
-                                                            {{ $ticket->description }}
+                                                            {{ @$ticket->description }}
                                                         </div>
                                                     </div>
                                                 </li>
@@ -513,16 +513,16 @@
                                                         <div class="timeline-item flex-column">
                                                             <span class="time">
                                                                 <i class="fa fa-clock-o"></i>
-                                                                {{ $log->created_at->format('Y-m-d H:i:s') }}
+                                                                {{ @$log->created_at->format('Y-m-d H:i:s') }}
                                                             </span>
                                                             <br>
                                                             <h3 class="timeline-header">
                                                                 @if($log->user_type == 'agent')
                                                                     {{ trans('main.Support Team') }}:
-                                                                    <small>{{ $log->user->name }}</small>
+                                                                    <small>{{ @$log->user->name }}</small>
                                                                 @else
                                                                     {{ trans('main.Customer') }}:
-                                                                    <small>{{ $customer->name }}</small>
+                                                                    <small>{{ @$customer->name }}</small>
                                                                 @endif
                                                             </h3>
                                                             <br>

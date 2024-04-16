@@ -6,7 +6,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{{ @$error }}</li>
             @endforeach
         </ul>
     </div>
@@ -106,7 +106,7 @@
                                         </div>
                                         <!--end::Avatar-->
                                         <!--begin::Name-->
-                                        <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$item->name }}</a>
+                                        <div class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$item->name }}</div>
                                         <!--end::Name-->
                                         <!--begin::Position-->
                                         <div class="fs-5 fw-semibold text-muted mb-6">
@@ -141,7 +141,7 @@
                                         <div class="card-toolbar mb-3 row">
                                             <!--begin::Call-->
                                             @can('إضافة مكالمات جهات الإتصال')
-                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#call_modal_{{ $item->id }}">
+                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#call_modal_{{ @$item->id }}">
                                                     {{-- <i class="ki-outline ki-telephone-square fs-3"></i> --}}
                                                     {{ trans('main.Add Call') }}
                                                 </button>
@@ -161,7 +161,7 @@
                                             <!--end::Change Status-->
                                             <!--begin::Relate Employee-->
                                             @can('تعديل جهات الإتصال')
-                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ $item->id }}">
+                                                <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ @$item->id }}">
                                                 {{-- <i class="ki-outline ki-user-square fs-3"></i>--}}
                                                     {{ trans('main.Relate Employee') }}
                                                 </button>
@@ -197,10 +197,10 @@
                                             @if($completionPercentage > 0)
                                                 <div class="d-flex align-items-center flex-column mt-3 w-100">
                                                     <div class="d-flex justify-content-between w-100 mt-auto mb-2">
-                                                        <span class="fw-bold fs-6 text-gray-500">{{ $completionPercentage }}%</span>
+                                                        <span class="fw-bold fs-6 text-gray-500">{{ @$completionPercentage }}%</span>
                                                     </div>
                                                     <div class="h-8px mx-3 w-100 bg-light-success rounded">
-                                                        <div class="bg-success rounded h-8px" role="progressbar" style="width: {{ $completionPercentage }}%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="bg-success rounded h-8px" role="progressbar" style="width: {{ @$completionPercentage }}%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                                 <div class="fw-semibold text-muted">{{ trans('main.completionPercentage') }}</div>
@@ -461,12 +461,12 @@
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="#" class="menu-link px-5">Create invoice</a>
+                                            <a class="menu-link px-5">Create invoice</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="#" class="menu-link flex-stack px-5">Create payments
+                                            <a class="menu-link flex-stack px-5">Create payments
                                             <span class="ms-2" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
                                                 <i class="ki-outline ki-information fs-7"></i>
                                             </span></a>
@@ -474,7 +474,7 @@
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5" data-kt-menu-trigger="hover" data-kt-menu-placement="left-start">
-                                            <a href="#" class="menu-link px-5">
+                                            <a class="menu-link px-5">
                                                 <span class="menu-title">Subscription</span>
                                                 <span class="menu-arrow"></span>
                                             </a>
@@ -482,17 +482,17 @@
                                             <div class="menu-sub menu-sub-dropdown w-175px py-4">
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    <a href="#" class="menu-link px-5">Apps</a>
+                                                    <a class="menu-link px-5">Apps</a>
                                                 </div>
                                                 <!--end::Menu item-->
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    <a href="#" class="menu-link px-5">Billing</a>
+                                                    <a class="menu-link px-5">Billing</a>
                                                 </div>
                                                 <!--end::Menu item-->
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    <a href="#" class="menu-link px-5">Statements</a>
+                                                    <a class="menu-link px-5">Statements</a>
                                                 </div>
                                                 <!--end::Menu item-->
                                                 <!--begin::Menu separator-->
@@ -522,17 +522,17 @@
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="#" class="menu-link px-5">Reports</a>
+                                            <a class="menu-link px-5">Reports</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5 my-1">
-                                            <a href="#" class="menu-link px-5">Account Settings</a>
+                                            <a class="menu-link px-5">Account Settings</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="#" class="menu-link text-danger px-5">Delete customer</a>
+                                            <a class="menu-link text-danger px-5">Delete customer</a>
                                         </div>
                                         <!--end::Menu item-->
                                     </div>
@@ -553,18 +553,18 @@
                                             <ul class="timeline timeline-inverse">
                                                 @foreach ($histories as $date => $history)
                                                     <label class="badge badge-light-danger mb-5">
-                                                        <span class="bg-red"> {{ $date }} </span>
+                                                        <span class="bg-red"> {{ @$date }} </span>
                                                     </label>
                                                     @foreach ($history as $timelineItem)
                                                         @if ($timelineItem->action == App\Constants\LeadHistory\Actions::CALL_CREATED)
                                                             <li>
                                                                 <div class="timeline-item">
                                                                     <span class="time">
-                                                                        {{ $timelineItem->created_at->format('H:i') }}
+                                                                        {{ @$timelineItem->created_at->format('H:i') }}
                                                                     </span>
                                                                     <h3 class="timeline-header">
                                                                         &nbsp;
-                                                                        {{ $timelineItem->createdBy->name }}
+                                                                        {{ @$timelineItem->createdBy->name }}
                                                                         &nbsp;
                                                                         {{ trans('main.Added a new call/meeting') }}
                                                                         &nbsp;
@@ -574,13 +574,13 @@
                                                                             $meeting = \App\Models\Meeting::find($timelineItem->related_model_id);
                                                                         @endphp
                                                                         <b>{{ trans('main.Type & Place') }}</b>
-                                                                        <p>{{ $meeting->type . ' (' . $meeting->meeting_place . ') ' }}</p>
+                                                                        <p>{{ @$meeting->type . ' (' . $meeting->meeting_place . ') ' }}</p>
                                                                         <b>{{ trans('main.Reply') }}</b>
-                                                                        <p>{{ $meeting->reply->reply ?? '' }}</p>
+                                                                        <p>{{ @$meeting->reply->reply ?? '' }}</p>
                                                                         <b>{{ trans('main.Notes') }}:</b>
                                                                         <p>{{strip_tags( $timelineItem->placeholders_array['notes'] )}}</p>
                                                                         <b>{{ trans('main.Next Followup date') }}:</b>
-                                                                        <p>{{ $timelineItem->placeholders_array['follow_date'] }}</p>
+                                                                        <p>{{ @$timelineItem->placeholders_array['follow_date'] }}</p>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -588,18 +588,18 @@
                                                             <li>
                                                                 <div class="timeline-item">
                                                                     <span class="time"><i class="fa fa-clock-o"></i>
-                                                                        {{ $timelineItem->created_at->format('H:i') }}</span>
+                                                                        {{ @$timelineItem->created_at->format('H:i') }}</span>
                                                                     @php
                                                                         $logContact = \App\Models\Contact::find($timelineItem->related_model_id);
                                                                     @endphp
                                                                     <h3 class="timeline-header">
                                                                         &nbsp;
-                                                                        {{ $timelineItem->createdBy->name }}
+                                                                        {{ @$timelineItem->createdBy->name }}
                                                                         &nbsp;
                                                                         {{ trans('main.changed status from') }}
                                                                         &nbsp;
-                                                                        {{ $timelineItem->placeholders_array['from'] }} {{ trans('main.To') }}
-                                                                        <span>{{ $timelineItem->placeholders_array['to'] }}</span>
+                                                                        {{ @$timelineItem->placeholders_array['from'] }} {{ trans('main.To') }}
+                                                                        <span>{{ @$timelineItem->placeholders_array['to'] }}</span>
                                                                     </h3>
                                                                 </div>
                                                             </li>
@@ -638,7 +638,7 @@
                                                     <tbody>
                                                         @foreach ($completedData as $data)
                                                             <tr>
-                                                                <td class="text-center">{{ $data->completedBy ? $data->completedBy->name : "----" }}</td>
+                                                                <td class="text-center">{{ @$data->completedBy ? $data->completedBy->name : "----" }}</td>
                                                                 <td class="text-center">
                                                                     <ul class="text-end list-unstyled">
                                                                         @foreach (explode(',', $data->fields) as $field)
@@ -646,7 +646,7 @@
                                                                         @endforeach
                                                                     </ul>
                                                                 </td>
-                                                                <td class="text-center">{{ $data->completion_percentage }}</td>
+                                                                <td class="text-center">{{ @$data->completion_percentage }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -663,8 +663,8 @@
                                                     <tbody>
                                                         @foreach ($completionByDate as $data)
                                                             <tr>
-                                                                <td class="text-center">{{ $data->date_creation }}</td>
-                                                                <td class="text-center">{{ $data->completion_percentage }}%</td>
+                                                                <td class="text-center">{{ @$data->date_creation }}</td>
+                                                                <td class="text-center">{{ @$data->completion_percentage }}%</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -911,8 +911,10 @@
                                                 <div class="d-flex flex-stack flex-grow-1">
                                                     <!--begin::Content-->
                                                     <div class="fw-semibold">
-                                                        <div class="fs-6 text-gray-700">Updating customer details will receive a privacy audit. For more info, please read our
-                                                        <a href="#">Privacy Policy</a></div>
+                                                        <div class="fs-6 text-gray-700">
+                                                            Updating customer details will receive a privacy audit. For more info, please read our
+                                                            <a>Privacy Policy</a>
+                                                        </div>
                                                     </div>
                                                     <!--end::Content-->
                                                 </div>

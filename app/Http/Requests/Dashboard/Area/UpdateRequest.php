@@ -16,6 +16,14 @@ class UpdateRequest extends FormRequest
         return true;
     }
 
+
+
+    public function other_validations()
+    {
+        $count = \App\Models\Area::where(['name' => request()->name, 'city_id' => request()->city_id])->whereNull('deleted_at')->where('id', '!=', request()->id)->get();
+        return $count;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,6 +31,12 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->other_validations()->count() > 0)
+        {
+            return [
+                'name' => 'unique:areas,name,NULL,id,deleted_at,NULL',
+            ];
+        }
         return [
             'name'    => 'required|string',
             'city_id' => 'required|integer|exists:cities,id',

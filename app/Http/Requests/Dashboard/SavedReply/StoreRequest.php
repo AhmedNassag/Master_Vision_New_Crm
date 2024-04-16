@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'reply' => 'required|string',
+            'reply' => 'required|string|unique:saved_replies,reply,NULL,id,deleted_at,NULL',
         ];
     }
 
@@ -39,6 +39,7 @@ class StoreRequest extends FormRequest
         return [
             'reply.required' => trans('validation.required'),
             'reply.string'   => trans('validation.string'),
+            'reply.unique'   => trans('validation.unique'),
         ];
     }
 }

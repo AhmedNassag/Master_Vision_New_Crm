@@ -42,6 +42,7 @@ return [
     'Email'                                 => 'Email',
     'Mobile'                                => 'Mobile',
     'Password'                              => 'Password',
+    'Confirm Password'                      => 'Confirm Password',
     'Email Or Mobile'                       => 'Email Or Mobile',
     'Dashboard'                             => 'Dashboard',
     'Home'                                  => 'Home',

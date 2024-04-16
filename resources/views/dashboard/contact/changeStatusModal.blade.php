@@ -14,7 +14,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Status') }}</span>
                         </label>
-                        <select id="status1" name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select id="status1" name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
                             <option value="contacted">{{ trans('main.Contacted') }}</option>
                             <option value="qualified">{{ trans('main.Qualified') }}</option>
                             <option value="converted">{{ trans('main.Converted') }}</option>
@@ -53,36 +53,36 @@
                         </div>
                         <div class="form-group">
                             <label>{{ trans('main.Activity') }}:</label>
-                            <input class="form-control disabled" disabled value="{{ $item->activity->name ?? '' }}" readonly>
+                            <input class="form-control disabled" disabled value="{{ @$item->activity->name ?? '' }}" readonly>
                         </div>
                         <!-- sub_activity -->
                         <div class="form-group">
                             <label>{{ trans('main.SubActivity') }}:</label>
-                            <input class="form-control disabled" disabled value="{{ $item->subActivity->name ?? '' }}" readonly>
+                            <input class="form-control disabled" disabled value="{{ @$item->subActivity->name ?? '' }}" readonly>
                         </div>
 
                         <!-- invoice[activity_id] -->
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
-                                <input class="form-control form-control-solid" type="hidden" name="invoice[activity_id]" value="{{ $item->activity_id }}" />
+                                <input class="form-control form-control-solid" type="hidden" name="invoice[activity_id]" value="{{ @$item->activity_id }}" />
                             </div>
                         </div>
                         <!-- invoice[interest_id] -->
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
-                                <input class="form-control form-control-solid" type="hidden" name="invoice[interest_id]" value="{{ $item->interest_id }}" />
+                                <input class="form-control form-control-solid" type="hidden" name="invoice[interest_id]" value="{{ @$item->interest_id }}" />
                             </div>
                         </div>
                         <!-- contact_id -->
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
-                                <input class="form-control form-control-solid" type="hidden" name="contact_id" value="{{ $item->id }}">
+                                <input class="form-control form-control-solid" type="hidden" name="contact_id" value="{{ @$item->id }}">
                             </div>
                         </div>
                         <!-- Status -->
-                        <div id="status" class="col-md-12 fv-row">
+                        <div id="status_invoice" class="col-md-12 fv-row">
                             <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Status') }}</label>
-                            <select id="status" name="invoice[status]" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                            <select id="status" name="invoice[status]" data-control="select2" data-dropdown-parent="#status_invoice" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
                                 <option value="draft">{{ trans('main.Draft') }}</option>
                                 <option value="sent">{{ trans('main.Sent') }}</option>
                                 <option selected value="paid">{{ trans('main.Paid') }}</option>

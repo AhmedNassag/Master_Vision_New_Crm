@@ -18,7 +18,7 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $campaigns = \App\Models\Campaign::get(['id','name']); ?>
                             @foreach($campaigns as $campaign)
-                                <option value="{{ $campaign->id }}">{{ $campaign->name }}</option>
+                                <option value="{{ @$campaign->id }}">{{ @$campaign->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -31,7 +31,7 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                             @foreach($activities as $activity)
-                                <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -47,11 +47,11 @@
                     </div>
                     <!-- reminder[customer_id] -->
                     <div class="form-group">
-                        <input class="form-control" type="hidden" name="reminder[customer_id]" value="{{ $item->id }}">
+                        <input class="form-control" type="hidden" name="reminder[customer_id]" value="{{ @$item->id }}">
                     </div>
                     <!-- id -->
                     <div class="form-group">
-                        <input class="form-control" type="hidden" name="id" value="{{ $item->id }}">
+                        <input class="form-control" type="hidden" name="id" value="{{ @$item->id }}">
                     </div>
                 </div>
                 <div class="modal-footer flex-center">

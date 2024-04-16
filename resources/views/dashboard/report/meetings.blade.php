@@ -63,7 +63,7 @@
                                             <option value="">{{ trans('main.SuvActivity') }}...</option>
                                             <?php $subActivities = App\Models\SubActivity::get(['id','name']); ?>
                                             @foreach( $subActivities as $subActivity )
-                                                <option value="{{ $subActivity->id }}" {{ $subActivity->id == @$interests_ids ? 'selected' : '' }}>{{ $subActivity->name }}</option>
+                                                <option value="{{ @$subActivity->id }}" {{ @$subActivity->id == @$interests_ids ? 'selected' : '' }}>{{ @$subActivity->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -76,7 +76,7 @@
                                             <option value="">{{ trans('main.ContactSource') }}...</option>
                                             <?php $contactSources = App\Models\ContactSource::get(['id','name']); ?>
                                             @foreach( $contactSources as $contactSource )
-                                                <option class="px-0" value="{{ $contactSource->id }}" {{ $contactSource->id == @$contact_source_id ? 'selected' : '' }}>{{ $contactSource->name }}</option>
+                                                <option class="px-0" value="{{ @$contactSource->id }}" {{ @$contactSource->id == @$contact_source_id ? 'selected' : '' }}>{{ @$contactSource->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -106,7 +106,7 @@
                                                 }
                                             ?>
                                             @foreach( $contacts as $contact )
-                                                <option value="{{ $contact->id }}" {{ $contact->id == @$contact_id ? 'selected' : '' }}>{{ $contact->name }}</option>
+                                                <option value="{{ @$contact->id }}" {{ @$contact->id == @$contact_id ? 'selected' : '' }}>{{ @$contact->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -128,7 +128,7 @@
                                                 }
                                             ?>
                                             @foreach( $employees as $employee )
-                                                <option value="{{ $employee->id }}" {{ $employee->id == @$created_by ? 'selected' : '' }}>{{ $employee->name }}</option>
+                                                <option value="{{ @$employee->id }}" {{ @$employee->id == @$created_by ? 'selected' : '' }}>{{ @$employee->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -149,7 +149,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -210,9 +210,7 @@
                                             @if(@$data->count() > 0)
                                                 @foreach (@$data as $key=>$item)
                                                     <tr>
-                                                        <td class="text-center">
-                                                            {{ $key+1 }}
-                                                        </td>
+                                                        <td class="text-center">{{ @$key+1 }}</td>
                                                         <td class="text-center">{{ @$item->contact->name }}</td>
                                                         <td class="text-center">@if(@$item->type == 'call') {{ trans('main.Call') }} @else {{ trans('main.Meeting') }}@endif</td>
                                                         <td class="text-center">@if(@$item->meeting_place == 'in') {{ trans('main.In') }} @else {{ trans('main.Out') }}@endif</td>
@@ -236,7 +234,7 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{ $data->links() }}
+                                    {{ @$data->links() }}
                                 </div>
                             </div>
                         @endif

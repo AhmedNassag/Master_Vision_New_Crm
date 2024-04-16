@@ -30,7 +30,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -90,7 +90,7 @@
                                         @foreach ($data as $key=>$item)
                                             <tr>
                                                 <td class="text-center">
-                                                    {{ $key+1 }}
+                                                    {{ @$key+1 }}
                                                 </td>
                                                 <td class="text-center">{{ @$item->customer->name }}</td>
                                                 <td class="text-center">{{ @$item->invoice->id }}</td>
@@ -130,8 +130,8 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
-                        </div>    
+                            {{ @$data->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

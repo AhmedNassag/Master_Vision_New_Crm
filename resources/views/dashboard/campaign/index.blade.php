@@ -54,7 +54,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $contactSources = \App\Models\ContactSource::get(['id','name']); ?>
                                                     @foreach($contactSources as $contactSource)
-                                                        <option value="{{ $contactSource->id }}">{{ $contactSource->name }}</option>
+                                                        <option value="{{ @$contactSource->id }}">{{ @$contactSource->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -66,7 +66,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                                     @foreach($activities as $activity)
-                                                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                                        <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -78,7 +78,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $subActivities = \App\Models\SubActivity::get(['id','name']); ?>
                                                     @foreach($subActivities as $subActivity)
-                                                        <option value="{{ $subActivity->id }}">{{ $subActivity->name }}</option>
+                                                        <option value="{{ @$subActivity->id }}">{{ @$subActivity->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -103,7 +103,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -163,7 +163,7 @@
                                         @foreach ($data as $key=>$item)
                                             <tr>
                                                 <td class="text-center">
-                                                    {{ $key+1 }}
+                                                    {{ @$key+1 }}
                                                 </td>
                                                 <td class="text-center">{{ @$item->name }}</td>
                                                 <td class="text-center">{{ @$item->contactSource->name }}</td>
@@ -178,12 +178,12 @@
                                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                         @can('تعديل الحملات')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ $item->id }}">{{ trans('main.Edit') }}</a>
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ @$item->id }}">{{ trans('main.Edit') }}</a>
                                                             </div>
                                                         @endcan
                                                         @can('حذف الحملات')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                             </div>
                                                         @endcan
                                                     </div>
@@ -207,7 +207,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

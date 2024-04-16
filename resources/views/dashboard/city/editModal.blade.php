@@ -1,5 +1,5 @@
 <!--begin::Add Modal-->
-<div class="modal fade" id="edit_modal_{{ $item->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="edit_modal_{{ @$item->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="{{ route('city.update', 'test') }}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -14,7 +14,7 @@
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Name') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ $item->name, old('name') }}" name="name" />
+                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ @$item->name, old('name') }}" name="name" />
                             </div>
                         </div>
 
@@ -23,11 +23,11 @@
                             <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                 <span class="required">{{ trans('main.Country') }}</span>
                             </label>
-                            <select name="country_id" data-control="select2" data-dropdown-parent="#edit_modal_{{ $item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                            <select name="country_id" data-control="select2" data-dropdown-parent="#edit_modal_{{ @$item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $countries = \App\Models\Country::get(['id','name']); ?>
                                 @foreach($countries as $country)
-                                    <option value="{{ $country->id }}" {{ $country->id == $item->country_id ? 'selected' : '' }}>{{ $country->name }}</option>
+                                    <option value="{{ @$country->id }}" {{ @$country->id == $item->country_id ? 'selected' : '' }}>{{ @$country->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -35,7 +35,7 @@
                 </div>
                 <!-- id -->
                 <div class="form-group">
-                    <input class="form-control" type="hidden" name="id" value="{{ $item->id }}">
+                    <input class="form-control" type="hidden" name="id" value="{{ @$item->id }}">
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">{{ trans('main.Close') }}</button>

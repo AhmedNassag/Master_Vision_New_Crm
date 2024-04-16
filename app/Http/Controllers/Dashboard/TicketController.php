@@ -5,14 +5,23 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Branch;
 use App\Models\Ticket;
 use App\Models\Employee;
+use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\TicketService;
 use App\DataTables\TicketDataTable;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use App\Notifications\TicketReplyNotification;
+use App\Notifications\TicketAssignNotification;
+use App\Notifications\UserAdded;
+use App\Traits\NotificationTrait;
 
 class TicketController extends Controller
 {
+    use NotificationTrait;
+
     public function index(Request $request)
     {
         if(Auth::user()->roles_name[0] == "Admin")
@@ -88,6 +97,13 @@ class TicketController extends Controller
 
     public function changeStatus(Ticket $ticket,Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|string|in:Pending,Open,In-Progress,Resolved',
+		]);
+		if ($validator->fails()) {
+            session()->flash('error');
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
         $service = new TicketService();
         $service->changeStatus($ticket,$request->status);
         if(!$service)
@@ -103,8 +119,24 @@ class TicketController extends Controller
 
     public function assignAgent(Ticket $ticket,Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'employee_id' => 'required|exists:employees,id',
+		]);
+		if ($validator->fails()) {
+            session()->flash('error');
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
         $service = new TicketService();
         $service->assignToAgent($ticket,Employee::find($request->employee_id));
+
+        //send notification
+        $data       = Ticket::findOrFail($ticket->id);
+        $notifiable = User::where('context_id',$request->employee_id)->first();
+        if ($notifiable)
+        {
+            $notifiable->notify(new TicketAssignNotification($data));
+        }
+
         if(!$service)
         {
             session()->flash('error');
@@ -118,8 +150,23 @@ class TicketController extends Controller
 
     public function replyToTicket(Ticket $ticket,Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'notes' => 'required|string',
+		]);
+		if ($validator->fails()) {
+            session()->flash('error');
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
         $service = new TicketService();
         $service->replyToTicket($ticket,auth()->user(),'agent',$request->notes);
+
+        //send notification
+        $ticketRecord = Ticket::findOrFail($ticket->id);
+        $notifiable   = Customer::where('id',$ticketRecord->customer_id)->first();
+        if ($notifiable) {
+            $notifiable->notify(new TicketReplyNotification($ticketRecord));
+        }
+
         if(!$service)
         {
             session()->flash('error');

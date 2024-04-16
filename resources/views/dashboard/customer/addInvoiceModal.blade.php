@@ -53,7 +53,7 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                             @foreach($activities as $activity)
-                                <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -88,7 +88,7 @@
                     </div>
                     <!-- invoice[customer_id] -->
                     <div class="form-group">
-                        <input class="form-control" type="hidden" name="invoice[customer_id]" value="{{ $item->id }}">
+                        <input class="form-control" type="hidden" name="invoice[customer_id]" value="{{ @$item->id }}">
                     </div>
                 </div>
                 <div class="modal-footer flex-center">

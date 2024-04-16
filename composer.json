@@ -16,6 +16,7 @@
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "*",
         "spatie/laravel-permission": "*",
+        "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {

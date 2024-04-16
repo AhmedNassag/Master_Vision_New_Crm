@@ -44,6 +44,18 @@ return [
             'driver' => 'session',
             'provider' => 'customers',
         ],
+
+
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+        'customer_api' => [
+            'driver' => 'jwt',
+            'provider' => 'customers',
+            'hash' => false,
+        ],
     ],
 
     /*

@@ -9,7 +9,7 @@ class LeadHistoryService
 {
     public function logAction(LeadHistoryData $leadHistoryData)
     {
-        if(Request::is('admin/contact/changeStatus'))
+        if(Request::is('admin/contact/changeStatus') || Request::is('api/admin/contacts-changeStatus'))
         {
             $relatedModelId = $leadHistoryData->relatedModelId;
         } else {

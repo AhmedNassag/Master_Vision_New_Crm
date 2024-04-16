@@ -15,11 +15,11 @@
                             <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                 <span class="required">{{ trans('main.Activity') }}</span>
                             </label>
-                            <select name="activity_id" data-control="select2" data-dropdown-parent="#add_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                            <select name="activity_id" data-control="select2" data-dropdown-parent="#add_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                 @foreach($activities as $activity)
-                                    <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                    <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -29,7 +29,7 @@
                             <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                 <span class="required">{{ trans('main.SubActivity') }}</span>
                             </label>
-                            <select name="sub_activity_id" data-control="select2" data-dropdown-parent="#add_sub_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                            <select name="sub_activity_id" data-control="select2" data-dropdown-parent="#add_sub_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
                                 <option value="">{{ trans('main.Select') }}...</option>
 
                             </select>
@@ -39,7 +39,7 @@
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Points') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Points') }}" value="{{ old('points') }}" name="points" />
+                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Points') }}" value="{{ old('points') }}" name="points" required />
                             </div>
                         </div>
 
@@ -47,7 +47,7 @@
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.SalesConversionRate') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.SalesConversionRate') }}" value="{{ old('sales_conversion_rate') }}" name="sales_conversion_rate" />
+                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.SalesConversionRate') }}" value="{{ old('sales_conversion_rate') }}" name="sales_conversion_rate" required />
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.ConversionRate') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.ConversionRate') }}" value="{{ old('conversion_rate') }}" name="conversion_rate" />
+                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.ConversionRate') }}" value="{{ old('conversion_rate') }}" name="conversion_rate" required />
                             </div>
                         </div>
 
@@ -63,7 +63,7 @@
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.ExpiryDays') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.ExpiryDays') }}" value="{{ old('expiry_days') }}" name="expiry_days" />
+                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.ExpiryDays') }}" value="{{ old('expiry_days') }}" name="expiry_days" required />
                             </div>
                         </div>
                     <!-- </div> -->

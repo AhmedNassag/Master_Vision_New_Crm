@@ -29,10 +29,10 @@
                             @foreach ($data as $key=>$item)
                                 <tr>
                                     <td class="text-center">
-                                        TK_{{ $item->id }}
+                                        TK_{{ @$item->id }}
                                     </td>
                                     <td class="text-center">
-                                        <a href="#" class="text-gray-800 text-hover-primary mb-1">{{ $item->customer->name }}</a>
+                                        <a class="text-gray-800 text-hover-primary mb-1">{{ @$item->customer->name }}</a>
                                     </td>
                                     <td class="text-center">
                                         @if($item->ticket_type == 'Technical Issue')
@@ -55,7 +55,7 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        {{ $item->created_at->format('Y-m-d') }}
+                                        {{ @$item->created_at->format('Y-m-d') }}
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ route('customer.tickets.show', $item->id) }}" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary " data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -79,7 +79,7 @@
                         @endif
                     </tbody>
                 </table>
-                {{ $data->links() }}
+                {{ @$data->links() }}
             </div>
         </div>
     </div>
@@ -88,5 +88,5 @@
 
 
 @section('scripts')
-    
+
 @endsection

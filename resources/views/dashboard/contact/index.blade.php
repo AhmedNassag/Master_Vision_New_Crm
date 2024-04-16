@@ -57,7 +57,7 @@
                                                 $all_contacts = App\Models\Contact::where('employee_id', auth()->user()->employee->id)->count();
                                             }
                                         ?>
-                                        <div class="badge badge-light-primary">{{ $all_contacts }}</div>
+                                        <div class="badge badge-light-primary">{{ @$all_contacts }}</div>
                                     </div>
                                     <!--begin::Contact group-->
                                     <!--begin::Contact group-->
@@ -77,7 +77,7 @@
                                                 $new_contacts = App\Models\Contact::where('status', 'new')->where('employee_id', auth()->user()->employee->id)->count();
                                             }
                                         ?>
-                                        <div class="badge badge-light-success">{{ $new_contacts}}</div>
+                                        <div class="badge badge-light-success">{{ @$new_contacts}}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="new_contacts" style="display: none">
                                             @csrf
                                             <input type="hidden" name="status" value="new" />
@@ -101,7 +101,7 @@
                                                 $contacted_contacts = App\Models\Contact::where('status', 'contacted')->where('employee_id', auth()->user()->employee->id)->count();
                                             }
                                         ?>
-                                        <div class="badge badge-light-secondary">{{ $contacted_contacts }}</div>
+                                        <div class="badge badge-light-secondary">{{ @$contacted_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="contacted_contacts" style="display: none">
                                             @csrf
                                             <input type="hidden" name="status" value="contacted" />
@@ -125,7 +125,7 @@
                                                 $qualified_contacts = App\Models\Contact::where('status', 'qualified')->where('employee_id', auth()->user()->employee->id)->count();
                                             }
                                         ?>
-                                        <div class="badge badge-light-warning">{{ $qualified_contacts }}</div>
+                                        <div class="badge badge-light-warning">{{ @$qualified_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="qualified_contacts" style="display: none">
                                             @csrf
                                             <input type="hidden" name="status" value="qualified" />
@@ -149,7 +149,7 @@
                                                 $converted_contacts = App\Models\Contact::where('status', 'converted')->where('employee_id', auth()->user()->employee->id)->count();
                                             }
                                         ?>
-                                        <div class="badge badge-light-info">{{ $converted_contacts }}</div>
+                                        <div class="badge badge-light-info">{{ @$converted_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="converted_contacts" style="display: none">
                                             @csrf
                                             <input type="hidden" name="status" value="converted" />
@@ -173,7 +173,7 @@
                                                 $inActive_contacts = App\Models\Contact::where('is_active', 0)->where('employee_id', auth()->user()->employee->id)->count();
                                             }
                                         ?>
-                                        <div class="badge badge-light-dark">{{ $inActive_contacts }}</div>
+                                        <div class="badge badge-light-dark">{{ @$inActive_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="inActive_contacts" style="display: none">
                                             @csrf
                                             <input type="hidden" name="is_active" value="0" />
@@ -197,7 +197,7 @@
                                                 $trashed_contacts = App\Models\Contact::where('is_trashed', 1)->where('employee_id', auth()->user()->employee->id)->count();
                                             }
                                         ?>
-                                        <div class="badge badge-light-danger">{{ $trashed_contacts }}</div>
+                                        <div class="badge badge-light-danger">{{ @$trashed_contacts }}</div>
                                     </div>
                                     <!--begin::Contact group-->
                                 </div>
@@ -248,7 +248,7 @@
                                                             <option value="">{{ trans('main.Select') }}...</option>
                                                             <?php $contactSources = \App\Models\ContactSource::get(['id', 'name']); ?>
                                                             @foreach($contactSources as $contactSource)
-                                                            <option value="{{ $contactSource->id }}">{{ $contactSource->name }}</option>
+                                                            <option value="{{ @$contactSource->id }}">{{ @$contactSource->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -271,7 +271,7 @@
                                                             <option value="">{{ trans('main.Select') }}...</option>
                                                             <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                                             @foreach($activities as $activity)
-                                                            <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                                            <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -294,7 +294,7 @@
                                                             <option value="">{{ trans('main.Select') }}...</option>
                                                             <?php $cities = \App\Models\City::get(['id', 'name']); ?>
                                                             @foreach($cities as $city)
-                                                            <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                                            <option value="{{ @$city->id }}">{{ @$city->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -317,7 +317,7 @@
                                                             <option value="">{{ trans('main.Select') }}...</option>
                                                             <?php $industries = \App\Models\Industry::get(['id', 'name']); ?>
                                                             @foreach($industries as $industry)
-                                                            <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                                                            <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -437,7 +437,7 @@
                             <div class="alert alert-danger">
                                 <ul>
                                     @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -503,7 +503,7 @@
                                         <tr>
                                             <td class="text-center">
                                                 <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    <input id="delete_selected_input" type="checkbox" value="{{ $item->id }}" class="box1 form-check-input" oninput="showBtnDeleteSelected()">
+                                                    <input id="delete_selected_input" type="checkbox" value="{{ @$item->id }}" class="box1 form-check-input" oninput="showBtnDeleteSelected()">
                                                 </div>
                                             </td>
                                             <td class="text-center">
@@ -531,7 +531,7 @@
                                                     @endif
                                                 </a>
                                             </td>
-                                            <td class="text-center"><a href="{{ route('contact.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a></td>
+                                            <td class="text-center"><a href="{{ route('contact.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ @$item->name }}</a></td>
                                             <td class="text-center">{{ @$item->mobile }}</td>
                                             <td class="text-center">{{ @$item->contactSource->name }}</td>
                                             <td class="text-center">{{ @$item->city->name }}</td>
@@ -545,7 +545,7 @@
                                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                     @can('تعديل جهات الإتصال')
                                                         <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ $item->id }}">{{ trans('main.Relate Employee') }}</a>
+                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#relateEmployee_modal_{{ @$item->id }}">{{ trans('main.Relate Employee') }}</a>
                                                         </div>
                                                     @endcan
                                                     @can('عرض جهات الإتصال')
@@ -561,32 +561,32 @@
                                                     @if($item->is_active == 1)
                                                         @can('تغيير حالات تنشيط جهات الإتصال')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ $item->id }}">{{ trans('main.DisActivate') }}</a>
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ @$item->id }}">{{ trans('main.DisActivate') }}</a>
                                                             </div>
                                                         @endcan
                                                     @else
                                                         @can('تغيير حالات تنشيط جهات الإتصال')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ $item->id }}">{{ trans('main.Activate') }}</a>
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#active_modal_{{ @$item->id }}">{{ trans('main.Activate') }}</a>
                                                             </div>
                                                         @endcan
                                                     @endif
                                                     @if($item->is_trashed == 1)
                                                         @can('أرشفة جهات الإتصال')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ $item->id }}">{{ trans('main.Restore') }}</a>
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ @$item->id }}">{{ trans('main.Restore') }}</a>
                                                             </div>
                                                         @endcan
                                                     @else
                                                         @can('أرشفة جهات الإتصال')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ $item->id }}">{{ trans('main.Trash') }}</a>
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#trash_modal_{{ @$item->id }}">{{ trans('main.Trash') }}</a>
                                                             </div>
                                                         @endcan
                                                     @endif
                                                     @can('حذف جهات الإتصال')
                                                         <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $item->id }}">{{ trans('main.Delete') }}</a>
+                                                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                         </div>
                                                     @endcan
                                                 </div>
@@ -620,7 +620,7 @@
 
                             </div>
 
-                            {{ $data->links() }}
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

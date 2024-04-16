@@ -41,11 +41,12 @@
       24 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
       25 => 'Yajra\\DataTables\\DataTablesServiceProvider',
       26 => 'Intervention\\Image\\ImageServiceProvider',
-      27 => 'App\\Providers\\AppServiceProvider',
-      28 => 'App\\Providers\\AuthServiceProvider',
-      29 => 'App\\Providers\\EventServiceProvider',
-      30 => 'App\\Providers\\RouteServiceProvider',
-      31 => 'App\\Providers\\RepoServiceProvider',
+      27 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
+      28 => 'App\\Providers\\AppServiceProvider',
+      29 => 'App\\Providers\\AuthServiceProvider',
+      30 => 'App\\Providers\\EventServiceProvider',
+      31 => 'App\\Providers\\RouteServiceProvider',
+      32 => 'App\\Providers\\RepoServiceProvider',
     ),
     'aliases' => 
     array (
@@ -91,6 +92,8 @@
       'Html' => 'Collective\\Html\\HtmlFacade',
       'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
       'Image' => 'Intervention\\Image\\Facades\\Image',
+      'JWTAuth' => 'Tymon\\JWTAuth\\Facades\\JWTAuth',
+      'JWTFactory' => 'Tymon\\JWTAuth\\Facades\\JWTFactory',
     ),
   ),
   'auth' => 
@@ -111,6 +114,18 @@
       array (
         'driver' => 'session',
         'provider' => 'customers',
+      ),
+      'api' => 
+      array (
+        'driver' => 'jwt',
+        'provider' => 'users',
+        'hash' => false,
+      ),
+      'customer_api' => 
+      array (
+        'driver' => 'jwt',
+        'provider' => 'customers',
+        'hash' => false,
       ),
       'sanctum' => 
       array (
@@ -211,7 +226,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\framework/cache/data',
+        'path' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -537,7 +552,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\framework/cache/laravel-excel',
+      'local_path' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\framework/cache/laravel-excel',
       'local_permissions' => 
       array (
       ),
@@ -554,19 +569,19 @@
       'attachments' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\public/attachments/',
+        'root' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\public/attachments/',
         'url' => 'http://localhostpublic',
         'visibility' => 'public',
       ),
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\app',
+        'root' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\app/public',
+        'root' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -584,8 +599,14 @@
     ),
     'links' => 
     array (
-      'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\public\\storage' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\app/public',
+      'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\public\\storage' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\app/public',
     ),
+  ),
+  'firebase' => 
+  array (
+    'server_api_key' => 'AAAAGB4SJ7k:APA91bFmmkjx9r3Si1mtHAFVmsermJyC3GJ2e46DBV9yDIxay-HjR8QOfFB3NNd9x7tbgZxG4fUdvze68Q2iT2CZTW_0w7AQW4S0dQlOPr90r-_hk_Y8bvzCbtBK8-IV2CLPry_veaIF',
+    'sender_id' => 103583721401,
+    'host_url' => 'https://fcm.googleapis.com/fcm/send',
   ),
   'hashing' => 
   array (
@@ -599,6 +620,42 @@
       'memory' => 1024,
       'threads' => 2,
       'time' => 2,
+    ),
+  ),
+  'jwt' => 
+  array (
+    'secret' => 'aA6O5BbOWEtEPc7DxIyZsaM9364T8tR7G0zPfOmNulbkTal73wpIWlXUf8K2hDep',
+    'keys' => 
+    array (
+      'public' => NULL,
+      'private' => NULL,
+      'passphrase' => NULL,
+    ),
+    'ttl' => 60,
+    'refresh_ttl' => 20160,
+    'algo' => 'HS256',
+    'required_claims' => 
+    array (
+      0 => 'iss',
+      1 => 'iat',
+      2 => 'exp',
+      3 => 'nbf',
+      4 => 'sub',
+      5 => 'jti',
+    ),
+    'persistent_claims' => 
+    array (
+    ),
+    'lock_subject' => true,
+    'leeway' => 0,
+    'blacklist_enabled' => true,
+    'blacklist_grace_period' => 0,
+    'decrypt_cookies' => false,
+    'providers' => 
+    array (
+      'jwt' => 'Tymon\\JWTAuth\\Providers\\JWT\\Lcobucci',
+      'auth' => 'Tymon\\JWTAuth\\Providers\\Auth\\Illuminate',
+      'storage' => 'Tymon\\JWTAuth\\Providers\\Storage\\Illuminate',
     ),
   ),
   'logging' => 
@@ -619,13 +676,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -676,7 +733,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -742,7 +799,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\resources\\views/vendor/mail',
+        0 => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -903,7 +960,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\framework/sessions',
+    'files' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -923,9 +980,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\resources\\views',
+      0 => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\resources\\views',
     ),
-    'compiled' => 'C:\\xampp\\htdocs\\Master Vision\\Master-Vision-Theme\\storage\\framework\\views',
+    'compiled' => 'C:\\xampp\\htdocs\\Master Vision\\New-Crm\\storage\\framework\\views',
   ),
   'flare' => 
   array (

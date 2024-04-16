@@ -24,7 +24,10 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'reply' => 'required|string',
+            'reply' => [
+                'required', 'string',
+                \Illuminate\Validation\Rule::unique('saved_replies', 'reply')->whereNull('deleted_at')->ignore(request()->id),
+            ],
         ];
     }
 
@@ -39,6 +42,7 @@ class UpdateRequest extends FormRequest
         return [
             'reply.required' => trans('validation.required'),
             'reply.string'   => trans('validation.string'),
+            'reply.unique'   => trans('validation.unique'),
         ];
     }
 }

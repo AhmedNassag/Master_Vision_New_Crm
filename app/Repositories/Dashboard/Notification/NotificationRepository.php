@@ -6,6 +6,9 @@ namespace App\Repositories\Dashboard\Notification;
 use Carbon\Carbon;
 use App\Models\Notification;
 use App\Models\ReorderReminder;
+use App\Models\User;
+use App\Models\Department;
+use App\Notifications\NotificationNotification;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationRepository implements NotificationInterface
@@ -101,6 +104,29 @@ class NotificationRepository implements NotificationInterface
             $inputs               = $request->all();
             $inputs['created_by'] = Auth::user()->id;
             $data                 = Notification::create($inputs);
+
+            //send notification
+            if($data->employee_id != null)
+            {
+                $notifiable = User::where('id',$data->employee->user->id)->first();
+                //eafaf
+                if ($notifiable) {
+                    $notifiable->notify(new NotificationNotification($data));
+                }
+            }
+            if($data->dept != null)
+            {
+                $department = Department::findOrFail($data->dept);
+                foreach($department->employees as $employee)
+                {
+                    $notifiable = User::where('id',$employee->user->id)->first();
+                    //eafaf
+                    if ($notifiable) {
+                        $notifiable->notify(new NotificationNotification($data));
+                    }
+                }
+            }
+
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
@@ -121,7 +147,30 @@ class NotificationRepository implements NotificationInterface
             $validated            = $request->validated();
             $inputs               = $request->all();
             $inputs['created_by'] = Auth::user()->id;
-            $data             = Notification::findOrFail($request->id);
+            $data                 = Notification::findOrFail($request->id);
+
+            //send notification
+            if($data->employee_id != null)
+            {
+                $notifiable = User::where('id',$data->employee->user->id)->first();
+                //eafaf
+                if ($notifiable) {
+                    $notifiable->notify(new NotificationNotification($data));
+                }
+            }
+            if($data->dept != null)
+            {
+                $department = Department::findOrFail($data->dept);
+                foreach($department->employees as $employee)
+                {
+                    $notifiable = User::where('id',$employee->user->id)->first();
+                    //eafaf
+                    if ($notifiable) {
+                        $notifiable->notify(new NotificationNotification($data));
+                    }
+                }
+            }
+            
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
@@ -160,7 +209,22 @@ class NotificationRepository implements NotificationInterface
 
     public function todayReminders()
     {
-        $data = ReorderReminder::whereDate('reminder_date',Carbon::today())->paginate(config('myConfig.paginationCount'));
+        if(Auth::user()->roles_name[0] == "Admin")
+        {
+            $data = ReorderReminder::whereDate('reminder_date',Carbon::today())->paginate(config('myConfig.paginationCount'));
+        }
+        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+        {
+            $data = ReorderReminder::whereDate('reminder_date',Carbon::today())
+            ->whereRelation('customer.createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else
+        {
+            $data = ReorderReminder::whereDate('reminder_date',Carbon::today())
+            ->whereRelation('customer','created_by', auth()->user()->employee->id)
+            ->paginate(config('myConfig.paginationCount'));
+        }
         return view('dashboard.notification.reminder',compact('data'));
     }
 
@@ -168,7 +232,26 @@ class NotificationRepository implements NotificationInterface
 
     public function monthReminders()
     {
-        $data = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)->whereMonth('reminder_date', Carbon::now()->month)->paginate(config('myConfig.paginationCount'));
+        if(Auth::user()->roles_name[0] == "Admin")
+        {
+            $data = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)
+            ->whereMonth('reminder_date', Carbon::now()->month)
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+        {
+            $data = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)
+            ->whereMonth('reminder_date', Carbon::now()->month)
+            ->whereRelation('customer.createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->paginate(config('myConfig.paginationCount'));
+        }
+        else
+        {
+            $data = ReorderReminder::whereYear('reminder_date', Carbon::now()->year)
+            ->whereMonth('reminder_date', Carbon::now()->month)
+            ->whereRelation('customer','created_by', auth()->user()->employee->id)
+            ->paginate(config('myConfig.paginationCount'));
+        }
         return view('dashboard.notification.reminder',compact('data'));
     }
 

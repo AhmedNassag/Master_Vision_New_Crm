@@ -171,7 +171,7 @@ class UserController extends Controller
             if($validator->fails())
             {
                 session()->flash('error');
-                return redirect()->back();
+                return redirect()->back()->withErrors($validator)->withInput();
             }
 
 
@@ -249,7 +249,7 @@ class UserController extends Controller
             if($validator->fails())
             {
                 session()->flash('error');
-                return redirect()->back();
+                return redirect()->back()->withErrors($validator)->withInput();
             }
             $user     = User::find($request->id);
             $employee = Employee::find($user->context_id);
@@ -266,6 +266,7 @@ class UserController extends Controller
                 'name'       => $request->name,
                 'email'      => $request->email,
                 'mobile'     => $request->mobile,
+                'password'   => $request->password ? bcrypt($request->password) : $user->password,
                 'status'     => $request->status,
                 'active'     => $request->status,
                 'roles_name' => $request->roles_name ? $request->roles_name : $user->roles_name,

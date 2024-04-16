@@ -29,8 +29,8 @@
                         <div class="d-flex flex-column">
                             <!--begin::Name-->
                             <div class="d-flex align-items-center mb-2">
-                                <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1">{{ trans('main.Hello') }}, {{ auth()->user()->name }}</a>
-                                <a href="#">
+                                <a class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1">{{ trans('main.Hello') }}, {{ auth()->user()->name }}</a>
+                                <a>
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen026.svg-->
                                     <span class="svg-icon svg-icon-1 svg-icon-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
@@ -48,8 +48,7 @@
                             <!--end::Name-->
                             <!--begin::Info-->
                             <div class="d-flex flex-wrap fw-bold fs-6 mb-4 pe-2">
-                                <a href="#"
-                                    class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                                <a class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
                                     <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
                                     <span class="svg-icon svg-icon-4 me-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -63,8 +62,7 @@
                                         </svg>
                                     </span>
                                     <!--end::Svg Icon-->{{ auth()->user()->jobTitle->name ?? "" }}</a>
-                                <a href="#"
-                                    class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                                <a class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen018.svg-->
                                     <span class="svg-icon svg-icon-4 me-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -78,7 +76,7 @@
                                         </svg>
                                     </span>
                                     <!--end::Svg Icon-->{{ auth()->user()->area->name ?? "" }}, {{ auth()->user()->city->name ?? "" }}, مصر</a>
-                                <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
+                                <a class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
                                     <!--begin::Svg Icon | path: icons/duotune/communication/com011.svg-->
                                     <span class="svg-icon svg-icon-4 me-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -122,7 +120,7 @@
                                                 </svg>
                                             </span>
                                             <!--end::Svg Icon-->
-                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ $tickets->count() }}">0</div>
+                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ @$tickets->count() }}">{{ @$tickets->count() }}</div>
                                         </div>
                                         <!--end::Number-->
                                         <!--begin::Label-->
@@ -145,7 +143,7 @@
                                                 </svg>
                                             </span>
                                             <!--end::Svg Icon-->
-                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ $tickets->where('status','In-Progress')->count() }}">0</div>
+                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ @$tickets->where('status','In-Progress')->count() }}">{{ @$tickets->where('status','In-Progress')->count() }}</div>
                                         </div>
                                         <!--end::Number-->
                                         <!--begin::Label-->
@@ -170,7 +168,7 @@
                                                 </svg>
                                             </span>
                                             <!--end::Svg Icon-->
-                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ $tickets->where('status','Resolved')->count() }}">0</div>
+                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ @$tickets->where('status','Resolved')->count() }}">{{ @$tickets->where('status','Resolved')->count() }}</div>
                                         </div>
                                         <!--end::Number-->
                                         <!--begin::Label-->
@@ -184,7 +182,7 @@
                                         <div class="d-flex align-items-center">
                                             <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
                                             <!--end::Svg Icon-->
-                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ auth()->user()->invoices->sum('amount_paid') }}" data-kt-countup-suffix="ج.م">0</div>
+                                            <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ auth()->user()->invoices ? auth()->user()->invoices->sum('amount_paid') : 0 }}" data-kt-countup-suffix="ج.م">{{ auth()->user()->invoices ? auth()->user()->invoices->sum('amount_paid') : 0 }}</div>
                                         </div>
                                         <!--end::Number-->
                                         <!--begin::Label-->
@@ -200,7 +198,7 @@
                                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
 
                                         <!--end::Svg Icon-->
-                                        <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ auth()->user()->invoices->sum('total_amount') - auth()->user()->invoices->sum('amount_paid') }}" data-kt-countup-suffix="ج.م">0</div>
+                                        <div class="fs-2 fw-bolder" data-kt-countup="true" data-kt-countup-value="{{ auth()->user()->invoices ? auth()->user()->invoices->sum('total_amount') - auth()->user()->invoices->sum('amount_paid') : 0 }}" data-kt-countup-suffix="ج.م">{{ auth()->user()->invoices ? auth()->user()->invoices->sum('total_amount') - auth()->user()->invoices->sum('amount_paid') : 0 }}</div>
                                     </div>
                                     <!--end::Number-->
                                     <!--begin::Label-->
@@ -295,13 +293,13 @@
                                                     <tbody class="fw-semibold text-gray-600">
                                                         @foreach ($item->invoices as $invoice)
                                                             <tr>
-                                                                <td class="text-center">{{ $invoice->invoice_number }}</td>
-                                                                <td class="text-center">{{ $invoice->invoice_date }}</td>
+                                                                <td class="text-center">{{ @$invoice->invoice_number }}</td>
+                                                                <td class="text-center">{{ @$invoice->invoice_date }}</td>
                                                                 <td class="text-center">{{ number_format($invoice->total_amount, 0) }}</td>
                                                                 <td class="text-center">{{ number_format($invoice->amount_paid, 0) }}</td>
                                                                 <td class="text-center">{{ number_format($invoice->debt, 0) }}</td>
-                                                                <td class="text-center">{{ $invoice->activity->name }}</td>
-                                                                <td class="text-center">{{ $invoice->subActivity->name ?? '' }}</td>
+                                                                <td class="text-center">{{ @$invoice->activity->name }}</td>
+                                                                <td class="text-center">{{ @$invoice->subActivity->name ?? '' }}</td>
                                                                 <td class="text-center">{{ ucfirst($invoice->status) }}</td>
                                                             </tr>
                                                         @endforeach
@@ -334,7 +332,7 @@
                                                         @foreach ($item->related_customers as $r_customer)
                                                             <tr>
                                                                 <td class="text-center">{{ @$r_customer->id }}</td>
-                                                                <td class="text-center">{{ $r_customer->name }}</td>
+                                                                <td class="text-center">{{ @$r_customer->name }}</td>
                                                                 <td class="text-center">{{ @$r_customer->created_at->format('Y-m-d') }}</td>
                                                             </tr>
                                                         @endforeach

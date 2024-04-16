@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Services\TicketService;
 use App\DataTables\TicketDataTable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Notifications\TicketReplyNotification;
 
 class CustomerPortalController extends Controller
 {
@@ -24,7 +26,6 @@ class CustomerPortalController extends Controller
     {
         $item    = Customer::with(['customerSource','city','area','customerCategory','activity'])->findOrFail(Auth::user()->id);
         $tickets = Ticket::client()->get();
-
         return view('customer-portal.dashboard.home',['item' => $item , 'tickets' => $tickets]);
     }
 
@@ -35,7 +36,6 @@ class CustomerPortalController extends Controller
         $data = Ticket::where('customer_id', Auth::user()->id)
         ->with('customer','agent')
         ->paginate(config('myConfig.paginationCount'));
-
         return view('customer-portal.dashboard.tickets',compact('data'));
     }
 
@@ -50,8 +50,30 @@ class CustomerPortalController extends Controller
 
     public function postReply(Ticket $ticket,Request $request)
     {
+        $validator = Validator::make($request->all(), [
+			'notes' => 'required|string',
+		]);
+		if ($validator->fails()) {
+            session()->flash('error');
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
         $service = new TicketService();
         $service->replyToTicket($ticket,auth()->user(),'customer',$request->notes);
+
+        //send notification
+        $ticketRecord = Ticket::findOrFail($ticket->id);
+        if($ticket->assigned_agent_id != null)
+        {
+            $notifiable = User::where('id', $ticket->assigned_agent_id)->first();
+        }
+        else
+        {
+            $notifiable = User::first();
+        }
+        if ($notifiable) {
+            $notifiable->notify(new TicketReplyNotification($ticketRecord));
+        }
+
         if (!$service) {
             session()->flash('error');
             return redirect()->back();
@@ -80,6 +102,15 @@ class CustomerPortalController extends Controller
 
     public function storeTicket(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'interest_id' => 'required|exists:interests,id',
+            'ticket_type' => 'required|string|in:Technical Issue,Inquiry,Request',
+            'notes'       => 'required|string',
+		]);
+		if ($validator->fails()) {
+            session()->flash('error');
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
         $service    = new TicketService();
         $interest   = SubActivity::find($request->interest_id);
         $ticketData = array(

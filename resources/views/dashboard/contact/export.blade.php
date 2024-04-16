@@ -8,7 +8,7 @@
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <li>{{ @$error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -82,7 +82,7 @@
                                     <!-- gender -->
                                     <div class="col-md-6 fv-row" id="gender">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.Gender') }}</span>
+                                            {{ trans('main.Gender') }}
                                         </label>
                                         <select name="gender" data-control="select2" data-dropdown-parent="#gender" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
@@ -92,12 +92,12 @@
                                     </div>
                                     <!-- name -->
                                     <div class="col-md-6 fv-row">
-                                        <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Name') }}</label>
+                                        <label class="fs-5 fw-semibold mb-2">{{ trans('main.Name') }}</label>
                                         <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ old('name') }}" name="name" />
                                     </div>
                                     <!-- mobile -->
                                     <div class="col-md-6 fv-row">
-                                        <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Mobile') }}</label>
+                                        <label class="fs-5 fw-semibold mb-2">{{ trans('main.Mobile') }}</label>
                                         <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ old('mobile') }}" name="mobile" />
                                     </div>
                                     <!-- mobile2 -->
@@ -122,44 +122,44 @@
                                     </div>
                                     <!-- campaign_id -->
                                     <div class="col-md-6 fv-row" id="campaign_id">
-                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2 required">
-                                            <span>{{ trans('main.Campaign') }}</span>
+                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                            {{ trans('main.Campaign') }}
                                         </label>
                                         <select name="campaign_id" data-control="select2" data-dropdown-parent="#campaign_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($contactSources as $source)
-                                                <option value="{{ $source->id }}">{{ $source->name }}</option>
+                                                <option value="{{ @$source->id }}">{{ @$source->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- city_id -->
                                     <div id="city_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.City') }}</span>
+                                            {{ trans('main.City') }}
                                         </label>
                                         <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($cities as $city)
-                                                <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                                <option value="{{ @$city->id }}">{{ @$city->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- area_id -->
                                     <div id="area_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.Area') }}</span>
+                                            {{ trans('main.Area') }}
                                         </label>
                                         <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($areas as $area)
-                                                <option value="{{ $area->id }}">{{ $area->name }}</option>
+                                                <option value="{{ @$area->id }}">{{ @$area->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- employee_id -->
                                     <div id="search_employee_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span class="required">{{ trans('main.Employee') }}</span>
+                                            {{ trans('main.Employee') }}
                                         </label>
                                         <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
@@ -168,56 +168,56 @@
                                     <!-- industry_id -->
                                     <div id="industry_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.Industry') }}</span>
+                                            {{ trans('main.Industry') }}
                                         </label>
                                         <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($industries as $industry)
-                                                <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                                                <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- major_id -->
                                     <div id="major_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.Major') }}</span>
+                                            {{ trans('main.Major') }}
                                         </label>
                                         <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($majors as $major)
-                                                <option value="{{ $major->id }}">{{ $major->name }}</option>
+                                                <option value="{{ @$major->id }}">{{ @$major->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- job_title_id -->
                                     <div id="job_title_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.JobTitle') }}</span>
+                                            {{ trans('main.JobTitle') }}
                                         </label>
                                         <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $jobTitles = \App\Models\JobTitle::get(['id','name']); ?>
                                             @foreach($jobTitles as $jobTitle)
-                                                <option value="{{ $jobTitle->id }}">{{ $jobTitle->name }}</option>
+                                                <option value="{{ @$jobTitle->id }}">{{ @$jobTitle->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- activity_id -->
                                     <div id="activity_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span class="required">{{ trans('main.Activity') }}</span>
+                                            {{ trans('main.Activity') }}
                                         </label>
                                         <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($activities as $activity)
-                                                <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                                <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <!-- interest_id -->
                                     <div id="interest_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span class="required">{{ trans('main.SubActivity') }}</span>
+                                            {{ trans('main.SubActivity') }}
                                         </label>
                                         <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>

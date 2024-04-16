@@ -63,7 +63,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -118,11 +118,9 @@
                                         @foreach ($data as $key => $role)
                                             <tr>
                                                 <td class="text-center">
-                                                    {{ $key+1 }}
+                                                    {{ @$key+1 }}
                                                 </td>
-                                                <td class="text-center">
-                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1">{{ $role->name }}</a>
-                                                </td>
+                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ @$role->name }}</td>
                                                 <td class="text-center">
                                                     <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                         {{ trans('main.Actions') }}
@@ -141,7 +139,7 @@
                                                         @endcan
                                                         @can('حذف الصلاحيات')
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ $role->id }}">{{ trans('main.Delete') }}</a>
+                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$role->id }}">{{ trans('main.Delete') }}</a>
                                                             </div>
                                                         @endcan
                                                     </div>
@@ -164,7 +162,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $data->links() }}
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

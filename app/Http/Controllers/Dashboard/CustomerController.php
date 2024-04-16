@@ -216,7 +216,6 @@ class CustomerController extends Controller
 
     public function addAttachment(Request $request)
     {
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
 			'files'   => 'required|array',
             'files.*' => 'required|file|mimes:png,jpg,jpeg,webp',
@@ -409,7 +408,7 @@ class CustomerController extends Controller
             if ($validator->fails())
             {
                 session()->flash('error');
-                return redirect()->back()->withErrors($validator)->withInput();;
+                return redirect()->back()->withErrors($validator)->withInput();
             }
             $data = Customer::findOrFail($request->id);
             if (!$data) {

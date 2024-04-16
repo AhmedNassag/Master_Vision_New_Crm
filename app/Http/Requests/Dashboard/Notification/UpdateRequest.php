@@ -25,6 +25,8 @@ class UpdateRequest extends FormRequest
     {
         return [
             'notification' => 'required|string',
+            'employee_id'  => 'required_if:dept,null',
+            'dept'         => 'required_if:employee_id,null',
         ];
     }
 

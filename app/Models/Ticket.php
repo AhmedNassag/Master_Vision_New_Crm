@@ -30,6 +30,17 @@ class Ticket extends Model
         return $query->where('assigned_agent_id', auth()->user()->id);
     }
 
+    //api
+    public function scopeClient_api($query, $auth_id)
+    {
+        return $query->where('customer_id', $auth_id);
+    }
+
+    public function scopeAgent_api($query, $auth_id)
+    {
+        return $query->where('assigned_agent_id', $auth_id);
+    }
+
     // Relationships
     public function customer()
     {

@@ -14,7 +14,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Message') }}</span>
                         </label>
-                        <textarea type="text" class="form-control form-control-solid"  placeholder="{{ trans('main.Message') }}" value="{{ old('message') }}" name="message"></textarea>
+                        <textarea type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Message') }}" value="{{ old('message') }}" name="message" required></textarea>
                     </div>
                     <!-- message_selected_id -->
                     <input class="text" type="hidden" id="message_selected_id" name="message_selected_id" value=''>

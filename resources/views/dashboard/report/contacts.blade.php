@@ -40,17 +40,6 @@
                                         <label class="fs-5 fw-semibold mb-2">{{ trans('main.To Date') }}</label>
                                         <input class="form-control form-control-solid ps-10" placeholder="{{ trans('main.From Date') }}" name="to_date" type="date" value="{{ @$to_date}}">
                                     </div>
-
-                                    <!-- area_id -->
-                                    <div id="area_id" class="position-relative col-3 me-md-2">
-                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.Area') }}</span>
-                                        </label>
-                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Area') }}..." class="form-select form-select-solid">
-                                            <option value="">Select an Area...</option>
-
-                                        </select>
-                                    </div>
                                     <!-- city_id -->
                                     <div id="city" class="position-relative col-lg-2 me-md-2">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -60,8 +49,18 @@
                                             <option value="">{{ trans('main.City') }}...</option>
                                             <?php $cities = App\Models\City::get(['id', 'name']); ?>
                                             @foreach( $cities as $city )
-                                            <option value="{{ $city->id }}" {{ $city->id == @$city_id ? 'selected' : '' }}>{{ $city->name }}</option>
+                                            <option value="{{ @$city->id }}" {{ @$city->id == @$city_id ? 'selected' : '' }}>{{ @$city->name }}</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                    <!-- area_id -->
+                                    <div id="area_id" class="position-relative col-3 me-md-2">
+                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                            <span>{{ trans('main.Area') }}</span>
+                                        </label>
+                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Area') }}..." class="form-select form-select-solid">
+                                            <option value="">Select an Area...</option>
+
                                         </select>
                                     </div>
                                 </div>
@@ -77,7 +76,7 @@
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $contactSources = App\Models\ContactSource::get(['id', 'name']); ?>
                                             @foreach( $contactSources as $contactSource )
-                                            <option value="{{ $contactSource->id }}" {{ $contactSource->id == @$contact_source_id ? 'selected' : '' }}>{{ $contactSource->name }}</option>
+                                            <option value="{{ @$contactSource->id }}" {{ @$contactSource->id == @$contact_source_id ? 'selected' : '' }}>{{ @$contactSource->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -90,7 +89,7 @@
                                             <option value="">{{ trans('main.ContactCategory') }}...</option>
                                             <?php $contactCategories = App\Models\ContactCategory::get(['id', 'name']); ?>
                                             @foreach( $contactCategories as $contactCategory )
-                                            <option value="{{ $contactCategory->id }}" {{ $contactCategory->id == @$contact_category_id ? 'selected' : '' }}>{{ $contactCategory->name }}</option>
+                                            <option value="{{ @$contactCategory->id }}" {{ @$contactCategory->id == @$contact_category_id ? 'selected' : '' }}>{{ @$contactCategory->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -103,7 +102,7 @@
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $industries = \App\Models\Industry::get(['id', 'name']); ?>
                                             @foreach($industries as $industry)
-                                            <option value="{{ $industry->id }}" {{ $industry->id == @$industry_id ? 'selected' : '' }}>{{ $industry->name }}</option>
+                                            <option value="{{ @$industry->id }}" {{ @$industry->id == @$industry_id ? 'selected' : '' }}>{{ @$industry->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -130,7 +129,7 @@
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $jobTitles = \App\Models\JobTitle::get(['id', 'name']); ?>
                                             @foreach($jobTitles as $jobTitle)
-                                            <option value="{{ $jobTitle->id }}" {{ $jobTitle->id == @$job_title_id ? 'selected' : '' }}>{{ $jobTitle->name }}</option>
+                                            <option value="{{ @$jobTitle->id }}" {{ @$jobTitle->id == @$job_title_id ? 'selected' : '' }}>{{ @$jobTitle->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -143,7 +142,7 @@
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                             @foreach($activities as $activity)
-                                            <option value="{{ $activity->id }}" {{ $activity->id == @$activity_id ? 'selected' : '' }}>{{ $activity->name }}</option>
+                                            <option value="{{ @$activity->id }}" {{ @$activity->id == @$activity_id ? 'selected' : '' }}>{{ @$activity->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -165,7 +164,7 @@
                                                 }
                                             ?>
                                             @foreach( $employees as $employee )
-                                            <option value="{{ $employee->id }}" {{ $employee->id == @$created_by ? 'selected' : '' }}>{{ $employee->name }}</option>
+                                            <option value="{{ @$employee->id }}" {{ @$employee->id == @$created_by ? 'selected' : '' }}>{{ @$employee->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -201,7 +200,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>{{ @$error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -264,7 +263,7 @@
                                                 @foreach (@$data as $key=>$item)
                                                     <tr>
                                                         <td class="text-center">
-                                                            {{ $key+1 }}
+                                                            {{ @$key+1 }}
                                                         </td>
                                                         <td class="text-center">{{ @$item->name }}</td>
                                                         <td class="text-center">{{ @$item->mobile }}</td>
@@ -292,7 +291,7 @@
                                         @endif
                                     </tbody>
                                 </table>
-                                {{ $data->links() }}
+                                {{ @$data->links() }}
                             </div>
                         </div>
                         @endif

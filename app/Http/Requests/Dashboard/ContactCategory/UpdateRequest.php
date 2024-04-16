@@ -24,7 +24,10 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
+            'name' => [
+                'required', 'string',
+                \Illuminate\Validation\Rule::unique('contact_categories', 'name')->whereNull('deleted_at')->ignore(request()->id),
+            ],
         ];
     }
 
@@ -39,6 +42,7 @@ class UpdateRequest extends FormRequest
         return [
             'name.required' => trans('validation.required'),
             'name.string'   => trans('validation.string'),
+            'name.unique'   => trans('validation.unique'),
         ];
     }
 }

@@ -1,5 +1,5 @@
 <!--begin::Add Modal-->
-<div class="modal fade" id="edit_modal_{{ $item->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="edit_modal_{{ @$item->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form action="{{ route('contactSource.update', 'test') }}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -14,14 +14,14 @@
                         <div class="row mb-5">
                             <div class="col-md-12 fv-row">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Name') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ $item->name, old('name') }}" name="name" />
+                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ @$item->name, old('name') }}" name="name" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- id -->
                 <div class="form-group">
-                    <input class="form-control" type="hidden" name="id" value="{{ $item->id }}">
+                    <input class="form-control" type="hidden" name="id" value="{{ @$item->id }}">
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">{{ trans('main.Close') }}</button>

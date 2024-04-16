@@ -11,17 +11,17 @@
         @foreach ($excelColumns as $column)
             @if($column != null && $column != "")
             <tr>
-                <td>{{ $column }}</td>
+                <td>{{ @$column }}</td>
                 <td>
-                    <select name="column_mappings[{{ $column }}][contact_field]">
+                    <select name="column_mappings[{{ @$column }}][contact_field]">
                         <option value="">Select Contact Field</option>
                         @foreach ($contactFields as $key=>$field)
-                            <option value="{{ $key }}">{{ $field }}</option>
+                            <option value="{{ @$key }}">{{ @$field }}</option>
                         @endforeach
                     </select>
                 </td>
                 <td>
-                    <select name="column_mappings[{{ $column }}][operator]">
+                    <select name="column_mappings[{{ @$column }}][operator]">
                         <option value="equal">Equal</option>
                         <option value="like">Like</option>
                     </select>

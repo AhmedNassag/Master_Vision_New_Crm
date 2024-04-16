@@ -27,7 +27,7 @@
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $industries = \App\Models\industry::get(['id','name']); ?>
                                 @foreach($industries as $industry)
-                                    <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                                    <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
                                 @endforeach
                             </select>
                         </div>

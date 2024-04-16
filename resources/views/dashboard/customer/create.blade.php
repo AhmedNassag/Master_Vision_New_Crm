@@ -8,7 +8,7 @@
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <li>{{ @$error }}</li>
                 @endforeach
             </ul>
         </div>
@@ -88,7 +88,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $contactSources = \App\Models\ContactSource::get(['id','name']); ?>
                                     @foreach($contactSources as $contactSource)
-                                        <option value="{{ $contactSource->id }}">{{ $contactSource->name }}</option>
+                                        <option value="{{ @$contactSource->id }}">{{ @$contactSource->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -101,7 +101,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                     @foreach($activities as $activity)
-                                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                        <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -124,7 +124,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $contacCategories = \App\Models\ContactCategory::get(['id','name']); ?>
                                     @foreach($contacCategories as $contactCategory)
-                                        <option value="{{ $contactCategory->id }}">{{ $contactCategory->name }}</option>
+                                        <option value="{{ @$contactCategory->id }}">{{ @$contactCategory->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -157,7 +157,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $cities = \App\Models\City::get(['id','name']); ?>
                                     @foreach($cities as $city)
-                                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                        <option value="{{ @$city->id }}">{{ @$city->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -180,7 +180,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $industries = \App\Models\Industry::get(['id','name']); ?>
                                     @foreach($industries as $industry)
-                                        <option value="{{ $industry->id }}">{{ $industry->name }}</option>
+                                        <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -208,7 +208,7 @@
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $jobTitles = \App\Models\JobTitle::get(['id','name']); ?>
                                     @foreach($jobTitles as $jobTitle)
-                                        <option value="{{ $jobTitle->id }}">{{ $jobTitle->name }}</option>
+                                        <option value="{{ @$jobTitle->id }}">{{ @$jobTitle->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

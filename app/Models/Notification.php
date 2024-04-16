@@ -11,7 +11,7 @@ class Notification extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $table   = 'notifications';
+    protected $table   = 'notification';
     protected $guarded = [];
 
 

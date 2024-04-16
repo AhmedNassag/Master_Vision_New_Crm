@@ -27,7 +27,7 @@
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                 @foreach($activities as $activity)
-                                    <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                                    <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
                                 @endforeach
                             </select>
                         </div>

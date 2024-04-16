@@ -16,6 +16,14 @@ class StoreRequest extends FormRequest
         return true;
     }
 
+
+
+    public function other_validations()
+    {
+        $count = \App\Models\Major::where(['name' => request()->name, 'industry_id' => request()->industry_id])->whereNull('deleted_at')->get();
+        return $count;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,6 +31,12 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->other_validations()->count() > 0)
+        {
+            return [
+                'name' => 'unique:majors,name,NULL,id,deleted_at,NULL',
+            ];
+        }
         return [
             'name'        => 'required|string',
             'industry_id' => 'required|integer|exists:industries,id',
