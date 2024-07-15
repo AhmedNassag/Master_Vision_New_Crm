@@ -13,7 +13,7 @@ class MeetingRepository implements MeetingInterface
 {
     public function index($request)
     {
-        $data = Meeting::with('country')
+        $data = Meeting::with('notes','creator','contact','interests','reply','createdBy')
         ->when($request->name != null,function ($q) use($request){
             return $q->where('name','like', '%'.$request->name.'%');
         })
@@ -68,13 +68,13 @@ class MeetingRepository implements MeetingInterface
 				$notes->created_by  = Auth::user()->context_id;
 				$notes->save();
 
-                $meeting_count = Meeting::where('contact_id',$meeting->contact->id)->count();
+                $meeting_count = Meeting::where('contact_id',$request->contact_id)->count();
 				if($meeting_count == 1)
 				{
                     $meeting->contact->status = 'contacted';
 					$meeting->contact->save();
 				}
-				$leadHistoryData    = new LeadHistoryData($meeting->contact->id, ActionConstants::CALL_CREATED, $data, $notes, Auth::user()->context_id);
+				$leadHistoryData    = new LeadHistoryData($request->contact_id, ActionConstants::CALL_CREATED, $data, $notes, Auth::user()->context_id);
 				$leadHistoryService = new LeadHistoryService();
 				$leadHistoryService->logAction($leadHistoryData);
 			}

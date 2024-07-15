@@ -25,10 +25,15 @@ class StoreRequest extends FormRequest
     {
         return [
             'name'              => 'required|string',
-            'mobile'            => 'required|numeric|unique:customers,mobile',
-            'national_id'       => 'nullable|numeric|unique:customers,national_id',
+            'address'           => 'nullable|string',
+            'religion'          => 'required|in:muslim,christian,other',
+            'email'             => 'nullable|email|unique:customers,email,NULL,id,deleted_at,NULL',
+            'mobile'            => 'required|numeric|unique:customers,mobile,NULL,id,deleted_at,NULL',
+            'national_id'       => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL',
             'contact_source_id' => 'required|integer|exists:contact_sources,id',
             'activity_id'       => 'required|integer|exists:activates,id',
+            'interest_id'       => 'required|integer|exists:interests,id',
+            'branch_id'         => 'required|integer|exists:branches,id',
         ];
     }
 
@@ -43,6 +48,10 @@ class StoreRequest extends FormRequest
         return [
             'name.required'             => trans('validation.required'),
             'name.string'               => trans('validation.string'),
+            'address.nullable'          => trans('validation.nullable'),
+            'address.string'            => trans('validation.string'),
+            'religion.required'         => trans('validation.required'),
+            'religion.in'               => trans('validation.in'),
             'mobile.required'           => trans('validation.required'),
             'mobile.numeric'            => trans('validation.numeric'),
             'mobile.unique'             => trans('validation.unique'),
@@ -52,6 +61,10 @@ class StoreRequest extends FormRequest
             'contact_source_id.integer' => trans('validation.integer'),
             'activity_id.integer'       => trans('validation.required'),
             'activity_id.integer'       => trans('validation.integer'),
+            'interest_id.integer'       => trans('validation.required'),
+            'interest_id.integer'       => trans('validation.integer'),
+            'branch_id.integer'         => trans('validation.required'),
+            'branch_id.integer'         => trans('validation.integer'),
         ];
     }
 }

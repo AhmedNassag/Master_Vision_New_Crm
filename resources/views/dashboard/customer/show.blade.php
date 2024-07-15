@@ -76,6 +76,7 @@
                                             @endif
                                         </div>
                                         <div class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$item->name }}</div>
+                                        <div class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$item->code }}</div>
                                         <div class="fs-5 fw-semibold text-muted mb-6">{{ @$item->mobile }} - {{ @$item->mobile2 }}</div>
                                         <div class="card-toolbar mb-3 row">
                                             <!--begin::Call-->
@@ -573,9 +574,7 @@
                                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                             <th class="text-center">{{ trans('main.Id') }}</th>
                                                             <th class="text-center">{{ trans('main.Customer') }}</th>
-                                                            <th class="text-center">{{ trans('main.Invoice') }}</th>
                                                             <th class="text-center">{{ trans('main.RecorderReminders') }}</th>
-                                                            <th class="text-center">{{ trans('main.Status') }}</th>
                                                             <th class="text-center">{{ trans('main.SubActivity') }}</th>
                                                             <th class="text-center">{{ trans('main.Activity') }}</th>
                                                             <th class="text-center">{{ trans('main.ExpectedAmount') }}</th>
@@ -586,7 +585,6 @@
                                                             <tr>
                                                                 <td class="text-center">{{ @$reorderReminder->id }}</td>
                                                                 <td class="text-center">{{ @$reorderReminder->customer->name }} </td>
-                                                                <td class="text-center">{{ @$reorderReminder->invoice->id }}</td>
                                                                 <?php $reminderDate = new DateTime($reorderReminder->reminder_date); ?>
                                                                 <td class="text-center">{{ @$reminderDate->format('Y-m-d') }}</td>
                                                                 <td class="text-center">{{ @$reorderReminder->is_completed ? 'تم التذكير' : 'جديد' }}</td>

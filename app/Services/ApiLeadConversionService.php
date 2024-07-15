@@ -11,12 +11,12 @@ use App\Models\ReorderReminder;
 
 class ApiLeadConversionService
 {
-    public function transitionToContacted(Contact $lead, $auth_user)
+    public function transitionToContacted(Contact $lead)
     {
         $oldStatus    = $lead->status;
         $lead->status = 'contacted';
         $lead->save();
-        $data               = new LeadHistoryData($lead->id, Actions::STATUES_CHANGED, $lead->id, ['from'=>$oldStatus,'to'=>$lead->status], $auth_user->context_id);
+        $data               = new LeadHistoryData($lead->id, Actions::STATUES_CHANGED, $lead->id, ['from'=>$oldStatus,'to'=>$lead->status], auth()->guard('api')->user()->context_id);
         $leadHistoryService = new LeadHistoryService();
         $leadHistoryService->logAction($data);
 
@@ -25,45 +25,41 @@ class ApiLeadConversionService
 
 
 
-    public function toTrash(Contact $lead, $auth_user)
+    public function toTrash(Contact $lead)
     {
         if($lead->is_trashed == 1)
         {
             $lead->is_trashed = 0;
             $lead->save();
-            $data               = new LeadHistoryData($lead->id, Actions::RESTORED, $lead->id,[], $auth_user->context_id);
+            $data               = new LeadHistoryData($lead->id, Actions::RESTORED, $lead->id,[], auth()->guard('api')->user()->context_id);
             $leadHistoryService = new LeadHistoryService();
             $leadHistoryService->logAction($data);
-        }
-        else
-        {
+        }else{
             $lead->is_trashed = 1;
             $lead->save();
-            $data               = new LeadHistoryData($lead->id, Actions::TRASHED, $lead->id,[], $auth_user->context_id);
+            $data               = new LeadHistoryData($lead->id, Actions::TRASHED, $lead->id,[], auth()->guard('api')->user()->context_id);
             $leadHistoryService = new LeadHistoryService();
             $leadHistoryService->logAction($data);
         }
+
 
         return $lead;
     }
 
-
-
-    public function transitionToQualified(Contact $lead, $auth_user)
+    public function transitionToQualified(Contact $lead)
     {
         $oldStatus    = $lead->status;
         $lead->status = 'qualified';
         $lead->save();
-        $data               = new LeadHistoryData($lead->id, Actions::STATUES_CHANGED, $lead->id, ['from'=>$oldStatus,'to'=>$lead->status], $auth_user->context_id);
+        $data               = new LeadHistoryData($lead->id, Actions::STATUES_CHANGED, $lead->id, ['from'=>$oldStatus,'to'=>$lead->status], auth()->guard('api')->user()->context_id);
         $leadHistoryService = new LeadHistoryService();
         $leadHistoryService->logAction($data);
-        
         return $lead;
     }
 
 
 
-    public function convertToCustomer(Contact $lead,$invoice,$next_reorder_reminder = null, $auth_user)
+    public function convertToCustomer(Contact $lead,$invoice,$next_reorder_reminder = null)
     {
         $oldStatus = $lead->status;
         $customer  = Customer::where('mobile',$lead->mobile)->orWhere(function($query) use ($lead){
@@ -74,7 +70,7 @@ class ApiLeadConversionService
         {
             if(!$lead->customer_id)
             {
-                $employee  = $auth_user->employee;
+                $employee  = auth()->guard('api')->user()->employee;
                 $branch_id = null;
                 if($employee)
                 {
@@ -105,9 +101,17 @@ class ApiLeadConversionService
                 $customer = Customer::find($lead->customer_id);
             }
         }
-        $invoice['customer_id'] = $customer->id;
-        $invoice['created_by']  = $auth_user->context_id;
-        $invoiceRecord          = Invoice::create($invoice);
+        // $invoice['customer_id'] = $customer->id;
+        // $invoice['created_by']  = auth()->guard('api')->user()->context_id;
+        $customer_id = $customer->id;
+        $created_by  = auth()->guard('api')->user()->context_id;
+        foreach ($invoice as &$inv) {
+            $inv['customer_id'] = $customer_id;
+            $inv['created_by']  = $created_by;
+        /*
+        }
+        */
+        $invoiceRecord          = Invoice::create($inv);
         $addPointsService       = new PointAdditionService();
         $addPointsService->addPoints($invoiceRecord->customer_id,$invoiceRecord->activity_id,$invoiceRecord->interest_id,$invoiceRecord->amount_paid);
         if($next_reorder_reminder)
@@ -121,10 +125,10 @@ class ApiLeadConversionService
         $lead->customer_id = $customer->id;
         $lead->status = 'converted';
         $lead->save();
-        $data               = new LeadHistoryData($lead->id, Actions::STATUES_CHANGED, $lead->id, ['from'=>$oldStatus,'to'=>$lead->status], $auth_user->context_id);
+        $data               = new LeadHistoryData($lead->id, Actions::STATUES_CHANGED, $lead->id, ['from'=>$oldStatus,'to'=>$lead->status], auth()->guard('api')->user()->context_id);
         $leadHistoryService = new LeadHistoryService();
         $leadHistoryService->logAction($data);
-        
+        }
         return $lead;
     }
 }

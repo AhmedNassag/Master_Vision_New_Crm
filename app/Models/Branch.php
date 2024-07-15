@@ -24,6 +24,13 @@ class Branch extends Model
 
 
 
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'branch_id');
+    }
+
+
+
     public function customers()
     {
         return $this->hasMany(Customer::class, 'branch_id');

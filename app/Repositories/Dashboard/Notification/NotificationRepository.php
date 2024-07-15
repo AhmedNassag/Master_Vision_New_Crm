@@ -170,7 +170,7 @@ class NotificationRepository implements NotificationInterface
                     }
                 }
             }
-            
+
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
@@ -253,6 +253,15 @@ class NotificationRepository implements NotificationInterface
             ->paginate(config('myConfig.paginationCount'));
         }
         return view('dashboard.notification.reminder',compact('data'));
+    }
+
+
+
+    public function remindersChangeStatus($id)
+    {
+        $data = ReorderReminder::findOrFail($id);
+        $data->update(['is_completed' => $data->is_completed == 0 ? 1 : 0]);
+        return redirect()->back();
     }
 
 }

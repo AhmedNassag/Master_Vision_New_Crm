@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 class LangController extends Controller
 {
 
-
     public function ar ()
     {
         App::setlocale('ar');
@@ -19,6 +18,8 @@ class LangController extends Controller
         return back();
     }
 
+
+    
     public function en ()
     {
         App::setLocale('en');

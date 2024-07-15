@@ -84,9 +84,9 @@ class CustomerImport implements ToCollection
             if (!empty($contactData) &&  $contactData['name'] != null && $contactData['mobile'] != null ) {
                 $contactData['contact_source_id'] = $this->contactSourceId;
                 $contactData['activity_id'] = $this->activityId;
-				if(auth()->user()->type != 'Admin' && auth()->user()->employee->has_branch_access !=1){
-					$contactData['employee_id'] = auth()->user()->context_id;
-				}
+				// if(auth()->user()->type != 'Admin' && auth()->user()->employee->has_branch_access !=1){
+				// 	$contactData['employee_id'] = auth()->user()->context_id;
+				// }
                 $contactData['created_by'] = auth()->user()->context_id;
                 $customer = Customer::where('mobile',$contactData['mobile'])->first();
                 if(!$customer)

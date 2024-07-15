@@ -173,9 +173,16 @@ class Contact extends Model
 
 
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+
+
     public function contactCompletions()
     {
-        return $this->hasMany(ContactCompletions::class, 'contact_id');
+        return $this->hasMany(ContactCompletion::class, 'contact_id');
     }
 
 

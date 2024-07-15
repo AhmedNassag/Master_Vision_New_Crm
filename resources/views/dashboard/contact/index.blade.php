@@ -234,40 +234,22 @@
                                                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Mobile') }}</label>
                                                         <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ old('mobile') }}" name="mobile" />
                                                     </div>
-                                                    <!-- birth_date -->
-                                                    <div class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Birth Date') }}</label>
-                                                        <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.Birth Date') }}" value="{{ old('birth_date') }}" name="birth_date" />
-                                                    </div>
-                                                    <!-- contact_source_id -->
-                                                    <div class="mb-7" id="contact_source_id">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.ContactSource') }}</span>
-                                                        </label>
-                                                        <select name="contact_source_id" data-control="select2" data-dropdown-parent="#contact_source_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="">{{ trans('main.Select') }}...</option>
-                                                            <?php $contactSources = \App\Models\ContactSource::get(['id', 'name']); ?>
-                                                            @foreach($contactSources as $contactSource)
-                                                            <option value="{{ @$contactSource->id }}">{{ @$contactSource->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
                                                     <!-- gender -->
-                                                    <div class="mb-7" id="gender">
+                                                    <div class="mb-7" id="gender_filter">
                                                         <label class="form-label fs-5 fw-semibold mb-3">
                                                             <span class="required">{{ trans('main.Gender') }}</span>
                                                         </label>
-                                                        <select name="gender" data-control="select2" data-dropdown-parent="#gender" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                        <select name="gender" data-control="select2" data-dropdown-parent="#gender_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                             <option value="Male">{{ trans('main.Male') }}</option>
                                                             <option value="Female">{{ trans('main.Female') }}</option>
                                                         </select>
                                                     </div>
                                                     <!-- activity_id -->
-                                                    <div id="activity_id" class="mb-7">
+                                                    <div id="activity_id_filter" class="mb-7">
                                                         <label class="form-label fs-5 fw-semibold mb-3">
                                                             <span class="required">{{ trans('main.Activity') }}</span>
                                                         </label>
-                                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                             <option value="">{{ trans('main.Select') }}...</option>
                                                             <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                                             @foreach($activities as $activity)
@@ -276,21 +258,21 @@
                                                         </select>
                                                     </div>
                                                     <!-- interest_id -->
-                                                    <div id="interest_id" class="mb-7">
+                                                    <div id="interest_id_filter" class="mb-7">
                                                         <label class="form-label fs-5 fw-semibold mb-3">
                                                             <span class="required">{{ trans('main.SubActivity') }}</span>
                                                         </label>
-                                                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                             <option value="">{{ trans('main.Select') }}...</option>
 
                                                         </select>
                                                     </div>
                                                     <!-- city_id -->
-                                                    <div id="city_id" class="mb-7">
+                                                    <div id="city_id_filter" class="mb-7">
                                                         <label class="form-label fs-5 fw-semibold mb-3">
                                                             <span class="required">{{ trans('main.City') }}</span>
                                                         </label>
-                                                        <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                        <select name="city_id" data-control="select2" data-dropdown-parent="#city_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                             <option value="">{{ trans('main.Select') }}...</option>
                                                             <?php $cities = \App\Models\City::get(['id', 'name']); ?>
                                                             @foreach($cities as $city)
@@ -299,34 +281,11 @@
                                                         </select>
                                                     </div>
                                                     <!-- area_id -->
-                                                    <div id="area_id" class="mb-7">
+                                                    <div id="area_id_filter" class="mb-7">
                                                         <label class="form-label fs-5 fw-semibold mb-3">
                                                             <span class="required">{{ trans('main.Area') }}</span>
                                                         </label>
-                                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="">{{ trans('main.Select') }}...</option>
-
-                                                        </select>
-                                                    </div>
-                                                    <!-- industry_id -->
-                                                    <div id="industry_id" class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.Industry') }}</span>
-                                                        </label>
-                                                        <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="">{{ trans('main.Select') }}...</option>
-                                                            <?php $industries = \App\Models\Industry::get(['id', 'name']); ?>
-                                                            @foreach($industries as $industry)
-                                                            <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <!-- major_id -->
-                                                    <div id="major_id" class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.Major') }}</span>
-                                                        </label>
-                                                        <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                             <option value="">{{ trans('main.Select') }}...</option>
 
                                                         </select>
@@ -488,9 +447,10 @@
                                                 </div>
                                             </th>
                                             <th class="text-center">{{ trans('main.Status') }}</th>
+                                            <th class="text-center">{{ trans('main.Code') }}</th>
                                             <th class="text-center">{{ trans('main.Name') }}</th>
                                             <th class="text-center px-0">{{ trans('main.Mobile') }}</th>
-                                            <th class="text-center min-w-150px">{{ trans('main.ContactSource') }}</th>
+                                            <th class="text-center min-w-150px">{{ trans('main.Source') }}</th>
                                             <th class="text-center">{{ trans('main.City') }}</th>
                                             <th class="text-center">{{ trans('main.Area') }}</th>
                                             <th class="text-center">{{ trans('main.Employee') }}</th>
@@ -522,7 +482,7 @@
                                                         </label>
                                                     @elseif(@$item->status == 'converted')
                                                         <label class="badge badge-light-dark">
-                                                            {{ app()->getLocale() == 'ar' ? 'تم التحويل' : 'Converted' }}
+                                                            {{ app()->getLocale() == 'ar' ? 'تم التحويل/البيع' : 'Converted' }}
                                                         </label>
                                                     @else
                                                         <div class="btn ripple btn-purple-gradient" id='swal-success'>
@@ -531,6 +491,7 @@
                                                     @endif
                                                 </a>
                                             </td>
+                                            <td class="text-center">{{ @$item->code }}</td>
                                             <td class="text-center"><a href="{{ route('contact.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ @$item->name }}</a></td>
                                             <td class="text-center">{{ @$item->mobile }}</td>
                                             <td class="text-center">{{ @$item->contactSource->name }}</td>
@@ -592,14 +553,14 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        @include('dashboard.contact.relateEmployeeModal')
-                                        @include('dashboard.contact.activeModal')
-                                        @include('dashboard.contact.trashModal')
-                                        @include('dashboard.contact.deleteModal')
-                                        @include('dashboard.contact.deleteSelectedModal')
-                                        @include('dashboard.contact.trashSelectedModal')
-                                        @include('dashboard.contact.activateSelectedModal')
-                                        @include('dashboard.contact.relateSelectedModal')
+                                            @include('dashboard.contact.relateEmployeeModal')
+                                            @include('dashboard.contact.activeModal')
+                                            @include('dashboard.contact.trashModal')
+                                            @include('dashboard.contact.deleteModal')
+                                            @include('dashboard.contact.deleteSelectedModal')
+                                            @include('dashboard.contact.trashSelectedModal')
+                                            @include('dashboard.contact.activateSelectedModal')
+                                            @include('dashboard.contact.relateSelectedModal')
                                             @include('dashboard.contact.messageSelectedModal')
                                         @endforeach
                                         @else

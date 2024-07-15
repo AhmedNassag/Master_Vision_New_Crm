@@ -104,6 +104,13 @@ class Customer extends Authenticatable implements JWTSubject
 
 
 
+    public function subActivity()
+    {
+        return $this->belongsTo(SubActivity::class, 'interest_id');
+    }
+
+
+
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');

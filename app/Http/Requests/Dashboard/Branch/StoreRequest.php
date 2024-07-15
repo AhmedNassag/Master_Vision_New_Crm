@@ -25,6 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|unique:branches,name,NULL,id,deleted_at,NULL',
+            'code' => 'required|string|unique:branches,code,NULL,id,deleted_at,NULL',
         ];
     }
 

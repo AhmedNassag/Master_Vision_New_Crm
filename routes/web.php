@@ -24,18 +24,36 @@ Route::get('/clear-cache', function () {
     Artisan::call('config:cache');
     Artisan::call('route:clear');
 
-    return "Cache cleared successfully";
+    return "Cache Cleared Successfully";
+});
+
+Route::get('/migrate', function () {
+    Artisan::call('migrate');
+
+    return "Migrate Done Successfully";
+});
+
+Route::get('/db-seed', function () {
+    Artisan::call('db:seed');
+
+    return "DB Seed Done Successfully";
+});
+
+Route::get('/migrate-fresh-seed', function () {
+    Artisan::call('migrate:fresh --seed');
+
+    return "Migrate Fresh Seed Done Successfully";
 });
 
 Route::get('/', function () {
     return view('home');
-});
+})->middleware('guest:customer');
 
 Route::get('/customer/login', function () {
     return view('customer-portal.login');
-});
+})->middleware('guest:customer');
 
-Route::get('/customer/login', [LoginCustomerController::class, 'showLoginForm'])->name('customer.login');
+Route::get('/customer/login', [LoginCustomerController::class, 'showLoginForm'])->name('customer.login')->middleware('guest:customer');
 Route::post('/customer/login', [LoginCustomerController::class, 'login']);
 Route::middleware(['auth:customer'])->prefix('/customer')->group(function () {
     // Home route

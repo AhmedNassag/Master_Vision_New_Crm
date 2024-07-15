@@ -108,6 +108,9 @@
                                         <!--begin::Name-->
                                         <div class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1">{{ @$item->name }}</div>
                                         <!--end::Name-->
+                                        <!--begin::Code-->
+                                        <div class="fs-5 fw-semibold text-muted mb-3">{{ @$item->code }}</div>
+                                        <!--end::Code-->
                                         <!--begin::Position-->
                                         <div class="fs-5 fw-semibold text-muted mb-6">
                                             @if (@$item->status == 'new')
@@ -124,7 +127,7 @@
                                                 </label>
                                             @elseif(@$item->status == 'converted')
                                                 <label class="badge badge-light-dark">
-                                                    {{ app()->getLocale() == 'ar' ? 'تم التحويل' : 'Converted' }}
+                                                    {{ app()->getLocale() == 'ar' ? 'تم التحويل/البيع' : 'Converted' }}
                                                 </label>
                                             @else
                                                 <div class="btn ripple btn-purple-gradient" id='swal-success'>
@@ -578,7 +581,7 @@
                                                                         <b>{{ trans('main.Reply') }}</b>
                                                                         <p>{{ @$meeting->reply->reply ?? '' }}</p>
                                                                         <b>{{ trans('main.Notes') }}:</b>
-                                                                        <p>{{strip_tags( $timelineItem->placeholders_array['notes'] )}}</p>
+                                                                        <p>{{strip_tags($timelineItem->placeholders_array['notes']) }}</p>
                                                                         <b>{{ trans('main.Next Followup date') }}:</b>
                                                                         <p>{{ @$timelineItem->placeholders_array['follow_date'] }}</p>
                                                                     </div>

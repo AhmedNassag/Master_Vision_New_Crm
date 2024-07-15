@@ -77,11 +77,14 @@ class ContactRepository implements ContactInterface
             ->when($request->to_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '<=', $request->to_date);
             })
+            ->when($request->is_active != null,function ($q) use($request){
+                return $q->where('is_active',$request->is_active);
+            })
             ->when($request->status != null,function ($q) use($request){
                 return $q->where('status',$request->status);
             })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
+            ->when(!$request->status,function ($q) use($request){
+                return $q->where('status', '!=', 'converted');
             })
             ->orderBy('id', 'desc')
             ->paginate(config('myConfig.paginationCount'));
@@ -90,6 +93,7 @@ class ContactRepository implements ContactInterface
         {
             $data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
             ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->orWhere('created_by', auth()->user()->employee->id)
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -129,11 +133,14 @@ class ContactRepository implements ContactInterface
             ->when($request->to_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '<=', $request->to_date);
             })
+            ->when($request->is_active != null,function ($q) use($request){
+                return $q->where('is_active',$request->is_active);
+            })
             ->when($request->status != null,function ($q) use($request){
                 return $q->where('status',$request->status);
             })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
+            ->when(!$request->status,function ($q) use($request){
+                return $q->where('status', '!=', 'converted');
             })
             ->orderBy('id', 'desc')
             ->paginate(config('myConfig.paginationCount'));
@@ -142,6 +149,7 @@ class ContactRepository implements ContactInterface
         {
             $data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
             ->where('employee_id', auth()->user()->employee->id)
+
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -181,11 +189,14 @@ class ContactRepository implements ContactInterface
             ->when($request->to_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '<=', $request->to_date);
             })
+            ->when($request->is_active != null,function ($q) use($request){
+                return $q->where('is_active',$request->is_active);
+            })
             ->when($request->status != null,function ($q) use($request){
                 return $q->where('status',$request->status);
             })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
+            ->when(!$request->status,function ($q) use($request){
+                return $q->where('status', '!=', 'converted');
             })
             ->orderBy('id', 'desc')
             ->paginate(config('myConfig.paginationCount'));
@@ -249,6 +260,8 @@ class ContactRepository implements ContactInterface
     public function store($request)
     {
         try {
+            // DB::beginTransaction();
+
             $validated            = $request->validated();
             $inputs               = $request->except('photo');
             $inputs['created_by'] = Auth::user()->id;
@@ -257,6 +270,8 @@ class ContactRepository implements ContactInterface
                 $inputs['employee_id'] = Auth::user()->id;
             }
             $data = Contact::create($inputs);
+            //create code
+            $data->update(['code' => $this->createCode($data)]);
             //upload photo
             if ($request->hasFile('photo')) {
                 $file      = $request->photo;
@@ -281,6 +296,8 @@ class ContactRepository implements ContactInterface
 
             session()->flash('success');
             return redirect()->route('contact.index');
+
+            // DB::commit();
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -307,6 +324,10 @@ class ContactRepository implements ContactInterface
                 return redirect()->back();
             }
             $data->update($inputs);
+            //create code if code is null
+            if($data->code == null) {
+                $data->update(['code' => $this->createCode($data)]);
+            }
             // update photo
             if ($request->hasFile('photo')) {
                 $file = $request->photo;
@@ -378,6 +399,7 @@ class ContactRepository implements ContactInterface
                         $contact->update([
                             'mobile'      => $contact->mobile? $contact->mobile.'x' : '',
                             'national_id' => $contact->national_id ? $contact->national_id.'x' : '',
+                            'email'       => $contact->email ? $contact->email.'x' : '',
                         ]);
                         $contact->delete();
                     }
@@ -596,6 +618,7 @@ class ContactRepository implements ContactInterface
         {
             $data = Contact::where('is_trashed', 1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
             ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->orWhere('employee','employee_id', auth()->user()->employee->id)
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -707,7 +730,7 @@ class ContactRepository implements ContactInterface
 
 
 
-    function completionData($inputs, $id)
+    public function completionData($inputs, $id)
     {
         //delete old records
         $oldContactCompletions = ContactCompletion::where('contact_id',$id)->get();
@@ -730,6 +753,38 @@ class ContactRepository implements ContactInterface
                 ]);
             }
         }
+    }
+
+
+
+    public function createCode($contact)
+    {
+        // Retrieve the branch code from the branch
+        $branchCode = $contact->branch && $contact->branch->code != null  ? $contact->branch->code  : '00';
+
+        // Get the current year
+        $currentYear = date('y');
+
+        // Generate a serial number
+        $latestContact = Contact::where('code', 'Like', "{$branchCode}/{$currentYear}/%")
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $serialNumber = 000001; // Default serial number
+        if ($latestContact) {
+            // Extract the last serial number and increment it
+            $lastCode = $latestContact->code;
+            $lastSerialNumber = (int)substr($lastCode, strrpos($lastCode, '/') + 1);
+            $serialNumber = $lastSerialNumber + 1;
+        }
+
+        // Format the serial number to be at least 3 digits
+        $formattedSerialNumber = str_pad($serialNumber, 6, '0', STR_PAD_LEFT);
+
+        // Construct the new code
+        $newCode = "{$branchCode}/{$currentYear}/{$formattedSerialNumber}";
+
+        return $newCode;
     }
 
 }

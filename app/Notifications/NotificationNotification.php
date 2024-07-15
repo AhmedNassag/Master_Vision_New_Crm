@@ -48,7 +48,7 @@ class NotificationNotification extends Notification
             'sender_name'      => auth('api')->user()->userProfile->name,
             'sender_type'      => get_class(auth('api')->user()),
 			*/
-			/*'message' =>*/ 'New Notification Added',
+			/*'message' =>*/ $this->data->notification,
         ];
     }
 

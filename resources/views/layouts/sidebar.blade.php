@@ -465,7 +465,7 @@
                                     }
                                     else
                                     {
-                                        $tickets_count = App\Models\Ticket::where('agent', auth()->user()->employee->id)->where('status', '!=', 'Resolved')->count();
+                                        $tickets_count = App\Models\Ticket::where('assigned_agent_id', auth()->user()->employee->id)->where('status', '!=', 'Resolved')->count();
                                     }
                                 ?>
                                 <a class="menu-link {{ Request::is('admin/tickets') ? 'active' : '' }}" href="{{ route('tickets.index') }}">

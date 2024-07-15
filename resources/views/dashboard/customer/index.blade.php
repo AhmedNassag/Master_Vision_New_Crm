@@ -54,35 +54,22 @@
                                                     <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Birth Date') }}</label>
                                                     <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.Birth Date') }}" value="{{ old('birth_date') }}" name="birth_date" />
                                                 </div>
-                                                <!-- contact_source_id -->
-                                                <div class="mb-10" id="contact_source_id">
-                                                    <label class="form-label fs-5 fw-semibold mb-3">
-                                                        <span class="required">{{ trans('main.ContactSource') }}</span>
-                                                    </label>
-                                                    <select name="contact_source_id" data-control="select2" data-dropdown-parent="#contact_source_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                        <option value="">{{ trans('main.Select') }}...</option>
-                                                        <?php $contactSources = \App\Models\ContactSource::get(['id', 'name']); ?>
-                                                        @foreach($contactSources as $contactSource)
-                                                        <option value="{{ @$contactSource->id }}">{{ @$contactSource->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
                                                 <!-- gender -->
-                                                <div class="mb-10" id="gender">
+                                                <div class="mb-10" id="gender_filter">
                                                     <label class="form-label fs-5 fw-semibold mb-3">
                                                         <span class="required">{{ trans('main.Gender') }}</span>
                                                     </label>
-                                                    <select name="gender" data-control="select2" data-dropdown-parent="#gender" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                    <select name="gender" data-control="select2" data-dropdown-parent="#gender_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                         <option value="Male">{{ trans('main.Male') }}</option>
                                                         <option value="Female">{{ trans('main.Female') }}</option>
                                                     </select>
                                                 </div>
                                                 <!-- activity_id -->
-                                                <div id="activity_id" class="mb-10">
+                                                <div id="activity_id_filter" class="mb-10">
                                                     <label class="form-label fs-5 fw-semibold mb-3">
                                                         <span class="required">{{ trans('main.Activity') }}</span>
                                                     </label>
-                                                    <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                    <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                                         @foreach($activities as $activity)
@@ -91,21 +78,21 @@
                                                     </select>
                                                 </div>
                                                 <!-- interest_id -->
-                                                <div id="interest_id" class="mb-10">
+                                                <div id="interest_id_filter" class="mb-10">
                                                     <label class="form-label fs-5 fw-semibold mb-3">
                                                         <span class="required">{{ trans('main.SubActivity') }}</span>
                                                     </label>
-                                                    <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                    <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
 
                                                     </select>
                                                 </div>
                                                 <!-- city_id -->
-                                                <div id="city_id" class="mb-10">
+                                                <div id="city_id_filter" class="mb-10">
                                                     <label class="form-label fs-5 fw-semibold mb-3">
                                                         <span class="required">{{ trans('main.City') }}</span>
                                                     </label>
-                                                    <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                    <select name="city_id" data-control="select2" data-dropdown-parent="#city_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <?php $cities = \App\Models\City::get(['id', 'name']); ?>
                                                         @foreach($cities as $city)
@@ -114,34 +101,11 @@
                                                     </select>
                                                 </div>
                                                 <!-- area_id -->
-                                                <div id="area_id" class="mb-10">
+                                                <div id="area_id_filter" class="mb-10">
                                                     <label class="form-label fs-5 fw-semibold mb-3">
                                                         <span class="required">{{ trans('main.Area') }}</span>
                                                     </label>
-                                                    <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                        <option value="">{{ trans('main.Select') }}...</option>
-
-                                                    </select>
-                                                </div>
-                                                <!-- industry_id -->
-                                                <div id="industry_id" class="mb-10">
-                                                    <label class="form-label fs-5 fw-semibold mb-3">
-                                                        <span class="required">{{ trans('main.Industry') }}</span>
-                                                    </label>
-                                                    <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                        <option value="">{{ trans('main.Select') }}...</option>
-                                                        <?php $industries = \App\Models\Industry::get(['id', 'name']); ?>
-                                                        @foreach($industries as $industry)
-                                                        <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <!-- major_id -->
-                                                <div id="major_id" class="mb-10">
-                                                    <label class="form-label fs-5 fw-semibold mb-3">
-                                                        <span class="required">{{ trans('main.Major') }}</span>
-                                                    </label>
-                                                    <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                    <select name="area_id" data-control="select2" data-dropdown-parent="#area_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
 
                                                     </select>
@@ -177,6 +141,30 @@
                                     <a type="button" class="btn btn-primary" href="{{ route('customer.create') }}">{{ trans('main.Add New') }}</a>
                                 @endcan
                                 <!--end::Add-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--multi_selected-->
+                    <div class="card-header border-0 pt-lg-6 px-3  ">
+                        <div class="card-title"></div>
+                        <div class="card-toolbar">
+                            <div id="multi_selected_div" class="d-flex justify-content-sm-start  justify-content-lg-end flex-wrap" data-kt-customer-table-toolbar="base" style="display: none">
+                                <div class="m-1">
+                                    <button id="btn_message_selected" type="button" class="btn btn-sm btn-light-success" data-bs-toggle="modal" data-bs-target="#message_selected" style="display: none">
+                                        <i class="ki-duotone ki-whatsapp ">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                        {{ trans('main.Send') }} {{ trans('main.Message') }}
+                                    </button>
+                                </div>
+                                <div class="m-1">
+                                    @can('حذف العملاء')
+                                        <button id="btn_delete_selected" type="button" class="btn btn-sm btn-danger" style="display: none">
+                                            {{ trans('main.Delete') }}
+                                        </button>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -229,10 +217,15 @@
                         </script>
                         @endif
                         <div class="table-responsive">
-                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="example1">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                        <th class="text-center">#</th>
+                                        <th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label="" style="width: 29.8906px;">
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                <input class="box1 form-check-input" name="select_all" id="example-select-all" type="checkbox" onclick="CheckAll('box1', this)" oninput="showBtnDeleteSelected2()">
+                                            </div>
+                                        </th>
+                                        <th class="text-center">{{ trans('main.Code') }}</th>
                                         <th class="text-center">{{ trans('main.Name') }}</th>
                                         <th class="text-center">{{ trans('main.Mobile') }}</th>
                                         <th class="text-center">{{ trans('main.Mobile2') }}</th>
@@ -247,8 +240,11 @@
                                     @foreach ($data as $key=>$item)
                                     <tr>
                                         <td class="text-center">
-                                            {{ @$key+1 }}
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input id="delete_selected_input" type="checkbox" value="{{ @$item->id }}" class="box1 form-check-input" oninput="showBtnDeleteSelected2()">
+                                            </div>
                                         </td>
+                                        <td class="text-center">{{ @$item->code }}</td>
                                         <td class="text-center">
                                             @can('عرض العملاء')
                                                 <a href="{{ route('customer.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ @$item->name }}</a>
@@ -288,8 +284,10 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    @include('dashboard.customer.deleteModal')
-                                    @include('dashboard.customer.makePasswordModal')
+                                        @include('dashboard.customer.deleteModal')
+                                        @include('dashboard.customer.makePasswordModal')
+                                        @include('dashboard.customer.deleteSelectedModal')
+                                        @include('dashboard.customer.messageSelectedModal')
                                     @endforeach
                                     @else
                                     <tr>

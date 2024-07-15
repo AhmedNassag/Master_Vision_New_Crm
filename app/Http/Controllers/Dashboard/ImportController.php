@@ -46,74 +46,75 @@ class ImportController extends Controller
 
     public function fetchExcelColumns(Request $request)
     {
-        // Validate the uploaded file
-        $request->validate([
-            'excel_file' => 'required|mimes:xlsx,xls',
-        ]);
+        try {
 
-        // Read the Excel file to fetch column names
-        $excelColumns = [];
+            // Validate the uploaded file
+            $request->validate([
+                'excel_file' => 'required|mimes:xlsx,xls',
+            ]);
 
-        $filePath            = $request->file('excel_file')->getRealPath();
-        $spreadsheet         = IOFactory::load($filePath);
-        $worksheet           = $spreadsheet->getActiveSheet();
-        $highestColumn       = $worksheet->getHighestColumn();
+            // Read the Excel file to fetch column names
+            $excelColumns = [];
 
-        $highestColumnNumber = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+            $filePath            = $request->file('excel_file')->getRealPath();
+            $spreadsheet         = IOFactory::load($filePath);
+            $worksheet           = $spreadsheet->getActiveSheet();
+            $highestColumn       = $worksheet->getHighestColumn();
 
-		for ($colNumber = 1; $colNumber <= $highestColumnNumber; $colNumber++) {
-			$col = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colNumber);
-			$excelColumns[] = $worksheet->getCell($col . '1')->getValue();
-		}
+            $highestColumnNumber = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
-        // You will need to provide data for $contactFields and $lookupTables
-        if($request->type == 'customer')
-        {
-            $contactFields = [
-                'name'              => trans('main.Name'),
-                'mobile'            => trans('main.Mobile'),
-                'mobile2'           => trans('main.Mobile2'),
-                'email'             => trans('main.Email'),
-                'company_name'      => trans('main.Company Name'),
-                'city_id'           => trans('main.City'),
-                'area_id'           => trans('main.Area'),
-                'contact_source_id' => trans('main.ContactSource'),
-                'job_title_id'      => trans('main.Job Title ID'),
-                'industry_id'       => trans('main.Industry ID'),
-                'major_id'          => trans('main.Major ID'),
-                'notes'             => trans('main.Notes'),
-                'gender'            => trans('main.Gender'),
-            ];
-        }else{
-            $contactFields = [
-                'name'              => trans('main.Name'),
-                'mobile'            => trans('main.Mobile'),
-                'mobile2'           => trans('main.Mobile2'),
-                'email'             => trans('main.Email'),
-                'company_name'      => trans('main.Company Name'),
-                'city_id'           => trans('main.City'),
-                'area_id'           => trans('main.Area'),
-                'contact_source_id' => trans('main.ContactSource'),
-                'job_title_id'      => trans('main.Job Title ID'),
-                'industry_id'       => trans('main.Industry ID'),
-                'major_id'          => trans('main.Major ID'),
-                'notes'             => trans('main.Notes'),
-                'gender'            => trans('main.Gender'),
-                'is_trashed'        => trans('main.Is Trashed'),
-                'birth_date'        => trans('main.Birth Date'),
-                'national_id'       => trans('main.National ID'),
-                'code'              => trans('main.Code'),
-                'is_active'         => trans('main.Is Active'),
-            ];
+            for ($colNumber = 1; $colNumber <= $highestColumnNumber; $colNumber++) {
+                $col = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colNumber);
+                $excelColumns[] = $worksheet->getCell($col . '1')->getValue();
+            }
 
+            // You will need to provide data for $contactFields and $lookupTables
+            if($request->type == 'customer')
+            {
+                $contactFields = [
+                    'name'              => trans('main.Name'),
+                    'mobile'            => trans('main.Mobile'),
+                    'mobile2'           => trans('main.Mobile2'),
+                    'email'             => trans('main.Email'),
+                    'company_name'      => trans('main.Company Name'),
+                    'city_id'           => trans('main.City'),
+                    'area_id'           => trans('main.Area'),
+                    // 'contact_source_id' => trans('main.ContactSource'),
+                    'job_title_id'      => trans('main.Job Title ID'),
+                    'industry_id'       => trans('main.Industry ID'),
+                    'major_id'          => trans('main.Major ID'),
+                    'notes'             => trans('main.Notes'),
+                    'gender'            => trans('main.Gender'),
+                ];
+            }else{
+                $contactFields = [
+                    'name'              => trans('main.Name'),
+                    'mobile'            => trans('main.Mobile'),
+                    'mobile2'           => trans('main.Mobile2'),
+                    'email'             => trans('main.Email'),
+                    'company_name'      => trans('main.Company Name'),
+                    'city_id'           => trans('main.City'),
+                    'area_id'           => trans('main.Area'),
+                    // 'contact_source_id' => trans('main.ContactSource'),
+                    'job_title_id'      => trans('main.Job Title'),
+                    'industry_id'       => trans('main.Industry'),
+                    'major_id'          => trans('main.Major'),
+                    'notes'             => trans('main.Notes'),
+                    'gender'            => trans('main.Gender'),
+                    'is_trashed'        => trans('main.Is Trashed'),
+                    'birth_date'        => trans('main.Birth Date'),
+                    'national_id'       => trans('main.National ID'),
+                    'code'              => trans('main.Code'),
+                    'is_active'         => trans('main.Is Active'),
+                ];
+            }
+
+            $view = View::make('partials.excel_columns', compact('excelColumns', 'contactFields'));
+            return $view;
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-
-
-
-
-        $view = View::make('partials.excel_columns', compact('excelColumns', 'contactFields'));
-
-        return $view;
     }
 
 }

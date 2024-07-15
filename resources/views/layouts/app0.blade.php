@@ -4844,11 +4844,31 @@ License: For each use you must have a valid license purchased only from above li
                     document.getElementById('btn_activate_selected').style.display = "inline-block";
                     document.getElementById('btn_relate_selected').style.display = "inline-block";
                     document.getElementById('btn_message_selected').style.display = "inline-block";
+                    document.getElementById('btn_message_selected_customer').style.display = "inline-block";
 				} else {
                     document.getElementById('btn_delete_selected').style.display = "none";
 					document.getElementById('btn_trash_selected').style.display = "none";
                     document.getElementById('btn_activate_selected').style.display = "none";
                     document.getElementById('btn_relate_selected').style.display = "none";
+                    document.getElementById('btn_message_selected').style.display = "none";
+                    document.getElementById('btn_message_selected_customer').style.display = "none";
+				}
+			}
+
+
+
+            //when check show or hide button
+			function showBtnDeleteSelected2()
+			{
+				var selected = new Array();
+				$("#example1 input[type=checkbox]:checked").each(function() {
+					selected.push(this.value);
+				});
+				if (selected.length > 0) {
+                    document.getElementById('btn_delete_selected').style.display = "inline-block";
+                    document.getElementById('btn_message_selected').style.display = "inline-block";
+				} else {
+                    document.getElementById('btn_delete_selected').style.display = "none";
                     document.getElementById('btn_message_selected').style.display = "none";
 				}
 			}
@@ -4912,6 +4932,21 @@ License: For each use you must have a valid license purchased only from above li
             //when click button message_selected show modal
             $(function() {
                 $("#btn_message_selected").click(function() {
+                    var selected = new Array();
+                    $("#example1 input[type=checkbox]:checked").each(function() {
+                        selected.push(this.value);
+                    });
+                    if (selected.length > 0) {
+                        $('#message_selected').modal('show')
+                        $('input[id="message_selected_id"]').val(selected);
+                    }
+                });
+            });
+
+
+            //when click button message_selected_customer show modal
+            $(function() {
+                $("#btn_message_selected_customer").click(function() {
                     var selected = new Array();
                     $("#example1 input[type=checkbox]:checked").each(function() {
                         selected.push(this.value);

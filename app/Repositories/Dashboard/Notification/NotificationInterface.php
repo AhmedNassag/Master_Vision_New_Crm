@@ -14,7 +14,9 @@ interface NotificationInterface
     public function destroy($request);
 
     public function todayReminders();
-    
+
     public function monthReminders();
+
+    public function remindersChangeStatus($id);
 
 }

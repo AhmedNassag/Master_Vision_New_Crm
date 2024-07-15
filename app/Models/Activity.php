@@ -19,7 +19,7 @@ class Activity extends Model
     //start relations
     public function subActivities()
     {
-        return $this->hasMany(SubActivities::class, 'activity_id');
+        return $this->hasMany(SubActivity::class, 'activity_id');
     }
 
 

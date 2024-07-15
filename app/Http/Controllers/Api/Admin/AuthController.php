@@ -29,26 +29,32 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(),
-        [
-            'email'          => 'required|email',
-            'password'       => 'required|string|min:6',
-            'firebase_token' => 'required|string',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json($validator->errors(), 422);
+        try {
+
+            $validator = Validator::make($request->all(),
+            [
+                'email'          => 'required|email',
+                'password'       => 'required|string|min:6',
+                'firebase_token' => 'required|string',
+            ]);
+            if ($validator->fails())
+            {
+                return response()->json($validator->errors(), 422);
+            }
+            $credentials = $request->only("email", "password");
+            if (! $token = auth()->guard('api')->attempt($credentials))
+            {
+                return response()->json(['message' => 'Email And Password Not Match To The Data'], 401);
+            }
+            $auth_user = User::where('email', $request->email)->first();
+            $auth_user->update([
+                'firebase_token' => $request->firebase_token,
+            ]);
+            return $this->createNewToken($token);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        $credentials = $request->only("email", "password");
-        if (! $token = auth()->guard('api')->attempt($credentials))
-        {
-            return response()->json(['message' => 'Email And Password Not Match To The Data'], 401);
-        }
-        $auth_user = User::where('email', $request->email)->first();
-        $auth_user->update([
-            'firebase_token' => $request->firebase_token,
-        ]);
-        return $this->createNewToken($token);
     }
 
 
@@ -59,10 +65,10 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
+        /*$auth_user = User::findOrFail(auth()->guard('api')->user()->id);
         $auth_user->update([
             'firebase_token' => null,
-        ]);
+        ]);*/
         auth()->guard('api')->logout();
         return response()->json(['message' => 'User Successfully Signed Out']);
     }
@@ -102,32 +108,44 @@ class AuthController extends Controller
 
     public function me()
     {
-        $auth_id = auth()->guard('api')->user()->id;
-        $user = User::with('employee','employee.department','employee.branch','media')->findOrFail($auth_id);
-        return $this->apiResponse($user, 'The Data Returns Successfully', 200);
+        try {
+
+            $auth_id = auth()->guard('api')->user()->id;
+            $user = User::with('employee','employee.department','employee.branch','media')->findOrFail($auth_id);
+            return $this->apiResponse($user, 'The Data Returns Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
 
     public function changePassword(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'auth_id'      => 'required|exists:users,id',
-            'old_password' => 'required|string|min:8',
-            'new_password' => 'required|string|min:8',
-        ]);
-        if ($validator->fails()) {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
-        $auth_id = auth()->guard('api')->user()->id;;
-        $user    = User::findOrFail($auth_id);
-        if (Hash::check($request->old_password, $user->password)) {
-            $user->update([
-                'password' => bcrypt($request->new_password),
+        try {
+
+            $validator = Validator::make($request->all(), [
+                // 'auth_id'      => 'required|exists:users,id',
+                'old_password' => 'required|string|min:8',
+                'new_password' => 'required|string|min:8',
             ]);
-            return $this->apiResponse($user, 'The Data Updated Successfully', 200);
-        } else {
-            return $this->apiResponse(null, 'Sorry The Old Password Is Not Correct', 404);
+            if ($validator->fails()) {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
+            $auth_id = auth()->guard('api')->user()->id;;
+            $user    = User::findOrFail($auth_id);
+            if (Hash::check($request->old_password, $user->password)) {
+                $user->update([
+                    'password' => bcrypt($request->new_password),
+                ]);
+                return $this->apiResponse($user, 'The Data Updated Successfully', 200);
+            } else {
+                return $this->apiResponse(null, 'Sorry The Old Password Is Not Correct', 404);
+            }
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -135,50 +153,55 @@ class AuthController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $validator = Validator::make($request->all(),
-        [
-            // 'auth_id' => 'required|exists:users,id',
-            'name'    => 'required|string',
-            'email'   => 'required|string|email|max:100|unique:users,email,'.auth()->guard('api')->user()->id,
-            'mobile'  => 'required|numeric|unique:users,mobile,'.auth()->guard('api')->user()->id,
-            'file'    => 'nullable'. ($request->hasFile('file') ? '|mimes:jpeg,jpg,png,webp|max:5048' : ''),
-        ]);
-        if($validator->fails())
-        {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+        try {
 
-
-        $auth_id = auth()->guard('api')->user()->id;;
-        $user    = User::findOrFail($auth_id);
-        //upload file
-        if ($request->hasFile('file')) {
-            //remove old file
-            if($user->media) {
-                Storage::disk('attachments')->delete('user/' . $user->media->file_name);
-                $user->media->delete();
-            }
-            $file_size = $request->file->getSize();
-            $file_type = $request->file->getMimeType();
-            $file_name = time() . '.' . $request->file->getClientOriginalName();
-            $request->file->storeAs('user', $file_name, 'attachments');
-            $user->media()->create([
-                'file_path' => asset('public/attachments/user/' . $file_name),
-                'file_name' => $file_name,
-                'file_size' => $file_size,
-                'file_type' => $file_type,
-                'file_sort' => 1
+            $validator = Validator::make($request->all(),
+            [
+                // 'auth_id' => 'required|exists:users,id',
+                'name'    => 'required|string',
+                'email'   => 'required|string|email|max:100|unique:users,email,'.auth()->guard('api')->user()->id,
+                'mobile'  => 'required|numeric|unique:users,mobile,'.auth()->guard('api')->user()->id,
+                'file'    => 'nullable'. ($request->hasFile('file') ? '|mimes:jpeg,jpg,png,webp|max:5048' : ''),
             ]);
+            if($validator->fails())
+            {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
+
+            $auth_id = auth()->guard('api')->user()->id;;
+            $user    = User::findOrFail($auth_id);
+            //upload file
+            if ($request->hasFile('file')) {
+                //remove old file
+                if($user->media) {
+                    Storage::disk('attachments')->delete('user/' . $user->media->file_name);
+                    $user->media->delete();
+                }
+                $file_size = $request->file->getSize();
+                $file_type = $request->file->getMimeType();
+                $file_name = time() . '.' . $request->file->getClientOriginalName();
+                $request->file->storeAs('user', $file_name, 'attachments');
+                $user->media()->create([
+                    'file_path' => asset('public/attachments/user/' . $file_name),
+                    'file_name' => $file_name,
+                    'file_size' => $file_size,
+                    'file_type' => $file_type,
+                    'file_sort' => 1
+                ]);
+            }
+            //update data
+            $user->update([
+                'name'   => $request->name ?? $user->name,
+                'email'  => $request->email ?? $user->email,
+                'mobile' => $request->mobile ?? $user->mobile,
+            ]);
+            if ($user) {
+                return $this->apiResponse($user, 'The Data Updated Successfully', 200);
+            }
+            return $this->apiResponse(null, 'Something Error Happened Try Again Please', 404);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        //update data
-        $user->update([
-            'name'   => $request->name ?? $user->name,
-            'email'  => $request->email ?? $user->email,
-            'mobile' => $request->mobile ?? $user->mobile,
-        ]);
-        if ($user) {
-            return $this->apiResponse($user, 'The Data Updated Successfully', 200);
-        }
-        return $this->apiResponse(null, 'Something Error Happened Try Again Please', 404);
     }
 }

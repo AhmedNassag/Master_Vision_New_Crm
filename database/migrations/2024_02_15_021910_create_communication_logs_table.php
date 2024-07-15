@@ -18,7 +18,7 @@ class CreateCommunicationLogsTable extends Migration
             $table->enum('user_type', ['customer', 'agent']);
             $table->text('comment');
             $table->foreignId('ticket_id')->nullable()->constrained('tickets')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('user_id')->nullable();
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ return [
     /************************* Dashboard **************************/
     //General
     'Places'                                => 'الأماكن',
-    'Contacts Data'                         => 'بيانات جهات الإتصال',
+    'Contacts Data'                         => 'بيانات العملاء',
     'Activities Data'                       => 'بيانات الأنشطة',
     'MainActivities'                        => 'الأنشطة الرئيسية',
     'CRM'                                   => 'إدارة علاقات العملاء',
@@ -63,9 +63,9 @@ return [
     'Number'                                => 'العدد',
     'Top 10 Sales Employee'                 => 'أعلي 10 موظفين مبيعاً',
     'Top 10 Sales Branch'                   => 'أعلي 10 فروع مبيعاً',
-    'Top 5 Contact Sources'                 => 'أعلي 5 مصادر جهات إتصال',
-    'Top 5 Contact Cities'                  => 'أعلي 5 مدن جهات إتصال',
-    'Top 5 Contact Areas'                   => 'أعلي 5 مناطق جهات إتصال',
+    'Top 5 Contact Sources'                 => 'أعلي 5 مصادر عملاء محتملين',
+    'Top 5 Contact Cities'                  => 'أعلي 5 مدن عملاء محتملين',
+    'Top 5 Contact Areas'                   => 'أعلي 5 مناطق عملاء محتملين',
     'Top 5 Interests'                       => 'أعلي 5 إهتمامات',
     'Incoming'                              => 'وارد',
     'Outcoming'                             => 'صادر',
@@ -128,8 +128,8 @@ return [
     'Area'  => 'المنطقة',
 
     //ContactSource
-    'ContactSources' => 'مصادر جهات الإتصال',
-    'ContactSource'  => 'مصدر جهة الإتصال',
+    'ContactSources' => 'مصادر العملاء',
+    'ContactSource'  => 'مصدر العميل',
 
     //Activity
     'Activities' => 'الأنشطة',
@@ -140,8 +140,8 @@ return [
     'SubActivity'   => 'النشاط الفرعي',
 
     //ContactCategroy
-    'ContactCategories' => 'فئات جهات الإتصال',
-    'ContactCategory'   => 'فئة جهة الإتصال',
+    'ContactCategories' => 'فئات العملاء',
+    'ContactCategory'   => 'فئة العميل',
 
     //Industry
     'Industries' => 'قطاعات الأعمال',
@@ -171,12 +171,12 @@ return [
     'Total Calls / Meetings Target' => 'إجمالي تارجت المكالمات والزيارات',
 
     //Contact
-    'Contacts'                            => 'جهات الإتصال',
-    'Contact'                             => 'جهة الإتصال',
+    'Contacts'                            => 'عملاء محتملين',
+    'Contact'                             => 'عميل محتمل',
     'Date'                                => 'التاريخ',
     'Mobile2'                             => 'موبايل آخر',
-    'NationalId'                          => 'الرقم القومي',
-    'Company Name'                        => 'اسم الشركة',
+    'NationalId'                          => 'رقم الهوية',
+    'Company Name'                        => 'اسم جهة العمل',
     'Birth Date'                          => 'تاريخ الميلاد',
     'Gender'                              => 'النوع',
     'Male'                                => 'ذكر',
@@ -185,7 +185,7 @@ return [
     'New'                                 => 'جديد',
     'Contacted'                           => 'تم التواصل',
     'Qualified'                           => 'مؤهل',
-    'Converted'                           => 'تم التحويل',
+    'Converted'                           => 'تم التحويل/البيع',
     'Trashed'                             => 'المهملات',
     'InActive'                            => 'غير نشط',
     'Change Active'                       => 'حالة التنشيط',
@@ -206,13 +206,13 @@ return [
     'mobile'                              => 'رقم الموبايل',
     'mobile2'                             => 'رقم موبايل آخر',
     'email'                               => 'البريد الإلكتروني',
-    'company_name'                        => 'اسم الشركة',
+    'company_name'                        => 'اسم جهة العمل',
     'notes'                               => 'ملاحظات',
     'gender'                              => 'النوع',
     'status'                              => 'الحالة',
     'is_trashed'                          => 'أرشفة',
     'birth_date'                          => 'تاريخ الميلاد',
-    'national_id'                         => 'الرقم القومي',
+    'national_id'                         => 'رقم الهوية',
     'is_active'                           => 'حالة التنشيط',
     'custom_attributes'                   => 'سمات مخصصة',
     'code'                                => 'الكود',
@@ -262,7 +262,7 @@ return [
     'Assigned'                            => 'تم التكليف',
     'Not Assigned'                        => 'لم يتم التكليف',
     'Customer ID'                         => 'رقم العميل',
-    'National ID'                         => 'الرقم القومي',
+    'National ID'                         => 'رقم الهوية',
     'Another mobile'                      => 'رقم موبايل آخر',
     'Job Title'                           => 'المسمي الوظيفي',
     'Contact Source ID'                   => 'رقم مصدر جهة الإتصال',
@@ -279,6 +279,13 @@ return [
     'Contact With'                        => 'التواصل عبر',
     'Send'                                => 'إرسال',
     'Message'                             => 'رسالة',
+    'Religion'                            => 'الديانة',
+    'Muslim'                              => 'مسلم',
+    'Christian'                           => 'مسيحى',
+    'Other'                               => 'أخرى',
+    'Address'                             => 'العنوان',
+    'Source'                              => 'المصدر',
+
 
     //Customer
     'Customers'         => 'العملاء',
@@ -289,7 +296,7 @@ return [
     'Retarget'          => 'إعادة الإستهداف',
     'RecordReminders'   => 'التذكيرات',
     'RelatedCustomers'  => 'العملاء المرتبطين',
-    'EGP'               => 'جنيه مصري',
+    'EGP'               => 'المبلغ',
     'Paid Amounts'      => 'المبالغ المدفوعة',
     'Remaining Amounts' => 'المبالغ المتبقية',
     'Add Invoice'       => 'أضف فاتورة',
@@ -354,7 +361,8 @@ return [
 
     //Branch
     'Branches' => 'الفروع',
-    'Branch'   => 'الفرع',
+    'Branch'   => 'تابع لفرع',
+    'branch'   => 'الفرع',
 
     //Department
     'Departments' => 'الأقسام',
@@ -367,7 +375,7 @@ return [
 
     //Reports
     'MeetingsReport'      => 'تقرير المكالمات والزيارات',
-    'ContactsReport'      => 'تقرير جهات الإتصال',
+    'ContactsReport'      => 'تقرير العملاء المحتملين',
     'EmployeeSalesReport' => 'تقرير مبيعات الموظفين',
     'BranchSalesReport'   => 'تقرير مبيعات الفروع',
     'ActivitySalesReport' => 'تقرير مبيعات الأنشطة',

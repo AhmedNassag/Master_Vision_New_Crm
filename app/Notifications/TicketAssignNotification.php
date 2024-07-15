@@ -48,7 +48,7 @@ class TicketAssignNotification extends Notification
             'sender_name'      => auth('api')->user()->userProfile->name,
             'sender_type'      => get_class(auth('api')->user()),
 			*/
-			/*'message' =>*/ 'New Ticket Added To You',
+			/*'message' =>*/ auth()->user()->name . 'Add New Ticket For You',
         ];
     }
 

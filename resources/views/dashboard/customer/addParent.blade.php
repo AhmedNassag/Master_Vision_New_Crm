@@ -69,6 +69,28 @@
                 <div class="modal-body py-10 px-lg-17">
                     <!-- <div class="scroll-y me-n7 pe-7" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_new_address_header" data-kt-scroll-wrappers="#kt_modal_new_address_scroll" data-kt-scroll-offset="300px"> -->
                         <div class="row">
+                            <!-- branch_id -->
+                            <div class="col-md-6 fv-row" id="branch_id">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span class="required">{{ trans('main.Branch') }}</span>
+                                </label>
+                                <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <?php
+                                        if(Auth::user()->roles_name[0] == "Admin")
+                                        {
+                                            $branches = \App\Models\Branch::get(['id','name']);
+                                        }
+                                        else
+                                        {
+                                            $branches = \App\Models\Branch::where('id', Auth::user()->employee->branch_id)->get(['id','name']);
+                                        }
+                                    ?>
+                                    @foreach($branches as $branch)
+                                        <option value="{{ @$branch->id }}" {{ auth()->user()->employee->branch_id != null && auth()->user()->employee->branch_id == $branch->id ? 'selected' : '' }}>{{ @$branch->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <!-- name -->
                             <div class="col-md-6 fv-row">
                                 <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Name') }}</label>
@@ -102,19 +124,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- contact_category_id -->
-                            <div class="col-md-6 fv-row" id="contact_category_id">
-                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                    <span>{{ trans('main.ContactCategory') }}</span>
-                                </label>
-                                <select name="contact_category_id" data-control="select2" data-dropdown-parent="#contact_category_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                    <option value="">{{ trans('main.Select') }}...</option>
-                                    <?php $contacCategories = \App\Models\ContactCategory::get(['id','name']); ?>
-                                    @foreach($contacCategories as $contactCategory)
-                                        <option value="{{ @$contactCategory->id }}">{{ @$contactCategory->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                             <!-- activity_id -->
                             <div id="activity_id" class="col-md-6 fv-row">
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -125,6 +134,29 @@
                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                     @foreach($activities as $activity)
                                         <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!-- interest_id -->
+                            <div id="interest_id" class="col-md-6 fv-row">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span class="required">{{ trans('main.SubActivity') }}</span>
+                                </label>
+                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
+
+                                </select>
+                            </div>
+                            <!-- contact_category_id -->
+                            <div class="col-md-6 fv-row" id="contact_category_id">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span>{{ trans('main.ContactCategory') }}</span>
+                                </label>
+                                <select name="contact_category_id" data-control="select2" data-dropdown-parent="#contact_category_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <?php $contacCategories = \App\Models\ContactCategory::get(['id','name']); ?>
+                                    @foreach($contacCategories as $contactCategory)
+                                        <option value="{{ @$contactCategory->id }}">{{ @$contactCategory->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -140,12 +172,25 @@
                             </div>
                             <!-- gender -->
                             <div class="col-md-6 fv-row" id="gender">
-                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Gender') }}</span>
                                 </label>
                                 <select name="gender" data-control="select2" data-dropdown-parent="#gender" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
                                     <option value="Male">{{ trans('main.Male') }}</option>
                                     <option value="Female">{{ trans('main.Female') }}</option>
+                                </select>
+                            </div>
+                            <!-- religion -->
+                            <div class="col-md-6 fv-row" id="religion">
+                                <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span>{{ trans('main.Religion') }}</span>
+                                </label>
+                                <select name="religion" data-control="select2" data-dropdown-parent="#religion" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <option value="muslim">{{ trans('main.Muslim') }}</option>
+                                    <option value="christian">{{ trans('main.Christian') }}</option>
+                                    <option value="other">{{ trans('main.Other') }}</option>
                                 </select>
                             </div>
                             <!-- city_id -->
@@ -171,6 +216,11 @@
 
                                 </select>
                             </div>
+                            <!-- address -->
+                            <div class="col-md-6 fv-row">
+                                <label class="fs-5 fw-semibold mb-2">{{ trans('main.Address') }}</label>
+                                <input type="text" class="form-control form-control-solid" value="{{ old('address') }}" name="address" />
+                            </div>
                             <!-- industry_id -->
                             <div id="industry_id" class="col-md-6 fv-row">
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -194,11 +244,6 @@
 
                                 </select>
                             </div>
-                            <!-- company_name -->
-                            <div class="col-md-6 fv-row">
-                                <label class="fs-5 fw-semibold mb-2">{{ trans('main.Company Name') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Company Name') }}" value="{{ old('company_name') }}" name="company_name" />
-                            </div>
                             <!-- job_title_id -->
                             <div id="job_title_id" class="col-md-6 fv-row">
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -211,6 +256,11 @@
                                         <option value="{{ @$jobTitle->id }}">{{ @$jobTitle->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <!-- company_name -->
+                            <div class="col-md-6 fv-row">
+                                <label class="fs-5 fw-semibold mb-2">{{ trans('main.Company Name') }}</label>
+                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Company Name') }}" value="{{ old('company_name') }}" name="company_name" />
                             </div>
                             <!-- notes -->
                             <div class="col-md-12 fv-row">

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 class Meeting extends Model
 {
     use HasFactory;
@@ -38,7 +37,6 @@ class Meeting extends Model
     {
         return $this->belongsTo(Contact::class,'contact_id');
     }
-
 
 
     public function interests()

@@ -87,6 +87,7 @@ class CustomerRepository implements CustomerInterface
         {
             $data = Customer::
             whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->orWhere('created_by', auth()->user()->employee->id)
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -244,6 +245,8 @@ class CustomerRepository implements CustomerInterface
             $inputs               = $request->except('photo');
             $inputs['created_by'] = Auth::user()->context_id;
             $data                 = Customer::create($inputs);
+            //create code
+            $data->update(['code' => $this->createCode($data)]);
             //upload photo
             if ($request->hasFile('photo')) {
                 $file      = $request->photo;
@@ -292,6 +295,10 @@ class CustomerRepository implements CustomerInterface
                 return redirect()->back();
             }
             $data->update($inputs);
+            //create code if code is null
+            if($data->code == null) {
+                $data->update(['code' => $this->createCode($data)]);
+            }
             // update photo
             if ($request->hasFile('photo')) {
                 $file = $request->photo;
@@ -348,6 +355,37 @@ class CustomerRepository implements CustomerInterface
 
 
 
+    public function deleteSelected($request)
+    {
+        try {
+            $delete_selected_id = explode(",", $request->delete_selected_id);
+            // foreach($delete_selected_id as $selected_id) {
+            //     $related_table = realed_model::where('contact_id', $selected_id)->pluck('contact_id');
+            //     if($related_table->count() == 0) {
+                    $customers = Customer::whereIn('id', $delete_selected_id)->get();
+                    foreach($customers as $customer)
+                    {
+                        $customer->update([
+                            'mobile'      => $customer->mobile? $customer->mobile.'x' : '',
+                            'national_id' => $customer->national_id ? $customer->national_id.'x' : '',
+                            'email'       => $customer->email ? $customer->email.'x' : '',
+                        ]);
+                        $customer->delete();
+                    }
+                    session()->flash('success');
+                    return redirect()->back();
+            //     } else {
+            //         session()->flash('canNotDeleted');
+            //         return redirect()->back();
+            //     }
+            // }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
     public function addParent($id)
     {
         $parent_id = $id;
@@ -363,6 +401,8 @@ class CustomerRepository implements CustomerInterface
             $inputs               = $request->all();
             $inputs['created_by'] = Auth::user()->context_id;
             $data                 = Customer::create($inputs);
+            //create code
+            $data->update(['code' => $this->createCode($data)]);
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
@@ -373,6 +413,38 @@ class CustomerRepository implements CustomerInterface
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+
+
+    public function createCode($customer)
+    {
+        // Retrieve the branch code from the branch
+        $branchCode = $customer->branch && $customer->branch->code != null  ? $customer->branch->code  : '00';
+
+        // Get the current year
+        $currentYear = date('y');
+
+        // Generate a serial number
+        $latestCustomer = Customer::where('code', 'Like', "{$branchCode}/{$currentYear}/%")
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $serialNumber = 000001; // Default serial number
+        if ($latestCustomer) {
+            // Extract the last serial number and increment it
+            $lastCode = $latestCustomer->code;
+            $lastSerialNumber = (int)substr($lastCode, strrpos($lastCode, '/') + 1);
+            $serialNumber = $lastSerialNumber + 1;
+        }
+
+        // Format the serial number to be at least 3 digits
+        $formattedSerialNumber = str_pad($serialNumber, 6, '0', STR_PAD_LEFT);
+
+        // Construct the new code
+        $newCode = "{$branchCode}/{$currentYear}/{$formattedSerialNumber}";
+
+        return $newCode;
     }
 
 }

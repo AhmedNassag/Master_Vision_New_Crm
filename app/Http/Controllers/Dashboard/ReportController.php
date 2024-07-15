@@ -40,6 +40,7 @@ class ReportController extends Controller
     public function meetingsReport(Request $request)
     {
         try {
+
             if(Auth::user()->roles_name[0] == "Admin")
             {
                 $data = Meeting::with('notes','contact','createdBy')
@@ -52,14 +53,16 @@ class ReportController extends Controller
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
                 })
-                ->when($request->contact_source_id != null,function ($q) use($request){
-                    return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
+                ->when($request->contact_source_id != null, function ($q) use ($request) {
+                    return $q->whereHas('contact', function ($query) use ($request) {
+                        $query->where('contact_source_id', $request->contact_source_id);
+                    });
                 })
                 ->when($request->follow_date_from != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_from);
                 })
                 ->when($request->follow_date_to != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_to);
                 })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
@@ -82,14 +85,16 @@ class ReportController extends Controller
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
                 })
-                ->when($request->contact_source_id != null,function ($q) use($request){
-                    return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
+                ->when($request->contact_source_id != null, function ($q) use ($request) {
+                    return $q->whereHas('contact', function ($query) use ($request) {
+                        $query->where('contact_source_id', $request->contact_source_id);
+                    });
                 })
                 ->when($request->follow_date_from != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_from);
                 })
                 ->when($request->follow_date_to != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_to);
                 })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
@@ -112,14 +117,16 @@ class ReportController extends Controller
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
                 })
-                ->when($request->contact_source_id != null,function ($q) use($request){
-                    return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
+                ->when($request->contact_source_id != null, function ($q) use ($request) {
+                    return $q->whereHas('contact', function ($query) use ($request) {
+                        $query->where('contact_source_id', $request->contact_source_id);
+                    });
                 })
                 ->when($request->follow_date_from != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_from);
                 })
                 ->when($request->follow_date_to != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_to);
                 })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
@@ -140,6 +147,7 @@ class ReportController extends Controller
                 'from_date'         => $request->from_date,
                 'to_date'           => $request->to_date,
             ]);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -162,6 +170,7 @@ class ReportController extends Controller
     public function contactsReport(Request $request)
     {
         try {
+
             if(Auth::user()->roles_name[0] == "Admin")
             {
                 $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
@@ -293,6 +302,7 @@ class ReportController extends Controller
                 'from_date'           => $request->from_date,
                 'to_date'             => $request->to_date,
             ]);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -315,6 +325,7 @@ class ReportController extends Controller
     public function employeeSalesReport(Request $request)
     {
         try {
+
             if($request->branch_id)
             {
                 $employees = Employee::when($request->branch_id, function ($query) use ($request) {
@@ -376,6 +387,7 @@ class ReportController extends Controller
                 'month'     => $request->month,
                 'branch_id' => $request->branch_id,
             ]);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -398,6 +410,7 @@ class ReportController extends Controller
     public function branchSalesReport(Request $request)
     {
         try {
+
             if(Auth::user()->roles_name[0] == "Admin")
             {
                 $branches = Branch::get();
@@ -427,8 +440,13 @@ class ReportController extends Controller
                         ->where(DB::raw('DATE_FORMAT(invoice_date, "%Y-%m")'), $request->month)
                         ->sum('total_amount');
 
+                    
                     // Calculate the margin percentage
-                    $margin = ($actual > 0) ? ($actual / $target) * 100 : 0;
+                    if($target != 0) {
+                        $margin = ($actual > 0) ? ($actual / $target) * 100 : 0;
+                    } else {
+                        $margin = 0;
+                    }
                     $reportData['target'] += $target;
                     $reportData['actual'] += $actual;
                     // Create a data entry for the report
@@ -445,6 +463,7 @@ class ReportController extends Controller
             ->with([
                 'month' => $request->month,
             ]);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -467,6 +486,7 @@ class ReportController extends Controller
     public function activitySalesReport(Request $request)
     {
         try {
+
             $from        = $request->from_date;
             $to          = $request->to_date;
             $activity_id = $request->activity_id;
@@ -530,6 +550,7 @@ class ReportController extends Controller
                 'activity_id' => $request->activity_id,
                 'interest_id' => $request->interest_id,
             ]);
+            
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

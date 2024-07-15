@@ -23,16 +23,22 @@ class AttachmentsController extends Controller
 {
 	public function index()
 	{
-		$module = Module::get('Attachments');
+		try {
+			
+			$module = Module::get('Attachments');
 
-		if(Module::hasAccess("Attachments", "view")) {
-			return View('la.attachments.index', [
-				'show_actions' => $this->show_action,
-				'listing_cols' => $this->listing_cols,
-				'module' => $module
-			]);
-		} else {
-            return redirect(config('laraadmin.adminRoute')."/");
+			if(Module::hasAccess("Attachments", "view")) {
+				return View('la.attachments.index', [
+					'show_actions' => $this->show_action,
+					'listing_cols' => $this->listing_cols,
+					'module' => $module
+				]);
+			} else {
+				return redirect(config('laraadmin.adminRoute')."/");
+			}
+
+		} catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
 	}
 
@@ -54,22 +60,28 @@ class AttachmentsController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		if(Module::hasAccess("Attachments", "create")) {
+		try {
 
-			$rules = Module::validateRules("Attachments", $request);
+			if(Module::hasAccess("Attachments", "create")) {
 
-			$validator = Validator::make($request->all(), $rules);
+				$rules = Module::validateRules("Attachments", $request);
 
-			if ($validator->fails()) {
-				return redirect()->back()->withErrors($validator)->withInput();
+				$validator = Validator::make($request->all(), $rules);
+
+				if ($validator->fails()) {
+					return redirect()->back()->withErrors($validator)->withInput();
+				}
+
+				$insert_id = Module::insert("Attachments", $request);
+
+				return redirect()->back();
+
+			} else {
+				return redirect(config('laraadmin.adminRoute')."/");
 			}
 
-			$insert_id = Module::insert("Attachments", $request);
-
-			return redirect()->back();
-
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
+		} catch (\Exception $e) {
+			return redirect()->back()->withErrors(['error' => $e->getMessage()]);
 		}
 	}
 
@@ -78,39 +90,44 @@ class AttachmentsController extends Controller
 
 	public function storeAjax(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'attachment_name' => 'required',
-            'attachment_file' => 'required|mimes:jpeg,png,pdf|max:2048',
-            'customer_id'     => 'required',
-        ], 
-		[
-            'attachment_name.required' => 'حقل اسم المرفق مطلوب',
-            'attachment_file.required' => 'حقل الملف المرفق مطلوب',
-            'attachment_file.mimes'    => 'يجب أن يكون الملف المرفق من نوع jpeg، png، أو pdf',
-            'attachment_file.max'      => 'حجم الملف المرفق لا يجب أن يتجاوز 2048 كيلوبايت',
-            'customer_id.required'     => 'حقل معرّف الزبون مطلوب',
-        ]);
+		try {
+
+			$validator = Validator::make($request->all(), [
+				'attachment_name' => 'required',
+				'attachment_file' => 'required|mimes:jpeg,png,pdf|max:2048',
+				'customer_id'     => 'required',
+			], 
+			[
+				'attachment_name.required' => 'حقل اسم المرفق مطلوب',
+				'attachment_file.required' => 'حقل الملف المرفق مطلوب',
+				'attachment_file.mimes'    => 'يجب أن يكون الملف المرفق من نوع jpeg، png، أو pdf',
+				'attachment_file.max'      => 'حجم الملف المرفق لا يجب أن يتجاوز 2048 كيلوبايت',
+				'customer_id.required'     => 'حقل معرّف الزبون مطلوب',
+			]);
 
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+			if ($validator->fails()) {
+				return response()->json(['errors' => $validator->errors()], 422);
+			}
 
-        $attachment = new Attachment();
-        $attachment->attachment_name = $request->input('attachment_name');
-        $attachment->customer_id     = $request->input('customer_id');
+			$attachment = new Attachment();
+			$attachment->attachment_name = $request->input('attachment_name');
+			$attachment->customer_id     = $request->input('customer_id');
 
-        if ($request->hasFile('attachment_file')) {
-            $file     = $request->file('attachment_file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $fileName);
-            $attachment->attachment = 'uploads/' . $fileName;
-			ThumbnailCreator::createThumbnail(public_path('uploads/' . $fileName), public_path('uploads/thumbnails/' . $fileName), 100, 100);
-        }
+			if ($request->hasFile('attachment_file')) {
+				$file     = $request->file('attachment_file');
+				$fileName = time() . '_' . $file->getClientOriginalName();
+				$file->move(public_path('uploads'), $fileName);
+				$attachment->attachment = 'uploads/' . $fileName;
+				ThumbnailCreator::createThumbnail(public_path('uploads/' . $fileName), public_path('uploads/thumbnails/' . $fileName), 100, 100);
+			}
 
-        $attachment->save();
-
-        return response()->json(['message' => 'Attachment uploaded successfully','attachment_id'=>$attachment->id], 200);
+			$attachment->save();
+			return response()->json(['message' => 'Attachment uploaded successfully','attachment_id'=>$attachment->id], 200);
+			
+		} catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }		
     }
 
 
@@ -118,81 +135,92 @@ class AttachmentsController extends Controller
 
 	public function deleteAjax(Request $request)
 	{
-		$attachmentId = $request->input('attachmentId');
-        $attachment   = Attachment::find($attachmentId);
+		try {
 
-        if (!$attachment) {
+			$attachmentId = $request->input('attachmentId');
+			$attachment   = Attachment::find($attachmentId);
 
-            return response()->json(['message' => 'Attachment not found'], 404);
+			if (!$attachment) {
+
+				return response()->json(['message' => 'Attachment not found'], 404);
+			}
+
+			$attachment->delete();
+			return response()->json(['message' => 'Attachment deleted successfully']);
+		
+		} catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-
-        $attachment->delete();
-
-        return response()->json(['message' => 'Attachment deleted successfully']);
 	}
 
 
 
 	private function createThumbnail($sourceFile, $destinationFile, $maxWidth, $maxHeight)
     {
-		list($width, $height, $imageType) = getimagesize($sourceFile);
+		try {
 
-		// Determine the image type and create an image resource accordingly
-		switch ($imageType) {
-			case IMAGETYPE_JPEG:
-				$sourceImage = imagecreatefromjpeg($sourceFile);
-				break;
-			case IMAGETYPE_PNG:
-				$sourceImage = imagecreatefrompng($sourceFile);
-				break;
-			case IMAGETYPE_GIF:
-				$sourceImage = imagecreatefromgif($sourceFile);
-				break;
-			// Add support for other image types if needed
-			default:
-				throw new \Exception('Unsupported image type');
-		}
+			list($width, $height, $imageType) = getimagesize($sourceFile);
 
-		$thumbWidth = $width;
-		$thumbHeight = $height;
+			// Determine the image type and create an image resource accordingly
+			switch ($imageType) {
+				case IMAGETYPE_JPEG:
+					$sourceImage = imagecreatefromjpeg($sourceFile);
+					break;
+				case IMAGETYPE_PNG:
+					$sourceImage = imagecreatefrompng($sourceFile);
+					break;
+				case IMAGETYPE_GIF:
+					$sourceImage = imagecreatefromgif($sourceFile);
+					break;
+				// Add support for other image types if needed
+				default:
+					throw new \Exception('Unsupported image type');
+			}
 
-		if ($width > $maxWidth) {
-			$thumbWidth = $maxWidth;
-			$thumbHeight = intval($height * ($maxWidth / $width));
-		}
+			$thumbWidth = $width;
+			$thumbHeight = $height;
 
-		if ($height > $maxHeight) {
-			$thumbHeight = $maxHeight;
-			$thumbWidth = intval($width * ($maxHeight / $height));
-		}
+			if ($width > $maxWidth) {
+				$thumbWidth = $maxWidth;
+				$thumbHeight = intval($height * ($maxWidth / $width));
+			}
 
-		$thumbnail = imagecreatetruecolor($thumbWidth, $thumbHeight);
+			if ($height > $maxHeight) {
+				$thumbHeight = $maxHeight;
+				$thumbWidth = intval($width * ($maxHeight / $height));
+			}
 
-
-		if ($imageType === IMAGETYPE_PNG || $imageType === IMAGETYPE_GIF) {
-			imagecolortransparent($thumbnail, imagecolorallocatealpha($thumbnail, 0, 0, 0, 127));
-			imagealphablending($thumbnail, false);
-			imagesavealpha($thumbnail, true);
-		}
-
-		imagecopyresized($thumbnail, $sourceImage, 0, 0, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
+			$thumbnail = imagecreatetruecolor($thumbWidth, $thumbHeight);
 
 
-		switch ($imageType) {
-			case IMAGETYPE_JPEG:
-				imagejpeg($thumbnail, $destinationFile, 90);
-				break;
-			case IMAGETYPE_PNG:
-				imagepng($thumbnail, $destinationFile);
-				break;
-			case IMAGETYPE_GIF:
-				imagegif($thumbnail, $destinationFile);
-				break;
+			if ($imageType === IMAGETYPE_PNG || $imageType === IMAGETYPE_GIF) {
+				imagecolortransparent($thumbnail, imagecolorallocatealpha($thumbnail, 0, 0, 0, 127));
+				imagealphablending($thumbnail, false);
+				imagesavealpha($thumbnail, true);
+			}
 
-		}
+			imagecopyresized($thumbnail, $sourceImage, 0, 0, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
 
-		imagedestroy($sourceImage);
-		imagedestroy($thumbnail);
+
+			switch ($imageType) {
+				case IMAGETYPE_JPEG:
+					imagejpeg($thumbnail, $destinationFile, 90);
+					break;
+				case IMAGETYPE_PNG:
+					imagepng($thumbnail, $destinationFile);
+					break;
+				case IMAGETYPE_GIF:
+					imagegif($thumbnail, $destinationFile);
+					break;
+
+			}
+
+			imagedestroy($sourceImage);
+			imagedestroy($thumbnail);
+
+		} catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 	/**
@@ -203,27 +231,33 @@ class AttachmentsController extends Controller
 	 */
 	public function show($id)
 	{
-		if(Module::hasAccess("Attachments", "view")) {
+		try {
 
-			$attachment = Attachment::find($id);
-			if(isset($attachment->id)) {
-				$module = Module::get('Attachments');
-				$module->row = $attachment;
+			if(Module::hasAccess("Attachments", "view")) {
 
-				return view('la.attachments.show', [
-					'module' => $module,
-					'view_col' => $this->view_col,
-					'no_header' => true,
-					'no_padding' => "no-padding"
-				])->with('attachment', $attachment);
+				$attachment = Attachment::find($id);
+				if(isset($attachment->id)) {
+					$module = Module::get('Attachments');
+					$module->row = $attachment;
+
+					return view('la.attachments.show', [
+						'module' => $module,
+						'view_col' => $this->view_col,
+						'no_header' => true,
+						'no_padding' => "no-padding"
+					])->with('attachment', $attachment);
+				} else {
+					return view('errors.404', [
+						'record_id' => $id,
+						'record_name' => ucfirst("attachment"),
+					]);
+				}
 			} else {
-				return view('errors.404', [
-					'record_id' => $id,
-					'record_name' => ucfirst("attachment"),
-				]);
+				return redirect(config('laraadmin.adminRoute')."/");
 			}
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
+
+		} catch (\Exception $e) {
+			return redirect()->back()->withErrors(['error' => $e->getMessage()]);
 		}
 	}
 
@@ -235,25 +269,31 @@ class AttachmentsController extends Controller
 	 */
 	public function edit($id)
 	{
-		if(Module::hasAccess("Attachments", "edit")) {
-			$attachment = Attachment::find($id);
-			if(isset($attachment->id)) {
-				$module = Module::get('Attachments');
+		try {
 
-				$module->row = $attachment;
+			if(Module::hasAccess("Attachments", "edit")) {
+				$attachment = Attachment::find($id);
+				if(isset($attachment->id)) {
+					$module = Module::get('Attachments');
 
-				return view('la.attachments.edit', [
-					'module' => $module,
-					'view_col' => $this->view_col,
-				])->with('attachment', $attachment);
+					$module->row = $attachment;
+
+					return view('la.attachments.edit', [
+						'module' => $module,
+						'view_col' => $this->view_col,
+					])->with('attachment', $attachment);
+				} else {
+					return view('errors.404', [
+						'record_id' => $id,
+						'record_name' => ucfirst("attachment"),
+					]);
+				}
 			} else {
-				return view('errors.404', [
-					'record_id' => $id,
-					'record_name' => ucfirst("attachment"),
-				]);
+				return redirect(config('laraadmin.adminRoute')."/");
 			}
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
+
+		} catch (\Exception $e) {
+			return redirect()->back()->withErrors(['error' => $e->getMessage()]);
 		}
 	}
 
@@ -266,22 +306,28 @@ class AttachmentsController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		if(Module::hasAccess("Attachments", "edit")) {
+		try {
 
-			$rules = Module::validateRules("Attachments", $request, true);
+			if(Module::hasAccess("Attachments", "edit")) {
 
-			$validator = Validator::make($request->all(), $rules);
+				$rules = Module::validateRules("Attachments", $request, true);
 
-			if ($validator->fails()) {
-				return redirect()->back()->withErrors($validator)->withInput();;
+				$validator = Validator::make($request->all(), $rules);
+
+				if ($validator->fails()) {
+					return redirect()->back()->withErrors($validator)->withInput();;
+				}
+
+				$insert_id = Module::updateRow("Attachments", $request, $id);
+
+				return redirect()->route(config('laraadmin.adminRoute') . '.attachments.index');
+
+			} else {
+				return redirect(config('laraadmin.adminRoute')."/");
 			}
 
-			$insert_id = Module::updateRow("Attachments", $request, $id);
-
-			return redirect()->route(config('laraadmin.adminRoute') . '.attachments.index');
-
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
+		} catch (\Exception $e) {
+			return redirect()->back()->withErrors(['error' => $e->getMessage()]);
 		}
 	}
 
@@ -293,13 +339,19 @@ class AttachmentsController extends Controller
 	 */
 	public function destroy($id)
 	{
-		if(Module::hasAccess("Attachments", "delete")) {
-			Attachment::find($id)->delete();
+		try {
 
-			// Redirecting to index() method
-			return redirect()->route(config('laraadmin.adminRoute') . '.attachments.index');
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
+			if(Module::hasAccess("Attachments", "delete")) {
+				Attachment::find($id)->delete();
+
+				// Redirecting to index() method
+				return redirect()->route(config('laraadmin.adminRoute') . '.attachments.index');
+			} else {
+				return redirect(config('laraadmin.adminRoute')."/");
+			}
+
+		} catch (\Exception $e) {
+			return redirect()->back()->withErrors(['error' => $e->getMessage()]);
 		}
 	}
 
@@ -310,46 +362,52 @@ class AttachmentsController extends Controller
 	 */
 	public function dtajax()
 	{
-		$values = DB::table('attachments')->select($this->listing_cols)->whereNull('deleted_at');
-		$out = Datatables::of($values->orderBy('id','desc'))->addColumn('action', function ($user) {
-			return '';
-		})->make();
-		$data = $out->getData();
+		try {
 
-		$fields_popup = ModuleFields::getModuleFields('Attachments');
+			$values = DB::table('attachments')->select($this->listing_cols)->whereNull('deleted_at');
+			$out = Datatables::of($values->orderBy('id','desc'))->addColumn('action', function ($user) {
+				return '';
+			})->make();
+			$data = $out->getData();
 
-		for($i=0; $i < count($data->data); $i++) {
-			for ($j=0; $j < count($this->listing_cols); $j++) {
-				$col = $this->listing_cols[$j];
+			$fields_popup = ModuleFields::getModuleFields('Attachments');
 
-				if($fields_popup[$col] != null && Str::startsWith($fields_popup[$col]->popup_vals, "@")) {
-					$data->data[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i]->$col);
-				}
-				if($col == $this->view_col) {
-					$data->data[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/attachments/'.$data->data[$i]->id).'">'.$data->data[$i]->$col.'</a>';
-				}
+			for($i=0; $i < count($data->data); $i++) {
+				for ($j=0; $j < count($this->listing_cols); $j++) {
+					$col = $this->listing_cols[$j];
 
-				// else if($col == "author") {
-				//    $data->data[$i]->$col;
-				// }
-			}
+					if($fields_popup[$col] != null && Str::startsWith($fields_popup[$col]->popup_vals, "@")) {
+						$data->data[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i]->$col);
+					}
+					if($col == $this->view_col) {
+						$data->data[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/attachments/'.$data->data[$i]->id).'">'.$data->data[$i]->$col.'</a>';
+					}
 
-			if($this->show_action) {
-				$output = '';
-				if(Module::hasAccess("Attachments", "edit")) {
-					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/attachments/'.$data->data[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style=""><i class="fa fa-edit"></i></a>';
+					// else if($col == "author") {
+					//    $data->data[$i]->$col;
+					// }
 				}
 
-				if(Module::hasAccess("Attachments", "delete")) {
-					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.attachments.destroy', $data->data[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
-					$output .= ' <button class="btn btn-danger deleteFormBtn btn-xs" type="submit"><i class="fa fa-times"></i></button>';
-					$output .= Form::close();
+				if($this->show_action) {
+					$output = '';
+					if(Module::hasAccess("Attachments", "edit")) {
+						$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/attachments/'.$data->data[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style=""><i class="fa fa-edit"></i></a>';
+					}
+
+					if(Module::hasAccess("Attachments", "delete")) {
+						$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.attachments.destroy', $data->data[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+						$output .= ' <button class="btn btn-danger deleteFormBtn btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+						$output .= Form::close();
+					}
+					$data->data[$i]->action = (string)$output;
 				}
-				$data->data[$i]->action = (string)$output;
-			}
-		$data->data[$i]->id = $i+1;
-                }
-		$out->setData($data);
-		return $out;
+			$data->data[$i]->id = $i+1;
+					}
+			$out->setData($data);
+			return $out;
+
+		} catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
 	}
 }

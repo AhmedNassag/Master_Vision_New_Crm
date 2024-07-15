@@ -22,158 +22,187 @@ class NotificationController extends Controller
 
     public function allNotifications(Request $request)
     {
-        $data = [];
-        $validator = Validator::make($request->all(),
-        [
-            // 'auth_id' => 'required|exists:customers,id',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json($validator->errors(), 422);
-        }
-        $auth_id       = auth()->guard('customer_api')->user()->id;
-        $customer      = Customer::findOrFail($auth_id);
-        $notifications = $customer->notifications()->get();
+        try {
 
-        foreach ($notifications as $notification)
-        {
-            $notify['id']              = $notification->id ?? '';
-            $notify['type']            = $notification->type ?? '';
-            $notify['notifiable_type'] = $notification->notifiable_type ?? '';
-            $notify['notifiable_id']   = $notification->notifiable_id ?? '';
-            $notify['data']            = $notification->data[0] ?? '';
-            $notify['read_at']         = $notification->read_at ?? '';
-            $notify['created_at']      = $notification->created_at ?? '';
-            $notify['updated_at']      = $notification->updated_at ?? '';
-            $data[] = $notify;
-        }
+            $validator = Validator::make($request->all(), [
+                // 'auth_id' => 'required|exists:customers,id',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            $auth_id                = auth()->guard('customer_api')->user()->id;
+            $customer               = Customer::findOrFail($auth_id);
+            $notifications          = $customer->notifications()->paginate(config('myConfig.paginationCount'));
+            $formattedNotifications = $notifications->map(function ($notification) {
+                return [
+                    'id'              => $notification->id ?? '',
+                    'type'            => $notification->type ?? '',
+                    'notifiable_type' => $notification->notifiable_type ?? '',
+                    'notifiable_id'   => $notification->notifiable_id ?? '',
+                    'data'            => $notification->data[0] ?? '',
+                    'read_at'         => $notification->read_at ?? '',
+                    'created_at'      => $notification->created_at ?? '',
+                    'updated_at'      => $notification->updated_at ?? '',
+                ];
+            });
 
-        if ($customer && $notifications) {
-            return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            if ($formattedNotifications->isEmpty()) {
+                return $this->apiResponse(null, 'No data found', 404);
+            }
+
+            $data = new \Illuminate\Pagination\LengthAwarePaginator(
+                $formattedNotifications,
+                $notifications->total(),
+                $notifications->perPage(),
+                $notifications->currentPage(),
+                ['path' => $request->url()]
+            );
+
+            return $this->apiResponse($data, 'Data returned successfully', 200);
+            /*$data = [];
+            $validator = Validator::make($request->all(),
+            [
+                // 'auth_id' => 'required|exists:customers,id',
+            ]);
+            if ($validator->fails())
+            {
+                return response()->json($validator->errors(), 422);
+            }
+            $auth_id       = auth()->guard('customer_api')->user()->id;
+            $customer      = Customer::findOrFail($auth_id);
+            $notifications = $customer->notifications()->get();
+
+            foreach ($notifications as $notification)
+            {
+                $notify['id']              = $notification->id ?? '';
+                $notify['type']            = $notification->type ?? '';
+                $notify['notifiable_type'] = $notification->notifiable_type ?? '';
+                $notify['notifiable_id']   = $notification->notifiable_id ?? '';
+                $notify['data']            = $notification->data[0] ?? '';
+                $notify['read_at']         = $notification->read_at ?? '';
+                $notify['created_at']      = $notification->created_at ?? '';
+                $notify['updated_at']      = $notification->updated_at ?? '';
+                $data[] = $notify;
+            }
+
+            if ($customer && $notifications) {
+                return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            }
+            return $this->apiResponse(null, 'This No Data found', 404);
+            */
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        return $this->apiResponse(null, 'This No Data found', 404);
     }
 
 
 
     public function readNotifications(Request $request)
     {
-        $data = [];
-        $validator = Validator::make($request->all(),
-        [
-            // 'auth_id' => 'required|exists:customers,id',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json($validator->errors(), 422);
-        }
-        $auth_id       = auth()->guard('customer_api')->user()->id;
-        $customer      = Customer::findOrFail($auth_id);
-        $notifications = $customer->readNotifications()->get();
+        try {
 
-        foreach ($notifications as $notification)
-        {
-            $notify['id']              = $notification->id ?? '';
-            $notify['type']            = $notification->type ?? '';
-            $notify['notifiable_type'] = $notification->notifiable_type ?? '';
-            $notify['notifiable_id']   = $notification->notifiable_id ?? '';
-            $notify['data']            = $notification->data[0] ?? '';
-            $notify['read_at']         = $notification->read_at ?? '';
-            $notify['created_at']      = $notification->created_at ?? '';
-            $notify['updated_at']      = $notification->updated_at ?? '';
-            $data[] = $notify;
-        }
+            $data = [];
+            $validator = Validator::make($request->all(),
+            [
+                // 'auth_id' => 'required|exists:customers,id',
+            ]);
+            if ($validator->fails())
+            {
+                return response()->json($validator->errors(), 422);
+            }
+            $auth_id       = auth()->guard('customer_api')->user()->id;
+            $customer      = Customer::findOrFail($auth_id);
+            $notifications = $customer->readNotifications()->get();
 
-        if ($customer && $notifications) {
-            return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            foreach ($notifications as $notification)
+            {
+                $notify['id']              = $notification->id ?? '';
+                $notify['type']            = $notification->type ?? '';
+                $notify['notifiable_type'] = $notification->notifiable_type ?? '';
+                $notify['notifiable_id']   = $notification->notifiable_id ?? '';
+                $notify['data']            = $notification->data[0] ?? '';
+                $notify['read_at']         = $notification->read_at ?? '';
+                $notify['created_at']      = $notification->created_at ?? '';
+                $notify['updated_at']      = $notification->updated_at ?? '';
+                $data[] = $notify;
+            }
+
+            if ($customer && $notifications) {
+                return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            }
+            return $this->apiResponse(null, 'This No Data found', 404);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        return $this->apiResponse(null, 'This No Data found', 404);
     }
 
 
 
     public function unreadNotifications(Request $request)
     {
-        $data = [];
-        $validator = Validator::make($request->all(),
-        [
-            // 'auth_id' => 'required|exists:customers,id',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json($validator->errors(), 422);
-        }
-        $auth_id       = auth()->guard('customer_api')->user()->id;
-        $customer      = Customer::findOrFail($auth_id);
-        $notifications = $customer->unreadNotifications()->get();
+        try {
 
-        foreach ($notifications as $notification)
-        {
-            $notify['id']              = $notification->id ?? '';
-            $notify['type']            = $notification->type ?? '';
-            $notify['notifiable_type'] = $notification->notifiable_type ?? '';
-            $notify['notifiable_id']   = $notification->notifiable_id ?? '';
-            $notify['data']            = $notification->data[0] ?? '';
-            $notify['read_at']         = $notification->read_at ?? '';
-            $notify['created_at']      = $notification->created_at ?? '';
-            $notify['updated_at']      = $notification->updated_at ?? '';
-            $data[] = $notify;
-        }
+            $data = [];
+            $validator = Validator::make($request->all(),
+            [
+                // 'auth_id' => 'required|exists:customers,id',
+            ]);
+            if ($validator->fails())
+            {
+                return response()->json($validator->errors(), 422);
+            }
+            $auth_id       = auth()->guard('customer_api')->user()->id;
+            $customer      = Customer::findOrFail($auth_id);
+            $notifications = $customer->unreadNotifications()->get();
 
-        if ($customer && $notifications) {
-            return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            foreach ($notifications as $notification)
+            {
+                $notify['id']              = $notification->id ?? '';
+                $notify['type']            = $notification->type ?? '';
+                $notify['notifiable_type'] = $notification->notifiable_type ?? '';
+                $notify['notifiable_id']   = $notification->notifiable_id ?? '';
+                $notify['data']            = $notification->data[0] ?? '';
+                $notify['read_at']         = $notification->read_at ?? '';
+                $notify['created_at']      = $notification->created_at ?? '';
+                $notify['updated_at']      = $notification->updated_at ?? '';
+                $data[] = $notify;
+            }
+
+            if ($customer && $notifications) {
+                return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            }
+            return $this->apiResponse(null, 'This No Data found', 404);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        return $this->apiResponse(null, 'This No Data found', 404);
     }
 
 
 
     public function markAsReadNotifications(Request $request)
     {
-        $data = [];
-        $validator = Validator::make($request->all(),
-        [
-            // 'auth_id' => 'required|exists:customers,id',
-            'id'      => 'required|exists:notifications,id',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json($validator->errors(), 422);
-        }
-        $auth_id      = auth()->guard('customer_api')->user()->id;
-        $customer     = Customer::findOrFail($auth_id);
-        $notification = $customer->unreadNotifications()->findOrFail($request->id);
-        if (!$notification) {
-            return $this->apiResponse(null, 'There Is No Data found', 404);
-        }
-        $notification->update(['read_at' => now()]);
-        $notify['id']              = $notification->id ?? '';
-        $notify['type']            = $notification->type ?? '';
-        $notify['notifiable_type'] = $notification->notifiable_type ?? '';
-        $notify['notifiable_id']   = $notification->notifiable_id ?? '';
-        $notify['data']            = $notification->data[0] ?? '';
-        $notify['read_at']         = $notification->read_at ?? '';
-        $notify['created_at']      = $notification->created_at ?? '';
-        $notify['updated_at']      = $notification->updated_at ?? '';
-        $data[] = $notify;
-        return $this->apiResponse($data, 'The Data Returns Successfully', 200);
-        /*
-        $data = [];
-        $validator = Validator::make($request->all(),
-        [
-            'auth_id' => 'required|exists:customers,id',
-            'id'      => 'required|exists:notifications,id',
-        ]);
-        if ($validator->fails())
-        {
-            return response()->json($validator->errors(), 422);
-        }
-        $auth_id      = $request->auth_id;
-        $customer     = Customer::findOrFail($auth_id);
-        $notification = $customer->unreadNotifications()->find($id);
+        try {
 
-        foreach ($notifications as $notification)
-        {
+            $data = [];
+            $validator = Validator::make($request->all(),
+            [
+                // 'auth_id' => 'required|exists:customers,id',
+                'id'      => 'required|exists:notifications,id',
+            ]);
+            if ($validator->fails())
+            {
+                return response()->json($validator->errors(), 422);
+            }
+            $auth_id      = auth()->guard('customer_api')->user()->id;
+            $customer     = Customer::findOrFail($auth_id);
+            $notification = $customer->unreadNotifications()->findOrFail($request->id);
+            if (!$notification) {
+                return $this->apiResponse(null, 'There Is No Data found', 404);
+            }
+            $notification->update(['read_at' => now()]);
             $notify['id']              = $notification->id ?? '';
             $notify['type']            = $notification->type ?? '';
             $notify['notifiable_type'] = $notification->notifiable_type ?? '';
@@ -183,13 +212,43 @@ class NotificationController extends Controller
             $notify['created_at']      = $notification->created_at ?? '';
             $notify['updated_at']      = $notification->updated_at ?? '';
             $data[] = $notify;
-        }
-
-        if ($customer && $notifications) {
             return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            /*
+            $data = [];
+            $validator = Validator::make($request->all(),
+            [
+                'auth_id' => 'required|exists:customers,id',
+                'id'      => 'required|exists:notifications,id',
+            ]);
+            if ($validator->fails())
+            {
+                return response()->json($validator->errors(), 422);
+            }
+            $auth_id      = $request->auth_id;
+            $customer     = Customer::findOrFail($auth_id);
+            $notification = $customer->unreadNotifications()->find($id);
+
+            foreach ($notifications as $notification)
+            {
+                $notify['id']              = $notification->id ?? '';
+                $notify['type']            = $notification->type ?? '';
+                $notify['notifiable_type'] = $notification->notifiable_type ?? '';
+                $notify['notifiable_id']   = $notification->notifiable_id ?? '';
+                $notify['data']            = $notification->data[0] ?? '';
+                $notify['read_at']         = $notification->read_at ?? '';
+                $notify['created_at']      = $notification->created_at ?? '';
+                $notify['updated_at']      = $notification->updated_at ?? '';
+                $data[] = $notify;
+            }
+
+            if ($customer && $notifications) {
+                return $this->apiResponse($data, 'The Data Returns Successfully', 200);
+            }
+            return $this->apiResponse(null, 'This No Data found', 404);
+            */
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        return $this->apiResponse(null, 'This No Data found', 404);
-        */
     }
 
 }

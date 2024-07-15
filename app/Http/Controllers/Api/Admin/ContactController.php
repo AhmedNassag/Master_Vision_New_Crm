@@ -63,246 +63,294 @@ class ContactController extends Controller
 
     public function index(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'auth_id'           => 'required|exists:users,id',
-            'name'              => 'nullable',
-            'mobile'            => 'nullable',
-            'birth_date'        => 'nullable',
-            'gender'            => 'nullable',
-            'contact_source_id' => 'nullable|exists:contact_sources,id',
-            'activity_id'       => 'nullable|exists:activates,id',
-            'interest_id'       => 'nullable|exists:interests,id',
-            'city_id'           => 'nullable|exists:cities,id',
-            'area_id'           => 'nullable|exists:areas,id',
-            'industry_id'       => 'nullable|exists:industries,id',
-            'major_id'          => 'nullable|exists:majors,id',
-            'status'            => 'nullable',
-            'is_active'         => 'nullable',
-            'from_date'         => 'nullable',
-            'to_date'           => 'nullable',
-        ]);
-        if ($validator->fails())
-        {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+        try {
 
-        $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
-        if($auth_user->roles_name[0] == "Admin")
-        {
-            $main_data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->mobile.'%');
-            })
-            ->when($request->birth_date != null,function ($q) use($request){
-                return $q->where('birth_date','like', '%'.$request->birth_date.'%');
-            })
-            ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->where('contact_source_id',$request->contact_source_id);
-            })
-            ->when($request->activity_id != null,function ($q) use($request){
-                return $q->where('activity_id',$request->activity_id);
-            })
-            ->when($request->interest_id != null,function ($q) use($request){
-                return $q->where('interest_id',$request->interest_id);
-            })
-            ->when($request->city_id != null,function ($q) use($request){
-                return $q->where('city_id',$request->city_id);
-            })
-            ->when($request->area_id != null,function ($q) use($request){
-                return $q->where('area_id',$request->area_id);
-            })
-            ->when($request->industry_id != null,function ($q) use($request){
-                return $q->where('industry_id',$request->industry_id);
-            })
-            ->when($request->major_id != null,function ($q) use($request){
-                return $q->where('major_id',$request->major_id);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
-            })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
-        }
-        else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
-        {
-            $main_data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->mobile.'%');
-            })
-            ->when($request->birth_date != null,function ($q) use($request){
-                return $q->where('birth_date','like', '%'.$request->birth_date.'%');
-            })
-            ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->where('contact_source_id',$request->contact_source_id);
-            })
-            ->when($request->activity_id != null,function ($q) use($request){
-                return $q->where('activity_id',$request->activity_id);
-            })
-            ->when($request->interest_id != null,function ($q) use($request){
-                return $q->where('interest_id',$request->interest_id);
-            })
-            ->when($request->city_id != null,function ($q) use($request){
-                return $q->where('city_id',$request->city_id);
-            })
-            ->when($request->area_id != null,function ($q) use($request){
-                return $q->where('area_id',$request->area_id);
-            })
-            ->when($request->industry_id != null,function ($q) use($request){
-                return $q->where('industry_id',$request->industry_id);
-            })
-            ->when($request->major_id != null,function ($q) use($request){
-                return $q->where('major_id',$request->major_id);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
-            })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
-        }
-        else
-        {
-            $main_data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->where('employee_id', $auth_user->employee->id)
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->mobile.'%');
-            })
-            ->when($request->birth_date != null,function ($q) use($request){
-                return $q->where('birth_date','like', '%'.$request->birth_date.'%');
-            })
-            ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->where('contact_source_id',$request->contact_source_id);
-            })
-            ->when($request->activity_id != null,function ($q) use($request){
-                return $q->where('activity_id',$request->activity_id);
-            })
-            ->when($request->interest_id != null,function ($q) use($request){
-                return $q->where('interest_id',$request->interest_id);
-            })
-            ->when($request->city_id != null,function ($q) use($request){
-                return $q->where('city_id',$request->city_id);
-            })
-            ->when($request->area_id != null,function ($q) use($request){
-                return $q->where('area_id',$request->area_id);
-            })
-            ->when($request->industry_id != null,function ($q) use($request){
-                return $q->where('industry_id',$request->industry_id);
-            })
-            ->when($request->major_id != null,function ($q) use($request){
-                return $q->where('major_id',$request->major_id);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
-            })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
-        }
+            $validator = Validator::make($request->all(), [
+                // 'auth_id'           => 'required|exists:users,id',
+                'name'              => 'nullable',
+                'mobile'            => 'nullable',
+                'birth_date'        => 'nullable',
+                'gender'            => 'nullable',
+                'contact_source_id' => 'nullable|exists:contact_sources,id',
+                'activity_id'       => 'nullable|exists:activates,id',
+                'interest_id'       => 'nullable|exists:interests,id',
+                'city_id'           => 'nullable|exists:cities,id',
+                'area_id'           => 'nullable|exists:areas,id',
+                'industry_id'       => 'nullable|exists:industries,id',
+                'major_id'          => 'nullable|exists:majors,id',
+                'status'            => 'nullable',
+                'is_active'         => 'nullable',
+                'from_date'         => 'nullable',
+                'to_date'           => 'nullable',
+            ]);
+            if ($validator->fails())
+            {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
 
-        $contact_source_id = ContactSource::get(['id','name']);
-        $activity_id       = Activity::get(['id','name']);
-        $interest_id       = SubActivity::get(['id','name']);
-        $city_id           = City::get(['id','name']);
-        $area_id           = Area::get(['id','name']);
-        $industry_id       = Industry::get(['id','name']);
-        $major_id          = Major::get(['id','name']);
-        $data[] = [
-            'data'              => $main_data,
-            'contact_source_id' => $contact_source_id,
-            'activity_id'       => $activity_id,
-            'interest_id'       => $interest_id,
-            'city_id'           => $city_id,
-            'area_id'           => $area_id,
-            'industry_id'       => $industry_id,
-            'major_id'          => $major_id,
-        ];
+            $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
+            if($auth_user->roles_name[0] == "Admin")
+            {
+                $data = Contact::where('is_trashed','!=' ,1)
+                ->with(['city','area','contactSource','contactCategory','jobTitle','industry','major','activity','subActivity','campaign','customer','employee','createdBy','contactCompletions','meetings','leadCategories','leadHistories','categories','media'])
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like', '%'.$request->name.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like', '%'.$request->mobile.'%');
+                })
+                ->when($request->birth_date != null,function ($q) use($request){
+                    return $q->where('birth_date','like', '%'.$request->birth_date.'%');
+                })
+                ->when($request->gender != null,function ($q) use($request){
+                    return $q->where('gender','like', '%'.$request->gender.'%');
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id',$request->contact_source_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id',$request->activity_id);
+                })
+                ->when($request->interest_id != null,function ($q) use($request){
+                    return $q->where('interest_id',$request->interest_id);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id',$request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id',$request->area_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id',$request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id',$request->major_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status',$request->status);
+                })
+                ->when($request->is_active != null,function ($q) use($request){
+                    return $q->where('is_active',$request->is_active);
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
+            {
+                $data = Contact::where('is_trashed','!=' ,1)
+                ->with(['city','area','contactSource','contactCategory','jobTitle','industry','major','activity','subActivity','campaign','customer','employee','createdBy','contactCompletions','meetings','leadCategories','leadHistories','categories','media'])
+                ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like', '%'.$request->name.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like', '%'.$request->mobile.'%');
+                })
+                ->when($request->birth_date != null,function ($q) use($request){
+                    return $q->where('birth_date','like', '%'.$request->birth_date.'%');
+                })
+                ->when($request->gender != null,function ($q) use($request){
+                    return $q->where('gender','like', '%'.$request->gender.'%');
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id',$request->contact_source_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id',$request->activity_id);
+                })
+                ->when($request->interest_id != null,function ($q) use($request){
+                    return $q->where('interest_id',$request->interest_id);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id',$request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id',$request->area_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id',$request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id',$request->major_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status',$request->status);
+                })
+                ->when($request->is_active != null,function ($q) use($request){
+                    return $q->where('is_active',$request->is_active);
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else
+            {
+                $data = Contact::where('is_trashed','!=' ,1)
+                ->with(['city','area','contactSource','contactCategory','jobTitle','industry','major','activity','subActivity','campaign','customer','employee','createdBy','contactCompletions','meetings','leadCategories','leadHistories','categories','media'])
+                ->where('employee_id', $auth_user->employee->id)
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like', '%'.$request->name.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like', '%'.$request->mobile.'%');
+                })
+                ->when($request->birth_date != null,function ($q) use($request){
+                    return $q->where('birth_date','like', '%'.$request->birth_date.'%');
+                })
+                ->when($request->gender != null,function ($q) use($request){
+                    return $q->where('gender','like', '%'.$request->gender.'%');
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id',$request->contact_source_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id',$request->activity_id);
+                })
+                ->when($request->interest_id != null,function ($q) use($request){
+                    return $q->where('interest_id',$request->interest_id);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id',$request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id',$request->area_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id',$request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id',$request->major_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status',$request->status);
+                })
+                ->when($request->is_active != null,function ($q) use($request){
+                    return $q->where('is_active',$request->is_active);
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(config('myConfig.paginationCount'));
+            }
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
 
     public function show($id)
     {
-        $item = Contact::with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])->findOrFail($id);
-        if (isset($item->id)) {
-            $module             = Contact::get();
-            $meetingModule      = Meeting::get();
-            $notesModule        = MeetingNote::get();
-            $branches           = Branch::get();
-            $leadHistoryService = new LeadHistoryService();
-            $contactHistories   = $leadHistoryService->organizeLeadHistoryForTimeline($item);
-            $employees          = Employee::all();
-            $completionByDate   = ContactCompletion::where('contact_id',$item->id)->select(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as date_creation"), DB::raw('count(*) as completion_percentage'))->groupBy('date_creation')->get();
-            $completedData      = ContactCompletion::where('contact_id',$item->id)->select('completed_by',DB::raw('count(*) as completion_percentage'),DB::raw('GROUP_CONCAT(property_name) as fields'))->groupBy('completed_by')->get();
-            $contactObserver    = new ContactDataObserver();
-            $totalFields        = count($contactObserver->trackedFields);
-            foreach($completionByDate as $date)
+        try {
+
+            $item = Contact::with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])->findOrFail($id);
+            if (isset($item->id)) {
+                $module             = Contact::get();
+                $meetingModule      = Meeting::get();
+                $notesModule        = MeetingNote::get();
+                $branches           = Branch::get();
+                $leadHistoryService = new LeadHistoryService();
+                $contactHistories   = $leadHistoryService->organizeLeadHistoryForTimeline($item);
+                $employees          = Employee::all();
+                $completionByDate   = ContactCompletion::where('contact_id',$item->id)->select(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as date_creation"), DB::raw('count(*) as completion_percentage'))->groupBy('date_creation')->get();
+                $completedData      = ContactCompletion::where('contact_id',$item->id)->select('completed_by',DB::raw('count(*) as completion_percentage'),DB::raw('GROUP_CONCAT(property_name) as fields'))->groupBy('completed_by')->get();
+                $contactObserver    = new ContactDataObserver();
+                $totalFields        = count($contactObserver->trackedFields);
+                foreach($completionByDate as $date)
+                {
+                    $date->completion_percentage =  round(($date->completion_percentage / $totalFields) * 100);
+                }
+
+                $histories          = [];
+                $historiesDetails[] = [];
+                foreach ($contactHistories as $date => $history)
+                {
+                    $histories['date'] = $date;
+    //                $historiesDetails[] = [];
+                    foreach ($history as $timelineItem)
+                    {
+                        if ($timelineItem->action == \App\Constants\LeadHistory\Actions::CALL_CREATED)
+                        {
+                            $historiesDetails['created_at'] = $timelineItem->created_at->format('H:i');
+                            $historiesDetails['created_by'] = $timelineItem->createdBy->name;
+
+                            $meeting = \App\Models\Meeting::find($timelineItem->related_model_id);
+                            $historiesDetails['meeting_type']  = $meeting->type;
+                            $historiesDetails['meeting_place'] = $meeting->meeting_place;
+                            $historiesDetails['meeting_date']  = $meeting->meeting_date;
+                            $historiesDetails['meeting_reply'] = $meeting->reply->reply;
+                            $historiesDetails['notes']         = strip_tags($timelineItem->placeholders_array['notes']);
+                            $historiesDetails['follow_date']   = $timelineItem->placeholders_array['follow_date'];
+                        }
+                        if($timelineItem->action == \App\Constants\LeadHistory\Actions::STATUES_CHANGED)
+                        {
+                            $historiesDetails['created_at'] = $timelineItem->created_at->format('H:i');
+
+                            $logContact = \App\Models\Contact::find($timelineItem->related_model_id);
+                            $historiesDetails['created_by'] = $timelineItem->createdBy->name;
+                            $historiesDetails['from']       = $timelineItem->placeholders_array['from'];
+                            $historiesDetails['to']         = $timelineItem->placeholders_array['to'];
+                        }
+                        $histories['historiesDetails'][] = $historiesDetails;
+                    }
+
+                }
+                /*
+                $completedHistory = [];
+                foreach ($completedData as $data)
+                {
+                    $completedHistory['completedBy'][] = $data->completedBy ? $data->completedBy->name : "----";
+                    $completedHistory['field'] = [];
+                    foreach (explode(',', $data->fields) as $field)
+                    {
+                        $completedHistory['field'][] = $field;
+                        return response()->json($completedHistory['field']);
+                    }
+                    $completedHistory['completion_percentage'][] = $data->completion_percentage;
+                }
+                */
+
+                $data[] = [
+                    'data'             => $item,
+                    'completionByDate' => $completionByDate,
+                    'completedData'    => $completedData,
+                    'employees'        => $employees,
+                    // 'no_header'        => true,
+                    // 'notesModule'      => $notesModule,
+                    // 'histories'        => $contactHistories,
+                    // "branches"         => $branches,
+                    'contactHistory'   => $histories ? [$histories] : $histories,
+                    // 'completedHistory' => $completedHistory,
+                ];
+                // return response()->json($data);
+
+                return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            }
+            else
             {
-                $date->completion_percentage =  round(($date->completion_percentage / $totalFields) * 100);
+                return $this->apiResponse(null, 'The Data Not Found', 404);
             }
 
-            $data[] = [
-                'data'             => $item,
-                'completionByDate' => $completionByDate,
-                'completedData'    => $completedData,
-                'employees'        => $employees,
-                'no_header'        => true,
-                'meetingModule'    => $meetingModule,
-                'notesModule'      => $notesModule,
-                'histories'        => $contactHistories,
-                "branches"         => $branches,
-            ];
-
-            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
-        }
-        else
-        {
-            return $this->apiResponse(null, 'The Data Not Found', 404);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -310,26 +358,32 @@ class ContactController extends Controller
 
     public function create()
     {
-        $contact_source_id = ContactSource::get(['id','name']);
-        $activity_id       = Activity::get(['id','name']);
-        $interest_id       = SubActivity::get(['id','name']);
-        $job_title_id      = JobTitle::get(['id','name']);
-        $city_id           = City::get(['id','name']);
-        $area_id           = Area::get(['id','name']);
-        $industry_id       = Industry::get(['id','name']);
-        $major_id          = Major::get(['id','name']);
-        $data[] = [
-            'contact_source_id' => $contact_source_id,
-            'activity_id'       => $activity_id,
-            'interest_id'       => $interest_id,
-            'job_title_id'      => $job_title_id,
-            'city_id'           => $city_id,
-            'area_id'           => $area_id,
-            'industry_id'       => $industry_id,
-            'major_id'          => $major_id,
-        ];
+        try {
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            $contact_source_id = ContactSource::get(['id','name']);
+            $activity_id       = Activity::get(['id','name']);
+            $interest_id       = SubActivity::get(['id','name']);
+            $job_title_id      = JobTitle::get(['id','name']);
+            $city_id           = City::get(['id','name']);
+            $area_id           = Area::get(['id','name']);
+            $industry_id       = Industry::get(['id','name']);
+            $major_id          = Major::get(['id','name']);
+            $data[] = [
+                'contact_source_id' => $contact_source_id,
+                'activity_id'       => $activity_id,
+                'interest_id'       => $interest_id,
+                'job_title_id'      => $job_title_id,
+                'city_id'           => $city_id,
+                'area_id'           => $area_id,
+                'industry_id'       => $industry_id,
+                'major_id'          => $major_id,
+            ];
+
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -337,6 +391,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id'             => 'required|exists:users,id',
                 'name'                => 'required|string',
@@ -417,6 +472,7 @@ class ContactController extends Controller
             $this->completionData($inputs, $data->id, $auth_user);
 
             return $this->apiResponse($data, 'The Data Stored Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -426,28 +482,34 @@ class ContactController extends Controller
 
     public function edit($id)
     {
-        $item              = Contact::findOrFail($id);
-        $contact_source_id = ContactSource::get(['id','name']);
-        $activity_id       = Activity::get(['id','name']);
-        $interest_id       = SubActivity::get(['id','name']);
-        $job_title_id      = JobTitle::get(['id','name']);
-        $city_id           = City::get(['id','name']);
-        $area_id           = Area::get(['id','name']);
-        $industry_id       = Industry::get(['id','name']);
-        $major_id          = Major::get(['id','name']);
-        $data[] = [
-            'item'              => $item,
-            'contact_source_id' => $contact_source_id,
-            'activity_id'       => $activity_id,
-            'interest_id'       => $interest_id,
-            'job_title_id'      => $job_title_id,
-            'city_id'           => $city_id,
-            'area_id'           => $area_id,
-            'industry_id'       => $industry_id,
-            'major_id'          => $major_id,
-        ];
+        try {
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            $item              = Contact::findOrFail($id);
+            $contact_source_id = ContactSource::get(['id','name']);
+            $activity_id       = Activity::get(['id','name']);
+            $interest_id       = SubActivity::get(['id','name']);
+            $job_title_id      = JobTitle::get(['id','name']);
+            $city_id           = City::get(['id','name']);
+            $area_id           = Area::get(['id','name']);
+            $industry_id       = Industry::get(['id','name']);
+            $major_id          = Major::get(['id','name']);
+            $data[] = [
+                'item'              => $item,
+                'contact_source_id' => $contact_source_id,
+                'activity_id'       => $activity_id,
+                'interest_id'       => $interest_id,
+                'job_title_id'      => $job_title_id,
+                'city_id'           => $city_id,
+                'area_id'           => $area_id,
+                'industry_id'       => $industry_id,
+                'major_id'          => $major_id,
+            ];
+
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -455,6 +517,7 @@ class ContactController extends Controller
     public function update(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id'             => 'required|exists:users,id',
                 'name'                => 'required|string',
@@ -539,6 +602,7 @@ class ContactController extends Controller
             $this->completionData($inputs, $data->id, $auth_user);
 
             return $this->apiResponse($data, 'The Data Updated Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -549,6 +613,7 @@ class ContactController extends Controller
     public function destroy(Request $request)
     {
         try {
+
             $data = Contact::findOrFail($request->id);
             if (!$data) {
                 return $this->apiResponse(null, 'An Error Occur', 401);
@@ -559,6 +624,7 @@ class ContactController extends Controller
             ]);
             $data->delete();
             return $this->apiResponse(null, 'The Data Deleted Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -569,6 +635,7 @@ class ContactController extends Controller
     public function changeActive($id)
     {
         try {
+
             $data = Contact::findOrFail($id);
             if (!$data) {
                 return $this->apiResponse(null, 'An Error Occur', 401);
@@ -578,6 +645,7 @@ class ContactController extends Controller
                 return $this->apiResponse(null, 'An Error Occur', 401);
             }
             return $this->apiResponse($data, 'The Data Updated Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -588,6 +656,7 @@ class ContactController extends Controller
     public function changeTrash($id)
     {
         try {
+
             $data = Contact::findOrFail($id);
             if (!$data) {
                 return $this->apiResponse(null, 'An Error Occur', 401);
@@ -597,6 +666,7 @@ class ContactController extends Controller
                 return $this->apiResponse(null, 'An Error Occur', 401);
             }
             return $this->apiResponse($data, 'The Data Updated Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -607,6 +677,7 @@ class ContactController extends Controller
     public function changeRelateEmployee(Request $request, $id)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 'employee_id' => 'required|integer|exists:employees,id',
             ]);
@@ -623,6 +694,7 @@ class ContactController extends Controller
                 return $this->apiResponse(null, 'An Error Occur', 401);
             }
             return $this->apiResponse($data, 'The Data Updated Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -632,228 +704,240 @@ class ContactController extends Controller
 
     public function trashed(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'auth_id'           => 'required|exists:users,id',
-            'name'              => 'nullable',
-            'mobile'            => 'nullable',
-            'birth_date'        => 'nullable',
-            'gender'            => 'nullable',
-            'contact_source_id' => 'nullable|exists:contact_sources,id',
-            'activity_id'       => 'nullable|exists:activates,id',
-            'interest_id'       => 'nullable|exists:interests,id',
-            'city_id'           => 'nullable|exists:cities,id',
-            'area_id'           => 'nullable|exists:areas,id',
-            'industry_id'       => 'nullable|exists:industries,id',
-            'major_id'          => 'nullable|exists:majors,id',
-            'status'            => 'nullable',
-            'is_active'         => 'nullable',
-            'from_date'         => 'nullable',
-            'to_date'           => 'nullable',
-        ]);
-        if ($validator->fails())
-        {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+        try {
 
-        $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
-        if($auth_user->roles_name[0] == "Admin")
-        {
-            $main_data = Contact::where('is_trashed',1)->with(['contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->mobile.'%');
-            })
-            ->when($request->birth_date != null,function ($q) use($request){
-                return $q->where('birth_date','like', '%'.$request->birth_date.'%');
-            })
-            ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->where('contact_source_id',$request->contact_source_id);
-            })
-            ->when($request->activity_id != null,function ($q) use($request){
-                return $q->where('activity_id',$request->activity_id);
-            })
-            ->when($request->interest_id != null,function ($q) use($request){
-                return $q->where('interest_id',$request->interest_id);
-            })
-            ->when($request->city_id != null,function ($q) use($request){
-                return $q->where('city_id',$request->city_id);
-            })
-            ->when($request->area_id != null,function ($q) use($request){
-                return $q->where('area_id',$request->area_id);
-            })
-            ->when($request->industry_id != null,function ($q) use($request){
-                return $q->where('industry_id',$request->industry_id);
-            })
-            ->when($request->major_id != null,function ($q) use($request){
-                return $q->where('major_id',$request->major_id);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
-            })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
-            })
-            ->paginate(config('myConfig.paginationCount'));
-        }
-        else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
-        {
-            $main_data = Contact::where('is_trashed',1)->with(['contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->mobile.'%');
-            })
-            ->when($request->birth_date != null,function ($q) use($request){
-                return $q->where('birth_date','like', '%'.$request->birth_date.'%');
-            })
-            ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->where('contact_source_id',$request->contact_source_id);
-            })
-            ->when($request->activity_id != null,function ($q) use($request){
-                return $q->where('activity_id',$request->activity_id);
-            })
-            ->when($request->interest_id != null,function ($q) use($request){
-                return $q->where('interest_id',$request->interest_id);
-            })
-            ->when($request->city_id != null,function ($q) use($request){
-                return $q->where('city_id',$request->city_id);
-            })
-            ->when($request->area_id != null,function ($q) use($request){
-                return $q->where('area_id',$request->area_id);
-            })
-            ->when($request->industry_id != null,function ($q) use($request){
-                return $q->where('industry_id',$request->industry_id);
-            })
-            ->when($request->major_id != null,function ($q) use($request){
-                return $q->where('major_id',$request->major_id);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
-            })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
-            })
-            ->paginate(config('myConfig.paginationCount'));
-        }
-        else
-        {
-            $main_data = Contact::where('is_trashed',1)->with(['contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->where('employee_id', $auth_user->employee->id)
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->mobile.'%');
-            })
-            ->when($request->birth_date != null,function ($q) use($request){
-                return $q->where('birth_date','like', '%'.$request->birth_date.'%');
-            })
-            ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
-            })
-            ->when($request->contact_source_id != null,function ($q) use($request){
-                return $q->where('contact_source_id',$request->contact_source_id);
-            })
-            ->when($request->activity_id != null,function ($q) use($request){
-                return $q->where('activity_id',$request->activity_id);
-            })
-            ->when($request->interest_id != null,function ($q) use($request){
-                return $q->where('interest_id',$request->interest_id);
-            })
-            ->when($request->city_id != null,function ($q) use($request){
-                return $q->where('city_id',$request->city_id);
-            })
-            ->when($request->area_id != null,function ($q) use($request){
-                return $q->where('area_id',$request->area_id);
-            })
-            ->when($request->industry_id != null,function ($q) use($request){
-                return $q->where('industry_id',$request->industry_id);
-            })
-            ->when($request->major_id != null,function ($q) use($request){
-                return $q->where('major_id',$request->major_id);
-            })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
-            })
-            ->when($request->is_active != null,function ($q) use($request){
-                return $q->where('is_active',$request->is_active);
-            })
-            ->paginate(config('myConfig.paginationCount'));
-        }
+            $validator = Validator::make($request->all(), [
+                // 'auth_id'           => 'required|exists:users,id',
+                'name'              => 'nullable',
+                'mobile'            => 'nullable',
+                'birth_date'        => 'nullable',
+                'gender'            => 'nullable',
+                'contact_source_id' => 'nullable|exists:contact_sources,id',
+                'activity_id'       => 'nullable|exists:activates,id',
+                'interest_id'       => 'nullable|exists:interests,id',
+                'city_id'           => 'nullable|exists:cities,id',
+                'area_id'           => 'nullable|exists:areas,id',
+                'industry_id'       => 'nullable|exists:industries,id',
+                'major_id'          => 'nullable|exists:majors,id',
+                'status'            => 'nullable',
+                'is_active'         => 'nullable',
+                'from_date'         => 'nullable',
+                'to_date'           => 'nullable',
+            ]);
+            if ($validator->fails())
+            {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
 
-        $contact_source_id = ContactSource::get(['id','name']);
-        $activity_id       = Activity::get(['id','name']);
-        $interest_id       = SubActivity::get(['id','name']);
-        $city_id           = City::get(['id','name']);
-        $area_id           = Area::get(['id','name']);
-        $industry_id       = Industry::get(['id','name']);
-        $major_id          = Major::get(['id','name']);
-        $data[] = [
-            'data'              => $main_data,
-            'contact_source_id' => $contact_source_id,
-            'activity_id'       => $activity_id,
-            'interest_id'       => $interest_id,
-            'city_id'           => $city_id,
-            'area_id'           => $area_id,
-            'industry_id'       => $industry_id,
-            'major_id'          => $major_id,
-        ];
+            $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
+            if($auth_user->roles_name[0] == "Admin")
+            {
+                $main_data = Contact::where('is_trashed',1)->with(['contactSource','city','area','contactCategory','activity','subActivity','employee'])
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like', '%'.$request->name.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like', '%'.$request->mobile.'%');
+                })
+                ->when($request->birth_date != null,function ($q) use($request){
+                    return $q->where('birth_date','like', '%'.$request->birth_date.'%');
+                })
+                ->when($request->gender != null,function ($q) use($request){
+                    return $q->where('gender','like', '%'.$request->gender.'%');
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id',$request->contact_source_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id',$request->activity_id);
+                })
+                ->when($request->interest_id != null,function ($q) use($request){
+                    return $q->where('interest_id',$request->interest_id);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id',$request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id',$request->area_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id',$request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id',$request->major_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status',$request->status);
+                })
+                ->when($request->is_active != null,function ($q) use($request){
+                    return $q->where('is_active',$request->is_active);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
+            {
+                $main_data = Contact::where('is_trashed',1)->with(['contactSource','city','area','contactCategory','activity','subActivity','employee'])
+                ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like', '%'.$request->name.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like', '%'.$request->mobile.'%');
+                })
+                ->when($request->birth_date != null,function ($q) use($request){
+                    return $q->where('birth_date','like', '%'.$request->birth_date.'%');
+                })
+                ->when($request->gender != null,function ($q) use($request){
+                    return $q->where('gender','like', '%'.$request->gender.'%');
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id',$request->contact_source_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id',$request->activity_id);
+                })
+                ->when($request->interest_id != null,function ($q) use($request){
+                    return $q->where('interest_id',$request->interest_id);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id',$request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id',$request->area_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id',$request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id',$request->major_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status',$request->status);
+                })
+                ->when($request->is_active != null,function ($q) use($request){
+                    return $q->where('is_active',$request->is_active);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
+            else
+            {
+                $main_data = Contact::where('is_trashed',1)->with(['contactSource','city','area','contactCategory','activity','subActivity','employee'])
+                ->where('employee_id', $auth_user->employee->id)
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like', '%'.$request->name.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like', '%'.$request->mobile.'%');
+                })
+                ->when($request->birth_date != null,function ($q) use($request){
+                    return $q->where('birth_date','like', '%'.$request->birth_date.'%');
+                })
+                ->when($request->gender != null,function ($q) use($request){
+                    return $q->where('gender','like', '%'.$request->gender.'%');
+                })
+                ->when($request->contact_source_id != null,function ($q) use($request){
+                    return $q->where('contact_source_id',$request->contact_source_id);
+                })
+                ->when($request->activity_id != null,function ($q) use($request){
+                    return $q->where('activity_id',$request->activity_id);
+                })
+                ->when($request->interest_id != null,function ($q) use($request){
+                    return $q->where('interest_id',$request->interest_id);
+                })
+                ->when($request->city_id != null,function ($q) use($request){
+                    return $q->where('city_id',$request->city_id);
+                })
+                ->when($request->area_id != null,function ($q) use($request){
+                    return $q->where('area_id',$request->area_id);
+                })
+                ->when($request->industry_id != null,function ($q) use($request){
+                    return $q->where('industry_id',$request->industry_id);
+                })
+                ->when($request->major_id != null,function ($q) use($request){
+                    return $q->where('major_id',$request->major_id);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status',$request->status);
+                })
+                ->when($request->is_active != null,function ($q) use($request){
+                    return $q->where('is_active',$request->is_active);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            $contact_source_id = ContactSource::get(['id','name']);
+            $activity_id       = Activity::get(['id','name']);
+            $interest_id       = SubActivity::get(['id','name']);
+            $city_id           = City::get(['id','name']);
+            $area_id           = Area::get(['id','name']);
+            $industry_id       = Industry::get(['id','name']);
+            $major_id          = Major::get(['id','name']);
+            $data[] = [
+                'data'              => $main_data,
+                'contact_source_id' => $contact_source_id,
+                'activity_id'       => $activity_id,
+                'interest_id'       => $interest_id,
+                'city_id'           => $city_id,
+                'area_id'           => $area_id,
+                'industry_id'       => $industry_id,
+                'major_id'          => $major_id,
+            ];
+
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
 
     function completionData($inputs, $id, $auth_user)
     {
-        //delete old records
-        $oldContactCompletions = ContactCompletion::where('contact_id',$id)->get();
-        if($oldContactCompletions->count() > 0)
-        {
-            foreach($oldContactCompletions as $oldContactCompletion)
+        try {
+
+            //delete old records
+            $oldContactCompletions = ContactCompletion::where('contact_id',$id)->get();
+            if($oldContactCompletions->count() > 0)
             {
-                $oldContactCompletion->delete();
+                foreach($oldContactCompletions as $oldContactCompletion)
+                {
+                    $oldContactCompletion->delete();
+                }
             }
-        }
-        foreach($inputs as $key=>$input)
-        {
-            //insert new records
-            if($key != "_token" && $key != "_method" && $key != "id" && $key != "created_by" && $input != null)
+            foreach($inputs as $key=>$input)
             {
-                $contactCompletion = ContactCompletion::create([
-                    'contact_id'    => $id,
-                    'completed_by'  => $auth_user->id,
-                    'property_name' => $key,
-                ]);
+                //insert new records
+                if($key != "_token" && $key != "_method" && $key != "id" && $key != "created_by" && $input != null)
+                {
+                    $contactCompletion = ContactCompletion::create([
+                        'contact_id'    => $id,
+                        'completed_by'  => $auth_user->id,
+                        'property_name' => $key,
+                    ]);
+                }
             }
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -861,65 +945,78 @@ class ContactController extends Controller
 
     public function changeStatus(Request $request, ApiLeadConversionService $leadConversionService)
 	{
-		$validator = Validator::make($request->all(), [
-            // 'auth_id'                => 'required|exists:users,id',
-            'contact_id'             => 'required|exists:contacts,id',
-			'status'                 => 'required|in:new,contacted,qualified,converted',
-			'invoice'                => ['required_if:status,converted','array','min:1'],
-			'invoice.invoice_number' => 'required_if:status,converted',
-			'invoice.invoice_date'   => 'required_if:status,converted',
-			'invoice.total_amount'   => 'required_if:status,converted',
-			'invoice.amount_paid'    => 'required_if:status,converted',
-			'invoice.debt'           => 'required_if:status,converted',
-			'invoice.description'    => 'required_if:status,converted',
-			'invoice.status'         => 'required_if:status,converted',
-		]);
+        try {
+            
+            $validator = Validator::make($request->all(), [
+                // 'auth_id'                => 'required|exists:users,id',
+                'contact_id'             => 'required|exists:contacts,id',
+                'status'                 => 'required|in:new,contacted,qualified,converted',
+                'invoice'                => ['required_if:status,converted','array','min:1'],
+                'invoice.*.invoice_number' => 'required_if:status,converted',
+                'invoice.*.invoice_date'   => 'required_if:status,converted',
+                'invoice.*.total_amount'   => 'required_if:status,converted',
+                'invoice.*.amount_paid'    => 'required_if:status,converted',
+                'invoice.*.debt'           => 'required_if:status,converted',
+                'invoice.*.description'    => 'required_if:status,converted',
+                'invoice.*.status'         => 'required_if:status,converted',
+            ]);
 
-		if ($validator->fails())
-        {
-            return $this->apiResponse(null, $validator->errors(), 400);
+            if ($validator->fails())
+            {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
+
+            $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
+            $lead      = Contact::findOrFail($request->contact_id);
+            // Check if the status transition is allowed
+            if (!$this->isStatusTransitionAllowed($lead, $request->input('status')))
+            {
+                return $this->apiResponse(null, 'An Error Occur', 401);
+            }
+
+
+            // Perform the status transition
+            switch ($request->input('status'))
+            {
+                case 'contacted':
+                    $leadConversionService->transitionToContacted($lead);
+                    break;
+                case 'qualified':
+                    $leadConversionService->transitionToQualified($lead);
+                    break;
+                case 'converted':
+                    $invoice = $request->invoice;
+                    $leadConversionService->convertToCustomer($lead, $invoice,$request->input('next_reorder_reminder'));
+                    break;
+            }
+
+            return $this->apiResponse($lead, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-
-        $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
-		$lead      = Contact::findOrFail($request->contact_id);
-		// Check if the status transition is allowed
-		if (!$this->isStatusTransitionAllowed($lead, $request->input('status')))
-        {
-            return $this->apiResponse(null, 'An Error Occur', 401);
-		}
-
-		// Perform the status transition
-		switch ($request->input('status'))
-        {
-			case 'contacted':
-				$leadConversionService->transitionToContacted($lead, $auth_user);
-				break;
-			case 'qualified':
-				$leadConversionService->transitionToQualified($lead, $auth_user);
-				break;
-			case 'converted':
-				$invoice = $request->invoice;
-				$leadConversionService->convertToCustomer($lead, $invoice,$request->input('next_reorder_reminder'), $auth_user);
-				break;
-		}
-
-        return $this->apiResponse($lead, 'The Data Returned Successfully', 200);
 	}
 
 
 
     private function isStatusTransitionAllowed(Contact $lead, $newStatus)
 	{
-		$currentStatus = $lead->status;
-		// Define allowed transitions based on your conditions
-		$allowedTransitions = [
-			'new'       => ['contacted', 'qualified', 'converted'],
-			'contacted' => ['qualified', 'converted'],
-			'qualified' => ['converted'],
-			'converted' => ['converted'],
-		];
+        try {
 
-		return in_array($newStatus, $allowedTransitions[$currentStatus]);
+            $currentStatus = $lead->status;
+            // Define allowed transitions based on your conditions
+            $allowedTransitions = [
+                'new'       => ['contacted', 'qualified', 'converted'],
+                'contacted' => ['qualified', 'converted'],
+                'qualified' => ['converted'],
+                'converted' => ['converted'],
+            ];
+
+            return in_array($newStatus, $allowedTransitions[$currentStatus]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
 	}
 
 }

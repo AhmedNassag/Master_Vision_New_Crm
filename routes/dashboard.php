@@ -50,7 +50,7 @@ use App\Http\Controllers\Dashboard\CategoryController;
 
 Route::get('/', function () {
     return view('auth.login');
-})->name('admin.login');
+})->name('admin.login')->middleware('guest');
 
 Auth::routes(['register' => false]);
 
@@ -145,6 +145,7 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
 
     //message
     Route::resource('message', MessageController::class);
+    Route::post('customerMessage', [MessageController::class, 'storeCustomerMessage'])->name('message.storeCustomerMessage');
 
 
     //customer
@@ -161,6 +162,7 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     Route::post('customer/import', [CustomerController::class, 'import'])->name('customer.import');
     Route::post('customer/importData', [CustomerController::class, 'importData'])->name('customer.importData');
     Route::post('customer/makePassword', [CustomerController::class, 'makePassword'])->name('customer.makePassword');
+    Route::post('customerDeleteSelected', [CustomerController::class, 'deleteSelected'])->name('customer.deleteSelected');
 
 
 
@@ -201,7 +203,7 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     Route::resource('notification', NotificationController::class);
     Route::get('todayReminders', [NotificationController::class, 'todayReminders'])->name('todayReminders.index');
     Route::get('monthReminders', [NotificationController::class, 'monthReminders'])->name('monthReminders.index');
-
+    Route::get('remindersChangeStatus/{id}', [NotificationController::class, 'remindersChangeStatus'])->name('reminder.changeStatus');
 
 
     //tickets

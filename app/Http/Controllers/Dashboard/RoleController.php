@@ -23,24 +23,36 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
-        $data = Role::orderBy('id','DESC')
-        ->when($request->name != null,function ($q) use($request){
-            return $q->where('name','like','%'.$request->name.'%');
-        })
-        ->paginate(config('myConfig.paginationCount'));
-        return view('dashboard.roles.index')
-        ->with([
-            'data'   => $data,
-            'name'   => $request->name,
-        ]);
+        try {
+            
+            $data = Role::orderBy('id','DESC')
+            ->when($request->name != null,function ($q) use($request){
+                return $q->where('name','like','%'.$request->name.'%');
+            })
+            ->paginate(config('myConfig.paginationCount'));
+            return view('dashboard.roles.index')
+            ->with([
+                'data'   => $data,
+                'name'   => $request->name,
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
 
     public function create()
     {
-        $permission = Permission::get();
-        return view('dashboard.roles.create',compact('permission'));
+        try {
+
+            $permission = Permission::get();
+            return view('dashboard.roles.create',compact('permission'));
+            
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -48,6 +60,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         try{
+
             $validator = Validator::make($request->all(),[
                 'name'       => 'required|unique:roles,name',
                 'permission' => 'required',
@@ -60,6 +73,7 @@ class RoleController extends Controller
             $role->syncPermissions($request->input('permission'));
             session()->flash('success');
             return redirect()->route('role.index');
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -69,42 +83,66 @@ class RoleController extends Controller
 
     public function show($id)
     {
-        $role            = Role::find($id);
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")->where("role_has_permissions.role_id",$id)->get();
-        return view('dashboard.roles.show',compact('role','rolePermissions'));
+        try {
+
+            $role            = Role::find($id);
+            $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")->where("role_has_permissions.role_id",$id)->get();
+            return view('dashboard.roles.show',compact('role','rolePermissions'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
 
     public function edit($id)
     {
-        $role            = Role::find($id);
-        $permission      = Permission::get();
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')->all();
-        return view('dashboard.roles.edit',compact('role','permission','rolePermissions'));
+        try {
+
+            $role            = Role::find($id);
+            $permission      = Permission::get();
+            $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')->all();
+            return view('dashboard.roles.edit',compact('role','permission','rolePermissions'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name'       => 'required|unique:roles,name,' . $id,
-            'permission' => 'required',
-        ]);
-        $role = Role::find($id);
-        $role->name = $request->input('name');
-        $role->save();
-        $role->syncPermissions($request->input('permission'));
-        return redirect()->route('role.index')->with('success','Role updated successfully');
+        try {
+
+            $this->validate($request, [
+                'name'       => 'required|unique:roles,name,' . $id,
+                'permission' => 'required',
+            ]);
+            $role = Role::find($id);
+            $role->name = $request->input('name');
+            $role->save();
+            $role->syncPermissions($request->input('permission'));
+            return redirect()->route('role.index')->with('success','Role updated successfully');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
 
     public function destroy($id)
     {
-        DB::table("roles")->where('id',$id)->delete();
-        return redirect()->route('role.index')->with('success','Role deleted successfully');
+        try {
+
+            DB::table("roles")->where('id',$id)->delete();
+            return redirect()->route('role.index')->with('success','Role deleted successfully');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -112,6 +150,7 @@ class RoleController extends Controller
     public function delete(Request $request)
     {
         try {
+
             $role = DB::table("roles")->where('id',$request->id)->delete();
             if (!$role) {
                 session()->flash('error');
@@ -120,6 +159,7 @@ class RoleController extends Controller
 
             session()->flash('success');
             return redirect()->route('role.index');
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

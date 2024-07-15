@@ -19,6 +19,8 @@ interface CustomerInterface
 
     public function destroy($request);
 
+    public function deleteSelected($request);
+
     public function addParent($id);
 
     public function storeParent($request);

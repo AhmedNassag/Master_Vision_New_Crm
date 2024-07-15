@@ -47,15 +47,23 @@ Route::group(['prefix' => 'admin'], function($router)
 
 
 
+    //referenceData
+    Route::get('branches', [App\Http\Controllers\Api\Admin\ReferenceDataController::class, 'getBranches']);
+    Route::get('referenceData', [App\Http\Controllers\Api\Admin\ReferenceDataController::class, 'referenceData']);
+
+
+
     //User must be have token to be able to visit those routes
     Route::group(['middleware' => 'jwtMiddleware'],function()
     {
         //home
         Route::get('home', [App\Http\Controllers\Api\Admin\HomeController::class, 'index']);
 
+
         //referenceData
         Route::get('branches', [App\Http\Controllers\Api\Admin\ReferenceDataController::class, 'getBranches']);
         Route::get('referenceData', [App\Http\Controllers\Api\Admin\ReferenceDataController::class, 'referenceData']);
+
 
         //contact
         Route::get('contacts', [App\Http\Controllers\Api\Admin\ContactController::class, 'index']);
@@ -70,6 +78,7 @@ Route::group(['prefix' => 'admin'], function($router)
         Route::post('contacts-changeRelateEmployee/{id}', [App\Http\Controllers\Api\Admin\ContactController::class, 'changeRelateEmployee']);
         Route::post('contacts-changeStatus', [App\Http\Controllers\Api\Admin\ContactController::class, 'changeStatus']);
         Route::get('contacts-trashed', [App\Http\Controllers\Api\Admin\ContactController::class, 'trashed']);
+
 
         //customer
         Route::get('customers', [App\Http\Controllers\Api\Admin\CustomerController::class, 'index']);
@@ -89,7 +98,15 @@ Route::group(['prefix' => 'admin'], function($router)
         Route::post('customers-makePassword', [App\Http\Controllers\Api\Admin\CustomerController::class, 'makePassword']);
 
 
-        //notification
+        //meetings
+        Route::get('meetings', [App\Http\Controllers\Api\Admin\MeetingController::class, 'index']);
+        Route::get('meetings/{id}', [App\Http\Controllers\Api\Admin\MeetingController::class, 'show']);
+        Route::post('meetings', [App\Http\Controllers\Api\Admin\MeetingController::class, 'store']);
+        Route::post('meetings/{id}', [App\Http\Controllers\Api\Admin\MeetingController::class, 'update']);
+        Route::delete('meetings/{id}', [App\Http\Controllers\Api\Admin\MeetingController::class, 'destroy']);
+
+
+        //notifications
         Route::get('notifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'index']);
         Route::get('notifications/{id}', [App\Http\Controllers\Api\Admin\NotificationController::class, 'show']);
         Route::post('notifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'store']);
@@ -97,11 +114,11 @@ Route::group(['prefix' => 'admin'], function($router)
         Route::delete('notifications/{id}', [App\Http\Controllers\Api\Admin\NotificationController::class, 'destroy']);
         Route::get('todayReminders', [App\Http\Controllers\Api\Admin\NotificationController::class, 'todayReminders']);
         Route::get('monthReminders', [App\Http\Controllers\Api\Admin\NotificationController::class, 'monthReminders']);
-
-    Route::get('allNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'allNotifications']);
-    Route::get('unreadNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'unreadNotifications']);
-    Route::get('readNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'readNotifications']);
-    Route::get('markAsReadNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'markAsReadNotifications']);
+        Route::get('remindersChangeStatus/{id}', [App\Http\Controllers\Api\Admin\NotificationController::class, 'remindersChangeStatus']);
+        Route::get('allNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'allNotifications']);
+        Route::get('unreadNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'unreadNotifications']);
+        Route::get('readNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'readNotifications']);
+        Route::get('markAsReadNotifications', [App\Http\Controllers\Api\Admin\NotificationController::class, 'markAsReadNotifications']);
 
 
         //tickets
@@ -110,6 +127,7 @@ Route::group(['prefix' => 'admin'], function($router)
         Route::post('tickets/changeStatus/{id}', [App\Http\Controllers\Api\Admin\TicketController::class, 'changeStatus']);
         Route::post('tickets/assignAgent/{id}', [App\Http\Controllers\Api\Admin\TicketController::class, 'assignAgent']);
         Route::post('tickets/replyToTicket/{id}',[App\Http\Controllers\Api\Admin\TicketController::class,'replyToTicket']);
+
 
         //report
         Route::get('report/meetings',[App\Http\Controllers\Api\Admin\ReportController::class, 'meetings']);
@@ -143,11 +161,13 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function($router)
 });
 
 
+
 //Customrt must be have token to be able to visit those routes
-Route::group(['middleware' => 'jwtMiddleware'],function()
+Route::group(['middleware' => 'auth:customer_api'],function()
 {
     //customer-home
     Route::get('customer-home', [App\Http\Controllers\Api\Customer\CustomerController::class, 'home']);
+
 
     //customer-tickets
     Route::get('customer-tickets', [App\Http\Controllers\Api\Customer\CustomerController::class, 'tickets']);
@@ -155,6 +175,7 @@ Route::group(['middleware' => 'jwtMiddleware'],function()
     Route::post('customer-tickets/store', [App\Http\Controllers\Api\Customer\CustomerController::class, 'storeTicket']);
     Route::get('customer-tickets/{ticket}', [App\Http\Controllers\Api\Customer\CustomerController::class, 'showTicket']);
     Route::post('customer-tickets/{ticket}/reply', [App\Http\Controllers\Api\Customer\CustomerController::class, 'replyTicket']);
+
 
     //customer-notifications
     Route::get('customer-allNotifications', [App\Http\Controllers\Api\Customer\NotificationController::class, 'allNotifications']);

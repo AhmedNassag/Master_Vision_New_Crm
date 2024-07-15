@@ -144,7 +144,14 @@ class ContactImport implements ToCollection
 
     private function getModelClassName($field)
     {
-        $models =  ['contact_source_id'=>"Contact_source", 'city_id'=>"City", 'area_id'=>"Area", 'job_title_id'=>"Job_title", 'industry_id'=>"Industry", 'major_id'=>"Major"];
+        $models =  [
+            'contact_source_id' => "Contact_source",
+            'city_id'           => "City",
+            'area_id'           => "Area",
+            'job_title_id'      => "Job_title",
+            'industry_id'       => "Industry",
+            'major_id'          => "Major"
+        ];
         return $models[$field];
     }
 

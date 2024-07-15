@@ -50,7 +50,7 @@ class NotificationController extends Controller
     {
         return $this->notification->destroy($request);
     }
-    
+
 
 
     public function todayReminders()
@@ -63,6 +63,13 @@ class NotificationController extends Controller
     public function monthReminders()
     {
         return $this->notification->monthReminders();
+    }
+
+
+
+    public function remindersChangeStatus($id)
+    {
+        return $this->notification->remindersChangeStatus($id);
     }
 
 }

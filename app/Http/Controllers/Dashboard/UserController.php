@@ -23,28 +23,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
-        ->when($request->name != null,function ($q) use($request){
-            return $q->where('name','like','%'.$request->name.'%');
-        })
-        ->when($request->email != null,function ($q) use($request){
-            return $q->where('email','like','%'.$request->email.'%');
-        })
-        ->when($request->mobile != null,function ($q) use($request){
-            return $q->where('mobile','like','%'.$request->mobile.'%');
-        })
-        ->when($request->branch_id != null,function ($q) use($request){
-            return $q->whereRelation('employee','branch_id',$request->branch_id);
-        })
-        ->when($request->dept != null,function ($q) use($request){
-            return $q->whereRelation('employee','dept',$request->dept);
-        })
-        ->paginate(config('myConfig.paginationCount'));
-
-
-
-        if(Auth::user()->roles_name[0] == "Admin")
-        {
+        try {
+                
             $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like','%'.$request->name.'%');
@@ -62,79 +42,105 @@ class UserController extends Controller
                 return $q->whereRelation('employee','dept',$request->dept);
             })
             ->paginate(config('myConfig.paginationCount'));
-        }
-        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
-        {
-            $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
-            ->whereRelation('employee','branch_id', auth()->user()->employee->branch_id)
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like','%'.$request->name.'%');
-            })
-            ->when($request->email != null,function ($q) use($request){
-                return $q->where('email','like','%'.$request->email.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like','%'.$request->mobile.'%');
-            })
-            ->when($request->branch_id != null,function ($q) use($request){
-                return $q->whereRelation('employee','branch_id',$request->branch_id);
-            })
-            ->when($request->dept != null,function ($q) use($request){
-                return $q->whereRelation('employee','dept',$request->dept);
-            })
-            ->paginate(config('myConfig.paginationCount'));
-        }
-        else
-        {
-            $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
-            ->where('id', auth()->user()->id)
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like','%'.$request->name.'%');
-            })
-            ->when($request->email != null,function ($q) use($request){
-                return $q->where('email','like','%'.$request->email.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like','%'.$request->mobile.'%');
-            })
-            ->when($request->branch_id != null,function ($q) use($request){
-                return $q->whereRelation('employee','branch_id',$request->branch_id);
-            })
-            ->when($request->dept != null,function ($q) use($request){
-                return $q->whereRelation('employee','dept',$request->dept);
-            })
-            ->paginate(config('myConfig.paginationCount'));
-        }
 
-        /*
-        foreach($data as $item)
-        {
-            $currency = "EGP";
-            $target_output='';
-            $target= EmployeeTarget::where("employee_id",$item->id)->where("month",date("M-Y"))->first();
-            if(!empty($target->target_amount))
+
+
+            if(Auth::user()->roles_name[0] == "Admin")
             {
-                $did_amount=Invoice::where('created_by',$item->id)->sum("total_amount");
-                $target_output .=$did_amount. " / ".$target->target_amount." ".$currency ." (".floor($did_amount/$target->target_amount*100)."%)<br>";
+                $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like','%'.$request->name.'%');
+                })
+                ->when($request->email != null,function ($q) use($request){
+                    return $q->where('email','like','%'.$request->email.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like','%'.$request->mobile.'%');
+                })
+                ->when($request->branch_id != null,function ($q) use($request){
+                    return $q->whereRelation('employee','branch_id',$request->branch_id);
+                })
+                ->when($request->dept != null,function ($q) use($request){
+                    return $q->whereRelation('employee','dept',$request->dept);
+                })
+                ->paginate(config('myConfig.paginationCount'));
             }
-            if(!empty($target->target_amount))
+            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
             {
-                $did_meetings=Meeting::where("created_by",$item->id)->count();
-                $target_output .=$did_meetings. " / ".$target->target_meeting." Calls / Meetings (".floor($did_meetings/$target->target_meeting*100)."%)";
+                $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+                ->whereRelation('employee','branch_id', auth()->user()->employee->branch_id)
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like','%'.$request->name.'%');
+                })
+                ->when($request->email != null,function ($q) use($request){
+                    return $q->where('email','like','%'.$request->email.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like','%'.$request->mobile.'%');
+                })
+                ->when($request->branch_id != null,function ($q) use($request){
+                    return $q->whereRelation('employee','branch_id',$request->branch_id);
+                })
+                ->when($request->dept != null,function ($q) use($request){
+                    return $q->whereRelation('employee','dept',$request->dept);
+                })
+                ->paginate(config('myConfig.paginationCount'));
             }
-            $item->target = $target_output;
-        }
-        */
+            else
+            {
+                $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+                ->where('id', auth()->user()->id)
+                ->when($request->name != null,function ($q) use($request){
+                    return $q->where('name','like','%'.$request->name.'%');
+                })
+                ->when($request->email != null,function ($q) use($request){
+                    return $q->where('email','like','%'.$request->email.'%');
+                })
+                ->when($request->mobile != null,function ($q) use($request){
+                    return $q->where('mobile','like','%'.$request->mobile.'%');
+                })
+                ->when($request->branch_id != null,function ($q) use($request){
+                    return $q->whereRelation('employee','branch_id',$request->branch_id);
+                })
+                ->when($request->dept != null,function ($q) use($request){
+                    return $q->whereRelation('employee','dept',$request->dept);
+                })
+                ->paginate(config('myConfig.paginationCount'));
+            }
 
-        return view('dashboard.users.index')
-        ->with([
-            'data'      => $data,
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'mobile'    => $request->mobile,
-            'branch_id' => $request->branch_id,
-            'dept'      => $request->dept,
-        ]);
+            /*
+            foreach($data as $item)
+            {
+                $currency = "EGP";
+                $target_output='';
+                $target= EmployeeTarget::where("employee_id",$item->id)->where("month",date("M-Y"))->first();
+                if(!empty($target->target_amount))
+                {
+                    $did_amount=Invoice::where('created_by',$item->id)->sum("total_amount");
+                    $target_output .=$did_amount. " / ".$target->target_amount." ".$currency ." (".floor($did_amount/$target->target_amount*100)."%)<br>";
+                }
+                if(!empty($target->target_amount))
+                {
+                    $did_meetings=Meeting::where("created_by",$item->id)->count();
+                    $target_output .=$did_meetings. " / ".$target->target_meeting." Calls / Meetings (".floor($did_meetings/$target->target_meeting*100)."%)";
+                }
+                $item->target = $target_output;
+            }
+            */
+
+            return view('dashboard.users.index')
+            ->with([
+                'data'      => $data,
+                'name'      => $request->name,
+                'email'     => $request->email,
+                'mobile'    => $request->mobile,
+                'branch_id' => $request->branch_id,
+                'dept'      => $request->dept,
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -158,6 +164,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(),[
                 'name'       => 'required',
                 'email'      => 'required|email|unique:users,email|unique:employees,email',
@@ -217,6 +224,7 @@ class UserController extends Controller
 
             session()->flash('success');
             return redirect()->route('user.index');
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -237,6 +245,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(),[
                 'name'       => 'required',
                 'email'      => 'required|email|unique:users,email,'.$request->id,'|unique:employees,email,'.$request->id,
@@ -297,6 +306,7 @@ class UserController extends Controller
 
             session()->flash('success');
             return redirect()->route('user.index');
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -307,6 +317,7 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         try {
+
             // $related_table = realed_model::where('user_id', $request->id)->pluck('user_id');
             // if($related_table->count() == 0) {
                 $user     = User::findOrFail($request->id);
@@ -323,6 +334,7 @@ class UserController extends Controller
                 // session()->flash('canNotDeleted');
                 // return redirect()->back();
             // }
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -332,12 +344,18 @@ class UserController extends Controller
 
     public function showNotification($id)
     {
-        $notification = NotificationModel::findOrFail($id);
-        $notification->update([
-            'read_at' => now(),
-        ]);
-        $user = User::findOrFail($id);
-        return view('dashboard.users.show',compact('user'));
+        try {
+
+            $notification = NotificationModel::findOrFail($id);
+            $notification->update([
+                'read_at' => now(),
+            ]);
+            $user = User::findOrFail($id);
+            return view('dashboard.users.show',compact('user'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -345,6 +363,7 @@ class UserController extends Controller
     public function changeStatus($id)
     {
         try {
+
             $user = User::find($id);
             if($user->status == 0)
             {
@@ -361,6 +380,7 @@ class UserController extends Controller
             }
             session()->flash('success');
             return redirect()->back();
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -370,10 +390,16 @@ class UserController extends Controller
 
     function employeeByBranchId($id)
     {
-        $employees = DB::table('employees')->where('branch_id', $id)->select('name', 'id')->get();
-        if($employees)
-        {
-            return response()->json($employees);
+        try {
+
+            $employees = DB::table('employees')->where('branch_id', $id)->select('name', 'id')->get();
+            if($employees)
+            {
+                return response()->json($employees);
+            }
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -381,10 +407,16 @@ class UserController extends Controller
 
     public function ajaxEmployeesSelect(Request $request)
     {
-        $employees = Employee::where("branch_id",$request->branch_id)->get();
-        $employees->each(function ($employee) {
-           $employee->name = $employee->name." <b>( ".(($employee->has_branch_access)?"مدير فرع":"موظف")." )</b>";
-        });
-        return response()->json($employees);
+        try {
+
+            $employees = Employee::where("branch_id",$request->branch_id)->get();
+            $employees->each(function ($employee) {
+            $employee->name = $employee->name." <b>( ".(($employee->has_branch_access)?"مدير فرع":"موظف")." )</b>";
+            });
+            return response()->json($employees);
+            
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

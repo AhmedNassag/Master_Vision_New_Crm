@@ -40,7 +40,11 @@
                                         <div class="px-7 py-5">
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" value="{{ $name }}" />
+                                            </div>
+                                            <div class="mb-10">
+                                                <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Code') }}</label>
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Code') }}" name="code" value="{{ $code }}" />
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
@@ -109,6 +113,7 @@
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                         <th class="text-center">#</th>
+                                        <th class="text-center">{{ trans('main.Code') }}</th>
                                         <th class="text-center">{{ trans('main.Name') }}</th>
                                         <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
                                     </tr>
@@ -120,6 +125,7 @@
                                                 <td class="text-center">
                                                     {{ @$key+1 }}
                                                 </td>
+                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ @$item->code }}</td>
                                                 <td class="text-center text-gray-800 text-hover-primary mb-1">{{ @$item->name }}</td>
                                                 <td class="text-center">
                                                     <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">

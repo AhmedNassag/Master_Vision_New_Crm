@@ -279,6 +279,12 @@ return [
     'Contact With'                        => 'Contact With',
     'Send'                                => 'Send',
     'Message'                             => 'Message',
+    'Religion'                            => 'Religion',
+    'Muslim'                              => 'Muslim',
+    'Christian'                           => 'Christian',
+    'Other'                               => 'Other',
+    'Address'                             => 'Address',
+    'Source'                              => 'Source',
 
     //Customer
     'Customers'         => 'Customers',

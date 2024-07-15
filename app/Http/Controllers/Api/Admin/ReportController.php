@@ -44,47 +44,53 @@ class ReportController extends Controller
     //meetings report
     public function meetings(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'auth_id' => 'required|exists:users,id',
-        ]);
-        if ($validator->fails())
-        {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+        try {
 
-        $auth_user         = User::findOrFail(auth()->guard('api')->user()->id);
-        $interests_ids     = SubActivity::get(['id','name']);
-        $contact_source_id = ContactSource::get(['id','name']);
-        if($auth_user->roles_name[0] == "Admin")
-        {
-            $contact_id = Contact::get(['id','name']);
-        }
-        else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
-        {
-            $contact_id = Contact::whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)->get(['id','name']);
-        }
-        else
-        {
-            $contact_id = Contact::where('employee_id', $auth_user->employee->id)->get(['id','name']);
-        }
+            $validator = Validator::make($request->all(), [
+                // 'auth_id' => 'required|exists:users,id',
+            ]);
+            if ($validator->fails())
+            {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
 
-        if($auth_user->roles_name[0] == "Admin")
-        {
-            $created_by = Employee::get(['id','name']);
-        }
-        else
-        {
-            $created_by = Employee::where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
-        }
+            $auth_user         = User::findOrFail(auth()->guard('api')->user()->id);
+            $interests_ids     = SubActivity::get(['id','name']);
+            $contact_source_id = ContactSource::get(['id','name']);
+            if($auth_user->roles_name[0] == "Admin")
+            {
+                $contact_id = Contact::get(['id','name']);
+            }
+            else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
+            {
+                $contact_id = Contact::whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)->get(['id','name']);
+            }
+            else
+            {
+                $contact_id = Contact::where('employee_id', $auth_user->employee->id)->get(['id','name']);
+            }
 
-        $data[] = [
-            'interests_ids'     => $interests_ids,
-            'contact_source_id' => $contact_source_id,
-            'contact_id'        => $contact_id,
-            'created_by'        => $created_by,
-        ];
+            if($auth_user->roles_name[0] == "Admin")
+            {
+                $created_by = Employee::get(['id','name']);
+            }
+            else
+            {
+                $created_by = Employee::where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
+            }
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            $data[] = [
+                'interests_ids'     => $interests_ids,
+                'contact_source_id' => $contact_source_id,
+                'contact_id'        => $contact_id,
+                'created_by'        => $created_by,
+            ];
+
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -92,6 +98,7 @@ class ReportController extends Controller
     public function meetingsReport(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id'           => 'required|exists:users,id',
                 'created_by'        => 'nullable|exists:employees,id',
@@ -122,13 +129,13 @@ class ReportController extends Controller
                     return $q->where('contact_id', $request->contact_id);
                 })
                 ->when($request->contact_source_id != null,function ($q) use($request){
-                    return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
+                    return $q->whereRelation('contact','contact_source_id', $request->contact_source_id);
                 })
                 ->when($request->follow_date_from != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_from);
                 })
                 ->when($request->follow_date_to != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_to);
                 })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
@@ -155,10 +162,10 @@ class ReportController extends Controller
                     return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
                 })
                 ->when($request->follow_date_from != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_from);
                 })
                 ->when($request->follow_date_to != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_to);
                 })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
@@ -185,10 +192,10 @@ class ReportController extends Controller
                     return $q->whereRelation('contact.contact_source_id', $request->contact_source_id);
                 })
                 ->when($request->follow_date_from != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_from', '>=', $request->follow_date_from);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_from);
                 })
                 ->when($request->follow_date_to != null,function ($q) use($request){
-                    return $q->whereRelation('notes.follow_date_to', '>=', $request->follow_date_to);
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_to);
                 })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
@@ -200,6 +207,7 @@ class ReportController extends Controller
             }
 
             return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -214,45 +222,51 @@ class ReportController extends Controller
     //contacts report
     public function contacts(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'auth_id' => 'required|exists:users,id',
-        ]);
-        if ($validator->fails())
-        {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+        try {
+                
+            $validator = Validator::make($request->all(), [
+                // 'auth_id' => 'required|exists:users,id',
+            ]);
+            if ($validator->fails())
+            {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
 
-        $auth_user           = User::findOrFail(auth()->guard('api')->user()->id);
-        $city_id             = City::get(['id', 'name']);
-        $area_id             = Area::get(['id', 'name']);
-        $contact_source_id   = ContactSource::get(['id', 'name']);
-        $contact_category_id = ContactCategory::get(['id', 'name']);
-        $industry_id         = Industry::get(['id', 'name']);
-        $major_id            = Major::get(['id', 'name']);
-        $job_title_id        = JobTitle::get(['id', 'name']);
-        $activity_id         = Activity::get(['id', 'name']);
-        if($auth_user->roles_name[0] == "Admin")
-        {
-            $created_by = Employee::get(['id','name']);
-        }
-        else
-        {
-            $created_by = Employee::where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
-        }
+            $auth_user           = User::findOrFail(auth()->guard('api')->user()->id);
+            $city_id             = City::get(['id', 'name']);
+            $area_id             = Area::get(['id', 'name']);
+            $contact_source_id   = ContactSource::get(['id', 'name']);
+            $contact_category_id = ContactCategory::get(['id', 'name']);
+            $industry_id         = Industry::get(['id', 'name']);
+            $major_id            = Major::get(['id', 'name']);
+            $job_title_id        = JobTitle::get(['id', 'name']);
+            $activity_id         = Activity::get(['id', 'name']);
+            if($auth_user->roles_name[0] == "Admin")
+            {
+                $created_by = Employee::get(['id','name']);
+            }
+            else
+            {
+                $created_by = Employee::where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
+            }
 
-        $data[] = [
-            'city_id'             => $city_id,
-            'area_id'             => $area_id,
-            'contact_source_id'   => $contact_source_id,
-            'contact_category_id' => $contact_category_id,
-            'industry_id'         => $industry_id,
-            'major_id'            => $major_id,
-            'job_title_id'        => $job_title_id,
-            'activity_id'         => $activity_id,
-            'created_by'          => $created_by,
-        ];
+            $data[] = [
+                'city_id'             => $city_id,
+                'area_id'             => $area_id,
+                'contact_source_id'   => $contact_source_id,
+                'contact_category_id' => $contact_category_id,
+                'industry_id'         => $industry_id,
+                'major_id'            => $major_id,
+                'job_title_id'        => $job_title_id,
+                'activity_id'         => $activity_id,
+                'created_by'          => $created_by,
+            ];
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -260,6 +274,7 @@ class ReportController extends Controller
     public function contactsReport(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id'             => 'required|exists:users,id',
                 'created_by'          => 'nullable|exists:employees,id',
@@ -398,6 +413,7 @@ class ReportController extends Controller
             }
 
             return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -412,40 +428,46 @@ class ReportController extends Controller
     //employeeSales report
     public function employeeSales(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'auth_id' => 'required|exists:users,id',
-        ]);
-        if ($validator->fails())
-        {
-            return $this->apiResponse(null, $validator->errors(), 400);
-        }
+        try {
 
-        $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
-        if($auth_user->roles_name[0] == "Admin")
-        {
-            $branches = Branch::get(['id','name']);
-        }
-        else
-        {
-            $branches = Branch::where('id', $auth_user->employee->branch_id)->get(['id','name']);
-        }
+            $validator = Validator::make($request->all(), [
+                // 'auth_id' => 'required|exists:users,id',
+            ]);
+            if ($validator->fails())
+            {
+                return $this->apiResponse(null, $validator->errors(), 400);
+            }
 
-        $month_format = 'M-Y';
-        $year_month   = [];
-        $currentYear  = date('Y');
-        $date         = Carbon::create($currentYear, 1, 1);
-        for ($i = 1; $i <= date('n'); $i++)
-        {
-            $year_month[$date->format('Y-m')] = $date->format($month_format);
-            $date->addMonth();
+            $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
+            if($auth_user->roles_name[0] == "Admin")
+            {
+                $branches = Branch::get(['id','name']);
+            }
+            else
+            {
+                $branches = Branch::where('id', $auth_user->employee->branch_id)->get(['id','name']);
+            }
+
+            $month_format = 'M-Y';
+            $year_month   = [];
+            $currentYear  = date('Y');
+            $date         = Carbon::create($currentYear, 1, 1);
+            for ($i = 1; $i <= date('n'); $i++)
+            {
+                $year_month[$date->format('Y-m')] = $date->format($month_format);
+                $date->addMonth();
+            }
+
+            $data[] = [
+                'branches' => $branches,
+                'month'    => $year_month,
+            ];
+
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-
-        $data[] = [
-            'branches' => $branches,
-            'month'    => $year_month,
-        ];
-
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
     }
 
 
@@ -453,6 +475,7 @@ class ReportController extends Controller
     public function employeeSalesReport(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id'   => 'required|exists:users,id',
                 'branch_id' => 'nullable|exists:branches,id',
@@ -521,6 +544,7 @@ class ReportController extends Controller
             }
 
             return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -535,20 +559,26 @@ class ReportController extends Controller
     //branchSales report
     public function branchSales()
     {
-        $month_format = 'M-Y';
-        $year_month   = [];
-        $currentYear  = date('Y');
-        $date         = Carbon::create($currentYear, 1, 1);
-        for ($i = 1; $i <= date('n'); $i++)
-        {
-            $year_month[$date->format('Y-m')] = $date->format($month_format);
-            $date->addMonth();
-        }
-        $data[] = [
-            'month' => $year_month,
-        ];
+        try {
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            $month_format = 'M-Y';
+            $year_month   = [];
+            $currentYear  = date('Y');
+            $date         = Carbon::create($currentYear, 1, 1);
+            for ($i = 1; $i <= date('n'); $i++)
+            {
+                $year_month[$date->format('Y-m')] = $date->format($month_format);
+                $date->addMonth();
+            }
+            $data[] = [
+                'month' => $year_month,
+            ];
+
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -556,6 +586,7 @@ class ReportController extends Controller
     public function branchSalesReport(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id' => 'required|exists:users,id',
                 'month'   => 'nullable',
@@ -610,6 +641,7 @@ class ReportController extends Controller
             }
 
             return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -624,15 +656,21 @@ class ReportController extends Controller
     //activity sales report
     public function activitySales()
     {
-        $activity_id = Activity::get(['id', 'name']);
-        $interest_id = SubActivity::get(['id', 'name']);
+        try {
 
-        $data[] = [
-            'activity_id' => $activity_id,
-            'interest_id' => $interest_id,
-        ];
+            $activity_id = Activity::get(['id', 'name']);
+            $interest_id = SubActivity::get(['id', 'name']);
 
-        return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            $data[] = [
+                'activity_id' => $activity_id,
+                'interest_id' => $interest_id,
+            ];
+
+            return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
 
@@ -640,6 +678,7 @@ class ReportController extends Controller
     public function activitySalesReport(Request $request)
     {
         try {
+
             $validator = Validator::make($request->all(), [
                 'activity_id' => 'nullable|exists:activates,id',
                 'interest_id' => 'nullable|exists:interests,id',
@@ -708,6 +747,7 @@ class ReportController extends Controller
             }
 
             return $this->apiResponse($data, 'The Data Returned Successfully', 200);
+            
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

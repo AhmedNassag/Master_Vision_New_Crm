@@ -77,8 +77,7 @@
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                         <th class="text-center">#</th>
                                         <th class="text-center">{{ trans('main.Customer') }}</th>
-                                        <th class="text-center">{{ trans('main.Invoice') }}</th>
-                                        <th class="ttext-center min-w-125px fs-3">{{ trans('main.Reminder Date') }}</th>
+                                        <th class="text-center min-w-125px fs-3">{{ trans('main.Reminder Date') }}</th>
                                         <th class="text-center">{{ trans('main.Status') }}</th>
                                         <th class="text-center min-w-150px">{{ trans('main.SubActivity') }}</th>
                                         <th class="text-center">{{ trans('main.Activity') }}</th>
@@ -93,22 +92,21 @@
                                                     {{ @$key+1 }}
                                                 </td>
                                                 <td class="text-center">{{ @$item->customer->name }}</td>
-                                                <td class="text-center">{{ @$item->invoice->id }}</td>
-                                                <td class="text-center">{{ @$item->reminder_date }}</td>
+                                                <td class="text-center">{{ @$item->reminder_date->toDateString() }}</td>
                                                 <td class="text-center">
-                                                    @if (@$item->is_completed)
-                                                        <div class="btn ripple btn-purple-gradient" id='swal-success'>
-                                                            <span class="label text-success text-center">
-                                                                {{ app()->getLocale() == 'ar' ? 'جديد' : 'New' }}
-                                                            </span>
+                                                    <a href="{{ route('reminder.changeStatus',$item->id) }}">
+                                                        <div class="btn ripple btn-purple-gradient" id='swal-success-{{ $item->id }}'>
+                                                            @if (@$item->is_completed)
+                                                                <span class="label text-success text-center">
+                                                                    {{ app()->getLocale() == 'ar' ? 'جديد' : 'New' }}
+                                                                </span>
+                                                            @else
+                                                                <span class="label text-danger text-center">
+                                                                    {{ app()->getLocale() == 'ar' ? 'تم التذكير' : 'Remindered' }}
+                                                                </span>
+                                                            @endif
                                                         </div>
-                                                    @else
-                                                        <div class="btn ripple btn-purple-gradient" id='swal-success'>
-                                                            <span class="label text-danger text-center">
-                                                                {{ app()->getLocale() == 'ar' ? 'تم التذكير' : 'Remindered' }}
-                                                            </span>
-                                                        </div>
-                                                    @endif
+                                                    </a>
                                                 </td>
                                                 <td class="text-center">{{ @$item->interest->name }}</td>
                                                 <td class="text-center">{{ @$item->activity->name }}</td>

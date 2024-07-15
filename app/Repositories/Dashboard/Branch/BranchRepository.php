@@ -20,6 +20,9 @@ class BranchRepository extends BaseRepository implements BranchInterface
         when($request->name != null,function ($q) use($request){
             return $q->where('name','like', '%'.$request->name.'%');
         })
+        ->when($request->code != null,function ($q) use($request){
+            return $q->where('code','like', '%'.$request->code.'%');
+        })
         ->when($request->from_date != null,function ($q) use($request){
             return $q->whereDate('created_at', '>=', $request->from_date);
         })
@@ -31,6 +34,7 @@ class BranchRepository extends BaseRepository implements BranchInterface
         return view('dashboard.branch.index',compact('data'))
         ->with([
             'name'      => $request->name,
+            'code'      => $request->code,
             'from_date' => $request->from_date,
             'to_date'   => $request->to_date,
         ]);
