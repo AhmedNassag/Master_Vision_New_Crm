@@ -72,4 +72,24 @@ class NotificationController extends Controller
         return $this->notification->remindersChangeStatus($id);
     }
 
+
+
+    public function todayFollowUps()
+    {
+        return $this->notification->todayFollowUps();
+    }
+
+
+
+    public function monthFollowUps()
+    {
+        return $this->notification->monthFollowUps();
+    }
+
+
+
+    public function todayBirthdays(Request $request)
+    {
+        return $this->notification->todayBirthdays($request);
+    }
 }

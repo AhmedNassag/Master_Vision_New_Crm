@@ -48,4 +48,25 @@ class CampaignController extends Controller
     {
         return $this->campaign->destroy($request);
     }
+
+
+
+    public function reTarget()
+    {
+        return $this->campaign->reTarget();
+    }
+
+
+
+    public function getReTarget(Request $request)
+    {
+        return $this->campaign->getReTarget($request);
+    }
+
+
+
+    public function reTargetSelected(Request $request)
+    {
+        return $this->campaign->reTargetSelected($request);
+    }
 }

@@ -147,6 +147,20 @@
                                     @endif
 
                                     <div class="table-responsive">
+
+                                        <!-- pagination -->
+                                        <form method="GET" action="{{ url('admin/category') }}">
+                                            @foreach (request()->except('perPage') as $key => $value)
+                                                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                            @endforeach
+                                            <select name="perPage" onchange="this.form.submit()">
+                                                <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                                <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                                <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                                <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                            </select>
+                                        </form>
+
                                         <div class="table-responsive">
                                             <table id="example1" class="table table-stripped">
                                                 <thead>
@@ -158,7 +172,7 @@
                                                             #
                                                         </th>
                                                         <th class="text-center">{{ trans('main.Name') }}</th>
-                                                        <th class="text-center">{{ trans('main.Parent Category') }}</th>	
+                                                        <th class="text-center">{{ trans('main.Parent Category') }}</th>
                                                         <th class="text-center">{{ trans('main.Actions') }}</th>
                                                     </tr>
                                                 </thead>
@@ -205,20 +219,20 @@
                             </div>
                         </div>
                         @include('dashboard.category.addModal')
-                        @include('dashboard.category.deleteSelectedModal')		
-                    </div>	
+                        @include('dashboard.category.deleteSelectedModal')
+                    </div>
                 </div>
-            </div>			
+            </div>
         </div>
         <!-- /Page Wrapper -->
 	</div>
 </div>
 <!-- /Main Wrapper -->
-	
+
 @endsection
 
 
 
 @section('js')
-    
+
 @endsection

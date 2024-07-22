@@ -363,7 +363,6 @@ class UserController extends Controller
     public function changeStatus($id)
     {
         try {
-
             $user = User::find($id);
             if($user->status == 0)
             {
@@ -380,7 +379,6 @@ class UserController extends Controller
             }
             session()->flash('success');
             return redirect()->back();
-
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -391,13 +389,26 @@ class UserController extends Controller
     function employeeByBranchId($id)
     {
         try {
-
             $employees = DB::table('employees')->where('branch_id', $id)->select('name', 'id')->get();
             if($employees)
             {
                 return response()->json($employees);
             }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 
+
+
+    function employeeByDept($id)
+    {
+        try {
+            $employees = DB::table('employees')->where('dept', $id)->select('name', 'id')->get();
+            if($employees)
+            {
+                return response()->json($employees);
+            }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -408,13 +419,11 @@ class UserController extends Controller
     public function ajaxEmployeesSelect(Request $request)
     {
         try {
-
             $employees = Employee::where("branch_id",$request->branch_id)->get();
             $employees->each(function ($employee) {
             $employee->name = $employee->name." <b>( ".(($employee->has_branch_access)?"مدير فرع":"موظف")." )</b>";
             });
             return response()->json($employees);
-            
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

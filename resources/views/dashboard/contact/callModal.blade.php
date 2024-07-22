@@ -73,7 +73,7 @@
                     <!-- notes -->
                     <div class="col-md-12 fv-row">
                         <label class="fs-5 fw-semibold mb-2 required">{{ trans('main.Notes') }}</label>
-                        <textarea type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Notes') }}" value="{{ old('notes') }}" name="notes" required></textarea>
+                        <textarea type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Notes') }}" value="{{ old('notes') }}" name="notes"></textarea>
                     </div>
                     <!-- contact_id -->
                     <div class="row mb-5">

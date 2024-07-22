@@ -55,7 +55,7 @@ Route::get('/customer/login', function () {
 
 Route::get('/customer/login', [LoginCustomerController::class, 'showLoginForm'])->name('customer.login')->middleware('guest:customer');
 Route::post('/customer/login', [LoginCustomerController::class, 'login']);
-Route::middleware(['auth:customer'])->prefix('/customer')->group(function () {
+Route::middleware(['auth:customer', 'ActivePackage'])->prefix('/customer')->group(function () {
     // Home route
     Route::get('home', [CustomerPortalController::class, 'home'])->name('customer.home');
 

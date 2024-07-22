@@ -54,11 +54,11 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="mb-10" id="employee_id">
+                                            <div class="mb-10" id="employee_id_filter">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Employee') }}</span>
                                                 </label>
-                                                <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" data-placeholder="{{ trans('main.Select') }}e..." class="form-select form-select-solid">
+                                                <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id_filter" data-placeholder="{{ trans('main.Select') }}e..." class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
@@ -221,4 +221,58 @@
     </div>
 </div>
 <!--end:::Main-->
+@endsection
+
+
+
+@section('js')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('select[name="branch_id"]').on('change', function() {
+                var branch_id = $(this).val();
+                if (branch_id) {
+                    $.ajax({
+                        url: "{{URL::to('admin/employeeByBranchId')}}/" + branch_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="employee_ids[]"]').empty();
+                            $('select[name="employee_ids[]"]').append('<option class="form-control" value="" selected>All</option>');
+                            $.each(data, function(key, value) {
+                                $('select[name="employee_ids[]"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="employee_ids[]"]').empty();
+                    console.log('not work')
+                }
+            });
+        });
+    </script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('select[name="dept"]').on('change', function() {
+            var dept = $(this).val();
+            if (dept) {
+                $.ajax({
+                    url: "{{URL::to('admin/employeeByDept')}}/" + dept,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('select[name="employee_ids[]"]').empty();
+                        $('select[name="employee_ids[]"]').append('<option class="form-control" value="" selected>All</option>');
+                        $.each(data, function(key, value) {
+                            $('select[name="employee_ids[]"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('select[name="employee_ids[]"]').empty();
+                console.log('not work')
+            }
+        });
+    });
+</script>
 @endsection

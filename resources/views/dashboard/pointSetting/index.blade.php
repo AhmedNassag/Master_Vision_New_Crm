@@ -133,70 +133,84 @@
                         </script>
                         @endif
                         <div class="table-responsive">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
-                                    <thead>
-                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="text-center">#</th>
-                                            <th class="text-center">{{ trans('main.Activity') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.SubActivity') }}</th>
-                                            <th class="text-center min-w-125px">{{ trans('main.Conversion Rate') }}</th>
-                                            <th class="text-center min-w-175px">{{ trans('main.Sales Conversion Rate') }}</th>
-                                            <th class="text-center">{{ trans('main.Points') }}</th>
-                                            <th class="text-center min-w-100px">{{ trans('main.Expiry Days') }}</th>
-                                            <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="fw-semibold text-gray-600">
-                                        @if($data->count() > 0)
-                                            @foreach ($data as $key=>$item)
-                                                <tr>
-                                                    <td class="text-center">
-                                                        {{ @$key+1 }}
-                                                    </td>
-                                                    <td class="text-center">{{ @$item->activity->name }}</td>
-                                                    <td class="text-center">{{ @$item->subActivity->name }}</td>
-                                                    <td class="text-center">{{ @$item->conversion_rate }}</td>
-                                                    <td class="text-center">{{ @$item->sales_conversion_rate }} جنيه/{{ @$item->points }} نقطة</td>
-                                                    <td class="text-center">{{ @$item->points }}</td>
-                                                    <td class="text-center">{{ @$item->expiry_days }}</td>
-                                                    <td class="text-center">
-                                                        <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                            {{ trans('main.Actions') }}
-                                                            <i class="ki-outline ki-down fs-5 ms-1"></i>
-                                                        </a>
-                                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                                            @can('تعديل أنظمة النقاط')
-                                                                <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ @$item->id }}">{{ trans('main.Edit') }}</a>
-                                                                </div>
-                                                            @endcan
-                                                            @can('حذف أنظمة النقاط')
-                                                                <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
-                                                                </div>
-                                                            @endcan
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @include('dashboard.pointSetting.editModal')
-                                                @include('dashboard.pointSetting.deleteModal')
-                                            @endforeach
-                                        @else
+
+                            <!-- pagination -->
+                            <form method="GET" action="{{ url('admin/pointSetting') }}">
+                                @foreach (request()->except('perPage') as $key => $value)
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                @endforeach
+                                <select name="perPage" onchange="this.form.submit()">
+                                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                            </form>
+
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
+                                <thead>
+                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">{{ trans('main.Activity') }}</th>
+                                        <th class="text-center min-w-125px">{{ trans('main.SubActivity') }}</th>
+                                        <th class="text-center min-w-125px">{{ trans('main.Conversion Rate') }}</th>
+                                        <th class="text-center min-w-175px">{{ trans('main.Sales Conversion Rate') }}</th>
+                                        <th class="text-center">{{ trans('main.Points') }}</th>
+                                        <th class="text-center min-w-100px">{{ trans('main.Expiry Days') }}</th>
+                                        <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-semibold text-gray-600">
+                                    @if($data->count() > 0)
+                                        @foreach ($data as $key=>$item)
                                             <tr>
-                                                <th class="text-center" colspan="10">
-                                                    <div class="col mb-3 d-flex">
-                                                        <div class="card flex-fill">
-                                                            <div class="card-body p-3 text-center">
-                                                                <p class="card-text f-12">{{ trans('main.No Data Founded') }}</p>
+                                                <td class="text-center">
+                                                    {{ @$key+1 }}
+                                                </td>
+                                                <td class="text-center">{{ @$item->activity->name }}</td>
+                                                <td class="text-center">{{ @$item->subActivity->name }}</td>
+                                                <td class="text-center">{{ @$item->conversion_rate }}</td>
+                                                <td class="text-center">{{ @$item->sales_conversion_rate }} جنيه/{{ @$item->points }} نقطة</td>
+                                                <td class="text-center">{{ @$item->points }}</td>
+                                                <td class="text-center">{{ @$item->expiry_days }}</td>
+                                                <td class="text-center">
+                                                    <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                        {{ trans('main.Actions') }}
+                                                        <i class="ki-outline ki-down fs-5 ms-1"></i>
+                                                    </a>
+                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                                        @can('تعديل أنظمة النقاط')
+                                                            <div class="menu-item px-3">
+                                                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#edit_modal_{{ @$item->id }}">{{ trans('main.Edit') }}</a>
                                                             </div>
+                                                        @endcan
+                                                        @can('حذف أنظمة النقاط')
+                                                            <div class="menu-item px-3">
+                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
+                                                            </div>
+                                                        @endcan
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @include('dashboard.pointSetting.editModal')
+                                            @include('dashboard.pointSetting.deleteModal')
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <th class="text-center" colspan="10">
+                                                <div class="col mb-3 d-flex">
+                                                    <div class="card flex-fill">
+                                                        <div class="card-body p-3 text-center">
+                                                            <p class="card-text f-12">{{ trans('main.No Data Founded') }}</p>
                                                         </div>
                                                     </div>
-                                                </th>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                                {{ @$data->links() }}
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            {{ @$data->links() }}
                         </div>
                     </div>
                 </div>

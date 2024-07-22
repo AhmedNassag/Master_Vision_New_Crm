@@ -91,7 +91,11 @@
                                                 <td class="text-center">
                                                     {{ @$key+1 }}
                                                 </td>
-                                                <td class="text-center">{{ @$item->customer->name }}</td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('customer.show', $item->customer->id) }}" class="text-gray-800 text-hover-primary mb-1">
+                                                        {{ @$item->customer->name }}
+                                                    </a>
+                                                </td>
                                                 <td class="text-center">{{ @$item->reminder_date->toDateString() }}</td>
                                                 <td class="text-center">
                                                     <a href="{{ route('reminder.changeStatus',$item->id) }}">

@@ -18,6 +18,8 @@ class SubActivityRepository extends BaseRepository implements SubActivityInterfa
 
     public function index($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
         $data = SubActivity::with('activity')
         ->when($request->name != null,function ($q) use($request){
             return $q->where('name','like', '%'.$request->name.'%');
@@ -31,7 +33,7 @@ class SubActivityRepository extends BaseRepository implements SubActivityInterfa
         ->when($request->to_date != null,function ($q) use($request){
             return $q->whereDate('created_at', '<=', $request->to_date);
         })
-        ->paginate(config('myConfig.paginationCount'));
+        ->paginate($perPage)->appends(request()->query());
 
         return view('dashboard.subActivity.index',compact('data'))
         ->with([
@@ -39,6 +41,7 @@ class SubActivityRepository extends BaseRepository implements SubActivityInterfa
             'activity_id' => $request->activity_id,
             'from_date'   => $request->from_date,
             'to_date'     => $request->to_date,
+            'perPage'     => $perPage,
         ]);
     }
 

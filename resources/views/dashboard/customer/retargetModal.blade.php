@@ -9,7 +9,7 @@
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal"><i class="ki-outline ki-cross fs-1"></i></div>
                 </div>
                 <div class="modal-body py-10 px-lg-17">
-                    <!-- activity_id -->
+                    <!-- campaign_id -->
                     <div id="campaign_id" class="d-flex flex-column mb-5 fv-row">
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Campaign') }}</span>

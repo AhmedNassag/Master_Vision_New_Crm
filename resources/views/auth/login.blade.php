@@ -43,7 +43,22 @@
 						<div class="d-flex flex-center flex-column align-items-stretch h-lg-100 w-md-400px">
                             <img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px" src="{{ asset('new-theme/assets/media/logos/favicon.png') }}" alt="" />
 							<div class="d-flex flex-center flex-column flex-column-fluid pb-15 pb-lg-20">
-								<!--begin::Form-->
+								@php
+                                    $expire_date = \App\Models\LAConfigs::where('key','end_date')->first();
+                                    if($expire_date)
+                                    {
+                                        $end_date = \Carbon\Carbon::parse($expire_date->value);
+                                    }   
+                                    $now = \Carbon\Carbon::now();
+                                @endphp
+                                @if($expire_date)
+                                    @if($end_date < $now)
+                                        <div class="alert alert-danger w-100 text-center">
+                                            {{ trans('main.You Have Expired From:') }} {{ $end_date->format('d-m-Y') }}
+                                        </div>
+                                    @endif
+                                @endif
+                                <!--begin::Form-->
 								<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="{{ route('home') }}" action="{{ route('login') }}">
 									<div class="text-center mb-11">
 										<h1 class="text-gray-900 fw-bolder mb-3">{{ trans('main.Login') }} ({{ trans('main.Dashboard') }})</h1>

@@ -24,9 +24,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'branch_id'    => 'nullable',
+            'dept'         => 'nullable',
+            'employee_ids' => 'nullable|array',
             'notification' => 'required|string',
-            'employee_id'  => 'required_if:dept,null',
-            'dept'         => 'required_if:employee_id,null',
         ];
     }
 

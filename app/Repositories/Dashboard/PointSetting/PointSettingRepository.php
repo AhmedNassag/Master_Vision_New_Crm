@@ -17,6 +17,8 @@ class PointSettingRepository extends BaseRepository implements PointSettingInter
 
     public function index($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
         $data = PointSetting::with(['activity','subActivity'])
         ->when($request->conversion_rate != null,function ($q) use($request){
             return $q->where('conversion_rate','like', '%'.$request->conversion_rate.'%');
@@ -39,7 +41,7 @@ class PointSettingRepository extends BaseRepository implements PointSettingInter
         ->when($request->to_date != null,function ($q) use($request){
             return $q->whereDate('created_at', '<=', $request->to_date);
         })
-        ->paginate(config('myConfig.paginationCount'));
+        ->paginate($perPage)->appends(request()->query());
 
         return view('dashboard.pointSetting.index',compact('data'))
         ->with([
@@ -50,6 +52,7 @@ class PointSettingRepository extends BaseRepository implements PointSettingInter
             'sub_activity_id'       => $request->sub_activity_id,
             'from_date'             => $request->from_date,
             'to_date'               => $request->to_date,
+            'perPage'               => $perPage,
         ]);
     }
 

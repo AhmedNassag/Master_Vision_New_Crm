@@ -207,107 +207,19 @@
                         </div>
                     </div>
 
+
                     <div class="col-lg-10 card">
                         <!--single_selected-->
                         <div class="card-header border-0 pt-lg-6 px-3  ">
                             <div class="card-title"></div>
                             <div class="card-toolbar mx-lg-3">
                                 <div id="single_selected_div" class="d-flex justify-content-end " data-kt-customer-table-toolbar="base">
-                                    <button type="button" class="btn btn-light-primary me-3 col-sm-2 col-lg-4 col-xl-4  fs-6" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-outline ki-filter fs-2"></i>{{ trans('main.Filter') }}</button>
-                                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-425px" data-kt-menu="true" id="kt-toolbar-filter">
-                                        <div class="px-7 py-5">
-                                            <div class="fs-4 text-gray-900 fw-bold">{{ trans('main.Filter') }}</div>
-                                        </div>
-                                        <div class="container-scrollable" style="max-height: 500px; overflow-y:auto; max-width:400px">
-                                            <div class="separator border-gray-200"></div>
-                                            <form action="{{ route('contact.index') }}" method="get">
-                                                @csrf
-                                                <div class="px-7 py-5 scroll-y me-n7 pe-7" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_new_address_header" data-kt-scroll-wrappers="#kt_modal_new_address_scroll" data-kt-scroll-offset="300px">
-                                                    <!-- name -->
-                                                    <div class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ old('name') }}" name="name" />
-                                                    </div>
-                                                    <!-- mobile -->
-                                                    <div class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Mobile') }}</label>
-                                                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ old('mobile') }}" name="mobile" />
-                                                    </div>
-                                                    <!-- gender -->
-                                                    <div class="mb-7" id="gender_filter">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.Gender') }}</span>
-                                                        </label>
-                                                        <select name="gender" data-control="select2" data-dropdown-parent="#gender_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="Male">{{ trans('main.Male') }}</option>
-                                                            <option value="Female">{{ trans('main.Female') }}</option>
-                                                        </select>
-                                                    </div>
-                                                    <!-- activity_id -->
-                                                    <div id="activity_id_filter" class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.Activity') }}</span>
-                                                        </label>
-                                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="">{{ trans('main.Select') }}...</option>
-                                                            <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
-                                                            @foreach($activities as $activity)
-                                                            <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <!-- interest_id -->
-                                                    <div id="interest_id_filter" class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.SubActivity') }}</span>
-                                                        </label>
-                                                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="">{{ trans('main.Select') }}...</option>
-
-                                                        </select>
-                                                    </div>
-                                                    <!-- city_id -->
-                                                    <div id="city_id_filter" class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.City') }}</span>
-                                                        </label>
-                                                        <select name="city_id" data-control="select2" data-dropdown-parent="#city_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="">{{ trans('main.Select') }}...</option>
-                                                            <?php $cities = \App\Models\City::get(['id', 'name']); ?>
-                                                            @foreach($cities as $city)
-                                                            <option value="{{ @$city->id }}">{{ @$city->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <!-- area_id -->
-                                                    <div id="area_id_filter" class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">
-                                                            <span class="required">{{ trans('main.Area') }}</span>
-                                                        </label>
-                                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                                            <option value="">{{ trans('main.Select') }}...</option>
-
-                                                        </select>
-                                                    </div>
-                                                    <!-- from_date -->
-                                                    <div class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.From Date') }}</label>
-                                                        <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.From Date') }}" value="{{ old('from_date') }}" name="from_date" />
-                                                    </div>
-                                                    <!-- to_date -->
-                                                    <div class="mb-7">
-                                                        <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.To Date') }}</label>
-                                                        <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.To Date') }}" value="{{ old('to_date') }}" name="to_date" />
-                                                    </div>
-                                                    <div class="d-flex justify-content-end">
-                                                        <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
-                                                        <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <!--begin::Filter-->
+                                    <button type="button" class="btn btn-light-primary me-3 col-sm-2 col-lg-4 col-xl-4  fs-6" data-bs-toggle="modal" data-bs-target="#filterModal">
+                                        <i class="ki-outline ki-filter fs-2"></i>
+                                        {{ trans('main.Filter') }}
+                                    </button>
+                                    <!--end::Filter-->
                                     <!--begin::Import-->
                                     @can('إستيراد جهات الإتصال')
                                         <button type="button" class="btn btn-light-primary me-3 col-sm-2 col-lg-4 col-xl-4  fs-6" data-bs-toggle="modal" data-bs-target="#importModal">
@@ -329,8 +241,20 @@
                                     @endcan
                                     <!--end::Add-->
                                 </div>
+
                             </div>
                         </div>
+                        <!--Search With Mobile-->
+                        {{-- <div class="container">
+                            <form action="{{ route('contact.index') }}" method="GET" class="col-12 mt-1">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <input type="text" name="query" class="form-control" placeholder="{{ trans('main.Search With Mobile') }}...">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary col-1">{{ trans('main.Search') }}</button>
+                                </div>
+                            </form>
+                        </div> --}}
                         <!--multi_selected-->
                         <div class="card-header border-0 pt-lg-6 px-3  ">
                             <div class="card-title"></div>
@@ -438,6 +362,20 @@
                             </script>
                             @endif
                             <div class="table-responsive">
+
+                                <!-- pagination -->
+                                <form method="GET" action="{{ url('admin/contact') }}">
+                                    @foreach (request()->except('perPage') as $key => $value)
+                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                    @endforeach
+                                    <select name="perPage" onchange="this.form.submit()">
+                                        <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                        <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                        <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                    </select>
+                                </form>
+
                                 <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="example1">
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
@@ -582,6 +520,7 @@
                             </div>
 
                             {{ @$data->links() }}
+                            @include('dashboard.contact.filterModal')
                         </div>
                     </div>
                 </div>
@@ -595,7 +534,6 @@
 
 
 @section('js')
-
 <script type="text/javascript">
     $(document).ready(function() {
         $('select[name="activity_id"]').on('change', function() {

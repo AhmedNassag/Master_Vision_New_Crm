@@ -171,13 +171,23 @@
                                             @endcan
                                             @include('dashboard.contact.relateEmployeeModal')
                                             <div class="col-1"></div>
+                                            <!--end::Relate Employee-->
+                                            <!--begin::Send Message-->
+                                            <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#messageSingleModal">
+                                                {{ trans('main.Send') }} {{ trans('main.Message') }}
+                                            </button>
+                                            @include('dashboard.contact.messageSingleModal')
+                                            <div class="col-1"></div>
+                                            <!--end::Send Message-->
+                                            <!--start::Send Message-->
                                             @can('تعديل جهات الإتصال')
                                                 <a href="{{ route('contact.edit', $item->id) }}" class="btn btn-sm btn-light-primary col-5 text-center mb-3">
                                                     {{-- <i class="ki-outline ki-plus-square fs-3"></i>--}}
                                                     {{ trans('main.Edit') }}
                                                 </a>
                                             @endcan
-                                            <!--end::Relate Employee-->
+                                            <!--end::Send Message-->
+                                            
                                         </div>
                                         @if($item->customer_id)
                                             <div class="card-toolbar mb-3">

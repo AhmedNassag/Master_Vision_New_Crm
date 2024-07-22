@@ -32,6 +32,8 @@ class CustomerRepository implements CustomerInterface
 {
     public function index($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
         if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = Customer::
@@ -44,8 +46,11 @@ class CustomerRepository implements CustomerInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -80,8 +85,11 @@ class CustomerRepository implements CustomerInterface
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
             })
+            ->when($request->input('query') != null ,function ($q) use($request){
+                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
@@ -97,8 +105,11 @@ class CustomerRepository implements CustomerInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -133,8 +144,11 @@ class CustomerRepository implements CustomerInterface
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
             })
+            ->when($request->input('query') != null ,function ($q) use($request){
+                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
         else
         {
@@ -149,8 +163,11 @@ class CustomerRepository implements CustomerInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -185,15 +202,16 @@ class CustomerRepository implements CustomerInterface
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
             })
+            ->when($request->input('query') != null ,function ($q) use($request){
+                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
 
         return view('dashboard.customer.index',compact('data'))
         ->with([
-            'name'         => $request->name,
-            'from_date'    => $request->from_date,
-            'to_date'      => $request->to_date,
+            'perPage' => $perPage,
         ]);
     }
 
@@ -287,16 +305,17 @@ class CustomerRepository implements CustomerInterface
     public function update($request)
     {
         try {
-            $validated = $request->validated();
-            $inputs    = $request->except('photo');
-            $data      = Customer::findOrFail($request->id);
+            $validated     = $request->validated();
+            $inputs        = $request->except('photo');
+            $data          = Customer::findOrFail($request->id);
+            $old_branch_id = $data->branch_id;
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
             }
             $data->update($inputs);
-            //create code if code is null
-            if($data->code == null) {
+            //create code if code is null or if branch is change
+            if($data->code == null || $old_branch_id != $data->branch_id) {
                 $data->update(['code' => $this->createCode($data)]);
             }
             // update photo

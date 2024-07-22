@@ -61,12 +61,12 @@ return [
     'Out'                                   => 'خارج',
     'Interest'                              => 'الإهتمام',
     'Number'                                => 'العدد',
-    'Top 10 Sales Employee'                 => 'أعلي 10 موظفين مبيعاً',
-    'Top 10 Sales Branch'                   => 'أعلي 10 فروع مبيعاً',
-    'Top 5 Contact Sources'                 => 'أعلي 5 مصادر عملاء محتملين',
-    'Top 5 Contact Cities'                  => 'أعلي 5 مدن عملاء محتملين',
-    'Top 5 Contact Areas'                   => 'أعلي 5 مناطق عملاء محتملين',
-    'Top 5 Interests'                       => 'أعلي 5 إهتمامات',
+    'Top 10 Sales Employee'                 => 'أعلي الموظفين مبيعاً',
+    'Top 10 Sales Branch'                   => 'أعلي الفروع مبيعاً',
+    'Top 5 Contact Sources'                 => 'أعلي المصادر للعملاء المحتملين',
+    'Top 5 Contact Cities'                  => 'أعلي المدن للعملاء المحتملين',
+    'Top 5 Contact Areas'                   => 'أعلي المناطق للعملاء المحتملين',
+    'Top 5 Interests'                       => 'أعلي الإهتمامات',
     'Incoming'                              => 'وارد',
     'Outcoming'                             => 'صادر',
     'Inner'                                 => 'داخلية',
@@ -87,6 +87,8 @@ return [
     'Watch for opportunities'               => 'راقب الفرص',
     'Make sales'                            => 'حقق المبيعات',
     'Double your profits'                   => 'ضاعف أرباحك',
+    'You Have Expired From:'                => 'لقد تم إنتهاء إشتراكك منذ تاريخ:',
+    'You Will Expire In:'                   => 'سيتم إنتهاء إشتراكك في تاريخ:',
 
     //Notifications
     'Notifications'        => 'الإشعارات',
@@ -285,6 +287,7 @@ return [
     'Other'                               => 'أخرى',
     'Address'                             => 'العنوان',
     'Source'                              => 'المصدر',
+    'Search With Mobile'                  => 'بحث برقم الموبايل',
 
 
     //Customer
@@ -358,6 +361,12 @@ return [
     'Invoice'         => 'الفاتورة',
     'Reminder Date'   => 'تاريخ التذكير',
     'Expected Amount' => 'المبلغ المتوقع',
+    'followUps'       => 'المتابعات',
+    'todayFollowUps'  => 'متابعات اليوم',
+    'monthFollowUps'  => 'متابعات الشهر',
+    'followUps Date'  => 'تاريخ المتابعات',
+    'todayBirthdays'  => 'أعياد ميلاد اليوم',
+    'Today'           => 'اليوم',
 
     //Branch
     'Branches' => 'الفروع',

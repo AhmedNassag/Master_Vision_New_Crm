@@ -122,9 +122,13 @@
                                                 {
                                                     $employees = \App\Models\Employee::get(['id','name']);
                                                 }
-                                                else
+                                                else if(Auth::user()->roles_name[0] == "Admin" && Auth::user()->employee->has_branch_access == 1)
                                                 {
                                                     $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $employees = \App\Models\Employee::where('id', auth()->user()->employee->id)->get(['id','name']);
                                                 }
                                             ?>
                                             @foreach( $employees as $employee )

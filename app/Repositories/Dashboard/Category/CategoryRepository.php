@@ -9,11 +9,13 @@ use App\Notifications\CategoryAdded;
 use Illuminate\Support\Facades\Notification;
 use App\Models\Notification as NotificationModel;
 
-class CategoryRepository implements CategoryInterface 
+class CategoryRepository implements CategoryInterface
 {
 
     public function index($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
         $data = Category::with(['category'])
         ->when($request->name != null,function ($q) use($request){
             return $q->where('name','like', '%'.$request->name.'%');
@@ -27,7 +29,7 @@ class CategoryRepository implements CategoryInterface
         ->when($request->to_date != null,function ($q) use($request){
             return $q->whereDate('created_at', '<=', $request->to_date);
         })
-        ->paginate(config('myConfig.paginationCount'));
+        ->paginate($perPage)->appends(request()->query());
 
         $categories = Category::get(['id','name']);
 
@@ -37,6 +39,7 @@ class CategoryRepository implements CategoryInterface
             'parent_id' => $request->parent_id,
             'from_date' => $request->from_date,
             'to_date'   => $request->to_date,
+            'perPage'   => $perPage,
         ]);
     }
 
@@ -102,7 +105,7 @@ class CategoryRepository implements CategoryInterface
     {
         try {
             // $related_table = realed_model::where('category_id', $request->id)->pluck('category_id');
-            // if($related_table->count() == 0) { 
+            // if($related_table->count() == 0) {
                 $category = Category::findOrFail($request->id);
                 if (!$category) {
                     session()->flash('error');

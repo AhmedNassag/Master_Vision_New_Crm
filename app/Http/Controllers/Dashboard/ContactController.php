@@ -256,6 +256,10 @@ class ContactController extends Controller
             $columnMappings = $request->input('column_mappings');
 
             foreach ($columnMappings as $key => $value) {
+                // if(!$columnMappings[$key]['contact_field'] = "name" || !$columnMappings[$key]['contact_field'] = "mobile")
+                // {
+
+                // }
                 // Check if "contact_field" is null or empty
                 if (isset($value['contact_field']) && ($value['contact_field'] === null || $value['contact_field'] === "")) {
                     // Update "contact_field" to "notes"
@@ -278,7 +282,7 @@ class ContactController extends Controller
             $importInstance = new ContactImport($columnMappings, $request->contact_source_id, $request->activity_id, $request->interest_id);
             Excel::import($importInstance, $filePath);
 
-            $rowsSavedCount = $importInstance->getRowsSavedCount();
+            $rowsSavedCount   = $importInstance->getRowsSavedCount();
             $rowsSkippedCount = $importInstance->getRowsSkippedCount();
 
             return redirect()->back()->with('success', "Contacts imported successfully. Rows saved: $rowsSavedCount, Rows skipped: $rowsSkippedCount.");
@@ -293,7 +297,6 @@ class ContactController extends Controller
     private function isStatusTransitionAllowed(Contact $lead, $newStatus)
 	{
         try {
-
             $currentStatus = $lead->status;
             // Define allowed transitions based on your conditions
             $allowedTransitions = [

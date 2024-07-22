@@ -84,7 +84,6 @@ License: For each use you must have a valid license purchased only from above li
                             <!--begin::Toolbar wrapper-->
                             <div class="app-navbar flex-lg-grow-1" id="kt_app_header_navbar">
                                 <!--begin::Expire Alert-->
-
                                 <div class="app-navbar-item d-flex align-items-stretch flex-lg-grow-1">
                                     @php
                                         @$dateString = \App\Models\LAConfigs::where('key','end_date')->first();
@@ -96,7 +95,7 @@ License: For each use you must have a valid license purchased only from above li
                                         }
                                     @endphp
                                     @if(@$dateString && @$diffInDays <= 15)
-                                        <div class="alert alert-danger alert-dismissible mt-3 d-none">
+                                        <div class="alert alert-danger alert-dismissible mt-3">
                                             <h4>{{ trans('main.Alerts') }}</h4>
                                             <p>
                                                 {{ trans('main.You Will Expired After') }}: ({{ @$diffInDays }}) {{ trans('main.Day') }} --- {{ trans('main.Expired Date Is') }}: ({{ @$endDate->format('Y-m-d') }})

@@ -14,6 +14,8 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
 {
     public function index($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
         if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = EmployeeTarget::with(['targets','employee'])
@@ -35,7 +37,7 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
             ->when($request->to_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '<=', $request->to_date);
             })
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
@@ -59,7 +61,7 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
             ->when($request->to_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '<=', $request->to_date);
             })
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
         else
         {
@@ -83,7 +85,7 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
             ->when($request->to_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '<=', $request->to_date);
             })
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
 
         return view('dashboard.employeeTarget.index',compact('data'))
@@ -94,6 +96,7 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
             'employee_id'    => $request->employee_id,
             'from_date'      => $request->from_date,
             'to_date'        => $request->to_date,
+            'perPage'        => $perPage,
         ]);
     }
 

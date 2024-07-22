@@ -303,6 +303,17 @@
                                     </a>
                                 </div>
                             @endcan
+                            <!--ReTarget-->
+                            @can('عرض الحملات')
+                                <div class="menu-item">
+                                    <a class="menu-link {{ Request::is('admin/reTarget') ? 'active' : '' }}" href="{{ route('reTarget.index') }}">
+                                        <span class="menu-icon">
+                                            <i class="ki-outline ki-abstract-28 fs-2"></i>
+                                        </span>
+                                        <span class="menu-title">{{ trans('main.Retarget') }}</span>
+                                    </a>
+                                </div>
+                            @endcan
                         @endcan
                         <!--end:Marketing-->
 
@@ -396,7 +407,7 @@
                             </div>
 
                             <!--begin:Reminders-->
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/todayReminders','admin/monthReminders') ? 'show' : '' }}">
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/todayReminders','admin/monthReminders','admin/todayFollowUps','admin/monthFollowUps') ? 'show' : '' }}">
                                 <span class="menu-link">
                                     <span class="menu-icon">
                                         <i class="ki-outline ki-call fs-2"></i>
@@ -424,6 +435,39 @@
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">{{ trans('main.MonthReminders') }}</span>
+                                            </a>
+                                        </div>
+                                    @endcan
+                                    <!--todayFollowUps-->
+                                    @can('عرض تذكيرات اليوم')
+                                        <div class="menu-item">
+                                            <a class="menu-link {{ Request::is('admin/todayFollowUps') ? 'active' : '' }}" href="{{ route('todayFollowUps.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">{{ trans('main.todayFollowUps') }}</span>
+                                            </a>
+                                        </div>
+                                    @endcan
+                                    <!--monthFollowUps-->
+                                    @can('عرض تذكيرات الشهر')
+                                        <div class="menu-item">
+                                            <a class="menu-link {{ Request::is('admin/monthFollowUps') ? 'active' : '' }}" href="{{ route('monthFollowUps.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">{{ trans('main.monthFollowUps') }}</span>
+                                            </a>
+                                        </div>
+                                    @endcan
+                                    <!--todayBirthdays-->
+                                    @can('عرض تذكيرات اليوم')
+                                        <div class="menu-item">
+                                            <a class="menu-link {{ Request::is('admin/todayBirthdays') ? 'active' : '' }}" href="{{ route('todayBirthdays.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">{{ trans('main.todayBirthdays') }}</span>
                                             </a>
                                         </div>
                                     @endcan

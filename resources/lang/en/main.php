@@ -61,12 +61,12 @@ return [
     'Out'                                   => 'Out',
     'Interest'                              => 'Interest',
     'Number'                                => 'Number',
-    'Top 10 Sales Employee'                 => 'Top 10 Sales Employee',
-    'Top 10 Sales Branch'                   => 'Top 10 Sales Branch',
-    'Top 5 Contact Sources'                 => 'Top 5 Contact Sources',
-    'Top 5 Contact Cities'                  => 'Top 5 Contact Cities',
-    'Top 5 Contact Areas'                   => 'Top 5 Contact Areas',
-    'Top 5 Interests'                       => 'Top 5 Interests',
+    'Top 10 Sales Employee'                 => 'Top Sales Employee',
+    'Top 10 Sales Branch'                   => 'Top Sales Branch',
+    'Top 5 Contact Sources'                 => 'Top Contact Sources',
+    'Top 5 Contact Cities'                  => 'Top Contact Cities',
+    'Top 5 Contact Areas'                   => 'Top Contact Areas',
+    'Top 5 Interests'                       => 'Top Interests',
     'Incoming'                              => 'Incoming',
     'Outcoming'                             => 'Outcoming',
     'Inner'                                 => 'Inner',
@@ -87,6 +87,8 @@ return [
     'Watch for opportunities'               => 'Watch for opportunities',
     'Make sales'                            => 'Make sales',
     'Double your profits'                   => 'Double your profits',
+    'You Have Expired From:'                => 'You Have Expired From:',
+    'You Will Expire In:'                   => 'You Will Expire In:',
 
     //Notifications
     'Notifications'        => 'Notifications',
@@ -285,6 +287,7 @@ return [
     'Other'                               => 'Other',
     'Address'                             => 'Address',
     'Source'                              => 'Source',
+    'Search With Mobile'                  => 'Search With Mobile',
 
     //Customer
     'Customers'         => 'Customers',
@@ -357,6 +360,12 @@ return [
     'Invoice'         => 'Invoice',
     'Reminder Date'   => 'Reminder Date',
     'Expected Amount' => 'Expected Amount',
+    'followUps'       => 'FollowUps',
+    'todayFollowUps'  => 'Today FollowUps',
+    'monthFollowUps'  => 'Month FollowUps',
+    'followUps Date'  => 'FollowUps Date',
+    'todayBirthdays'  => 'Today Birthdays',
+    'Today'           => 'Today',
 
     //Branch
     'Branches' => 'Branches',

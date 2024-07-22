@@ -16,6 +16,8 @@ class CityRepository extends BaseRepository implements CityInterface
 
     public function index($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
         $data = City::with('country')
         ->when($request->name != null,function ($q) use($request){
             return $q->where('name','like', '%'.$request->name.'%');
@@ -29,7 +31,7 @@ class CityRepository extends BaseRepository implements CityInterface
         ->when($request->to_date != null,function ($q) use($request){
             return $q->whereDate('created_at', '<=', $request->to_date);
         })
-        ->paginate(config('myConfig.paginationCount'));
+        ->paginate($perPage)->appends(request()->query());
 
         return view('dashboard.city.index',compact('data'))
         ->with([
@@ -37,6 +39,7 @@ class CityRepository extends BaseRepository implements CityInterface
             'country_id' => $request->country_id,
             'from_date'  => $request->from_date,
             'to_date'    => $request->to_date,
+            'perPage'    => $perPage,
         ]);
     }
 

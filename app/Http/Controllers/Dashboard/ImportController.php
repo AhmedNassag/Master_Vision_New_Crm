@@ -80,11 +80,16 @@ class ImportController extends Controller
                     'city_id'           => trans('main.City'),
                     'area_id'           => trans('main.Area'),
                     // 'contact_source_id' => trans('main.ContactSource'),
-                    'job_title_id'      => trans('main.Job Title ID'),
-                    'industry_id'       => trans('main.Industry ID'),
-                    'major_id'          => trans('main.Major ID'),
+                    'job_title_id'      => trans('main.Job Title'),
+                    'industry_id'       => trans('main.Industry'),
+                    'major_id'          => trans('main.Major'),
                     'notes'             => trans('main.Notes'),
                     'gender'            => trans('main.Gender'),
+                    'is_trashed'        => trans('main.Is Trashed'),
+                    'birth_date'        => trans('main.Birth Date'),
+                    'national_id'       => trans('main.National ID'),
+                    'code'              => trans('main.Code'),
+                    'is_active'         => trans('main.Is Active'),
                 ];
             }else{
                 $contactFields = [

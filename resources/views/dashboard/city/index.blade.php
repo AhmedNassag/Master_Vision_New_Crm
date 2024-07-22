@@ -117,6 +117,20 @@
                         </script>
                         @endif
                         <div class="table-responsive">
+
+                            <!-- pagination -->
+                            <form method="GET" action="{{ url('admin/city') }}">
+                                @foreach (request()->except('perPage') as $key => $value)
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                @endforeach
+                                <select name="perPage" onchange="this.form.submit()">
+                                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                            </form>
+
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">

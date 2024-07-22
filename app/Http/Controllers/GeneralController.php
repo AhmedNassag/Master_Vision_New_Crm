@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -12,7 +13,7 @@ class GeneralController extends Controller
     public function index($id)
     {
         try {
-         
+
             if (view()->exists($id)) {
                 return view($id);
             }
@@ -74,5 +75,23 @@ class GeneralController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+
+
+    //updatePaginationCount
+    public function updatePaginationCount(Request $request)
+    {
+        // Validate the request if necessary
+        $request->validate([
+            'paginationCount' => 'required|integer', // Adjust validation rules as needed
+        ]);
+
+        // Update the paginationCount dynamically
+        Config::set('myConfig.paginationCount', $request->paginationCount);
+
+        // Optionally, retrieve and return the updated value
+        $updatedCount = Config::get('myConfig.paginationCount');
+        return redirect()->back();
     }
 }

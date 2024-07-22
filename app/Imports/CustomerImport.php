@@ -95,16 +95,16 @@ class CustomerImport implements ToCollection
                 }
                 $randomNumber = str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
                 Invoice::create([
-                    'customer_id' => $customer->id,
-                    'description'=> "",
-                    'status'=>'paid',
-                    // 'amount'=> 0,
-                    'invoice_date'=>Carbon::now()->format('Y-m-d'),
-                    'total_amount'=>0,
-                    'amount_paid'=>0,
-                    'invoice_number'=>$randomNumber,
-                    'debt'=>0,
-                    'activity_id'=>$this->activityId,
+                    'customer_id'    => $customer->id,
+                    'description'    => "",
+                    'status'         => 'paid',
+                    // 'amount'       => 0,
+                    'invoice_date'   => Carbon::now()->format('Y-m-d'),
+                    'total_amount'   => 0,
+                    'amount_paid'    => 0,
+                    'invoice_number' => $randomNumber,
+                    'debt'           => 0,
+                    'activity_id'    => $this->activityId,
                 ]);
             }
         }
@@ -120,7 +120,14 @@ class CustomerImport implements ToCollection
 
     private function getModelClassName($field)
     {
-        $models =  ['contact_source_id'=>"Contact_source", 'city_id'=>"City", 'area_id'=>"Area", 'job_title_id'=>"Job_title", 'industry_id'=>"Industry", 'major_id'=>"Major"];
+        $models =  [
+            'contact_source_id' => "Contact_source",
+            'city_id'           => "City",
+            'area_id'           => "Area",
+            'job_title_id'      => "Job_title",
+            'industry_id'       => "Industry",
+            'major_id'          => "Major"
+        ];
         return $models[$field];
     }
 

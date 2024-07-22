@@ -203,27 +203,18 @@ class MessageController extends Controller
 
 
 
-	public function store(Request $request)
-	{
+    public function store(Request $request)
+    {
         try {
-
             $message_selected_id = explode(",", $request->message_selected_id);
-            $mobile_recievers    = Contact::whereIn('id', $message_selected_id)->pluck('mobile');
-			$all_mobiles = '';
-			foreach($mobile_recievers as $index=>$mobile )
-            {
-				if($index==0)
-                {
-					$all_mobiles = '+2'.$mobile;
-				}
-                else
-                {
-					$all_mobiles = $all_mobiles.','.'+'.$mobile;
-				}
-			}
-            // $token    = LAConfigs::getByKey('whatsapp_token')?? null;
-            // $instance = LAConfigs::getByKey('whatsapp_instance')?? null;
-            /**/
+            $mobile_recievers = Contact::whereIn('id', $message_selected_id)->pluck('mobile')->toArray();
+
+            // Prefix the mobile numbers with +2
+            $all_mobiles = array_map(function ($mobile) {
+                return '+2' . $mobile;
+            }, $mobile_recievers);
+
+            // Get WhatsApp configurations
             $configs  = LAConfigs::get();
             $token    = '';
             $instance = '';
@@ -238,12 +229,12 @@ class MessageController extends Controller
                     $instance = $config->value;
                 }
             }
-            /**/
+
             if($token == null || $instance == null){
                 $errorMessage = 'من فضلك تأكد من أشتراكك فى خدمة الرسائل عن طريق الواتساب';
                 return redirect()->back()->withErrors([$errorMessage]);
             }
-            
+
             if($request->has('file') && !empty($request->file))
             {
                 if ($request->hasFile('file'))
@@ -253,47 +244,32 @@ class MessageController extends Controller
                     $file_type = $file->getMimeType();
                     $file_name = time() . '.' . $file->getClientOriginalName();
                     $file->storeAs('message', $file_name, 'attachments');
-                    /*$data->media()->create([
-                        'file_path' => asset('attachments/message/' . $file_name),
-                        'file_name' => $file_name,
-                        'file_size' => $file_size,
-                        'file_type' => $file_type,
-                        'file_sort' => 1,
-                    ]);*/
-                    
                 }
-                /*
-                $url    = "https://api.ultramsg.com/instance".$instance."/messages/image";
-                $params = array(
+
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/image";
+                $params = [
                     'token' => $token,
-                    'to'    => $all_mobiles,
-                    'image'  => asset('attachments/message/' . $file_name),
-                    'caption' => $request->message
-                );*/
-                
-                $url    = "https://api.ultramsg.com/instance".$instance."/messages/image";
-                $params=array(
-                    'token' => $token,
-                    'to' => $all_mobiles,
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
                     'image' => asset('attachments/message/' . $file_name),
                     'caption' => $request->message
-                );
+                ];
+
                 $curl = curl_init();
-                curl_setopt_array($curl, array(
-                  CURLOPT_URL => $url,
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => "",
-                  CURLOPT_MAXREDIRS => 10,
-                  CURLOPT_TIMEOUT => 30,
-                  CURLOPT_SSL_VERIFYHOST => 0,
-                  CURLOPT_SSL_VERIFYPEER => 0,
-                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_CUSTOMREQUEST => "POST",
-                  CURLOPT_POSTFIELDS => http_build_query($params),
-                  CURLOPT_HTTPHEADER => array(
-                    "content-type: application/x-www-form-urlencoded"
-                  ),
-                ));
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => http_build_query($params),
+                    CURLOPT_HTTPHEADER => [
+                        "content-type: application/x-www-form-urlencoded"
+                    ],
+                ]);
 
                 $response = curl_exec($curl);
                 $err = curl_error($curl);
@@ -301,21 +277,152 @@ class MessageController extends Controller
                 curl_close($curl);
 
                 if ($err) {
-                  echo "cURL Error #:" . $err;
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+                    return redirect()->back()->withErrors([$err]);
                 } else {
-                  echo $response;
+                    echo $response;
+                    return redirect()->back();
+                }
+            } else {
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/chat";
+                $params = [
+                    'token' => $token,
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
+                    'body' => $request->message
+                ];
+
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => http_build_query($params),
+                    CURLOPT_HTTPHEADER => [
+                        "content-type: application/x-www-form-urlencoded"
+                    ],
+                ]);
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+                    return redirect()->back()->withErrors([$err]);
+                } else {
+                    echo $response;
+                    return redirect()->back();
                 }
             }
-            else{
-                $url    = "https://api.ultramsg.com/instance".$instance."/messages/chat";
-                $params = array(
+
+            session()->flash('success');
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    public function storeSingleContactMessage(Request $request)
+    {
+        try {
+            
+            $mobile_recievers = Contact::where('id', $request->message_selected_id)->first();
+
+            // Prefix the mobile numbers with +2
+            $all_mobiles = '+2' . $mobile_recievers->mobile;
+
+            // Get WhatsApp configurations
+            $configs  = LAConfigs::get();
+            $token    = '';
+            $instance = '';
+            foreach($configs as $config)
+            {
+                if($config->key == 'whatsapp_token')
+                {
+                    $token = $config->value;
+                }
+                if($config->key == 'whatsapp_instance')
+                {
+                    $instance = $config->value;
+                }
+            }
+
+            if($token == null || $instance == null){
+                $errorMessage = 'من فضلك تأكد من أشتراكك فى خدمة الرسائل عن طريق الواتساب';
+                return redirect()->back()->withErrors([$errorMessage]);
+            }
+
+            if($request->has('file') && !empty($request->file))
+            {
+                if ($request->hasFile('file'))
+                {
+                    $file      = $request->file;
+                    $file_size = $file->getSize();
+                    $file_type = $file->getMimeType();
+                    $file_name = time() . '.' . $file->getClientOriginalName();
+                    $file->storeAs('message', $file_name, 'attachments');
+                }
+
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/image";
+                $params = [
                     'token' => $token,
-                    'to'    => $all_mobiles,
-                    'body'  => $request->message
-                );
-                
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
+                    'image' => asset('attachments/message/' . $file_name),
+                    'caption' => $request->message
+                ];
+
                 $curl = curl_init();
-                curl_setopt_array($curl, array(
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => http_build_query($params),
+                    CURLOPT_HTTPHEADER => [
+                        "content-type: application/x-www-form-urlencoded"
+                    ],
+                ]);
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+                    return redirect()->back()->withErrors([$err]);
+                } else {
+                    echo $response;
+                    return redirect()->back();
+                }
+            } else {
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/chat";
+                $params = [
+                    'token' => $token,
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
+                    'body' => $request->message
+                ];
+
+                $curl = curl_init();
+                curl_setopt_array($curl, [
                     CURLOPT_URL => $url,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING       => "",
@@ -326,58 +433,49 @@ class MessageController extends Controller
                     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST  => "POST",
                     CURLOPT_POSTFIELDS     => http_build_query($params),
-                    CURLOPT_HTTPHEADER     => array(
+                    CURLOPT_HTTPHEADER     => [
                         "content-type: application/x-www-form-urlencoded"
-                    ),
-                ));
+                    ],
+                ]);
+
                 $response = curl_exec($curl);
-                $err      = curl_error($curl);
+                $err = curl_error($curl);
+
                 curl_close($curl);
-                if ($err)
-                {
-                  echo "cURL Error #:" . $err;
-                  $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
                     return redirect()->back()->withErrors([$err]);
                 } else {
-                  echo $response;
-                  return redirect()->back();
+                    echo $response;
+                    return redirect()->back();
                 }
             }
-            
+
             session()->flash('success');
             return redirect()->back();
 
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-	}
+    }
+
 
 
 
 	public function storeCustomerMessage(Request $request)
-	{
+    {
         try {
-
             $message_selected_id = explode(",", $request->message_selected_id);
-            $mobile_recievers    = Customer::whereIn('id', $message_selected_id)->pluck('mobile');
-			$all_mobiles = '';
-			foreach($mobile_recievers as $index=>$mobile )
-            {
-                if($mobile != null)
-                {
-                    if($index==0)
-                    {
-                        $all_mobiles = '+2'.$mobile;
-                    }
-                    else
-                    {
-                        $all_mobiles = $all_mobiles.','.'+'.$mobile;
-                    }
-                }
-			}
-            // $token    = LAConfigs::getByKey('whatsapp_token')?? null;
-            // $instance = LAConfigs::getByKey('whatsapp_instance')?? null;
-            /**/
+            $mobile_recievers = Customer::whereIn('id', $message_selected_id)->pluck('mobile')->filter()->toArray();
+
+            // Prefix the mobile numbers with +2
+            $all_mobiles = array_map(function ($mobile) {
+                return '+2' . $mobile;
+            }, $mobile_recievers);
+
+            // Get WhatsApp configurations
             $configs  = LAConfigs::get();
             $token    = '';
             $instance = '';
@@ -392,12 +490,12 @@ class MessageController extends Controller
                     $instance = $config->value;
                 }
             }
-            /**/
+
             if($token == null || $instance == null){
                 $errorMessage = 'من فضلك تأكد من أشتراكك فى خدمة الرسائل عن طريق الواتساب';
                 return redirect()->back()->withErrors([$errorMessage]);
             }
-            
+
             if($request->has('file') && !empty($request->file))
             {
                 if ($request->hasFile('file'))
@@ -407,47 +505,32 @@ class MessageController extends Controller
                     $file_type = $file->getMimeType();
                     $file_name = time() . '.' . $file->getClientOriginalName();
                     $file->storeAs('message', $file_name, 'attachments');
-                    /*$data->media()->create([
-                        'file_path' => asset('attachments/message/' . $file_name),
-                        'file_name' => $file_name,
-                        'file_size' => $file_size,
-                        'file_type' => $file_type,
-                        'file_sort' => 1,
-                    ]);*/
-                    
                 }
-                /*
-                $url    = "https://api.ultramsg.com/instance".$instance."/messages/image";
-                $params = array(
+
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/image";
+                $params = [
                     'token' => $token,
-                    'to'    => $all_mobiles,
-                    'image'  => asset('attachments/message/' . $file_name),
-                    'caption' => $request->message
-                );*/
-                
-                $url    = "https://api.ultramsg.com/instance".$instance."/messages/image";
-                $params=array(
-                    'token' => $token,
-                    'to' => $all_mobiles,
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
                     'image' => asset('attachments/message/' . $file_name),
                     'caption' => $request->message
-                );
+                ];
+
                 $curl = curl_init();
-                curl_setopt_array($curl, array(
-                  CURLOPT_URL => $url,
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => "",
-                  CURLOPT_MAXREDIRS => 10,
-                  CURLOPT_TIMEOUT => 30,
-                  CURLOPT_SSL_VERIFYHOST => 0,
-                  CURLOPT_SSL_VERIFYPEER => 0,
-                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_CUSTOMREQUEST => "POST",
-                  CURLOPT_POSTFIELDS => http_build_query($params),
-                  CURLOPT_HTTPHEADER => array(
-                    "content-type: application/x-www-form-urlencoded"
-                  ),
-                ));
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => http_build_query($params),
+                    CURLOPT_HTTPHEADER => [
+                        "content-type: application/x-www-form-urlencoded"
+                    ],
+                ]);
 
                 $response = curl_exec($curl);
                 $err = curl_error($curl);
@@ -455,21 +538,23 @@ class MessageController extends Controller
                 curl_close($curl);
 
                 if ($err) {
-                  echo "cURL Error #:" . $err;
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+                    return redirect()->back()->withErrors([$err]);
                 } else {
-                  echo $response;
+                    echo $response;
+                    return redirect()->back();
                 }
-            }
-            else{
-                $url    = "https://api.ultramsg.com/instance".$instance."/messages/chat";
-                $params = array(
+            } else {
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/chat";
+                $params = [
                     'token' => $token,
-                    'to'    => $all_mobiles,
-                    'body'  => $request->message
-                );
-                
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
+                    'body' => $request->message
+                ];
+
                 $curl = curl_init();
-                curl_setopt_array($curl, array(
+                curl_setopt_array($curl, [
                     CURLOPT_URL => $url,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING       => "",
@@ -480,31 +565,162 @@ class MessageController extends Controller
                     CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST  => "POST",
                     CURLOPT_POSTFIELDS     => http_build_query($params),
-                    CURLOPT_HTTPHEADER     => array(
+                    CURLOPT_HTTPHEADER     => [
                         "content-type: application/x-www-form-urlencoded"
-                    ),
-                ));
+                    ],
+                ]);
+
                 $response = curl_exec($curl);
-                $err      = curl_error($curl);
+                $err = curl_error($curl);
+
                 curl_close($curl);
-                if ($err)
-                {
-                  echo "cURL Error #:" . $err;
-                  $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
                     return redirect()->back()->withErrors([$err]);
                 } else {
-                  echo $response;
-                  return redirect()->back();
+                    echo $response;
+                    return redirect()->back();
                 }
             }
-            
+
             session()->flash('success');
             return redirect()->back();
 
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-	}
+    }
+
+
+
+    public function storeSingleCustomerMessage(Request $request)
+    {
+        try {
+            
+            $mobile_recievers = Customer::where('id', $request->message_selected_id)->first();
+
+            // Prefix the mobile numbers with +2
+            $all_mobiles = '+2' . $mobile_recievers->mobile;
+
+            // Get WhatsApp configurations
+            $configs  = LAConfigs::get();
+            $token    = '';
+            $instance = '';
+            foreach($configs as $config)
+            {
+                if($config->key == 'whatsapp_token')
+                {
+                    $token = $config->value;
+                }
+                if($config->key == 'whatsapp_instance')
+                {
+                    $instance = $config->value;
+                }
+            }
+
+            if($token == null || $instance == null){
+                $errorMessage = 'من فضلك تأكد من أشتراكك فى خدمة الرسائل عن طريق الواتساب';
+                return redirect()->back()->withErrors([$errorMessage]);
+            }
+
+            if($request->has('file') && !empty($request->file))
+            {
+                if ($request->hasFile('file'))
+                {
+                    $file      = $request->file;
+                    $file_size = $file->getSize();
+                    $file_type = $file->getMimeType();
+                    $file_name = time() . '.' . $file->getClientOriginalName();
+                    $file->storeAs('message', $file_name, 'attachments');
+                }
+
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/image";
+                $params = [
+                    'token' => $token,
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
+                    'image' => asset('attachments/message/' . $file_name),
+                    'caption' => $request->message
+                ];
+
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => http_build_query($params),
+                    CURLOPT_HTTPHEADER => [
+                        "content-type: application/x-www-form-urlencoded"
+                    ],
+                ]);
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+                    return redirect()->back()->withErrors([$err]);
+                } else {
+                    echo $response;
+                    return redirect()->back();
+                }
+            } else {
+                $url = "https://api.ultramsg.com/instance".$instance."/messages/chat";
+                $params = [
+                    'token' => $token,
+                    'to' => json_encode($all_mobiles), // Ensure 'to' is an array of phone numbers
+                    'body' => $request->message
+                ];
+
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => $url,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING       => "",
+                    CURLOPT_MAXREDIRS      => 10,
+                    CURLOPT_TIMEOUT        => 30,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST  => "POST",
+                    CURLOPT_POSTFIELDS     => http_build_query($params),
+                    CURLOPT_HTTPHEADER     => [
+                        "content-type: application/x-www-form-urlencoded"
+                    ],
+                ]);
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                    $errorMessage = 'من فضلك تأكد من بيانات الاشتراك';
+                    return redirect()->back()->withErrors([$err]);
+                } else {
+                    echo $response;
+                    return redirect()->back();
+                }
+            }
+
+            session()->flash('success');
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 
 
 
@@ -533,7 +749,7 @@ class MessageController extends Controller
 				'activities',
 				'employees'
 			));
-    
+
 		} catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -921,7 +1137,7 @@ class MessageController extends Controller
 			} else {
 				return redirect(config('laraadmin.adminRoute') . "/");
 			}
-			
+
 		} catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

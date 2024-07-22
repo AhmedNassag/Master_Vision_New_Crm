@@ -19,4 +19,10 @@ interface NotificationInterface
 
     public function remindersChangeStatus($id);
 
+    public function todayFollowUps();
+
+    public function monthFollowUps();
+
+    public function todayBirthdays($request);
+
 }

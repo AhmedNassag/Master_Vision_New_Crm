@@ -22,6 +22,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div id="kt_app_content" class="app-content flex-column-fluid">
                 <div id="kt_app_content_container" class="app-container container-xxl">
                     <!--statistics-->
@@ -251,238 +253,284 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-
-
-                    <!--top-->
-                    <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                        <!--Top 10 Sales Employee-->
-                        <div class="col-xl-8">
-                            <div class="card card-flush h-lg-100">
-                                <div class="card-header justify-content-start pt-7">
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 10 Sales Employee') }}</span>
-                                    </h3>
-                                </div>
-                                <div class="card-body pt-6">
-                                    <div class="table-responsive">
-                                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
-                                            <thead>
-                                                <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                                    <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Employee') }}</th>
-                                                    <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Customers Number') }}</th>
-                                                    <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Amount') }}</th>
-                                                    <th class="p-0 pb-3 min-w-150px text-center">{{ trans('main.Branch') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($mostSalesEmployees as $employee)
-                                                    @php
-                                                        $uniqueCustomerCount = \App\Models\Invoice::where('created_by', $employee->id)->distinct('customer_id')->count();
-                                                    @endphp
-                                                    <tr>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$employee->name }}</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$uniqueCustomerCount }}</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$employee->invoices_sum_total_amount,0) }} ({{ trans('main.EGP') }})</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ $employee->branch ? $employee->branch->name : '---' }}</span>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--Top 10 Sales Branch-->
-                        <div class="col-xl-4">
-                            <div class="card card-flush h-lg-100">
-                                <div class="card-header pt-5 mb-6">
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <h2 class=" fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ trans('main.Top 10 Sales Branch') }}</h2>
+                        <!--todayFollowUps-->
+                        <div class="col-xl-3 col-md-3">
+                            <div class="d-flex h-100 align-items-center">
+                                <div class="w-100 d-flex flex-column flex-center rounded-3 bg-light bg-opacity-75 py-15 px-10">
+                                    <div class="mb-7 text-center">
+                                        <h2 class="text-gray-900 mb-5 fw-bolder fs-1x">{{ trans('main.todayFollowUps') }}</h2>
+                                        <div class="text-center">
+                                            <span class="fs-3x fw-bold text-primary" data-kt-plan-price-month="39" data-kt-plan-price-annual="399">{{ $todayFollowUps }}</span>
                                         </div>
-                                    </h3>
-                                </div>
-                                <div class="card-body py-0 px-0">
-                                    <div class="table-responsive">
-                                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
-                                            <thead>
-                                                <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                                    <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Branch') }}</th>
-                                                    <th class="p-0 pb-3 min-w-150px text-center">{{ trans('main.Total Amount') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($mostSalesBranches as $branch)
-                                                    <tr>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ $branch->name ? @$branch->name : '---' }}</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$branch->total_sales,0) }} ({{ trans('main.EGP') }})</span>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
                                     </div>
+                                    <a href="{{ route('todayFollowUps.index') }}" class="btn btn-sm btn-primary">{{ trans('main.Details') }}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--monthFollowUps-->
+                        <div class="col-xl-3 col-md-3">
+                            <div class="d-flex h-100 align-items-center">
+                                <div class="w-100 d-flex flex-column flex-center rounded-3 bg-light bg-opacity-75 py-15 px-10">
+                                    <div class="mb-7 text-center">
+                                        <h2 class="text-gray-900 mb-5 fw-bolder fs-1x">{{ trans('main.monthFollowUps') }}</h2>
+                                        <div class="text-center">
+                                            <span class="fs-3x fw-bold text-primary" data-kt-plan-price-month="39" data-kt-plan-price-annual="399">{{ $monthFollowUps }}</span>
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('monthFollowUps.index') }}" class="btn btn-sm btn-primary">{{ trans('main.Details') }}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--birthday-->
+                        <div class="col-xl-3 col-md-3">
+                            <div class="d-flex h-100 align-items-center">
+                                <div class="w-100 d-flex flex-column flex-center rounded-3 bg-light bg-opacity-75 py-15 px-10">
+                                    <div class="mb-7 text-center">
+                                        <h2 class="text-gray-900 mb-5 fw-bolder fs-1x">{{ trans('main.todayBirthdays') }}</h2>
+                                        <div class="text-center">
+                                            <span class="fs-3x fw-bold text-primary" data-kt-plan-price-month="39" data-kt-plan-price-annual="399">{{ $todayBirthdays }}</span>
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('todayBirthdays.index') }}" class="btn btn-sm btn-primary">{{ trans('main.Details') }}</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                        <!--Top 5 Contact Sources-->
-                        <div class="col-xl-4">
-                            <div class="card card-flush h-lg-100">
-                            <div class="card-header justify-content-start pt-7">
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Contact Sources') }}</h2>
-                                    </h3>
-                                </div>
-                                <div class="card-body pt-6">
-                                    <div class="table-responsive">
-                                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
-                                            <thead>
-                                                <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                                    <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.ContactSource') }}</th>
-                                                    <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($sources as $sourcee)
-                                                    <tr>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$sourcee->name }}</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$sourcee->contacts_count }}</span>
-                                                        </td>
+                    @if(auth()->user()->roles_name[0] == "Admin")
+                        <!--top-->
+                        <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                            <!--Top 10 Sales Employee-->
+                            <div class="col-xl-8">
+                                <div class="card card-flush h-lg-100">
+                                    <div class="card-header justify-content-start pt-7">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 10 Sales Employee') }}</span>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body pt-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                <thead>
+                                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                        <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Employee') }}</th>
+                                                        <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Customers Number') }}</th>
+                                                        <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Amount') }}</th>
+                                                        <th class="p-0 pb-3 min-w-150px text-center">{{ trans('main.Branch') }}</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($mostSalesEmployees as $employee)
+                                                        @php
+                                                            $uniqueCustomerCount = \App\Models\Invoice::where('created_by', $employee->id)->distinct('customer_id')->count();
+                                                        @endphp
+                                                        <tr>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$employee->name }}</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$uniqueCustomerCount }}</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$employee->invoices_sum_total_amount,0) }} ({{ trans('main.EGP') }})</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ $employee->branch ? $employee->branch->name : '---' }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Top 10 Sales Branch-->
+                            <div class="col-xl-4">
+                                <div class="card card-flush h-lg-100">
+                                    <div class="card-header pt-5 mb-6">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <h2 class=" fw-bold text-gray-800 me-2 lh-1 ls-n2">{{ trans('main.Top 10 Sales Branch') }}</h2>
+                                            </div>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body py-0 px-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                <thead>
+                                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                        <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Branch') }}</th>
+                                                        <th class="p-0 pb-3 min-w-150px text-center">{{ trans('main.Total Amount') }}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($mostSalesBranches as $branch)
+                                                        <tr>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ $branch->name ? @$branch->name : '---' }}</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$branch->total_sales,0) }} ({{ trans('main.EGP') }})</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    
 
-                        <!--Top 5 Contact Cities-->
-                        <div class="col-xl-4">
-                            <div class="card card-flush h-lg-100">
-                            <div class="card-header justify-content-start pt-7">
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Contact Cities') }}</h2>
-                                    </h3>
-                                </div>
-                                <div class="card-body pt-6">
-                                    <div class="table-responsive">
-                                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
-                                            <thead>
-                                                <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                                    <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.City') }}</th>
-                                                    <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($cities as $city)
-                                                    <tr>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$city->name }}</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$city->contacts_count }}</span>
-                                                        </td>
+                        <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                            <!--Top 5 Contact Sources-->
+                            <div class="col-xl-4">
+                                <div class="card card-flush h-lg-100">
+                                <div class="card-header justify-content-start pt-7">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Contact Sources') }}</h2>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body pt-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                <thead>
+                                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                        <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.ContactSource') }}</th>
+                                                        <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($sources as $sourcee)
+                                                        <tr>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$sourcee->name }}</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$sourcee->contacts_count }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!--Top 5 Contact Areas-->
-                        <div class="col-xl-4">
-                            <div class="card card-flush h-lg-100">
-                                 <div class="card-header justify-content-start pt-7">
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Contact Areas') }}</h2>
-                                    </h3>
-                                </div>
-                                <div class="card-body pt-6">
-                                    <div class="table-responsive">
-                                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
-                                            <thead>
-                                                <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                                    <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Area') }}</th>
-                                                    <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($areas as $area)
-                                                    <tr>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$area->name }}</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$area->contacts_count }}</span>
-                                                        </td>
+                            <!--Top 5 Contact Cities-->
+                            <div class="col-xl-4">
+                                <div class="card card-flush h-lg-100">
+                                <div class="card-header justify-content-start pt-7">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Contact Cities') }}</h2>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body pt-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                <thead>
+                                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                        <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.City') }}</th>
+                                                        <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($cities as $city)
+                                                        <tr>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$city->name }}</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$city->contacts_count }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!--Top 5 Interests-->
-                        <!-- <div class="col-xl-4">
-                            <div class="card card-flush h-lg-100">
-                                <div class="card-header pt-7">
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <span class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Interests') }}</span>
-                                    </h3>
-                                </div>
-                                <div class="card-body pt-6">
-                                    <div class="table-responsive">
-                                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
-                                            <thead>
-                                                <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
-                                                    <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Interest') }}</th>
-                                                    <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($interests as $interest)
-                                                    <tr>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$interest->name }}</span>
-                                                        </td>
-                                                        <td class="text-center pe-0">
-                                                            <span class="text-gray-600 fw-bold fs-6">{{ @$interest->meetings_count }}</span>
-                                                        </td>
+                            <!--Top 5 Contact Areas-->
+                            <div class="col-xl-4">
+                                <div class="card card-flush h-lg-100">
+                                    <div class="card-header justify-content-start pt-7">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <h2 class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Contact Areas') }}</h2>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body pt-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                <thead>
+                                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                        <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Area') }}</th>
+                                                        <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($areas as $area)
+                                                        <tr>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$area->name }}</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$area->contacts_count }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
-                    </div>
+
+                            <!--Top 5 Interests-->
+                            <!-- <div class="col-xl-4">
+                                <div class="card card-flush h-lg-100">
+                                    <div class="card-header pt-7">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <span class="card-label fw-bold text-gray-800">{{ trans('main.Top 5 Interests') }}</span>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body pt-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                <thead>
+                                                    <tr class="fs-7 fw-bold text-gray-500 border-bottom-0">
+                                                        <th class="p-0 pb-3 min-w-175px text-center">{{ trans('main.Interest') }}</th>
+                                                        <th class="p-0 pb-3 min-w-100px text-center">{{ trans('main.Number') }}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($interests as $interest)
+                                                        <tr>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$interest->name }}</span>
+                                                            </td>
+                                                            <td class="text-center pe-0">
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ @$interest->meetings_count }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>                    
+                    @endif
                 </div>
             </div>
         </div>

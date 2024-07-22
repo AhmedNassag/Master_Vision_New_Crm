@@ -84,26 +84,25 @@ License: For each use you must have a valid license purchased only from above li
                             <!--begin::Toolbar wrapper-->
                             <div class="app-navbar flex-lg-grow-1" id="kt_app_header_navbar">
                                 <!--begin::Expire Alert-->
-
-                                <div class="app-navbar-item d-flex align-items-stretch flex-lg-grow-1">
-                                    @php
-                                        @$dateString = \App\Models\LAConfigs::where('key','end_date')->first();
-                                        if($dateString)
-                                        {
-                                            @$today      = \Carbon\Carbon::now();
-                                            @$endDate    = \Carbon\Carbon::parse(@$dateString->value);
-                                            @$diffInDays = $today->diffInDays(@$endDate);
-                                        }
-                                    @endphp
-                                    @if(@$dateString && @$diffInDays <= 15)
-                                        <div class="alert alert-danger alert-dismissible mt-3 d-none">
+                                @php
+                                    @$dateString = \App\Models\LAConfigs::where('key','end_date')->first();
+                                    if($dateString)
+                                    {
+                                        @$today      = \Carbon\Carbon::now();
+                                        @$endDate    = \Carbon\Carbon::parse(@$dateString->value);
+                                        @$diffInDays = $today->diffInDays(@$endDate);
+                                    }
+                                @endphp
+                                @if(@$dateString && @$diffInDays <= 15)
+                                    <div class="app-navbar-item d-flex align-items-stretch flex-lg-grow-1">
+                                        <div class="alert alert-danger alert-dismissible mt-3">
                                             <h4>{{ trans('main.Alerts') }}</h4>
                                             <p>
                                                 {{ trans('main.You Will Expired After') }}: ({{ @$diffInDays }}) {{ trans('main.Day') }} --- {{ trans('main.Expired Date Is') }}: ({{ @$endDate->format('Y-m-d') }})
                                             </p>
                                         </div>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                                 <!--end::Expitre Alert-->
 
                                 <!--begin::Notifications
@@ -4873,6 +4872,38 @@ License: For each use you must have a valid license purchased only from above li
 				}
 			}
 
+
+
+            //when check show or hide button
+            function showBtnDeleteSelected3()
+            {
+                var selected = new Array();
+                $("#example1 input[type=checkbox]:checked").each(function() {
+                    selected.push(this.value);
+                });
+                if (selected.length > 0) {
+                    document.getElementById('btn_message_selected').style.display = "inline-block";
+                } else {
+                    document.getElementById('btn_message_selected').style.display = "none";
+                }
+            }
+
+
+
+            //when check show or hide button
+            function showBtnDeleteSelected4()
+            {
+            var selected = new Array();
+            $("#example1 input[type=checkbox]:checked").each(function() {
+                selected.push(this.value);
+            });
+            if (selected.length > 0) {
+                document.getElementById('btn_reTarget_selected').style.display = "inline-block";
+            } else {
+                document.getElementById('btn_reTarget_selected').style.display = "none";
+            }
+            }
+
 			//when click button delete_selected show modal
 			$(function() {
 				$("#btn_delete_selected").click(function() {
@@ -4954,6 +4985,21 @@ License: For each use you must have a valid license purchased only from above li
                     if (selected.length > 0) {
                         $('#message_selected').modal('show')
                         $('input[id="message_selected_id"]').val(selected);
+                    }
+                });
+            });
+
+
+            //when click button reTarget_selected show modal
+            $(function() {
+                $("#btn_reTarget_selected").click(function() {
+                    var selected = new Array();
+                    $("#example1 input[type=checkbox]:checked").each(function() {
+                        selected.push(this.value);
+                    });
+                    if (selected.length > 0) {
+                        $('#reTarget_selected').modal('show')
+                        $('input[id="reTarget_selected_id"]').val(selected);
                     }
                 });
             });

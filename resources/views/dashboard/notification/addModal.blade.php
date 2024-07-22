@@ -9,18 +9,46 @@
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal"><i class="ki-outline ki-cross fs-1"></i></div>
                 </div>
                 <div class="modal-body py-10 px-lg-17">
-                    <!-- notification -->
-                    <div class="row mb-5">
-                        <div class="col-md-12 fv-row">
-                            <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Notification') }}</label>
-                            <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Notification') }}" value="{{ old('notification') }}" name="notification" />
-                        </div>
+                    <!-- branch_id -->
+                    <div id="branch_id" class="col-md-12 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span class="required">{{ trans('main.Branch') }}</span>
+                        </label>
+                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.All') }}</option>
+                            <?php
+                                if(Auth::user()->roles_name[0] == "Admin")
+                                {
+                                    $branches = \App\Models\Branch::get(['id','name']);
+                                }
+                                else
+                                {
+                                    $branches = \App\Models\Branch::where('id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                }
+                            ?>
+                            @foreach($branches as $branch)
+                                <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- dept -->
+                    <div class="d-flex flex-column mb-5 fv-row" id="add_dept">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Department') }}</label>
+                        <select name="dept" data-control="select2" data-dropdown-parent="#add_dept" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.All') }}</option>
+                            <?php $departments = \App\Models\Department::get(['id','name']); ?>
+                            @foreach($departments as $department)
+                                <option value="{{ @$department->id }}">{{ @$department->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <!-- employee_id -->
-                    <div class="d-flex flex-column mb-5 fv-row" id="add_employee_id">
-                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Employee') }}</label>
-                        <select name="employee_id" data-control="select2" data-dropdown-parent="#add_employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                            <option value="">{{ trans('main.Select') }}...</option>
+                    <div id="employee_id" class="col-md-12 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span class="required">{{ trans('main.Employee') }}</span>
+                        </label>
+                        <select name="employee_ids[]" data-control="select2" data-dropdown-parent="#employee_id" class="form-select form-select-solid" multiple>
+                            <option value="" selected>{{ trans('main.All') }}</option>
                             <?php
                                 if(Auth::user()->roles_name[0] == "Admin")
                                 {
@@ -36,16 +64,12 @@
                             @endforeach
                         </select>
                     </div>
-                    <!-- dept -->
-                    <div class="d-flex flex-column mb-5 fv-row" id="add_dept">
-                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Department') }}</label>
-                        <select name="dept" data-control="select2" data-dropdown-parent="#add_dept" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                            <option value="">{{ trans('main.Select') }}...</option>
-                            <?php $departments = \App\Models\Department::get(['id','name']); ?>
-                            @foreach($departments as $department)
-                                <option value="{{ @$department->id }}">{{ @$department->name }}</option>
-                            @endforeach
-                        </select>
+                    <!-- notification -->
+                    <div class="row mb-5">
+                        <div class="col-md-12 fv-row">
+                            <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Notification') }}</label>
+                            <textarea type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Notification') }}" value="{{ old('notification') }}" name="notification" cols="5" rows="5" required></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer flex-center">

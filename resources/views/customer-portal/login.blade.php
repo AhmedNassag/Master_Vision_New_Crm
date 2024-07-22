@@ -53,6 +53,21 @@
                                         </ul>
                                     </div>
                                 @endif
+                                @php
+                                    $expire_date = \App\Models\LAConfigs::where('key','end_date')->first();
+                                    if($expire_date)
+                                    {
+                                        $end_date = \Carbon\Carbon::parse($expire_date->value);
+                                    }   
+                                    $now = \Carbon\Carbon::now();
+                                @endphp
+                                @if($expire_date)
+                                    @if($end_date < $now)
+                                        <div class="alert alert-danger w-100 text-center">
+                                            {{ trans('main.You Have Expired From:') }} {{ $end_date->format('d-m-Y') }}
+                                        </div>
+                                    @endif
+                                @endif
 								<!--begin::Form-->
 								<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="{{ route('customer.home') }}" action="{{ route('customer.login') }}">
 									<div class="text-center mb-11">

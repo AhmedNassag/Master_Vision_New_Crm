@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EmployeeTarget;
-use App\Models\Meeting;
-use App\Models\Employee;
-use App\Models\Contact;
-use App\Models\ContactSource;
-use App\Models\City;
-use App\Models\Area;
-use App\Models\SubActivity;
-use App\Models\ReorderReminder;
-use App\Models\Branch;
-use App\Models\Customer;
 use Carbon\Carbon;
+use App\Models\Area;
+use App\Models\City;
+use App\Models\Branch;
+use App\Models\Contact;
+use App\Models\Meeting;
+use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\MeetingNote;
+use App\Models\SubActivity;
 use Illuminate\Http\Request;
+use App\Models\ContactSource;
+use App\Models\EmployeeTarget;
+use App\Models\ReorderReminder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +29,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        // $this->middleware('checkExpirationDate');
     }
 
     /**
@@ -149,6 +151,14 @@ class HomeController extends Controller
                 ->whereMonth('reminder_date', Carbon::now()->month)
                 ->count();
 
+            $todayFollowUps = MeetingNote::whereDate('follow_date',Carbon::today())->count();
+
+            $monthFollowUps = MeetingNote::whereYear('follow_date', Carbon::now()->year)
+                ->whereMonth('follow_date', Carbon::now()->month)
+                ->count();
+
+            $todayBirthdays = Customer::whereDate('birth_date',Carbon::today())->count();
+
             $mostSalesEmployees = Employee::whereHas('invoices')
                 ->withSum('invoices', 'total_amount')
                 ->orderBy('invoices_sum_total_amount', 'desc')
@@ -196,6 +206,9 @@ class HomeController extends Controller
                 'did_meetings',
                 'todayReminders',
                 'monthReminders',
+                'todayFollowUps',
+                'monthFollowUps',
+                'todayBirthdays',
                 'customers',
                 'mostSalesEmployees',
                 'mostSalesBranches'

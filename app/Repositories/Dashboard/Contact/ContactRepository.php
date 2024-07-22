@@ -35,10 +35,12 @@ class ContactRepository implements ContactInterface
 
     public function index($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
         if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->when($request->name != null,function ($q) use($request){
+            ->when($request->name != null ,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
             ->when($request->mobile != null,function ($q) use($request){
@@ -47,8 +49,11 @@ class ContactRepository implements ContactInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -71,6 +76,9 @@ class ContactRepository implements ContactInterface
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
             })
+            ->when($request->campaign_id != null,function ($q) use($request){
+                return $q->where('campaign_id',$request->campaign_id);
+            })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '>=', $request->from_date);
             })
@@ -86,8 +94,11 @@ class ContactRepository implements ContactInterface
             ->when(!$request->status,function ($q) use($request){
                 return $q->where('status', '!=', 'converted');
             })
+            ->when($request->input('query') != null ,function ($q) use($request){
+                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
@@ -103,8 +114,11 @@ class ContactRepository implements ContactInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -127,6 +141,9 @@ class ContactRepository implements ContactInterface
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
             })
+            ->when($request->campaign_id != null,function ($q) use($request){
+                return $q->where('campaign_id',$request->campaign_id);
+            })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '>=', $request->from_date);
             })
@@ -142,8 +159,11 @@ class ContactRepository implements ContactInterface
             ->when(!$request->status,function ($q) use($request){
                 return $q->where('status', '!=', 'converted');
             })
+            ->when($request->input('query') != null ,function ($q) use($request){
+                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
         else
         {
@@ -159,8 +179,11 @@ class ContactRepository implements ContactInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -183,6 +206,9 @@ class ContactRepository implements ContactInterface
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
             })
+            ->when($request->campaign_id != null,function ($q) use($request){
+                return $q->where('campaign_id',$request->campaign_id);
+            })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->whereDate('created_at', '>=', $request->from_date);
             })
@@ -198,15 +224,16 @@ class ContactRepository implements ContactInterface
             ->when(!$request->status,function ($q) use($request){
                 return $q->where('status', '!=', 'converted');
             })
+            ->when($request->input('query') != null ,function ($q) use($request){
+                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
         }
 
         return view('dashboard.contact.index',compact('data'))
         ->with([
-            'name'         => $request->name,
-            'from_date'    => $request->from_date,
-            'to_date'      => $request->to_date,
+            'perPage' => $perPage,
         ]);
     }
 
@@ -319,13 +346,14 @@ class ContactRepository implements ContactInterface
             $validated = $request->validated();
             $inputs    = $request->except('photo');
             $data      = Contact::findOrFail($request->id);
+            $old_branch_id = $data->branch_id;
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
             }
             $data->update($inputs);
-            //create code if code is null
-            if($data->code == null) {
+            //create code if code is null or if branch is change
+            if($data->code == null || $request->branch_id != $old_branch_id) {
                 $data->update(['code' => $this->createCode($data)]);
             }
             // update photo

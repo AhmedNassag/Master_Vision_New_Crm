@@ -440,7 +440,7 @@ class ReportController extends Controller
                         ->where(DB::raw('DATE_FORMAT(invoice_date, "%Y-%m")'), $request->month)
                         ->sum('total_amount');
 
-                    
+
                     // Calculate the margin percentage
                     if($target != 0) {
                         $margin = ($actual > 0) ? ($actual / $target) * 100 : 0;
@@ -550,7 +550,7 @@ class ReportController extends Controller
                 'activity_id' => $request->activity_id,
                 'interest_id' => $request->interest_id,
             ]);
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

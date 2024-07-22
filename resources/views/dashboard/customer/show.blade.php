@@ -105,6 +105,13 @@
                                             @include('dashboard.customer.retargetModal')
                                             <div class="col-1"></div>
                                             <!--end::Retarget-->
+                                            <!--begin::Retarget-->
+                                            <button type="button" class="btn btn-sm btn-light-primary col-5 text-center mb-3" data-bs-toggle="modal" data-bs-target="#messageSingleModal">
+                                                {{ trans('main.Send') }} {{ trans('main.Message') }}
+                                            </button>
+                                            @include('dashboard.customer.messageSingleModal')
+                                            <div class="col-1"></div>
+                                            <!--end::Retarget-->
                                             <!--begin::Edit-->
                                             @can('تعديل العملاء')
                                                 <a href="{{ route('customer.edit', $item->id) }}" class="btn btn-sm btn-light-primary col-5 text-center mb-3">{{ trans('main.Edit') }}</a>

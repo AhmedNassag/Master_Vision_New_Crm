@@ -13,4 +13,10 @@ interface CampaignInterface
 
     public function destroy($request);
 
+    public function reTarget();
+
+    public function getReTarget($request);
+
+    public function reTargetSelected($request);
+
 }

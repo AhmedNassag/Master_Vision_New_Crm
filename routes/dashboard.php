@@ -55,11 +55,11 @@ Route::get('/', function () {
 Auth::routes(['register' => false]);
 
 /****************************** START ADMIN ROUTES ******************************/
-Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function () {
+Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang','ActivePackage']], function () {
     Route::prefix('lang')->name('lang.')->group( function () {
         Route::controller(LangController::class)->group( function () {
-            Route::get('/ar' ,  'ar')->name('ar');
-            Route::get('/en' ,  'en')->name('en');
+            Route::get('/ar' , 'ar')->name('ar');
+            Route::get('/en' , 'en')->name('en');
         });
     });
 
@@ -146,7 +146,8 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     //message
     Route::resource('message', MessageController::class);
     Route::post('customerMessage', [MessageController::class, 'storeCustomerMessage'])->name('message.storeCustomerMessage');
-
+    Route::post('storeSingleCustomerMessage', [MessageController::class, 'storeSingleCustomerMessage'])->name('message.storeSingleCustomerMessage');
+    Route::post('storeSingleContactMessage', [MessageController::class, 'storeSingleContactMessage'])->name('message.storeSingleContactMessage');
 
     //customer
     Route::resource('customer', CustomerController::class);
@@ -179,6 +180,9 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
 
     //campaign
     Route::resource('campaign', CampaignController::class);
+    Route::get('reTarget', [ CampaignController::class, 'reTarget'])->name('reTarget.index');
+    Route::post('getReTarget', [ CampaignController::class, 'getReTarget'])->name('reTarget.get');
+    Route::post('reTargetSelected', [ CampaignController::class, 'reTargetSelected'])->name('reTarget.selected');
 
 
     //pointSetting
@@ -204,6 +208,9 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     Route::get('todayReminders', [NotificationController::class, 'todayReminders'])->name('todayReminders.index');
     Route::get('monthReminders', [NotificationController::class, 'monthReminders'])->name('monthReminders.index');
     Route::get('remindersChangeStatus/{id}', [NotificationController::class, 'remindersChangeStatus'])->name('reminder.changeStatus');
+    Route::get('todayFollowUps', [NotificationController::class, 'todayFollowUps'])->name('todayFollowUps.index');
+    Route::get('monthFollowUps', [NotificationController::class, 'monthFollowUps'])->name('monthFollowUps.index');
+    Route::get('todayBirthdays', [NotificationController::class, 'todayBirthdays'])->name('todayBirthdays.index');
 
 
     //tickets
@@ -236,6 +243,7 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     Route::delete('user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::get('userChangeStatus/{id}', [UserController::class, 'changeStatus'])->name('user.changeStatus');
     Route::get('employeeByBranchId/{id}', [UserController::class, 'employeeByBranchId']);
+    Route::get('employeeByDept/{id}', [UserController::class, 'employeeByDept']);
     Route::get('employeesSelect', [UserController::class,'ajaxEmployeesSelect'])->name('employees.ajax');
 
 
@@ -245,6 +253,7 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang']], function ()
     Route::get('download_file/{folder_name}/{photo_name}', [GeneralController::class, 'download_file'])->name('download_file');
     Route::get('allNotifications', [GeneralController::class, 'allNotifications'])->name('allNotifications');
     Route::get('markAllAsRead', [GeneralController::class, 'markAllAsRead'])->name('markAllAsRead');
+    Route::post('updatePaginationCount', [GeneralController::class, 'updatePaginationCount'])->name('updatePaginationCount');
 
 });
 /****************************** END ADMIN ROUTES ******************************/

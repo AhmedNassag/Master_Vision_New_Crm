@@ -146,14 +146,24 @@
                         @endif
                         <div class="table-responsive">
 
+                            <!-- pagination -->
+                            <form method="GET" action="{{ url('admin/campaign') }}">
+                                @foreach (request()->except('perPage') as $key => $value)
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                @endforeach
+                                <select name="perPage" onchange="this.form.submit()">
+                                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                            </form>
+
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                         <th class="text-center">#</th>
                                         <th class="text-center">{{ trans('main.Name') }}</th>
-                                        <th class="text-center min-w-150px">{{ trans('main.ContactSource') }}</th>
-                                        <th class="text-center">{{ trans('main.Activity') }}</th>
-                                        <th class="text-center min-w-150px">{{ trans('main.SubActivity') }}</th>
                                         <th class="text-center">{{ trans('main.url') }}</th>
                                         <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
                                     </tr>
@@ -166,10 +176,7 @@
                                                     {{ @$key+1 }}
                                                 </td>
                                                 <td class="text-center">{{ @$item->name }}</td>
-                                                <td class="text-center">{{ @$item->contactSource->name }}</td>
-                                                <td class="text-center">{{ @$item->activity->name }}</td>
-                                                <td class="text-center">{{ @$item->subActivity->name }}</td>
-                                                <td class="text-center">{{ @$item->url }}</td>
+                                                <td class="text-center">@if($item->url) {{ @$item->url . '/' . @$item->id }} @endif</td>
                                                 <td class="text-center">
                                                     <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                         {{ trans('main.Actions') }}

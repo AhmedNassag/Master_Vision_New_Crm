@@ -75,6 +75,38 @@
                                 <tr class="col-2">
                                     <button id="addBtn" type="button" onclick="addProduct();" class="d-block btn btn-info ">{{ trans('main.Add') }} {{ trans('main.Target') }}</button>
                                 </tr>
+                                <tr class="row align-items-center justify-content-between ">
+                                    <td class="col-4">
+                                        <div class="d-flex flex-column mb-5 fv-row" id="add_activity_id">
+                                            <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                                <span class="required">{{ trans('main.Activity') }}</span>
+                                            </label>
+                                            <select name="activity_id[]" data-control="select2" data-dropdown-parent="#add_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid activity-select">
+                                                <option value="">{{ trans('main.Select') }}...</option>
+                                                <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
+                                                @foreach ($activities as $activity)
+                                                    <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class="col-4">
+                                        <div class="row mb-5">
+                                            <div class="col-md-12 fv-row">
+                                                <label class="required fs-5 fw-semibold mb-2">{{ trans('main.AmountTarget') }}</label>
+                                                <input type="text" class="form-control form-control-solid amount-input" placeholder="{{ trans('main.AmountTarget') }}" value="0" name="amount_target[]" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-4">
+                                        <div class="row mb-5">
+                                            <div class="col-md-12 fv-row">
+                                                <label class="required fs-5 fw-semibold mb-2">{{ trans('main.CallsTarget') }}</label>
+                                                <input type="text" class="form-control form-control-solid calls-input" placeholder="{{ trans('main.CallsTarget') }}" value="0" name="calls_target[]" />
+                                            </div>
+                                         </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
