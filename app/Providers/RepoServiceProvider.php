@@ -56,6 +56,12 @@ class RepoServiceProvider extends ServiceProvider
             'App\Repositories\Dashboard\SubActivity\SubActivityRepository',
         );
 
+        //Service
+        $this->app->bind(
+            'App\Repositories\Dashboard\Service\ServiceInterface',
+            'App\Repositories\Dashboard\Service\ServiceRepository',
+        );
+
         //ContactCategory
         $this->app->bind(
             'App\Repositories\Dashboard\ContactCategory\ContactCategoryInterface',
@@ -84,6 +90,12 @@ class RepoServiceProvider extends ServiceProvider
         $this->app->bind(
             'App\Repositories\Dashboard\SavedReply\SavedReplyInterface',
             'App\Repositories\Dashboard\SavedReply\SavedReplyRepository',
+        );
+
+        //Tag
+        $this->app->bind(
+            'App\Repositories\Dashboard\Tag\TagInterface',
+            'App\Repositories\Dashboard\Tag\TagRepository',
         );
 
         //EmployeeTarget

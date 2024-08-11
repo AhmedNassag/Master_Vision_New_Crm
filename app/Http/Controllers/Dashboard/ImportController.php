@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Controller genrated using LaraAdmin
- * Help: http://laraadmin.com
- */
 
 namespace App\Http\Controllers\Dashboard;
 
@@ -60,11 +56,11 @@ class ImportController extends Controller
             $spreadsheet         = IOFactory::load($filePath);
             $worksheet           = $spreadsheet->getActiveSheet();
             $highestColumn       = $worksheet->getHighestColumn();
-
             $highestColumnNumber = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
-            for ($colNumber = 1; $colNumber <= $highestColumnNumber; $colNumber++) {
-                $col = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colNumber);
+            for ($colNumber = 1; $colNumber <= $highestColumnNumber; $colNumber++)
+            {
+                $col            = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colNumber);
                 $excelColumns[] = $worksheet->getCell($col . '1')->getValue();
             }
 
@@ -79,19 +75,23 @@ class ImportController extends Controller
                     'company_name'      => trans('main.Company Name'),
                     'city_id'           => trans('main.City'),
                     'area_id'           => trans('main.Area'),
-                    // 'contact_source_id' => trans('main.ContactSource'),
                     'job_title_id'      => trans('main.Job Title'),
                     'industry_id'       => trans('main.Industry'),
                     'major_id'          => trans('main.Major'),
                     'notes'             => trans('main.Notes'),
                     'gender'            => trans('main.Gender'),
-                    'is_trashed'        => trans('main.Is Trashed'),
                     'birth_date'        => trans('main.Birth Date'),
                     'national_id'       => trans('main.National ID'),
-                    'code'              => trans('main.Code'),
-                    'is_active'         => trans('main.Is Active'),
+                    // 'code'              => trans('main.Code'),
+                    'branch_id'         => trans('main.Branch'),
+                    'religion'          => trans('main.Religion'),
+                    'marital_status'    => trans('main.Marital Status'),
+                    'address'           => trans('main.Address'),
+                    'has_special_needs' => trans('main.Has Special Needs'),
                 ];
-            }else{
+            }
+            else
+            {
                 $contactFields = [
                     'name'              => trans('main.Name'),
                     'mobile'            => trans('main.Mobile'),
@@ -100,17 +100,19 @@ class ImportController extends Controller
                     'company_name'      => trans('main.Company Name'),
                     'city_id'           => trans('main.City'),
                     'area_id'           => trans('main.Area'),
-                    // 'contact_source_id' => trans('main.ContactSource'),
                     'job_title_id'      => trans('main.Job Title'),
                     'industry_id'       => trans('main.Industry'),
                     'major_id'          => trans('main.Major'),
                     'notes'             => trans('main.Notes'),
                     'gender'            => trans('main.Gender'),
-                    'is_trashed'        => trans('main.Is Trashed'),
                     'birth_date'        => trans('main.Birth Date'),
                     'national_id'       => trans('main.National ID'),
-                    'code'              => trans('main.Code'),
-                    'is_active'         => trans('main.Is Active'),
+                    // 'code'              => trans('main.Code'),
+                    'branch_id'         => trans('main.Branch'),
+                    'religion'          => trans('main.Religion'),
+                    'marital_status'    => trans('main.Marital Status'),
+                    'address'           => trans('main.Address'),
+                    'has_special_needs' => trans('main.Has Special Needs'),
                 ];
             }
 

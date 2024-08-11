@@ -49,7 +49,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Activity') }}</span>
                         </label>
-                        <select name="invoice[activity_id]" id="invoice[activity_id]" data-control="select2" data-dropdown-parent="#invoice_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="invoice[activity_id]" id="invoice[activity_id]" data-control="select2" data-dropdown-parent="#invoice_activity_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                             @foreach($activities as $activity)
@@ -62,7 +62,17 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.SubActivity') }}</span>
                         </label>
-                        <select name="invoice[interest_id]" id="invoice[interest_id]" data-control="select2" data-dropdown-parent="#invoice_interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="invoice[interest_id]" id="invoice[interest_id]" data-control="select2" data-dropdown-parent="#invoice_interest_id" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+
+                        </select>
+                    </div>
+                    <!-- invoice[service_id] -->
+                    <div id="invoice_service_id" class="d-flex flex-column mb-5 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span class="required">{{ trans('main.Service') }}</span>
+                        </label>
+                        <select name="invoice[service_id]" id="invoice[service_id]" data-control="select2" data-dropdown-parent="#invoice_service_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
                         </select>
@@ -72,7 +82,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Status') }}</span>
                         </label>
-                        <select name="invoice[status]" id="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="invoice[status]" id="status" data-control="select2" data-dropdown-parent="#status" class="form-select form-select-solid">
                             <option value="draft">{{ trans('main.Draft') }}</option>
                             <option value="sent">{{ trans('main.Sent') }}</option>
                             <option value="void">{{ trans('main.Void') }}</option>

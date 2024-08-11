@@ -11,9 +11,9 @@ use DB;
 
 class RoleController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
-        $this->middleware('permission:عرض الصلاحيات', ['only' => ['index']]);
+        $this->middleware('permission:عرض الصلاحيات', ['only' => ['index','show']]);
         $this->middleware('permission:إضافة الصلاحيات', ['only' => ['create', 'store']]);
         $this->middleware('permission:تعديل الصلاحيات', ['only' => ['edit', 'update']]);
         $this->middleware('permission:حذف الصلاحيات', ['only' => ['destroy']]);
@@ -24,16 +24,18 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         try {
-            
+            $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
             $data = Role::orderBy('id','DESC')
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like','%'.$request->name.'%');
             })
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage)->appends(request()->query());
             return view('dashboard.roles.index')
             ->with([
-                'data'   => $data,
-                'name'   => $request->name,
+                'data'    => $data,
+                'name'    => $request->name,
+                'perPage' => $perPage,
             ]);
 
         } catch (\Exception $e) {
@@ -46,10 +48,9 @@ class RoleController extends Controller
     public function create()
     {
         try {
-
             $permission = Permission::get();
             return view('dashboard.roles.create',compact('permission'));
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -60,7 +61,6 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         try{
-
             $validator = Validator::make($request->all(),[
                 'name'       => 'required|unique:roles,name',
                 'permission' => 'required',
@@ -84,7 +84,6 @@ class RoleController extends Controller
     public function show($id)
     {
         try {
-
             $role            = Role::find($id);
             $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")->where("role_has_permissions.role_id",$id)->get();
             return view('dashboard.roles.show',compact('role','rolePermissions'));
@@ -99,7 +98,10 @@ class RoleController extends Controller
     public function edit($id)
     {
         try {
-
+            if ($id == 1) {
+                session()->flash('error');
+                return redirect()->back();
+            }
             $role            = Role::find($id);
             $permission      = Permission::get();
             $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')->all();
@@ -115,7 +117,10 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         try {
-
+            if ($id == 1) {
+                session()->flash('error');
+                return redirect()->back();
+            }
             $this->validate($request, [
                 'name'       => 'required|unique:roles,name,' . $id,
                 'permission' => 'required',
@@ -136,7 +141,10 @@ class RoleController extends Controller
     public function destroy($id)
     {
         try {
-
+            if ($id == 1) {
+                session()->flash('error');
+                return redirect()->back();
+            }
             DB::table("roles")->where('id',$id)->delete();
             return redirect()->route('role.index')->with('success','Role deleted successfully');
 
@@ -150,13 +158,15 @@ class RoleController extends Controller
     public function delete(Request $request)
     {
         try {
-
+            if ($request->id == 1) {
+                session()->flash('error');
+                return redirect()->back();
+            }
             $role = DB::table("roles")->where('id',$request->id)->delete();
             if (!$role) {
                 session()->flash('error');
                 return redirect()->back();
             }
-
             session()->flash('success');
             return redirect()->route('role.index');
 

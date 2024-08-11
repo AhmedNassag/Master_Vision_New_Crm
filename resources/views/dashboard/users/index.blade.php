@@ -58,7 +58,7 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Branch') }}</span>
                                                 </label>
-                                                <select name="branch_id" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="branch_id" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
@@ -80,7 +80,7 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Department') }}</span>
                                                 </label>
-                                                <select name="dept" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="dept" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                                     @foreach($departments as $department)
@@ -174,7 +174,7 @@
                                         <th class="text-center  min-w-150px">{{ trans('main.Mobile') }}</th>
                                         <th class="text-center">{{ trans('main.Branch') }}</th>
                                         <th class="text-center">{{ trans('main.Department') }}</th>
-                                        <th class="text-center">{{ trans('main.Status') }}</th>
+                                        {{-- <th class="text-center">{{ trans('main.Status') }}</th> --}}
                                         <th class="text-center">{{ trans('main.Role') }}</th>
                                         {{-- <th class="text-center">{{ trans('main.Target') }}</th> --}}
                                         <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
@@ -192,7 +192,7 @@
                                                 <td class="text-center">{{ @$item->mobile }}</td>
                                                 <td class="text-center">{{ @$item->employee->branch->name }}</td>
                                                 <td class="text-center">{{ @$item->employee->department->name }}</td>
-                                                <td class="text-center">
+                                                {{-- <td class="text-center">
                                                     <a href="{{ route('user.changeStatus',@$item->id) }}">
                                                         @if (@$item->status == 1)
                                                             <div class="btn ripple btn-purple-gradient" id='swal-success'>
@@ -208,7 +208,7 @@
                                                             </div>
                                                         @endif
                                                     </a>
-                                                </td>
+                                                </td> --}}
                                                 <td class="text-center">
                                                     @if (!empty(@$item->getRoleNames()))
                                                         @foreach (@$item->getRoleNames() as $v)

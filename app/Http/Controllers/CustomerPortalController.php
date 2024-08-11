@@ -29,7 +29,7 @@ class CustomerPortalController extends Controller
             $item    = Customer::with(['customerSource','city','area','customerCategory','activity'])->findOrFail(Auth::user()->id);
             $tickets = Ticket::client()->get();
             return view('customer-portal.dashboard.home',['item' => $item , 'tickets' => $tickets]);
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -78,11 +78,11 @@ class CustomerPortalController extends Controller
             $ticketRecord = Ticket::findOrFail($ticket->id);
             if($ticket->assigned_agent_id != null)
             {
-                $notifiable = User::where('id', $ticket->assigned_agent_id)->first();
+                $notifiable = User::hidden()->where('id', $ticket->assigned_agent_id)->first();
             }
             else
             {
-                $notifiable = User::first();
+                $notifiable = User::hidden()->first();
             }
             if ($notifiable) {
                 $notifiable->notify(new TicketReplyNotification($ticketRecord));
@@ -127,7 +127,7 @@ class CustomerPortalController extends Controller
     public function storeTicket(Request $request)
     {
         try {
-            
+
             $validator = Validator::make($request->all(), [
                 'interest_id' => 'required|exists:interests,id',
                 'ticket_type' => 'required|string|in:Technical Issue,Inquiry,Request',

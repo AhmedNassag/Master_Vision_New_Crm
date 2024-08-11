@@ -50,10 +50,10 @@ class HomeController extends Controller
             $emps = [];
             foreach($user->roles as $role) {
                 if ($role->name = "admin") {
-                    $emps = Employee::pluck('id')->toArray();
+                    $emps = Employee::hidden()->pluck('id')->toArray();
                 }
                 else {
-                    $emps = Employee::where("dept", $user->employee->dept)->pluck('id')->toArray();
+                    $emps = Employee::hidden()->where("dept", $user->employee->dept)->pluck('id')->toArray();
                 }
             }
 
@@ -126,7 +126,7 @@ class HomeController extends Controller
             }])->having("meetings_count",">",0)->orderBy("meetings_count","desc")->take(5)->get();
 
             //top 5 employees
-            $employees = Employee::withCount(['meetings'=>function($q) use ($emps) {
+            $employees = Employee::hidden()->withCount(['meetings'=>function($q) use ($emps) {
                 $q->whereNull("deleted_at");
                 if(count($emps)>0) {
                     $q->whereIn("created_by",$emps);
@@ -152,7 +152,7 @@ class HomeController extends Controller
             ->whereMonth('reminder_date', Carbon::now()->month)
             ->count();
 
-            $mostSalesEmployees = Employee::whereHas('invoices')
+            $mostSalesEmployees = Employee::hidden()->whereHas('invoices')
             ->with('branch')
             ->withSum('invoices', 'total_amount')
             ->orderBy('invoices_sum_total_amount', 'desc')
@@ -227,7 +227,7 @@ class HomeController extends Controller
             $data = Branch::with('employees','customers')->get();
 
             return $this->apiResponse($data, 'The Data Returns Successfully', 200);
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

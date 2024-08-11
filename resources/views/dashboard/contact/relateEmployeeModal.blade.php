@@ -14,17 +14,17 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Branch') }}</span>
                         </label>
-                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id_{{ @$item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id_{{ @$item->id }}" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php
-                                if(Auth::user()->roles_name[0] == "Admin")
-                                {
+                                // if(Auth::user()->roles_name[0] == "Admin")
+                                // {
                                     $branches = \App\Models\Branch::get(['id','name']);
-                                }
-                                else
-                                {
-                                    $branches = \App\Models\Branch::where('id', auth()->user()->employee->branch_id)->get(['id','name']);
-                                }
+                                // }
+                                // else
+                                // {
+                                //     $branches = \App\Models\Branch::where('id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                // }
                             ?>
                             @foreach($branches as $branch)
                                 <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
@@ -36,7 +36,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Employee') }}</span>
                         </label>
-                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id_{{ @$item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id_{{ @$item->id }}" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
                         </select>

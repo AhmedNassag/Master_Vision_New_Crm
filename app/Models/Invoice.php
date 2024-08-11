@@ -14,6 +14,23 @@ class Invoice extends Model
 
 
 
+    //this function use to make validation before destroy the record to refuse deleting if it has a related data in other tables
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($model) {
+            if
+            (
+                $model->recorderReminders()->count() > 0
+            )
+            {
+                throw new \Exception(trans('main.Can Not Delete Beacause There Is A Related Data'));
+            }
+        });
+    }
+
+
+
     //start relations
     public function customer()
     {
@@ -32,6 +49,13 @@ class Invoice extends Model
 	public function interest()
     {
         return $this->belongsTo(SubActivity::class, 'interest_id');
+    }
+
+
+
+	public function service()
+    {
+        return $this->belongsTo(Service::class, 'service_id');
     }
 
 

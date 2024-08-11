@@ -50,17 +50,27 @@
                             </div>
                         </div>
                     </div>
-                    <!--Search With Mobile-->
-                    {{-- <div class="container">
-                        <form action="{{ route('contact.index') }}" method="GET" class="col-12 mt-1">
+                    <!--Search With Mobile || Mobile-->
+                    <div class="container">
+                        <form action="{{ route('customer.index') }}" method="GET" class="col-12 mt-5">
                             <div class="row">
-                                <div class="col-5">
-                                    <input type="text" name="query" class="form-control" placeholder="{{ trans('main.Search With Mobile') }}...">
+                                <div class="col-4">
+                                    <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Search With Name') }}</label>
+                                    <input type="text" name="name" class="form-control" placeholder="{{ trans('main.Search With Name') }}..." value="{{ @$name }}">
                                 </div>
-                                <button type="submit" class="btn btn-primary col-1">{{ trans('main.Search') }}</button>
+                                <div class="col-4">
+                                    <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Search With Mobile') }}</label>
+                                    <input type="text" name="mobile" class="form-control" placeholder="{{ trans('main.Search With Mobile') }}..." value="{{ @$mobile }}">
+                                </div>
+                                <div class="col-4 mt-10">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="ki-outline ki-eye fs-2"></i>
+                                        {{ trans('main.Search') }}
+                                    </button>
+                                </div>
                             </div>
                         </form>
-                    </div> --}}
+                    </div>
                     <!--multi_selected-->
                     <div class="card-header border-0 pt-lg-6 px-3  ">
                         <div class="card-title"></div>
@@ -133,6 +143,17 @@
                             }
                         </script>
                         @endif
+
+                        <!-- Imported Contacts -->
+                        @if (session()->has('rowsSavedCount') && session()->has('rowsSkippedCount'))
+                            <div class="alert alert-success">
+                                <ul>
+                                    <li class="text-success">{{ trans('main.Rows Saved') }}: {{ session('rowsSavedCount') }}</li>
+                                    <li class="text-danger">{{ trans('main.Rows Skipped') }}: {{ session('rowsSkippedCount') }}</li>
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="table-responsive">
 
                             <!-- pagination -->

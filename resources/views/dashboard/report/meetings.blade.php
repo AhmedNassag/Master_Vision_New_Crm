@@ -1,4 +1,16 @@
 @extends('layouts.app0')
+
+@section('css')
+<style>
+    @media print {
+        .not_print {
+            display: none;
+        }
+    }
+</style>
+@endsection
+
+
 @section('content')
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -59,8 +71,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.SubActivity') }}</span>
                                         </label>
-                                        <select name="interests_ids" data-control="select2" data-dropdown-parent="#interests" data-placeholder="{{ trans('main.SubActivity') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.SuvActivity') }}...</option>
+                                        <select name="interests_ids" data-control="select2" data-dropdown-parent="#interests" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $subActivities = App\Models\SubActivity::get(['id','name']); ?>
                                             @foreach( $subActivities as $subActivity )
                                                 <option value="{{ @$subActivity->id }}" {{ @$subActivity->id == @$interests_ids ? 'selected' : '' }}>{{ @$subActivity->name }}</option>
@@ -72,8 +84,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.ContactSource') }}</span>
                                         </label>
-                                        <select name="contact_source_id" data-control="select2" data-dropdown-parent="#sources" data-placeholder="{{ trans('main.ContactSource') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.ContactSource') }}...</option>
+                                        <select name="contact_source_id" data-control="select2" data-dropdown-parent="#sources" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $contactSources = App\Models\ContactSource::get(['id','name']); ?>
                                             @foreach( $contactSources as $contactSource )
                                                 <option class="px-0" value="{{ @$contactSource->id }}" {{ @$contactSource->id == @$contact_source_id ? 'selected' : '' }}>{{ @$contactSource->name }}</option>
@@ -89,8 +101,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Contact') }}</span>
                                         </label>
-                                        <select name="contact_id" data-control="select2" data-dropdown-parent="#contacts" data-placeholder="{{ trans('main.Contact') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Contact') }}...</option>
+                                        <select name="contact_id" data-control="select2" data-dropdown-parent="#contacts" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
                                                 {
@@ -115,20 +127,20 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Employee') }}</span>
                                         </label>
-                                        <select name="created_by" data-control="select2" data-dropdown-parent="#employee" data-placeholder="{{ trans('main.Employee') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Employee') }}...</option>
+                                        <select name="created_by" data-control="select2" data-dropdown-parent="#employee" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
                                                 {
-                                                    $employees = \App\Models\Employee::get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
                                                 }
-                                                else if(Auth::user()->roles_name[0] == "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                                 {
-                                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
                                                 }
                                                 else
                                                 {
-                                                    $employees = \App\Models\Employee::where('id', auth()->user()->employee->id)->get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->where('id', auth()->user()->employee->id)->get(['id','name']);
                                                 }
                                             ?>
                                             @foreach( $employees as $employee )
@@ -196,7 +208,20 @@
                         @endif
 
                         @if(Request::is('admin/report/meetingsReport'))
-                            <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div id="print" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button>
+                                <!-- pagination -->
+                                <form method="GET" action="{{ url('admin/report/meetingsReport') }}" class="not_print">
+                                    @foreach (request()->except('perPage') as $key => $value)
+                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                    @endforeach
+                                    <select name="perPage" onchange="this.form.submit()">
+                                        <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                        <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                        <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                    </select>
+                                </form>
                                 <div class="table-responsive">
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
                                         <thead>
@@ -238,7 +263,9 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{ @$data->links() }}
+                                    <div class="not_print">
+                                        {{-- {{ @$data->links() }} --}}
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -249,4 +276,21 @@
     </div>
 </div>
 <!--end:::Main-->
+@endsection
+
+
+
+
+@section('js')
+<!-- Print -->
+<script type="text/javascript">
+    function printDiv() {
+        var printContents       = document.getElementById('print').innerHTML;
+        var originalContents    = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload();
+    }
+</script>
 @endsection

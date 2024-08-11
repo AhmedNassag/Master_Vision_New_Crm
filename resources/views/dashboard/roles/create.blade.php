@@ -99,7 +99,7 @@
                                                         </div>
                                                         <div class="card-footer p-3 text-center">
                                                             <label class="form-group toggle-switch mb-0">
-                                                                <input type="checkbox" class="toggle-switch-input" name="permission[]" value="{{ @$value->id }}">
+                                                                <input type="checkbox" class="toggle-switch-input" name="permission[]" value="{{ @$value->name }}">
                                                                 <span class="toggle-switch-label mx-auto">
                                                                     <span class="toggle-switch-indicator"></span>
                                                                 </span>

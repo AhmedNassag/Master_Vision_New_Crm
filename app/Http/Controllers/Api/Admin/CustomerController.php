@@ -332,8 +332,8 @@ class CustomerController extends Controller
             $validator = Validator::make($request->all(), [
                 // 'auth_id'             => 'required|exists:users,id',
                 'name'                => 'required|string',
-                'mobile'              => 'required|numeric|unique:customers,mobile',
-                'national_id'         => 'nullable|numeric|unique:customers,national_id',
+                'mobile'              => 'required|numeric|unique:customers,mobile,NULL,id,deleted_at,NULL',
+                'national_id'         => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL',
                 'contact_source_id'   => 'required|integer|exists:contact_sources,id',
                 'activity_id'         => 'required|integer|exists:activates,id',
                 'job_title_id'        => 'nullable|integer|exists:job_titles,id',
@@ -341,8 +341,8 @@ class CustomerController extends Controller
                 'area_id'             => 'nullable|integer|exists:areas,id',
                 'contact_category_id' => 'nullable|integer|exists:contact_categories,id',
                 'major_id'            => 'nullable|integer|exists:majors,id',
-                'mobile2'             => 'nullable|numeric|unique:contacts,mobile2',
-                'email'               => 'nullable|email|unique:contacts,email',
+                'mobile2'             => 'nullable|numeric|unique:customers,mobile2,NULL,id,deleted_at,NULL',
+                'email'               => 'nullable|email|unique:customers,email,NULL,id,deleted_at,NULL',
                 'birth_date'          => 'nullable|date',
                 'company_name'        => 'nullable',
                 'gender'              => 'nullable|in:Male,Female',
@@ -556,8 +556,8 @@ class CustomerController extends Controller
                 // 'auth_id'             => 'required|exists:users,id',
                 'parent_id'           => 'required|exists:customers,id',
                 'name'                => 'required|string',
-                'mobile'              => 'required|numeric|unique:customers,mobile',
-                'national_id'         => 'nullable|numeric|unique:customers,national_id',
+                'mobile'              => 'required|numeric|unique:customers,mobile,NULL,id,deleted_at,NULL',
+                'national_id'         => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL',
                 'contact_source_id'   => 'required|integer|exists:contact_sources,id',
                 'activity_id'         => 'required|integer|exists:activates,id',
                 'job_title_id'        => 'nullable|integer|exists:job_titles,id',
@@ -565,8 +565,8 @@ class CustomerController extends Controller
                 'area_id'             => 'nullable|integer|exists:areas,id',
                 'contact_category_id' => 'nullable|integer|exists:contact_categories,id',
                 'major_id'            => 'nullable|integer|exists:majors,id',
-                'mobile2'             => 'nullable|numeric|unique:contacts,mobile2',
-                'email'               => 'nullable|email|unique:contacts,email',
+                'mobile2'             => 'nullable|numeric|unique:contacts,mobile2,NULL,id,deleted_at,NULL',
+                'email'               => 'nullable|email|unique:contacts,email,NULL,id,deleted_at,NULL',
                 'birth_date'          => 'nullable|date',
                 'company_name'        => 'nullable',
                 'gender'              => 'nullable|in:Male,Female',
@@ -633,7 +633,6 @@ class CustomerController extends Controller
     public function addInvoice(Request $request)
 	{
         try {
-
             $validator = Validator::make($request->all(), [
                 // 'auth_id'        => 'required|exists:users,id',
                 'invoice_number' => 'required|string',
@@ -690,7 +689,6 @@ class CustomerController extends Controller
     public function updateInvoice(Request $request)
 	{
         try {
-
             $validator = Validator::make($request->all(), [
                 // 'auth_id'        => 'required|exists:users,id',
                 'invoice_number' => 'required|string',
@@ -738,9 +736,9 @@ class CustomerController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'customer_id'    => 'required|exists:customers,id',
-                'activity_id'    => 'required|exists:activates,id',
-                'interest_id'    => 'required|exists:interests,id',
+                'customer_id'     => 'required|exists:customers,id',
+                'activity_id'     => 'required|exists:activates,id',
+                'interest_id'     => 'required|exists:interests,id',
                 'reminder_date'   => 'required|date',
                 'expected_amount' => 'required',
             ]);
@@ -944,7 +942,7 @@ class CustomerController extends Controller
                 'password' => $request->password,
             ]);
             return $this->apiResponse($data, 'The Data Stored Successfully', 200);
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

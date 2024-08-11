@@ -2,9 +2,9 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Excel Column</th>
-            <th>Contact Field</th>
-            <th>Operator</th>
+            <th>{{ trans('main.Excel Column') }}</th>
+            <th>{{ trans('main.Contact Field') }}</th>
+            <th>{{ trans('main.Operator') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -14,7 +14,7 @@
                 <td>{{ @$column }}</td>
                 <td>
                     <select name="column_mappings[{{ @$column }}][contact_field]">
-                        <option value="">Select Contact Field</option>
+                        <option value="">{{ trans('main.Select Contact Field') }}</option>
                         @foreach ($contactFields as $key=>$field)
                             <option value="{{ @$key }}">{{ @$field }}</option>
                         @endforeach
@@ -22,8 +22,8 @@
                 </td>
                 <td>
                     <select name="column_mappings[{{ @$column }}][operator]">
-                        <option value="equal">Equal</option>
-                        <option value="like">Like</option>
+                        <option value="equal">{{ trans('main.Equal') }}</option>
+                        <option value="like">{{ trans('main.Like') }}</option>
                     </select>
                 </td>
             </tr>

@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Services\PointsCalculationService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
+use App\Services\PointsCalculationService;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class Customer extends Authenticatable implements JWTSubject
@@ -26,10 +26,30 @@ class Customer extends Authenticatable implements JWTSubject
         $this->attributes['password'] = bcrypt($value);
     }
 
+    //this function use to make validation before destroy the record to refuse deleting if it has a related data in other tables
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('branch', function (Builder $builder)
+
+        static::deleting(function($model) {
+            if
+            (
+                $model->invoices()->count() > 0       ||
+                $model->points()->count() > 0         ||
+                $model->pointHistories()->count() > 0 ||
+                $model->reorderReminder() > 0         ||
+                $model->reminders()->count() > 0      ||
+                $model->contacts()->count() > 0       ||
+                $model->customers()->count() > 0      ||
+                $model->tickets()->count() > 0        ||
+                $model->related_customers()->count() > 0
+            )
+            {
+                throw new \Exception(trans('main.Can Not Delete Beacause There Is A Related Data'));
+            }
+        });
+
+        /*static::addGlobalScope('branch', function (Builder $builder)
         {
             if (auth()->user())
             {
@@ -40,7 +60,7 @@ class Customer extends Authenticatable implements JWTSubject
                     });
                 }
             }
-        });
+        });*/
     }
 
 
@@ -70,13 +90,6 @@ class Customer extends Authenticatable implements JWTSubject
 
 
     //start relations
-    public function contacts()
-    {
-        return $this->hasMany(Contact::class, 'customer_id');
-    }
-
-
-
     public function jobTitle()
     {
         return $this->belongsTo(JobTitle::class, 'job_title_id');
@@ -146,6 +159,20 @@ class Customer extends Authenticatable implements JWTSubject
 
 
 
+    public function parent()
+    {
+		return $this->belongsTo(Customer::class,'parent_id');
+    }
+
+
+
+    public function createdBy()
+    {
+		return $this->belongsTo(Employee::class,'created_by');
+    }
+
+
+
 	public function invoices()
 	{
 		return $this->hasMany(Invoice::class, 'customer_id');
@@ -160,6 +187,13 @@ class Customer extends Authenticatable implements JWTSubject
 
 
 
+    public function tickets()
+	{
+		return $this->hasMany(Ticket::class, 'customer_id');
+	}
+
+
+
     public function attachments()
     {
 		return $this->hasMany(Attachment::class, 'customer_id');
@@ -168,16 +202,9 @@ class Customer extends Authenticatable implements JWTSubject
 
 
 
-    public function parent()
+    public function contacts()
     {
-		return $this->belongsTo(Customer::class,'parent_id');
-    }
-
-
-
-    public function createdBy()
-    {
-		return $this->belongsTo(Employee::class,'created_by');
+        return $this->hasMany(Contact::class, 'customer_id');
     }
 
 
@@ -199,6 +226,20 @@ class Customer extends Authenticatable implements JWTSubject
     public function points()
     {
         return $this->hasMany(Point::class, 'customer_id');
+    }
+
+
+
+    public function pointHistories()
+    {
+        return $this->hasMany(PointHistory::class, 'customer_id');
+    }
+
+
+
+    public function reorderReminder()
+    {
+        return $this->hasMany(ReorderReminder::class, 'customer_id');
     }
 
 
@@ -228,6 +269,13 @@ class Customer extends Authenticatable implements JWTSubject
     public function media()
     {
         return $this->morphOne(Media::class,'mediable');
+    }
+
+
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
 }

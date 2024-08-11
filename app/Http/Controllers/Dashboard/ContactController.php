@@ -169,6 +169,7 @@ class ContactController extends Controller
 
             if ($validator->fails())
             {
+                session()->flash('error');
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -218,7 +219,7 @@ class ContactController extends Controller
             $industries        = Industry::get(['id','name']);
             $majors            = Major::get(['id','name']);
             $activities        = Activity::get(['id','name']);
-            $employees         = Employee::get(['id','name']);
+            $employees         = Employee::hidden()->get(['id','name']);
 
             return view('dashboard.contact.export',compact('jobTitles','contactCategories','contactSources','cities','areas','industries','majors','activities','employees'));
 
@@ -246,22 +247,33 @@ class ContactController extends Controller
     public function importData(Request $request)
     {
         try {
-
-            $request->validate([
-                'contacts_file'   => 'required|mimes:xlsx,xls',
-                'column_mappings' => 'required|array',
+            $validator = Validator::make($request->all(), [
+                'contact_source_id' => 'required|integer|exists:contact_sources,id',
+                'activity_id'       => 'required|integer|exists:activates,id',
+                'interest_id'       => 'required|integer|exists:interests,id',
+                'contacts_file'     => 'required|mimes:xlsx,xls',
+                'column_mappings'   => 'required|array',
             ]);
+            if ($validator->fails())
+            {
+                session()->flash('error');
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             // Retrieve column mappings from the request
             $columnMappings = $request->input('column_mappings');
 
-            foreach ($columnMappings as $key => $value) {
-                // if(!$columnMappings[$key]['contact_field'] = "name" || !$columnMappings[$key]['contact_field'] = "mobile")
-                // {
+            foreach ($columnMappings as $key => $value)
+            {
+                if(!$value['contact_field'] = "name" || !$value['contact_field'] = "mobile")
+                {
+                    session()->flash('error');
+                    return redirect()->back();
+                }
 
-                // }
                 // Check if "contact_field" is null or empty
-                if (isset($value['contact_field']) && ($value['contact_field'] === null || $value['contact_field'] === "")) {
+                if (isset($value['contact_field']) && ($value['contact_field'] === null || $value['contact_field'] === ""))
+                {
                     // Update "contact_field" to "notes"
                     $columnMappings[$key]['contact_field'] = "notes";
                 }
@@ -282,11 +294,12 @@ class ContactController extends Controller
             $importInstance = new ContactImport($columnMappings, $request->contact_source_id, $request->activity_id, $request->interest_id);
             Excel::import($importInstance, $filePath);
 
-            $rowsSavedCount   = $importInstance->getRowsSavedCount();
-            $rowsSkippedCount = $importInstance->getRowsSkippedCount();
+            $rowsSavedCount   = strval($importInstance->getRowsSavedCount());
+            $rowsSkippedCount = strval($importInstance->getRowsSkippedCount());
 
-            return redirect()->back()->with('success', "Contacts imported successfully. Rows saved: $rowsSavedCount, Rows skipped: $rowsSkippedCount.");
 
+            session()->flash('success');
+            return redirect()->back()->with(['rowsSavedCount' => $rowsSavedCount, 'rowsSkippedCount' => $rowsSkippedCount]);
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

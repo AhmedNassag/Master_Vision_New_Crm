@@ -19,7 +19,7 @@ class NotificationRepository implements NotificationInterface
 {
     public function index($request)
     {
-        if(Auth::user()->roles_name[0] == "Admin")
+        /*if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = Notification::with(['createdBy','department','employee'])
             ->when($request->notification != null,function ($q) use($request){
@@ -67,7 +67,7 @@ class NotificationRepository implements NotificationInterface
             ->paginate(config('myConfig.paginationCount'))->appends(request()->query());
         }
         else
-        {
+        {*/
             $data = Notification::with(['createdBy','department','employee'])
             ->whereRelation('employee','id', auth()->user()->employee->id)
             ->orWhere('dept', auth()->user()->employee->dept)
@@ -90,7 +90,7 @@ class NotificationRepository implements NotificationInterface
                 return $q->whereDate('created_at', '<=', $request->to_date);
             })
             ->paginate(config('myConfig.paginationCount'))->appends(request()->query());
-        }
+        // }
         return view('dashboard.notification.index',compact('data'))
         ->with([
             'notification' => $request->notification,
@@ -125,7 +125,7 @@ class NotificationRepository implements NotificationInterface
                             session()->flash('error');
                             return redirect()->back();
                         }
-                        $notifiable = User::where('context_id',$employee_id)->first();
+                        $notifiable = User::hidden()->where('context_id',$employee_id)->first();
                         if ($notifiable) {
                             $notifiable->notify(new NotificationNotification($data));
                         }
@@ -138,7 +138,7 @@ class NotificationRepository implements NotificationInterface
                 //send to employees in specific dept in specific branch
                 if($request->branch_id != null && $request->dept != null)
                 {
-                    $employees = Employee::where('branch_id',$request->branch_id)->where('dept',$request->dept)->get();
+                    $employees = Employee::hidden()->where('branch_id',$request->branch_id)->where('dept',$request->dept)->get();
                     foreach($employees as $employee)
                     {
                         $data = Notification::create([
@@ -150,7 +150,7 @@ class NotificationRepository implements NotificationInterface
                             session()->flash('error');
                             return redirect()->back();
                         }
-                        $notifiable = User::where('context_id',$employee->id)->first();
+                        $notifiable = User::hidden()->where('context_id',$employee->id)->first();
                         if ($notifiable) {
                             $notifiable->notify(new NotificationNotification($data));
                         }
@@ -159,7 +159,7 @@ class NotificationRepository implements NotificationInterface
                 //send to employees in specific branch
                 else if($request->branch_id != null && $request->dept == null)
                 {
-                    $employees = Employee::where('branch_id',$request->branch_id)->get();
+                    $employees = Employee::hidden()->where('branch_id',$request->branch_id)->get();
                     foreach($employees as $employee)
                     {
                         $data = Notification::create([
@@ -171,7 +171,7 @@ class NotificationRepository implements NotificationInterface
                             session()->flash('error');
                             return redirect()->back();
                         }
-                        $notifiable = User::where('context_id',$employee->id)->first();
+                        $notifiable = User::hidden()->where('context_id',$employee->id)->first();
                         if ($notifiable) {
                             $notifiable->notify(new NotificationNotification($data));
                         }
@@ -180,7 +180,7 @@ class NotificationRepository implements NotificationInterface
                 //send to employees in specific dept
                 else if($request->branch_id == null && $request->dept != null)
                 {
-                    $employees = Employee::where('dept',$request->dept)->get();
+                    $employees = Employee::hidden()->where('dept',$request->dept)->get();
                     foreach($employees as $employee)
                     {
                         $data = Notification::create([
@@ -192,7 +192,7 @@ class NotificationRepository implements NotificationInterface
                             session()->flash('error');
                             return redirect()->back();
                         }
-                        $notifiable = User::where('context_id',$employee->id)->first();
+                        $notifiable = User::hidden()->where('context_id',$employee->id)->first();
                         if ($notifiable) {
                             $notifiable->notify(new NotificationNotification($data));
                         }
@@ -201,7 +201,7 @@ class NotificationRepository implements NotificationInterface
                 //send to all employees
                 else
                 {
-                    $employees = Employee::get();
+                    $employees = Employee::hidden()->get();
                     foreach($employees as $employee)
                     {
                         $data = Notification::create([
@@ -213,7 +213,7 @@ class NotificationRepository implements NotificationInterface
                             session()->flash('error');
                             return redirect()->back();
                         }
-                        $notifiable = User::where('context_id',$employee->id)->first();
+                        $notifiable = User::hidden()->where('context_id',$employee->id)->first();
                         if ($notifiable) {
                             $notifiable->notify(new NotificationNotification($data));
                         }
@@ -241,7 +241,7 @@ class NotificationRepository implements NotificationInterface
             //send notification
             if($data->employee_id != null)
             {
-                $notifiable = User::where('id',$data->employee->user->id)->first();
+                $notifiable = User::hidden()->where('id',$data->employee->user->id)->first();
                 if ($notifiable) {
                     $notifiable->notify(new NotificationNotification($data));
                 }
@@ -251,7 +251,7 @@ class NotificationRepository implements NotificationInterface
                 $department = Department::findOrFail($data->dept);
                 foreach($department->employees as $employee)
                 {
-                    $notifiable = User::where('id',$employee->user->id)->first();
+                    $notifiable = User::hidden()->where('id',$employee->user->id)->first();
                     //eafaf
                     if ($notifiable) {
                         $notifiable->notify(new NotificationNotification($data));
@@ -370,7 +370,7 @@ class NotificationRepository implements NotificationInterface
         else
         {
             $data = MeetingNote::whereDate('follow_date', Carbon::today())
-            ->whereRelation('created_by', auth()->user()->employee->id)
+            ->where('created_by', auth()->user()->employee->id)
             ->paginate(config('myConfig.paginationCount'));
         }
         return view('dashboard.notification.followUp',compact('data'));
@@ -390,14 +390,14 @@ class NotificationRepository implements NotificationInterface
         {
             $data = MeetingNote::whereYear('follow_date', Carbon::now()->year)
             ->whereMonth('follow_date', Carbon::now()->month)
-            ->whereRelation('customer.createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
             ->paginate(config('myConfig.paginationCount'));
         }
         else
         {
             $data = MeetingNote::whereYear('follow_date', Carbon::now()->year)
             ->whereMonth('follow_date', Carbon::now()->month)
-            ->whereRelation('customer','created_by', auth()->user()->employee->id)
+            ->where('created_by', auth()->user()->employee->id)
             ->paginate(config('myConfig.paginationCount'));
         }
         return view('dashboard.notification.followUp',compact('data'));

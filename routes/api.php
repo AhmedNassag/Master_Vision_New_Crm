@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\MarketingController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FileController;
-use App\Http\Controllers\Api\MarketingController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------

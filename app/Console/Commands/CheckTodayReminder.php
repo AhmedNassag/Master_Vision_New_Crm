@@ -53,7 +53,7 @@ class CheckTodayReminder extends Command
                 // Value matches today's date, send notification
                 if($reminder->customer->created_by != null)
                 {
-                    $user = User::where('context_id',$reminder->customer->created_by)->first(); // Example user, you should retrieve the user from the database
+                    $user = User::hidden()->where('context_id',$reminder->customer->created_by)->first(); // Example user, you should retrieve the user from the database
                     $user->notify(new TodayReminderNotification($reminder));
                 }
             }

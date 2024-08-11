@@ -91,6 +91,7 @@ class ApiLeadConversionService
                     'major_id'          => $lead->major_id,
                     'created_by'        => $lead->created_by,
                     'mobile2'           => $lead->mobile2,
+                    'whats_app_mobile'  => $lead->whats_app_mobile,
                     'company_name'      => $lead->company_name,
                     'notes'             => $lead->notes,
                     'branch_id'         =>$branch_id,

@@ -21,7 +21,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Activity') }}</span>
                         </label>
-                        <select name="reminder[activity_id]" id="activity_id2" data-control="select2" data-dropdown-parent="#add_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="reminder[activity_id]" id="activity_id2" data-control="select2" data-dropdown-parent="#add_activity_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                             @foreach($activities as $activity)
@@ -34,7 +34,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.SubActivity') }}</span>
                         </label>
-                        <select name="reminder[interest_id]" id="interest_id2" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="reminder[interest_id]" id="interest_id2" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
                         </select>

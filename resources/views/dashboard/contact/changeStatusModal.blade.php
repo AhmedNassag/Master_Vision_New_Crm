@@ -14,7 +14,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Status') }}</span>
                         </label>
-                        <select id="status1" name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                        <select id="status1" name="status" data-control="select2" data-dropdown-parent="#status" class="form-select form-select-solid" required>
                             <option value="contacted">{{ trans('main.Contacted') }}</option>
                             <option value="qualified">{{ trans('main.Qualified') }}</option>
                             <option value="converted">{{ trans('main.Converted') }}</option>
@@ -82,7 +82,7 @@
                         <!-- Status -->
                         <div id="status_invoice" class="col-md-12 fv-row">
                             <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Status') }}</label>
-                            <select id="status" name="invoice[status]" data-control="select2" data-dropdown-parent="#status_invoice" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                            <select id="status" name="invoice[status]" data-control="select2" data-dropdown-parent="#status_invoice" class="form-select form-select-solid" required>
                                 <option value="draft">{{ trans('main.Draft') }}</option>
                                 <option value="sent">{{ trans('main.Sent') }}</option>
                                 <option selected value="paid">{{ trans('main.Paid') }}</option>

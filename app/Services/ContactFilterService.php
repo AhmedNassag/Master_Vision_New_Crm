@@ -110,7 +110,7 @@ class ContactFilterService
             ->when(isset($filters['search_branch_id']),function($query) use($filters){
                 if(!isset($filters['search_employee_id']) || $filters['search_employee_id'] == null || $filters['search_employee_id'] == "")
                 {
-                    $employeesOfBranch = Employee::where('branch_id',$filters['search_branch_id'])->get()->pluck('id')->toArray();
+                    $employeesOfBranch = Employee::hidden()->where('branch_id',$filters['search_branch_id'])->get()->pluck('id')->toArray();
 
                         $query->whereIn('employee_id',$employeesOfBranch ??[]);
 

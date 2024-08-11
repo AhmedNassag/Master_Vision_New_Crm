@@ -269,7 +269,7 @@ class ContactController extends Controller
                 $branches           = Branch::get();
                 $leadHistoryService = new LeadHistoryService();
                 $contactHistories   = $leadHistoryService->organizeLeadHistoryForTimeline($item);
-                $employees          = Employee::all();
+                $employees          = Employee::hidden()->get();
                 $completionByDate   = ContactCompletion::where('contact_id',$item->id)->select(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as date_creation"), DB::raw('count(*) as completion_percentage'))->groupBy('date_creation')->get();
                 $completedData      = ContactCompletion::where('contact_id',$item->id)->select('completed_by',DB::raw('count(*) as completion_percentage'),DB::raw('GROUP_CONCAT(property_name) as fields'))->groupBy('completed_by')->get();
                 $contactObserver    = new ContactDataObserver();
@@ -395,8 +395,8 @@ class ContactController extends Controller
             $validator = Validator::make($request->all(), [
                 // 'auth_id'             => 'required|exists:users,id',
                 'name'                => 'required|string',
-                'mobile'              => 'required|numeric|unique:contacts,mobile',
-                'national_id'         => 'nullable|numeric|unique:contacts,national_id',
+                'mobile'              => 'required|numeric|unique:contacts,mobile,NULL,id,deleted_at,NULL',
+                'national_id'         => 'nullable|numeric|unique:contacts,national_id,NULL,id,deleted_at,NULL',
                 'contact_source_id'   => 'required|integer|exists:contact_sources,id',
                 'activity_id'         => 'required|integer|exists:activates,id',
                 'interest_id'         => 'required|integer|exists:interests,id',
@@ -406,8 +406,8 @@ class ContactController extends Controller
                 'area_id'             => 'nullable|integer|exists:areas,id',
                 'contact_category_id' => 'nullable|integer|exists:contact_categories,id',
                 'major_id'            => 'nullable|integer|exists:majors,id',
-                'mobile2'             => 'nullable|numeric|unique:contacts,mobile2',
-                'email'               => 'nullable|email|unique:contacts,email',
+                'mobile2'             => 'nullable|numeric|unique:contacts,mobile2,NULL,id,deleted_at,NULL',
+                'email'               => 'nullable|email|unique:contacts,email,NULL,id,deleted_at,NULL',
                 'birth_date'          => 'nullable|date',
                 'company_name'        => 'nullable',
                 'gender'              => 'nullable|in:Male,Female',
@@ -946,7 +946,7 @@ class ContactController extends Controller
     public function changeStatus(Request $request, ApiLeadConversionService $leadConversionService)
 	{
         try {
-            
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id'                => 'required|exists:users,id',
                 'contact_id'             => 'required|exists:contacts,id',

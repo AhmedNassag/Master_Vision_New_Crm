@@ -74,7 +74,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Branch') }}</span>
                                 </label>
-                                <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php
                                         if(Auth::user()->roles_name[0] == "Admin")
@@ -116,7 +116,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2 required">
                                     <span>{{ trans('main.ContactSource') }}</span>
                                 </label>
-                                <select name="contact_source_id" data-control="select2" data-dropdown-parent="#contact_source_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="contact_source_id" data-control="select2" data-dropdown-parent="#contact_source_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $contactSources = \App\Models\ContactSource::get(['id','name']); ?>
                                     @foreach($contactSources as $contactSource)
@@ -129,7 +129,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Activity') }}</span>
                                 </label>
-                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                     @foreach($activities as $activity)
@@ -142,7 +142,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.SubActivity') }}</span>
                                 </label>
-                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
 
                                 </select>
@@ -152,7 +152,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.ContactCategory') }}</span>
                                 </label>
-                                <select name="contact_category_id" data-control="select2" data-dropdown-parent="#contact_category_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="contact_category_id" data-control="select2" data-dropdown-parent="#contact_category_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $contacCategories = \App\Models\ContactCategory::get(['id','name']); ?>
                                     @foreach($contacCategories as $contactCategory)
@@ -172,10 +172,10 @@
                             </div>
                             <!-- gender -->
                             <div class="col-md-6 fv-row" id="gender">
-                                <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Gender') }}</span>
                                 </label>
-                                <select name="gender" data-control="select2" data-dropdown-parent="#gender" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="gender" data-control="select2" data-dropdown-parent="#gender" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <option value="Male">{{ trans('main.Male') }}</option>
                                     <option value="Female">{{ trans('main.Female') }}</option>
@@ -183,10 +183,10 @@
                             </div>
                             <!-- religion -->
                             <div class="col-md-6 fv-row" id="religion">
-                                <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Religion') }}</span>
                                 </label>
-                                <select name="religion" data-control="select2" data-dropdown-parent="#religion" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="religion" data-control="select2" data-dropdown-parent="#religion" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <option value="muslim">{{ trans('main.Muslim') }}</option>
                                     <option value="christian">{{ trans('main.Christian') }}</option>
@@ -198,7 +198,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.City') }}</span>
                                 </label>
-                                <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $cities = \App\Models\City::get(['id','name']); ?>
                                     @foreach($cities as $city)
@@ -211,7 +211,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Area') }}</span>
                                 </label>
-                                <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
 
                                 </select>
@@ -226,7 +226,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Industry') }}</span>
                                 </label>
-                                <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $industries = \App\Models\Industry::get(['id','name']); ?>
                                     @foreach($industries as $industry)
@@ -239,7 +239,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Major') }}</span>
                                 </label>
-                                <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
 
                                 </select>
@@ -249,7 +249,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.JobTitle') }}</span>
                                 </label>
-                                <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $jobTitles = \App\Models\JobTitle::get(['id','name']); ?>
                                     @foreach($jobTitles as $jobTitle)

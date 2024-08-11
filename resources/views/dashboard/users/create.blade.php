@@ -99,7 +99,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Branch') }}</span>
                                         </label>
-                                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
@@ -121,7 +121,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Department') }}</span>
                                         </label>
-                                        <select name="dept" data-control="select2" data-dropdown-parent="#dept" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="dept" data-control="select2" data-dropdown-parent="#dept" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                             @foreach($departments as $department)
@@ -134,7 +134,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Status') }}</span>
                                         </label>
-                                        <select name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="status" data-control="select2" data-dropdown-parent="#status" class="form-select form-select-solid">
                                             <option value="1">{{ trans('main.Active') }}</option>
                                             <option value="0">{{ trans('main.InActive') }}</option>
                                         </select>
@@ -142,7 +142,12 @@
                                     <!-- roles_name -->
                                     <div class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Status') }}</label>
-                                        {!! Form::select('roles_name[]', $roles,[], array('class' => 'form-control')) !!}
+                                        {{-- {!! Form::select('roles_name[]', $roles,[], array('class' => 'form-control')) !!} --}}
+                                        <select class="form-control form-select" name="roles_name" required>
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->name }}" {{ old('roles_name') == $role->id ? 'selected' : ''}}>{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <!-- photo -->
                                     <div class="col-md-6 fv-row">

@@ -1,4 +1,15 @@
 @extends('layouts.app0')
+
+@section('css')
+<style>
+    @media print {
+        .not_print {
+            display: none;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -35,8 +46,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Activity') }}</span>
                                         </label>
-                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activities" data-placeholder="{{ trans('main.Activity') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Activity') }}...</option>
+                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activities" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}...</option>
                                             <?php $activities = App\Models\Activity::get(['id', 'name']); ?>
                                             @foreach( $activities as $activity )
                                             <option value="{{ @$activity->id }}" {{ @$activity->id == @$activity_id ? 'selected' : '' }}>{{ @$activity->name }}</option>
@@ -48,7 +59,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.SubActivity') }}</span>
                                         </label>
-                                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.SubActivity') }}..." class="form-select form-select-solid">
+                                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
 
                                         </select>
@@ -127,7 +138,20 @@
                         @endif
 
                         @if(Request::is('admin/report/activitySalesReport'))
-                            <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div id="print" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button>
+                                <!-- pagination -->
+                                <form method="GET" action="{{ url('admin/report/activitySalesReport') }}" class="not_print">
+                                    @foreach (request()->except('perPage') as $key => $value)
+                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                    @endforeach
+                                    <select name="perPage" onchange="this.form.submit()">
+                                        <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                        <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                        <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                    </select>
+                                </form>
                                 <div class="table-responsive">
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
                                         <thead>
@@ -195,6 +219,7 @@
                     dataType: "json",
                     success: function(data) {
                         $('select[name="interest_id"]').empty();
+                        $('select[name="interest_id"]').append('<option class="form-control" value="">' + "{{ __('main.All') }}" + '</option>');
                         $.each(data, function(key, value) {
                             $('select[name="interest_id"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
                         });
@@ -207,4 +232,17 @@
         });
     });
 </script>
+
+<!-- Print -->
+<script type="text/javascript">
+    function printDiv() {
+        var printContents       = document.getElementById('print').innerHTML;
+        var originalContents    = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload();
+    }
+</script>
+
 @endsection

@@ -39,7 +39,7 @@ class ContactRepository implements ContactInterface
 
         if(Auth::user()->roles_name[0] == "Admin")
         {
-            $data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
+            $datas = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
             ->when($request->name != null ,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -64,6 +64,9 @@ class ContactRepository implements ContactInterface
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
             })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -94,17 +97,25 @@ class ContactRepository implements ContactInterface
             ->when(!$request->status,function ($q) use($request){
                 return $q->where('status', '!=', 'converted');
             })
-            ->when($request->input('query') != null ,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
             })
             ->orderBy('id', 'desc')
-            ->paginate($perPage)->appends(request()->query());
+            /*->paginate($perPage)->appends(request()->query())*/;
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
-            $data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+            $datas = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
+            /*->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
             ->orWhere('created_by', auth()->user()->employee->id)
+            ->orWhere('employee_id', auth()->user()->employee->id)*/
+            ->where(function ($query) use ($request) {
+                $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                ->orWhere('created_by', auth()->user()->employee->id)
+                ->orWhere('employee_id', auth()->user()->employee->id);
+            })
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -128,6 +139,9 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -159,17 +173,23 @@ class ContactRepository implements ContactInterface
             ->when(!$request->status,function ($q) use($request){
                 return $q->where('status', '!=', 'converted');
             })
-            ->when($request->input('query') != null ,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
             })
             ->orderBy('id', 'desc')
-            ->paginate($perPage)->appends(request()->query());
+            /*->paginate($perPage)->appends(request()->query())*/;
         }
         else
         {
-            $data = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->where('employee_id', auth()->user()->employee->id)
-
+            $datas = Contact::where('is_trashed','!=' ,1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
+            // ->where('employee_id', auth()->user()->employee->id)
+            // ->orWhere('created_by', auth()->user()->employee->id)
+            ->where(function ($query) use ($request) {
+                $query->where('employee_id', auth()->user()->employee->id)
+                ->orWhere('created_by', auth()->user()->employee->id);
+            })
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -185,6 +205,12 @@ class ContactRepository implements ContactInterface
             ->when($request->gender != null,function ($q) use($request){
                 return $q->where('gender',$request->gender);
             })
+            ->when($request->religion != null,function ($q) use($request){
+                return $q->where('religion',$request->religion);
+            })
+            ->when($request->marital_status != null,function ($q) use($request){
+                return $q->where('marital_status',$request->marital_status);
+            })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
             })
@@ -193,6 +219,9 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -224,16 +253,23 @@ class ContactRepository implements ContactInterface
             ->when(!$request->status,function ($q) use($request){
                 return $q->where('status', '!=', 'converted');
             })
-            ->when($request->input('query') != null ,function ($q) use($request){
-                return $q->where('mobile','like', '%'.$request->input('query').'%');
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
             })
             ->orderBy('id', 'desc')
-            ->paginate($perPage)->appends(request()->query());
+            /*->paginate($perPage)->appends(request()->query())*/;
         }
 
-        return view('dashboard.contact.index',compact('data'))
+        $data = $datas->paginate($perPage)->appends(request()->query());
+        $resultCount = $datas->count();
+
+        return view('dashboard.contact.index',compact('data','resultCount'))
         ->with([
             'perPage' => $perPage,
+            'mobile'  => $request->mobile,
+            'name'    => $request->name,
         ]);
     }
 
@@ -249,7 +285,7 @@ class ContactRepository implements ContactInterface
             $branches           = Branch::get();
             $leadHistoryService = new LeadHistoryService();
             $contactHistories   = $leadHistoryService->organizeLeadHistoryForTimeline($item);
-            $employees          = Employee::all();
+            $employees          = Employee::hidden()->get();
             $completionByDate   = ContactCompletion::where('contact_id',$item->id)->select(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as date_creation"), DB::raw('count(*) as completion_percentage'))->groupBy('date_creation')->get();
             $completedData      = ContactCompletion::where('contact_id',$item->id)->select('completed_by',DB::raw('count(*) as completion_percentage'),DB::raw('GROUP_CONCAT(property_name) as fields'))->groupBy('completed_by')->get();
             $contactObserver    = new ContactDataObserver();
@@ -288,15 +324,19 @@ class ContactRepository implements ContactInterface
     {
         try {
             // DB::beginTransaction();
-
-            $validated            = $request->validated();
-            $inputs               = $request->except('photo');
-            $inputs['created_by'] = Auth::user()->id;
+            $validated                   = $request->validated();
+            $inputs                      = $request->except(['photo','tag_ids','mobile_whatsapp_checkbox','mobile2_whatsapp_checkbox']);
+            $inputs['has_special_needs'] = $request->has_special_needs ? 1 : 0;
+            $inputs['created_by']        = Auth::user()->employee->id;
             if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 0)
             {
-                $inputs['employee_id'] = Auth::user()->id;
+                $inputs['employee_id'] = Auth::user()->employee->id;
             }
             $data = Contact::create($inputs);
+            if (!$data) {
+                session()->flash('error');
+                return redirect()->back();
+            }
             //create code
             $data->update(['code' => $this->createCode($data)]);
             //upload photo
@@ -314,10 +354,9 @@ class ContactRepository implements ContactInterface
                     'file_sort' => 1,
                 ]);
             }
-            if (!$data) {
-                session()->flash('error');
-                return redirect()->back();
-            }
+            // Attach tags to the contact
+            $tagIds = $request->input('tag_ids', []);
+            $data->tags()->sync($tagIds);
             //create in completion
             $this->completionData($inputs, $data->id);
 
@@ -343,14 +382,15 @@ class ContactRepository implements ContactInterface
     public function update($request)
     {
         try {
-            $validated = $request->validated();
-            $inputs    = $request->except('photo');
-            $data      = Contact::findOrFail($request->id);
-            $old_branch_id = $data->branch_id;
+            $validated                   = $request->validated();
+            $inputs                      = $request->except('photo','tag_ids','mobile_whatsapp_checkbox','mobile2_whatsapp_checkbox');
+            $inputs['has_special_needs'] = $request->has_special_needs ? 1 : 0;
+            $data                        = Contact::findOrFail($request->id);
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
             }
+            $old_branch_id = $data->branch_id;
             $data->update($inputs);
             //create code if code is null or if branch is change
             if($data->code == null || $request->branch_id != $old_branch_id) {
@@ -376,10 +416,11 @@ class ContactRepository implements ContactInterface
                     'file_sort' => 1
                 ]);
             }
-            if (!$data) {
-                session()->flash('error');
-                return redirect()->back();
-            }
+
+            // Attach tags to the contact
+            $tagIds = $request->input('tag_ids', []);
+            $data->tags()->sync($tagIds);
+
             //create in completion
             $this->completionData($inputs, $request->id);
 
@@ -400,10 +441,6 @@ class ContactRepository implements ContactInterface
                 session()->flash('error');
                 return redirect()->back();
             }
-            $data->update([
-                'mobile'      => $data->mobile ? $data->mobile.'x' : '',
-                'national_id' => $data->national_id ? $data->national_id.'x' : '',
-            ]);
             $data->delete();
             session()->flash('success');
             return redirect()->back();
@@ -424,11 +461,6 @@ class ContactRepository implements ContactInterface
                     $contacts = Contact::whereIn('id', $delete_selected_id)->get();
                     foreach($contacts as $contact)
                     {
-                        $contact->update([
-                            'mobile'      => $contact->mobile? $contact->mobile.'x' : '',
-                            'national_id' => $contact->national_id ? $contact->national_id.'x' : '',
-                            'email'       => $contact->email ? $contact->email.'x' : '',
-                        ]);
                         $contact->delete();
                     }
                     session()->flash('success');
@@ -645,8 +677,13 @@ class ContactRepository implements ContactInterface
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
             $data = Contact::where('is_trashed', 1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
-            ->orWhere('employee','employee_id', auth()->user()->employee->id)
+            /*->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->orWhere('employee_id', auth()->user()->employee->id)*/
+            ->where(function ($query) use ($request) {
+                $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('employee_id', auth()->user()->employee->id);
+            })
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })

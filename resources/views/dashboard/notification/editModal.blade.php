@@ -25,11 +25,11 @@
                             <?php
                                 if(Auth::user()->roles_name[0] == "Admin")
                                 {
-                                    $employees = \App\Models\Employee::get(['id','name']);
+                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
                                 }
                                 else
                                 {
-                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
                                 }
                             ?>
                             @foreach($employees as $employee)
@@ -40,7 +40,7 @@
                     <!-- dept -->
                     <div class="d-flex flex-column mb-5 fv-row" id="edit_dept_{{ @$item->id }}">
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.Department') }}</label>
-                        <select name="dept" data-control="select2" data-dropdown-parent="#edit_dept_{{ @$item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="dept" data-control="select2" data-dropdown-parent="#edit_dept_{{ @$item->id }}" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $departments = \App\Models\Department::get(['id','name']); ?>
                             @foreach($departments as $department)

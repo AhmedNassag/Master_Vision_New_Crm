@@ -17,14 +17,14 @@ License: For each use you must have a valid license purchased only from above li
             <base href="../../" />
             <title>Our Crm</title>
             <meta charset="utf-8" />
-            <meta name="description" content="The most advanced Bootstrap 5 Admin Theme with 40 unique prebuilt layouts on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel versions. Grab your copy now and get life-time updates for free." />
-            <meta name="keywords" content="metronic, bootstrap, bootstrap 5, angular, VueJs, React, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel starter kits, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
+            <meta name="description" content="Our CRM - Master Vision" />
+            <meta name="keywords" content="Our CRM - Master Vision" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta property="og:locale" content="en_US" />
             <meta property="og:type" content="article" />
             <meta property="og:title" content="Our CRM - Master Vision" />
             <meta property="og:url" content="https://keenthemes.com/metronic" />
-            <meta property="og:site_name" content="Master Vision CRM" />
+            <meta property="og:site_name" content="Our CRM - Master Vision" />
 			<meta name="csrf-token" content="{{ csrf_token() }}">
             <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
             <link rel="shortcut icon" href="{{ asset('new-theme/assets/media/logos/favicon.png') }}" />
@@ -83,27 +83,28 @@ License: For each use you must have a valid license purchased only from above li
 
                             <!--begin::Toolbar wrapper-->
                             <div class="app-navbar flex-lg-grow-1" id="kt_app_header_navbar">
+
                                 <!--begin::Expire Alert-->
-                                @php
-                                    @$dateString = \App\Models\LAConfigs::where('key','end_date')->first();
-                                    if($dateString)
-                                    {
-                                        @$today      = \Carbon\Carbon::now();
-                                        @$endDate    = \Carbon\Carbon::parse(@$dateString->value);
-                                        @$diffInDays = $today->diffInDays(@$endDate);
-                                    }
-                                @endphp
-                                @if(@$dateString && @$diffInDays <= 15)
-                                    <div class="app-navbar-item d-flex align-items-stretch flex-lg-grow-1">
+                                <div class="app-navbar-item d-flex align-items-stretch flex-lg-grow-1">
+                                    @php
+                                        @$dateString = \App\Models\LAConfigs::where('key','end_date')->first();
+                                        if($dateString)
+                                        {
+                                            @$today      = \Carbon\Carbon::now();
+                                            @$endDate    = \Carbon\Carbon::parse(@$dateString->value);
+                                            @$diffInDays = $today->diffInDays(@$endDate);
+                                        }
+                                    @endphp
+                                    @if(@$dateString && @$diffInDays <= 15)
                                         <div class="alert alert-danger alert-dismissible mt-3">
                                             <h4>{{ trans('main.Alerts') }}</h4>
                                             <p>
                                                 {{ trans('main.You Will Expired After') }}: ({{ @$diffInDays }}) {{ trans('main.Day') }} --- {{ trans('main.Expired Date Is') }}: ({{ @$endDate->format('Y-m-d') }})
                                             </p>
                                         </div>
-                                    </div>
-                                @endif
-                                <!--end::Expitre Alert-->
+                                    @endif
+                                </div>
+                                <!--end::Expire Alert-->
 
                                 <!--begin::Notifications
                                 <div class="app-navbar-item ms-1 ms-md-3">
@@ -406,6 +407,34 @@ License: For each use you must have a valid license purchased only from above li
 
                                 <!--begin::Chat-->
                                 <div class="app-navbar-item ms-1 ms-md-3">
+                                    <!--begin::Today Reminder-->
+                                    <?php
+                                        if(Auth::user()->roles_name[0] == "Admin")
+                                        {
+                                            $today_reminders_count = \App\Models\ReorderReminder::whereDate('reminder_date', today())->count();
+                                        }
+                                        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                        {
+                                            $notifications_count = \App\Models\ReorderReminder::whereDate('reminder_date', today())
+                                            ->whereRelation('customer.createdBy','branch_id', auth()->user()->employee->branch_id)
+                                            ->count();
+                                        }
+                                        else
+                                        {
+                                            $today_reminders_count = \App\Models\ReorderReminder::whereDate('reminder_date', today())
+                                            ->whereRelation('customer','created_by', auth()->user()->employee->id)
+                                            ->count();
+                                        }
+                                    ?>
+                                    <a href="{{ route('todayReminders.index') }}">
+                                        <div class="btn btn-icon btn-custom btn-color-gray-600 btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px position-relative " id="kt_drawer_chat_togglee">
+                                            <i class="ki-outline ki-call fs-1"></i>
+											@if(@$today_reminders_count > 0)
+	                                            <span class="position-absolute top-0 start-100 translate-middle badge badge-circle badge-danger w-15px h-15px ms-n4 mt-3">{{ @$today_reminders_count }}</span>
+											@endif
+                                        </div>
+                                    </a>
+                                    <!--end::Today Reminders-->
                                     <!--begin::Menu wrapper-->
                                     <?php
 										$notifications_count = \App\Models\Notification::where('employee_id', Auth::user()->employee->id)->orWhere('dept', Auth::user()->employee->dept)->count();

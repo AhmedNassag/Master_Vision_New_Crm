@@ -157,6 +157,7 @@ class CampaignRepository extends BaseRepository implements CampaignInterface
                     'name'                => $customer->name ?? null,
                     'mobile'              => $customer->mobile ?? null,
                     'mobile2'             => $customer->mobile2 ?? null,
+                    'whats_app_mobile'    => $customer->whats_app_mobile ?? null,
                     'email'               => $customer->email ?? null,
                     'company_name'        => $customer->company_name ?? null,
                     'notes'               => $customer->notes ?? null,

@@ -22,7 +22,12 @@ class ContactDataObserver
         'interest_id',
         'gender',
         'birth_date',
-        'national_id'
+        'national_id',
+        'address',
+        'religion',
+        'branch_id',
+        'marital_status',
+        'has_special_needs',
     ];
 
 
@@ -60,7 +65,6 @@ class ContactDataObserver
                         'completed_by' => auth()->id(),
                     ]);
                 }
-
             }
         }
     }

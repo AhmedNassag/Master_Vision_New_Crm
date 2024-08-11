@@ -155,7 +155,7 @@ class TicketController extends Controller
 
             $ticket = Ticket::findOrFail($request->id);
             $data   = new TicketService();
-            $data->assignToAgent($ticket, Employee::find($request->employee_id));
+            $data->assignToAgent($ticket, Employee::hidden()->find($request->employee_id));
 
             //send notification
             $notifiable = User::where('context_id',$request->employee_id)->first();

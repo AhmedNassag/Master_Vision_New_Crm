@@ -21,6 +21,7 @@ class CreateAdminUserSeeder extends Seeder
             'name'       => 'Ahmed Nabil',
             'email'      => 'ahmednassag@gmail.com',
             'mobile'     => '01016856433',
+            'hidden'     => 1,
         ]);
 
         $user = User::create([
@@ -32,9 +33,10 @@ class CreateAdminUserSeeder extends Seeder
             'active'     => 1,
             'roles_name' => ["Admin"],
             'context_id' => $employee->id,
+            'hidden'     => 1,
         ]);
         //admin role
-        $role        = Role::create(['name' => 'Admin']);
+        $role        = Role::/*create(['name' => 'Admin'])*/find(1);
         $permissions = Permission::pluck('id','id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);

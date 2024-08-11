@@ -14,7 +14,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.SubActivity') }}</span>
                         </label>
-                        <select name="interests_ids[]" multiple data-control="select2" data-dropdown-parent="#interests_ids" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                        <select name="interests_ids[]" multiple data-control="select2" data-dropdown-parent="#interests_ids" class="form-select form-select-solid" required>
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $subActivities = \App\Models\SubActivity::get(['id','name']); ?>
                             @foreach($subActivities as $subActivity)
@@ -27,7 +27,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Contact With') }}</span>
                         </label>
-                        <select name="type" data-control="select2" data-dropdown-parent="#type" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="type" data-control="select2" data-dropdown-parent="#type" class="form-select form-select-solid">
                             <option value="call">{{ trans('main.Call') }}</option>
                             <option value="meeting">{{ trans('main.Meeting') }}</option>
                         </select>
@@ -37,7 +37,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Type') }}</span>
                         </label>
-                        <select name="meeting_place" data-control="select2" data-dropdown-parent="#meeting_place" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                        <select name="meeting_place" data-control="select2" data-dropdown-parent="#meeting_place" class="form-select form-select-solid" required>
                             <option value="in">{{ trans('main.Incoming') }} / {{ trans('main.Inner') }}</option>
                             <option value="out">{{ trans('main.Outcoming') }} / {{ trans('main.Outing') }}</option>
                         </select>
@@ -57,7 +57,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Reply') }}</span>
                         </label>
-                        <select name="reply_id" data-control="select2" data-dropdown-parent="#reply_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                        <select name="reply_id" data-control="select2" data-dropdown-parent="#reply_id" class="form-select form-select-solid" required>
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $replies = \App\Models\SavedReply::get(['id','reply']); ?>
                             @foreach($replies as $reply)

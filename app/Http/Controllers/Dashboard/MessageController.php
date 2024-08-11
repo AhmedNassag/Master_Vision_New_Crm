@@ -76,7 +76,7 @@ class MessageController extends Controller
 				$statusCounts['trashed'] = Contact::where('is_trashed', 1)->count();
 				$statusCounts['inactive'] = Contact::where('is_active', 0)->count();
 
-				$employees = Employee::all();
+				$employees = Employee::hidden()->get();
 				$branches = Branch::all();
 
 				return View('la.contacts.managment', compact(
@@ -211,7 +211,15 @@ class MessageController extends Controller
 
             // Prefix the mobile numbers with +2
             $all_mobiles = array_map(function ($mobile) {
-                return '+2' . $mobile;
+				 if(substr($mobile, 0, 2) == '01')
+                    {
+                	return '+2' . $mobile;
+                    }
+				 if(substr($mobile, 0, 1) == '1')
+                 {
+                return '+20' . $mobile;
+                }
+				return '+' . $mobile;
             }, $mobile_recievers);
 
             // Get WhatsApp configurations
@@ -337,12 +345,19 @@ class MessageController extends Controller
     public function storeSingleContactMessage(Request $request)
     {
         try {
-            
-            $mobile_recievers = Contact::where('id', $request->message_selected_id)->first();
+$contacts = Contact::whereIn('id', $request->message_selected_id)->get();
+$mobile_recievers = $contacts->pluck('mobile')->toArray();
 
-            // Prefix the mobile numbers with +2
-            $all_mobiles = '+2' . $mobile_recievers->mobile;
-
+// Prefix the mobile numbers with +2, +20, or + as appropriate
+$all_mobiles = array_map(function ($mobile) {
+    if (substr($mobile, 0, 2) == '01') {
+        return '+2' . $mobile;
+    }
+    if (substr($mobile, 0, 1) == '1') {
+        return '+20' . $mobile;
+    }
+    return '+' . $mobile;
+}, $mobile_recievers);
             // Get WhatsApp configurations
             $configs  = LAConfigs::get();
             $token    = '';
@@ -468,11 +483,19 @@ class MessageController extends Controller
     {
         try {
             $message_selected_id = explode(",", $request->message_selected_id);
-            $mobile_recievers = Customer::whereIn('id', $message_selected_id)->pluck('mobile')->filter()->toArray();
+            $mobile_recievers = Customer::whereIn('id', $message_selected_id)->pluck('mobile')->toArray();
 
             // Prefix the mobile numbers with +2
             $all_mobiles = array_map(function ($mobile) {
-                return '+2' . $mobile;
+				 if(substr($mobile, 0, 2) == '01')
+                    {
+                	return '+2' . $mobile;
+                    }
+				 if(substr($mobile, 0, 1) == '1')
+                 {
+                return '+20' . $mobile;
+                }
+				return '+' . $mobile;
             }, $mobile_recievers);
 
             // Get WhatsApp configurations
@@ -598,11 +621,22 @@ class MessageController extends Controller
     public function storeSingleCustomerMessage(Request $request)
     {
         try {
-            
+
             $mobile_recievers = Customer::where('id', $request->message_selected_id)->first();
 
             // Prefix the mobile numbers with +2
-            $all_mobiles = '+2' . $mobile_recievers->mobile;
+
+ $all_mobiles = array_map(function ($mobile) {
+				 if(substr($mobile, 0, 2) == '01')
+                    {
+                	return '+2' . $mobile;
+                    }
+				 if(substr($mobile, 0, 1) == '1')
+                 {
+                return '+20' . $mobile;
+                }
+				return '+' . $mobile;
+            }, $mobile_recievers);
 
             // Get WhatsApp configurations
             $configs  = LAConfigs::get();
@@ -736,7 +770,7 @@ class MessageController extends Controller
 			$industries = Industry::all();
 			$majors = Major::all();
 			$activities = Activate::all();
-			$employees = Employee::all();
+			$employees = Employee::hidden()->get();
 
 			return view('reports.export-contact',compact(
 				'jobTitles',
@@ -817,7 +851,7 @@ class MessageController extends Controller
 					$module->row = $contact;
 					$leadHistoryService = new LeadHistoryService();
 					$contactHistories = $leadHistoryService->organizeLeadHistoryForTimeline($contact);
-					$employees = Employee::all();
+					$employees = Employee::hidden()->get();
 					$completionByDate = ContactCompletion::where('contact_id',$contact->id)->select(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as date_creation"), DB::raw('count(*) as completion_percentage'))
 					->groupBy('date_creation')
 					->get();
@@ -1117,9 +1151,9 @@ class MessageController extends Controller
 			$module = Module::get('Contacts');
 			$user = \Auth::user();
 			if ($user->roles[0]['view_data']) {
-				$emps = \App\Models\Employee::where("dept", $user->employee->dept)->pluck("name", "id")->toArray();
+				$emps = \App\Models\Employee::hidden()->where("dept", $user->employee->dept)->pluck("name", "id")->toArray();
 			} else {
-				$emps = \App\Models\Employee::pluck("name", "id")->toArray();
+				$emps = \App\Models\Employee::hidden()->pluck("name", "id")->toArray();
 			}
 			if (Module::hasAccess("Contacts", "view")) {
 				return View('la.contacts.report', [

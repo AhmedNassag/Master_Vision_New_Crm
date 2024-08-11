@@ -16,6 +16,23 @@ class EmployeeTarget extends Model
 
 
 
+    //this function use to make validation before destroy the record to refuse deleting if it has a related data in other tables
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($model) {
+            if
+            (
+                $model->targets()->count() > 0
+            )
+            {
+                throw new \Exception(trans('main.Can Not Delete Beacause There Is A Related Data'));
+            }
+        });
+    }
+
+
+
     //start relations
     public function employee()
     {
@@ -26,6 +43,6 @@ class EmployeeTarget extends Model
 
     public function targets()
     {
-        return $this->hasMany(Target::class, 'employee_id');
+        return $this->hasMany(Target::class, 'employee_target_id');
     }
 }

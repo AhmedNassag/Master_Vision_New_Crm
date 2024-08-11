@@ -61,6 +61,9 @@ class CustomerRepository implements CustomerInterface
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
             })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -88,14 +91,23 @@ class CustomerRepository implements CustomerInterface
             ->when($request->input('query') != null ,function ($q) use($request){
                 return $q->where('mobile','like', '%'.$request->input('query').'%');
             })
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
+            })
             ->orderBy('id', 'desc')
             ->paginate($perPage)->appends(request()->query());
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
             $data = Customer::
-            whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
-            ->orWhere('created_by', auth()->user()->employee->id)
+            /*whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->orWhere('created_by', auth()->user()->employee->id)*/
+            where(function ($query) use ($request) {
+                $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id);
+            })
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
@@ -120,6 +132,9 @@ class CustomerRepository implements CustomerInterface
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
             })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -146,6 +161,11 @@ class CustomerRepository implements CustomerInterface
             })
             ->when($request->input('query') != null ,function ($q) use($request){
                 return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
             })
             ->orderBy('id', 'desc')
             ->paginate($perPage)->appends(request()->query());
@@ -169,6 +189,12 @@ class CustomerRepository implements CustomerInterface
             ->when($request->gender != null,function ($q) use($request){
                 return $q->where('gender',$request->gender);
             })
+            ->when($request->religion != null,function ($q) use($request){
+                return $q->where('religion',$request->religion);
+            })
+            ->when($request->marital_status != null,function ($q) use($request){
+                return $q->where('marital_status',$request->marital_status);
+            })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
             })
@@ -177,6 +203,9 @@ class CustomerRepository implements CustomerInterface
             })
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -204,6 +233,11 @@ class CustomerRepository implements CustomerInterface
             })
             ->when($request->input('query') != null ,function ($q) use($request){
                 return $q->where('mobile','like', '%'.$request->input('query').'%');
+            })
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
             })
             ->orderBy('id', 'desc')
             ->paginate($perPage)->appends(request()->query());
@@ -259,10 +293,15 @@ class CustomerRepository implements CustomerInterface
     public function store($request)
     {
         try {
-            $validated            = $request->validated();
-            $inputs               = $request->except('photo');
-            $inputs['created_by'] = Auth::user()->context_id;
-            $data                 = Customer::create($inputs);
+            $validated                   = $request->validated();
+            $inputs                      = $request->except('photo','tag_ids','mobile_whatsapp_checkbox','mobile2_whatsapp_checkbox');
+            $inputs['has_special_needs'] = $request->has_special_needs ? 1 : 0;
+            $inputs['created_by']        = Auth::user()->employee->id;
+            $data                        = Customer::create($inputs);
+            if (!$data) {
+                session()->flash('error');
+                return redirect()->back();
+            }
             //create code
             $data->update(['code' => $this->createCode($data)]);
             //upload photo
@@ -280,10 +319,10 @@ class CustomerRepository implements CustomerInterface
                     'file_sort' => 1,
                 ]);
             }
-            if (!$data) {
-                session()->flash('error');
-                return redirect()->back();
-            }
+
+            // Attach tags to the customer
+            $tagIds = $request->input('tag_ids', []);
+            $data->tags()->sync($tagIds);
 
             session()->flash('success');
             return redirect()->route('customer.index');
@@ -305,14 +344,15 @@ class CustomerRepository implements CustomerInterface
     public function update($request)
     {
         try {
-            $validated     = $request->validated();
-            $inputs        = $request->except('photo');
-            $data          = Customer::findOrFail($request->id);
-            $old_branch_id = $data->branch_id;
+            $validated                   = $request->validated();
+            $inputs                      = $request->except('photo','tag_ids','mobile_whatsapp_checkbox','mobile2_whatsapp_checkbox');
+            $inputs['has_special_needs'] = $request->has_special_needs ? 1 : 0;
+            $data                        = Customer::findOrFail($request->id);
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
             }
+            $old_branch_id = $data->branch_id;
             $data->update($inputs);
             //create code if code is null or if branch is change
             if($data->code == null || $old_branch_id != $data->branch_id) {
@@ -338,10 +378,10 @@ class CustomerRepository implements CustomerInterface
                     'file_sort' => 1
                 ]);
             }
-            if (!$data) {
-                session()->flash('error');
-                return redirect()->back();
-            }
+
+            // Attach tags to the customer
+            $tagIds = $request->input('tag_ids', []);
+            $data->tags()->sync($tagIds);
 
             session()->flash('success');
             return redirect()->route('customer.index');
@@ -360,10 +400,6 @@ class CustomerRepository implements CustomerInterface
                 session()->flash('error');
                 return redirect()->back();
             }
-            $data->update([
-                'mobile'      => $data->mobile ? $data->mobile.'x' : '',
-                'national_id' => $data->national_id ? $data->national_id.'x' : '',
-            ]);
             $data->delete();
             session()->flash('success');
             return redirect()->back();
@@ -384,11 +420,6 @@ class CustomerRepository implements CustomerInterface
                     $customers = Customer::whereIn('id', $delete_selected_id)->get();
                     foreach($customers as $customer)
                     {
-                        $customer->update([
-                            'mobile'      => $customer->mobile? $customer->mobile.'x' : '',
-                            'national_id' => $customer->national_id ? $customer->national_id.'x' : '',
-                            'email'       => $customer->email ? $customer->email.'x' : '',
-                        ]);
                         $customer->delete();
                     }
                     session()->flash('success');

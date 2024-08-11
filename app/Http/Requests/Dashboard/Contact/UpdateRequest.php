@@ -26,13 +26,17 @@ class UpdateRequest extends FormRequest
         return [
             'name'              => 'required|string',
             'address'           => 'nullable|string',
-            'religion'          => 'required|in:muslim,christian,other',
-            'mobile'            => 'required|numeric',
+            'religion'          => 'nullable|in:muslim,christian,other',
+            'marital_satus'     => 'nullable|in:Single,Married,Absolute,Widower,Other',
+            'email'             => 'nullable|email|unique:contacts,email,' . request()->id,
+            'mobile'            => 'required|numeric|unique:contacts,mobile,' . request()->id,
+            'national_id'       => 'nullable|numeric|unique:contacts,national_id,' . request()->id,
             'national_id'       => 'nullable|numeric',
             'contact_source_id' => 'required|integer|exists:contact_sources,id',
             'activity_id'       => 'required|integer|exists:activates,id',
             'interest_id'       => 'required|integer|exists:interests,id',
             'branch_id'         => 'required|integer|exists:branches,id',
+            'has_special_needs' => 'nullable',
         ];
     }
 

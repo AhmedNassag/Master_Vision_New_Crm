@@ -32,7 +32,7 @@
                                 <i class="ki-outline ki-filter fs-2"></i>{{ trans('main.Filter') }}</button>
                                 <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
                                     <div class="px-7 py-5">
-                                        <div class="fs-4 text-gray-900 fw-bold">Filter</div>
+                                        <div class="fs-4 text-gray-900 fw-bold">{{ trans('main.Filter') }}</div>
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('notification.index') }}" method="get">
@@ -46,15 +46,15 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Created By') }}</span>
                                                 </label>
-                                                <select name="created_by" data-control="select2" data-dropdown-parent="#created_by" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="created_by" data-control="select2" data-dropdown-parent="#created_by" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <?php $users = \App\Models\User::get(['id','name']); ?>
+                                                    <?php $users = \App\Models\User::hidden()->get(['id','name']); ?>
                                                     @foreach($users as $user)
                                                         <option value="{{ @$user->id }}">{{ @$user->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="mb-10" id="employee_id_filter">
+                                            {{-- <div class="mb-10" id="employee_id_filter">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Employee') }}</span>
                                                 </label>
@@ -63,30 +63,30 @@
                                                     <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
                                                         {
-                                                            $employees = \App\Models\Employee::get(['id','name']);
+                                                            $employees = \App\Models\Employee::hidden()->get(['id','name']);
                                                         }
                                                         else
                                                         {
-                                                            $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                            $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
                                                         }
                                                     ?>
                                                     @foreach($employees as $employee)
                                                         <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
-                                            <div class="mb-10" id="dept">
+                                            </div> --}}
+                                            {{-- <div class="mb-10" id="dept">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Department') }}</span>
                                                 </label>
-                                                <select name="dept" data-control="select2" data-dropdown-parent="#dept" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="dept" data-control="select2" data-dropdown-parent="#dept" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                                     @foreach($departments as $department)
                                                         <option value="{{ @$department->id }}">{{ @$department->name }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
+                                            </div> --}}
                                             <div class="d-flex justify-content-end">
                                                 <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
                                                 <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
@@ -156,7 +156,6 @@
                                         <th class="text-center">#</th>
                                         <th class="text-center">{{ trans('main.Notification') }}</th>
                                         <th class="text-center">{{ trans('main.Employee') }}</th>
-                                        <th class="text-center">{{ trans('main.Department') }}</th>
                                         <th class="text-center min-w-150px">{{ trans('main.Created By') }}</th>
                                         <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
                                     </tr>
@@ -170,7 +169,6 @@
                                                 </td>
                                                 <td class="text-center">{{ @$item->notification }}</td>
                                                 <td class="text-center">{{ @$item->employee->name }}</td>
-                                                <td class="text-center">{{ @$item->department->name }}</td>
                                                 <td class="text-center">{{ @$item->createdBy->name }}</td>
                                                 <td class="text-center">
                                                     <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">

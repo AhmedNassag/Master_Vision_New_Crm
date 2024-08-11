@@ -99,7 +99,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Activity') }}</span>
                                 </label>
-                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" class="form-select form-select-solid" required>
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                     @foreach($activities as $activity)
@@ -112,7 +112,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.SubActivity') }}</span>
                                 </label>
-                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid" required>
                                     <option value="{{ @$invoice->interest_id  }}">{{ @$invoice->interest ? $invoice->interest->name : " ---- " }} </option>
                                 </select>
                             </div>
@@ -121,7 +121,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Status') }}</span>
                                 </label>
-                                <select name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                                <select name="status" data-control="select2" data-dropdown-parent="#status" class="form-select form-select-solid" required>
                                     <option @if($invoice->status == 'draft' ) selected  @endif value="draft">{{ trans('main.Draft') }}</option>
                                     <option @if($invoice->status == 'sent' ) selected  @endif value="sent">{{ trans('main.Sent') }}</option>
                                     <option @if($invoice->status == 'paid' ) selected  @endif value="paid">{{ trans('main.Paid') }}</option>
