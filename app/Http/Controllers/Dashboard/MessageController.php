@@ -212,12 +212,21 @@ class MessageController extends Controller
             // Prefix the mobile numbers with +2
             $all_mobiles = array_map(function ($mobile) {
 				 if(substr($mobile, 0, 2) == '01')
+<<<<<<< HEAD
                 {
                     return '+2' . $mobile;
                 }
 				if(substr($mobile, 0, 1) == '1')
                 {
                     return '+20' . $mobile;
+=======
+                    {
+                	return '+2' . $mobile;
+                    }
+				 if(substr($mobile, 0, 1) == '1')
+                 {
+                return '+20' . $mobile;
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                 }
 				return '+' . $mobile;
             }, $mobile_recievers);
@@ -345,6 +354,7 @@ class MessageController extends Controller
     public function storeSingleContactMessage(Request $request)
     {
         try {
+<<<<<<< HEAD
             $contacts = Contact::whereIn('id', $request->message_selected_id)->get();
             $mobile_recievers = $contacts->pluck('mobile')->toArray();
 
@@ -358,7 +368,21 @@ class MessageController extends Controller
                 }
                 return '+' . $mobile;
             }, $mobile_recievers);
+=======
+$contacts = Contact::whereIn('id', $request->message_selected_id)->get();
+$mobile_recievers = $contacts->pluck('mobile')->toArray();
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
 
+// Prefix the mobile numbers with +2, +20, or + as appropriate
+$all_mobiles = array_map(function ($mobile) {
+    if (substr($mobile, 0, 2) == '01') {
+        return '+2' . $mobile;
+    }
+    if (substr($mobile, 0, 1) == '1') {
+        return '+20' . $mobile;
+    }
+    return '+' . $mobile;
+}, $mobile_recievers);
             // Get WhatsApp configurations
             $configs  = LAConfigs::get();
             $token    = '';
@@ -488,6 +512,7 @@ class MessageController extends Controller
 
             // Prefix the mobile numbers with +2
             $all_mobiles = array_map(function ($mobile) {
+<<<<<<< HEAD
 				if(substr($mobile, 0, 2) == '01')
                 {
                     return '+2' . $mobile;
@@ -495,6 +520,15 @@ class MessageController extends Controller
 				if(substr($mobile, 0, 1) == '1')
                 {
                     return '+20' . $mobile;
+=======
+				 if(substr($mobile, 0, 2) == '01')
+                    {
+                	return '+2' . $mobile;
+                    }
+				 if(substr($mobile, 0, 1) == '1')
+                 {
+                return '+20' . $mobile;
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                 }
 				return '+' . $mobile;
             }, $mobile_recievers);
@@ -626,6 +660,7 @@ class MessageController extends Controller
             $mobile_recievers = Customer::where('id', $request->message_selected_id)->first();
 
             // Prefix the mobile numbers with +2
+<<<<<<< HEAD
             $all_mobiles = array_map(function ($mobile) {
 				if(substr($mobile, 0, 2) == '01')
                 {
@@ -634,6 +669,17 @@ class MessageController extends Controller
 				if(substr($mobile, 0, 1) == '1')
                 {
                     return '+20' . $mobile;
+=======
+
+ $all_mobiles = array_map(function ($mobile) {
+				 if(substr($mobile, 0, 2) == '01')
+                    {
+                	return '+2' . $mobile;
+                    }
+				 if(substr($mobile, 0, 1) == '1')
+                 {
+                return '+20' . $mobile;
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                 }
 				return '+' . $mobile;
             }, $mobile_recievers);

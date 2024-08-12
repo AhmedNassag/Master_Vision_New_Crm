@@ -21,6 +21,10 @@ class MarketingController extends Controller
         try
         {
             // Auth::login(User::first());
+<<<<<<< HEAD
+=======
+
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
             $validator = Validator::make($request->all(), [
                 "name"   => "required|string",
                 'mobile' => [
@@ -72,6 +76,10 @@ class MarketingController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
+<<<<<<< HEAD
+=======
+            return response()->json(['success'=>true]);
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
     }
 
 

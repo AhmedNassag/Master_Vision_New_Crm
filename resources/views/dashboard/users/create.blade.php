@@ -148,7 +148,21 @@
                                             <option value="1">{{ trans('main.Active') }}</option>
                                             <option value="0">{{ trans('main.InActive') }}</option>
                                         </select>
+<<<<<<< HEAD
                                     </div> --}}
+=======
+                                    </div>
+                                    <!-- roles_name -->
+                                    <div class="col-md-6 fv-row">
+                                        <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Status') }}</label>
+                                        {{-- {!! Form::select('roles_name[]', $roles,[], array('class' => 'form-control')) !!} --}}
+                                        <select class="form-control form-select" name="roles_name" required>
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->name }}" {{ old('roles_name') == $role->id ? 'selected' : ''}}>{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                                     <!-- photo -->
                                     <div class="col-md-6 fv-row">
                                         <label class="fs-5 fw-semibold mb-2">{{ trans('main.Photo') }}</label>

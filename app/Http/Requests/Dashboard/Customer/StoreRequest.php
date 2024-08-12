@@ -28,10 +28,16 @@ class StoreRequest extends FormRequest
             'address'           => 'nullable|string',
             'religion'          => 'nullable|in:muslim,christian,other',
             'marital_satus'     => 'nullable|in:Single,Married,Absolute,Widower,Other',
+<<<<<<< HEAD
             'email'             => 'nullable|email|unique:customers,email,NULL,id,deleted_at,NULL',
             'mobile'            => 'required|numeric|unique:customers,mobile,NULL,id,deleted_at,NULL',
             'whats_app_mobile'  => 'nullable|numeric|unique:customers,whats_app_mobile,NULL,id,deleted_at,NULL',
             'national_id'       => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL',
+=======
+            'email'             => 'nullable|email|unique:customers,email,NULL,id,deleted_at,NULL|unique:contacts,email,NULL,id,deleted_at,NULL',
+            'mobile'            => 'required|numeric|unique:customers,mobile,NULL,id,deleted_at,NULL|unique:contacts,mobile,NULL,id,deleted_at,NULL',
+            'national_id'       => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL|unique:contacts,national_id,NULL,id,deleted_at,NULL',
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
             'contact_source_id' => 'required|integer|exists:contact_sources,id',
             'activity_id'       => 'required|integer|exists:activates,id',
             'interest_id'       => 'required|integer|exists:interests,id',

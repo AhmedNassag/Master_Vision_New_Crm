@@ -27,7 +27,10 @@ class UpdateRequest extends FormRequest
             'name'              => 'required|string',
             'email'             => 'nullable|email|unique:customers,email,' . request()->id,
             'mobile'            => 'required|numeric|unique:customers,mobile,' . request()->id,
+<<<<<<< HEAD
             'whats_app_mobile'  => 'nullable|numeric|unique:customers,whats_app_mobile,' . request()->id,
+=======
+>>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
             'national_id'       => 'nullable|numeric|unique:customers,national_id,' . request()->id,
             'address'           => 'nullable|string',
             'religion'          => 'nullable|in:muslim,christian,other',
