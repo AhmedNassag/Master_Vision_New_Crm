@@ -30,10 +30,7 @@ class UpdateRequest extends FormRequest
             'marital_satus'     => 'nullable|in:Single,Married,Absolute,Widower,Other',
             'email'             => 'nullable|email|unique:contacts,email,' . request()->id,
             'mobile'            => 'required|numeric|unique:contacts,mobile,' . request()->id,
-<<<<<<< HEAD
             'whats_app_mobile'  => 'nullable|unique:contacts,whats_app_mobile,' . request()->id,
-=======
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
             'national_id'       => 'nullable|numeric|unique:contacts,national_id,' . request()->id,
             'national_id'       => 'nullable|numeric',
             'contact_source_id' => 'required|integer|exists:contact_sources,id',

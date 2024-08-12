@@ -33,10 +33,6 @@ use App\Http\Controllers\Dashboard\SubActivityController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\PointSettingController;
 use App\Http\Controllers\Dashboard\ContactSourceController;
-<<<<<<< HEAD
-=======
-
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
 use App\Http\Controllers\Dashboard\EmployeeTargetController;
 use App\Http\Controllers\Dashboard\ContactCategoryController;
 

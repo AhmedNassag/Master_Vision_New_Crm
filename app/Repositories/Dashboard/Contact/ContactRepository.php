@@ -114,10 +114,7 @@ class ContactRepository implements ContactInterface
             ->where(function ($query) use ($request) {
                 $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
                 ->orWhere('created_by', auth()->user()->employee->id)
-<<<<<<< HEAD
                 ->orWhere('branch_id', auth()->user()->employee->branch_id)
-=======
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                 ->orWhere('employee_id', auth()->user()->employee->id);
             })
             ->when($request->name != null,function ($q) use($request){

@@ -106,12 +106,8 @@ class CustomerRepository implements CustomerInterface
             ->orWhere('created_by', auth()->user()->employee->id)*/
             where(function ($query) use ($request) {
                 $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
-<<<<<<< HEAD
                     ->orWhere('created_by', auth()->user()->employee->id)
                     ->orWhere('branch_id', auth()->user()->employee->branch_id);
-=======
-                    ->orWhere('created_by', auth()->user()->employee->id);
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
             })
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');

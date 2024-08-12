@@ -413,10 +413,7 @@
                                             <th class="text-center px-0">{{ trans('main.Mobile') }}</th>
                                             <th class="text-center min-w-150px">{{ trans('main.Source') }}</th>
                                             <th class="text-center">{{ trans('main.Area') }}</th>
-<<<<<<< HEAD
                                             <th class="text-center">{{ trans('main.SubActivity') }}</th>
-=======
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                                             <th class="text-center">{{ trans('main.Related Employee') }}</th>
                                             <th class="text-center">{{ trans('main.CreatedBy') }}</th>
                                             <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
@@ -432,12 +429,7 @@
                                                 </div>
                                             </td>
                                             <td class="text-center"> {{ $key + 1 }}</td>
-<<<<<<< HEAD
                                             <td class="text-center">
-=======
-
-<td class="text-center">
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                                                 <a href="{{ route('contact.show', $item->id) }}">
                                                     @if (@$item->status == 'new')
                                                         <label class="badge badge-light-success">

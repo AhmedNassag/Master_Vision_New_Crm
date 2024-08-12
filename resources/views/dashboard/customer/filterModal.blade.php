@@ -42,11 +42,7 @@
                     </div>
                     <!-- religion -->
                     <div class="col-md-12 fv-row" id="religion_filter">
-<<<<<<< HEAD
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-=======
-                        <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                             <span>{{ trans('main.Religion') }}</span>
                         </label>
                         <select name="religion" data-control="select2" data-dropdown-parent="#religion_filter" class="form-select form-select-solid">
@@ -98,11 +94,7 @@
                         <label class="form-label fs-5 fw-semibold mb-3">
                             <span>{{ trans('main.Branch') }}</span>
                         </label>
-<<<<<<< HEAD
                         <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id_filter" class="form-select form-select-solid">
-=======
-                        <select name="activity_id" data-control="select2" data-dropdown-parent="#branch_id_filter" class="form-select form-select-solid">
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $branches = \App\Models\Branch::get(['id', 'name']); ?>
                             @foreach($branches as $branch)
