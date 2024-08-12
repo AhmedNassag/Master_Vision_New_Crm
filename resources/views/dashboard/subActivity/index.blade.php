@@ -46,7 +46,7 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Activity') }}</span>
                                                 </label>
-                                                <select name="country_id" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="activity_id" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                                     @foreach($activities as $activity)

@@ -76,7 +76,7 @@ class MessageController extends Controller
 				$statusCounts['trashed'] = Contact::where('is_trashed', 1)->count();
 				$statusCounts['inactive'] = Contact::where('is_active', 0)->count();
 
-				$employees = Employee::all();
+				$employees = Employee::hidden()->get();
 				$branches = Branch::all();
 
 				return View('la.contacts.managment', compact(
@@ -211,7 +211,15 @@ class MessageController extends Controller
 
             // Prefix the mobile numbers with +2
             $all_mobiles = array_map(function ($mobile) {
-                return '+2' . $mobile;
+				 if(substr($mobile, 0, 2) == '01')
+                {
+                    return '+2' . $mobile;
+                }
+				if(substr($mobile, 0, 1) == '1')
+                {
+                    return '+20' . $mobile;
+                }
+				return '+' . $mobile;
             }, $mobile_recievers);
 
             // Get WhatsApp configurations
@@ -337,11 +345,19 @@ class MessageController extends Controller
     public function storeSingleContactMessage(Request $request)
     {
         try {
-            
-            $mobile_recievers = Contact::where('id', $request->message_selected_id)->first();
+            $contacts = Contact::whereIn('id', $request->message_selected_id)->get();
+            $mobile_recievers = $contacts->pluck('mobile')->toArray();
 
-            // Prefix the mobile numbers with +2
-            $all_mobiles = '+2' . $mobile_recievers->mobile;
+            // Prefix the mobile numbers with +2, +20, or + as appropriate
+            $all_mobiles = array_map(function ($mobile) {
+                if (substr($mobile, 0, 2) == '01') {
+                    return '+2' . $mobile;
+                }
+                if (substr($mobile, 0, 1) == '1') {
+                    return '+20' . $mobile;
+                }
+                return '+' . $mobile;
+            }, $mobile_recievers);
 
             // Get WhatsApp configurations
             $configs  = LAConfigs::get();
@@ -468,11 +484,19 @@ class MessageController extends Controller
     {
         try {
             $message_selected_id = explode(",", $request->message_selected_id);
-            $mobile_recievers = Customer::whereIn('id', $message_selected_id)->pluck('mobile')->filter()->toArray();
+            $mobile_recievers = Customer::whereIn('id', $message_selected_id)->pluck('mobile')->toArray();
 
             // Prefix the mobile numbers with +2
             $all_mobiles = array_map(function ($mobile) {
-                return '+2' . $mobile;
+				if(substr($mobile, 0, 2) == '01')
+                {
+                    return '+2' . $mobile;
+                }
+				if(substr($mobile, 0, 1) == '1')
+                {
+                    return '+20' . $mobile;
+                }
+				return '+' . $mobile;
             }, $mobile_recievers);
 
             // Get WhatsApp configurations
@@ -598,11 +622,21 @@ class MessageController extends Controller
     public function storeSingleCustomerMessage(Request $request)
     {
         try {
-            
+
             $mobile_recievers = Customer::where('id', $request->message_selected_id)->first();
 
             // Prefix the mobile numbers with +2
-            $all_mobiles = '+2' . $mobile_recievers->mobile;
+            $all_mobiles = array_map(function ($mobile) {
+				if(substr($mobile, 0, 2) == '01')
+                {
+                	return '+2' . $mobile;
+                }
+				if(substr($mobile, 0, 1) == '1')
+                {
+                    return '+20' . $mobile;
+                }
+				return '+' . $mobile;
+            }, $mobile_recievers);
 
             // Get WhatsApp configurations
             $configs  = LAConfigs::get();
@@ -727,7 +761,6 @@ class MessageController extends Controller
     public function exportContactsView()
     {
 		try {
-
         	$jobTitles = Job_title::all();
 			$contactCategories = Contact_category::all();
 			$contactSources = Contact_source::all();
@@ -736,7 +769,7 @@ class MessageController extends Controller
 			$industries = Industry::all();
 			$majors = Major::all();
 			$activities = Activate::all();
-			$employees = Employee::all();
+			$employees = Employee::hidden()->get();
 
 			return view('reports.export-contact',compact(
 				'jobTitles',
@@ -760,7 +793,6 @@ class MessageController extends Controller
     public function exportContacts(Request $request)
     {
 		try {
-
 			$filters = [
 				'gender' => $request->input('gender'),
 				'status' => $request->input('status'),
@@ -802,22 +834,16 @@ class MessageController extends Controller
 	public function show($id)
 	{
 		try {
-
 			if (Module::hasAccess("Contacts", "view")) {
-
 				$contact = Contact::find($id);
-
-
-
 				if (isset($contact->id)) {
 					$module = Module::get('Contacts');
-
 					$meetingModule = Module::get('Meetings');
 					$notesModule = Module::get('Meeting_notes');
 					$module->row = $contact;
 					$leadHistoryService = new LeadHistoryService();
 					$contactHistories = $leadHistoryService->organizeLeadHistoryForTimeline($contact);
-					$employees = Employee::all();
+					$employees = Employee::hidden()->get();
 					$completionByDate = ContactCompletion::where('contact_id',$contact->id)->select(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as date_creation"), DB::raw('count(*) as completion_percentage'))
 					->groupBy('date_creation')
 					->get();
@@ -865,12 +891,10 @@ class MessageController extends Controller
 	public function edit($id)
 	{
 		try {
-
 			if (Module::hasAccess("Contacts", "edit")) {
 				$contact = Contact::find($id);
 				if (isset($contact->id)) {
 					$module = Module::get('Contacts');
-
 					$module->row = $contact;
 					$cities = City::all();
 					$areas = Area::all();
@@ -905,18 +929,12 @@ class MessageController extends Controller
 	{
 		try {
 			if (Module::hasAccess("Contacts", "edit")) {
-
 				$rules = Module::validateRules("Contacts", $request, true);
-
 				$validator = Validator::make($request->all(), $rules);
-
 				if ($validator->fails()) {
 					return redirect()->back()->withErrors($validator)->withInput();;
 				}
-
-
 				$contact = Contact::find($id);
-
 				$data = $request->all();
 				$data['created_by'] = auth()->user()->context_id;
 				$contact->update(array_filter($data, function ($value) {
@@ -942,16 +960,13 @@ class MessageController extends Controller
 	public function destroy($id)
 	{
 		try {
-
 			if (Module::hasAccess("Contacts", "delete")) {
 				Contact::find($id)->delete();
-
 				// Redirecting to index() method
 				return redirect()->route(config('laraadmin.adminRoute') . '.contacts.index');
 			} else {
 				return redirect(config('laraadmin.adminRoute') . "/");
 			}
-
 		} catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -962,7 +977,6 @@ class MessageController extends Controller
 	public function dtajax(Request $request)
 	{
 		try {
-
 			$values = DB::table('contacts')->select($this->listing_cols)->whereNull('deleted_at');
 			if (!empty($request->issearch)) {
 				if (!empty($_GET["created_at_from"])) {
@@ -975,7 +989,6 @@ class MessageController extends Controller
 					$created_at_to = date("Y-m-d", strtotime($d2['year'] . "-" . $d2['month'] . "-" . $d2['day']));
 					$values = $values->where("created_at", "<=", $created_at_to);
 				}
-
 				if (!empty($_GET["employee"])) {
 					$values = $values->where("created_by", $_GET["employee"]);
 				}
@@ -1005,20 +1018,16 @@ class MessageController extends Controller
 				return '';
 			})->make();
 			$data = $out->getData();
-
 			$fields_popup = ModuleFields::getModuleFields('Contacts');
-
 			for ($i = 0; $i < count($data->data); $i++) {
 				for ($j = 0; $j < count($this->listing_cols); $j++) {
 					$col = $this->listing_cols[$j];
-
 					if ($fields_popup[$col] != null && Str::startsWith($fields_popup[$col]->popup_vals, "@")) {
 						$data->data[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i]->$col);
 					}
 					if ($col == $this->view_col) {
 						$data->data[$i]->$col = '<a href="' . url(config('laraadmin.adminRoute') . '/contacts/' . $data->data[$i]->id) . '">' . $data->data[$i]->$col . '</a>';
 					}
-
 					// else if($col == "author") {
 					//    $data->data[$i]->$col;
 					// }
@@ -1029,7 +1038,6 @@ class MessageController extends Controller
 					if (Module::hasAccess("Contacts", "edit")) {
 						$output .= '<a href="' . url(config('laraadmin.adminRoute') . '/contacts/' . $data->data[$i]->id . '/edit') . '" class="btn btn-warning btn-xs" style=""><i class="fa fa-edit"></i></a>';
 					}
-
 					if (Module::hasAccess("Contacts", "delete")) {
 						$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.contacts.destroy', $data->data[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
 						$output .= ' <button class="btn btn-danger deleteFormBtn btn-xs" type="submit"><i class="fa fa-times"></i></button>';
@@ -1052,16 +1060,13 @@ class MessageController extends Controller
 	public function import(Request $request)
 	{
 		try {
-
 			// Validate the form submission
 			$request->validate([
 				'contacts_file' => 'required|mimes:xlsx,xls',
 				'column_mappings' => 'required|array',
 			]);
-
 			// Retrieve column mappings from the request
 			$columnMappings = $request->input('column_mappings');
-
 			foreach ($columnMappings as $key => $value) {
 				// Check if "contact_field" is null or empty
 				if (isset($value['contact_field']) && ($value['contact_field'] === null || $value['contact_field'] === "")) {
@@ -1069,30 +1074,21 @@ class MessageController extends Controller
 					$columnMappings[$key]['contact_field'] = "notes";
 				}
 			}
-
 			// Get the uploaded Excel file
 			$uploadedFile = $request->file('contacts_file');
-
 			// Create a unique filename for the uploaded file
 			$filename = time() . '_' . $uploadedFile->getClientOriginalName();
-
 			// Store the uploaded file in a temporary location
 			$uploadedFile->storeAs('temp', $filename);
-
 			// Define the path to the stored temporary file
 			$filePath = storage_path('app/temp/' . $filename);
 
-			// try {
-
+            // try {
 			//Excel::import(new ContactsImport($columnMappings,$request->contact_source_id,$request->activity_id,$request->interest_id), $filePath);
-
-
 			$importInstance = new ContactsImport($columnMappings, $request->contact_source_id, $request->activity_id, $request->interest_id);
 			Excel::import($importInstance, $filePath);
-
 			$rowsSavedCount = $importInstance->getRowsSavedCount();
 			$rowsSkippedCount = $importInstance->getRowsSkippedCount();
-
 			return redirect()->back()->with('success', "Contacts imported successfully. Rows saved: $rowsSavedCount, Rows skipped: $rowsSkippedCount.");
 			//return redirect()->back()->with('success', 'Contacts imported successfully.');
 			// } catch (\Exception $e) {
@@ -1102,7 +1098,6 @@ class MessageController extends Controller
 			// 	// Remove the temporary file
 			// 	unlink($filePath);
 			// }
-
 		} catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -1113,13 +1108,12 @@ class MessageController extends Controller
 	public function report_index()
 	{
 		try {
-
 			$module = Module::get('Contacts');
 			$user = \Auth::user();
 			if ($user->roles[0]['view_data']) {
-				$emps = \App\Models\Employee::where("dept", $user->employee->dept)->pluck("name", "id")->toArray();
+				$emps = \App\Models\Employee::hidden()->where("dept", $user->employee->dept)->pluck("name", "id")->toArray();
 			} else {
-				$emps = \App\Models\Employee::pluck("name", "id")->toArray();
+				$emps = \App\Models\Employee::hidden()->pluck("name", "id")->toArray();
 			}
 			if (Module::hasAccess("Contacts", "view")) {
 				return View('la.contacts.report', [
@@ -1137,7 +1131,6 @@ class MessageController extends Controller
 			} else {
 				return redirect(config('laraadmin.adminRoute') . "/");
 			}
-
 		} catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

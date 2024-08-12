@@ -89,7 +89,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Branch') }}</span>
                                         </label>
-                                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
@@ -111,7 +111,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Department') }}</span>
                                         </label>
-                                        <select name="dept" data-control="select2" data-dropdown-parent="#dept" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="dept" data-control="select2" data-dropdown-parent="#dept" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                             @foreach($departments as $department)
@@ -124,7 +124,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Status') }}</span>
                                         </label>
-                                        <select name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="status" data-control="select2" data-dropdown-parent="#status" class="form-select form-select-solid">
                                             <option value="1" {{ @$user->active == 1 ? 'selected' : '' }}>{{ trans('main.Active') }}</option>
                                             <option value="0" {{ @$user->active == 0 ? 'selected' : '' }}>{{ trans('main.InActive') }}</option>
                                         </select>
@@ -137,7 +137,12 @@
                                     <!-- roles_name -->
                                     <div class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Role') }}</label>
-                                        {!! Form::select('roles_name[]', $roles, $userRole, array('class' => 'form-control')) !!}
+                                        {{-- {!! Form::select('roles_name[]', $roles, $userRole, array('class' => 'form-control')) !!} --}}
+                                        <select class="form-control form-select" name="roles_name" required>
+                                            @foreach($roles as $role)
+                                            <option value="{{ $role->name }}" {{ $user->roles[0]->name == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <!-- photo -->
                                     <div class="col-md-6 fv-row">
@@ -151,7 +156,7 @@
                                     </div>
                                     <!-- has_branch_access -->
                                     <div class="col-md-6 fv-row form-check form-check-custom form-check-solid m-4">
-                                        <input name="has_branch_access" class="form-check-input" type="checkbox" value="" id="same_as_billing" @if(@$user->employee->has_branch_access == 1) checked="checked" @endif>
+                                        <input name="has_branch_access" class="form-check-input" type="checkbox" id="same_as_billing" @if(@$user->employee->has_branch_access === 1) checked="checked" @endif>
                                         <label class="form-check-label" for="same_as_billing">{{ trans('main.Has Branch Access') }}</label>
                                     </div>
                                 </div>

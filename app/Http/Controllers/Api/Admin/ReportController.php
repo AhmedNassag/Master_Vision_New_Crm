@@ -72,11 +72,11 @@ class ReportController extends Controller
 
             if($auth_user->roles_name[0] == "Admin")
             {
-                $created_by = Employee::get(['id','name']);
+                $created_by = Employee::hidden()->get(['id','name']);
             }
             else
             {
-                $created_by = Employee::where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
+                $created_by = Employee::hidden()->where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
             }
 
             $data[] = [
@@ -223,7 +223,7 @@ class ReportController extends Controller
     public function contacts(Request $request)
     {
         try {
-                
+
             $validator = Validator::make($request->all(), [
                 // 'auth_id' => 'required|exists:users,id',
             ]);
@@ -243,11 +243,11 @@ class ReportController extends Controller
             $activity_id         = Activity::get(['id', 'name']);
             if($auth_user->roles_name[0] == "Admin")
             {
-                $created_by = Employee::get(['id','name']);
+                $created_by = Employee::hidden()->get(['id','name']);
             }
             else
             {
-                $created_by = Employee::where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
+                $created_by = Employee::hidden()->where('branch_id', $auth_user->employee->branch_id)->get(['id','name']);
             }
 
             $data[] = [
@@ -489,7 +489,7 @@ class ReportController extends Controller
             $auth_user = User::findOrFail(auth()->guard('api')->user()->id);
             if($request->branch_id)
             {
-                $employees = Employee::when($request->branch_id, function ($query) use ($request) {
+                $employees = Employee::hidden()->when($request->branch_id, function ($query) use ($request) {
                     return $query->where('branch_id', $request->branch_id);
                 })->get();
             }
@@ -497,11 +497,11 @@ class ReportController extends Controller
             {
                 if($auth_user->roles_name[0] == "Admin")
                 {
-                    $employees = Employee::get();
+                    $employees = Employee::hidden()->get();
                 }
                 else
                 {
-                    $employees = Employee::where('branch_id', $auth_user->employee->branch_id)->get();
+                    $employees = Employee::hidden()->where('branch_id', $auth_user->employee->branch_id)->get();
                 }
             }
             $data = [];
@@ -608,7 +608,7 @@ class ReportController extends Controller
             $data = [];
             foreach ($branches as $branch)
             {
-                $employees  = Employee::where('branch_id', $branch->id)->get();
+                $employees  = Employee::hidden()->where('branch_id', $branch->id)->get();
                 $reportData = [
                     'branch' => $branch->name, // Replace 'name' with the actual column name in your Employee model
                     'target' => 0,
@@ -747,7 +747,7 @@ class ReportController extends Controller
             }
 
             return $this->apiResponse($data, 'The Data Returned Successfully', 200);
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

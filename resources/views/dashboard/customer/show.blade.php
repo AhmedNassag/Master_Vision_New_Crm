@@ -383,9 +383,9 @@
                                                         <th class="text-center">{{ trans('main.Total Amount') }}</th>
                                                         <th class="text-center">{{ trans('main.Amount Paid') }}</th>
                                                         <th class="text-center">{{ trans('main.Dept') }}</th>
-                                                        <th class="text-center">{{ trans('main.Activity') }}</th>
                                                         <th class="text-center">{{ trans('main.SubActivity') }}</th>
-                                                        <th class="text-center">{{ trans('main.Status') }}</th>
+                                                        <th class="text-center">{{ trans('main.Service') }}</th>
+                                                        {{-- <th class="text-center">{{ trans('main.Status') }}</th> --}}
                                                         <th class="text-center">{{ trans('main.Actions') }}</th>
                                                     </tr>
                                                 </thead>
@@ -397,9 +397,9 @@
                                                             <td class="text-center">{{ number_format($invoice->total_amount, 0) }}</td>
                                                             <td class="text-center">{{ number_format($invoice->amount_paid, 0) }}</td>
                                                             <td class="text-center">{{ number_format($invoice->debt, 0) }}</td>
-                                                            <td class="text-center">{{ @$invoice->activity->name }}</td>
                                                             <td class="text-center">{{ @$invoice->subActivity->name ?? '' }}</td>
-                                                            <td class="text-center">{{ trans('main.'.ucfirst($invoice->status).'') }}</td>
+                                                            <td class="text-center">{{ @$invoice->service->name }}</td>
+                                                            {{-- <td class="text-center">{{ trans('main.'.ucfirst($invoice->status).'') }}</td> --}}
                                                             <td class="text-center">
                                                                 @can('تعديل فواتير العملاء')
                                                                     <a type="button" class="btn btn-sm btn-edit btn-info btn-block" href="{{ route('customer.edit.invoice',$invoice->id) }}">
@@ -582,8 +582,8 @@
                                                             <th class="text-center">{{ trans('main.Id') }}</th>
                                                             <th class="text-center">{{ trans('main.Customer') }}</th>
                                                             <th class="text-center">{{ trans('main.RecorderReminders') }}</th>
-                                                            <th class="text-center">{{ trans('main.SubActivity') }}</th>
                                                             <th class="text-center">{{ trans('main.Activity') }}</th>
+                                                            <th class="text-center">{{ trans('main.SubActivity') }}</th>
                                                             <th class="text-center">{{ trans('main.ExpectedAmount') }}</th>
                                                         </tr>
                                                     </thead>
@@ -594,9 +594,8 @@
                                                                 <td class="text-center">{{ @$reorderReminder->customer->name }} </td>
                                                                 <?php $reminderDate = new DateTime($reorderReminder->reminder_date); ?>
                                                                 <td class="text-center">{{ @$reminderDate->format('Y-m-d') }}</td>
-                                                                <td class="text-center">{{ @$reorderReminder->is_completed ? 'تم التذكير' : 'جديد' }}</td>
-                                                                <td class="text-center">{{ @$reorderReminder->interest->name }}</td>
                                                                 <td class="text-center">{{ @$reorderReminder->activity->name }}</td>
+                                                                <td class="text-center">{{ @$reorderReminder->interest->name }}</td>
                                                                 <td class="text-center">{{ @$reorderReminder->expected_amount }}</td>
                                                             </tr>
                                                         @endforeach
@@ -1116,7 +1115,7 @@
                                                     </label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <select name="country" aria-label="{{ trans('main.Select') }}" data-control="select2" data-placeholder="{{ trans('main.Select') }}..." data-dropdown-parent="#kt_modal_update_customer" class="form-select form-select-solid fw-bold">
+                                                    <select name="country" aria-label="{{ trans('main.Select') }}" data-control="select2" data-dropdown-parent="#kt_modal_update_customer" class="form-select form-select-solid fw-bold">
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <option value="AF">Afghanistan</option>
                                                         <option value="AX">Aland Islands</option>
@@ -1825,4 +1824,30 @@
             });
         });
     </script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('select[name="invoice[interest_id]"]').on('change',function(){
+            var activity_id = $(this).val();
+            if (activity_id) {
+                $.ajax({
+                    url:"{{URL::to('admin/serviceByInterestId')}}/" + activity_id,
+                    type:"GET",
+                    dataType:"json",
+                    success:function(data){
+                        $('select[name="invoice[service_id]"]').empty();
+                        $.each(data,function(key,value) {
+                            $('select[name="invoice[service_id]"]').append('<option class="form-control" value="'+ value["id"] +'">' + value["name"] + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('select[name="invoice[service_id]"]').empty();
+                console.log('not work')
+            }
+        });
+    });
+</script>
 @endsection

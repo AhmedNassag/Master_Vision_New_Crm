@@ -187,7 +187,7 @@
                                                 </a>
                                             @endcan
                                             <!--end::Send Message-->
-                                            
+
                                         </div>
                                         @if($item->customer_id)
                                             <div class="card-toolbar mb-3">
@@ -408,6 +408,18 @@
                                                 </div>
                                             @endif
                                             <!--begin::Details item-->
+                                            <!--begin::Details item-->
+                                            @if($item->branch)
+                                                <div class="row mb-7">
+                                                    <div class="col-5">
+                                                        <div class="fw-bold">{{ trans('main.Branch') }}:</div>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <div class="text-gray-600">{{ @$item->branch->name }}</div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            <!--begin::Details item-->
                                         </div>
                                     </div>
                                     <!--end::Details content-->
@@ -448,7 +460,70 @@
                                 </div>
                             @endif
                             <!--end::Connected Accounts-->
-                        </div>
+  
+@if($item->custom_attributes)
+                                <div class="card mb-5 mb-xl-8">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <div class="card-title">
+                                            <h3 class="fw-bold m-0">{{ trans('main.Notes') }}:</h3>
+                                        </div>
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-2">
+                                        <!--begin::Notice-->
+                                        <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed mb-9 p-6">
+                                            <!--begin::Icon-->
+                                            <i class="ki-outline ki-design-1 fs-2tx text-primary me-4"></i>
+                                            <!--end::Icon-->
+                                            <!--begin::Wrapper-->
+                                            <div class="d-flex flex-stack flex-grow-1">
+                                                <!--begin::Content-->
+                                              <div class="fw-semibold">
+    @if(!empty($item->custom_attributes['mobile2']))
+        <div class="fs-6 text-gray-700">
+            <strong>رقم موبايل آخر: </strong> {{ $item->custom_attributes['mobile2'] }}
+        </div>
+    @endif
+
+    @if(!empty($item->custom_attributes['program']))
+        <div class="fs-6 text-gray-700">
+            <strong>البرنامج: </strong> {{ $item->custom_attributes['program'] }}
+        </div>
+    @endif
+
+    @if(!empty($item->custom_attributes['isomra']))
+    
+    <div class="fs-6 text-gray-700">
+            <strong>نوع البرنامج: </strong> عمرة
+        </div>
+    <div class="fs-6 text-gray-700">
+            <strong>هل قام بالعمرة من قبل: </strong> {{ $item->custom_attributes['isomra'] }}
+        </div>
+    @endif
+
+    @if(!empty($item->custom_attributes['ishajj']))
+ <div class="fs-6 text-gray-700">
+            <strong>نوع البرنامج: </strong> حج
+        </div>     
+   <div class="fs-6 text-gray-700">
+            <strong>هل قام بالحج من قبل: </strong> {{ $item->custom_attributes['ishajj'] }}
+        </div>
+    @endif
+</div>
+                                                <!--end::Content-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+                                        <!--end::Notice-->
+                                    </div>
+                                    <!--end::Card body-->
+                                </div>
+                            @endif
+                            <!--end::Connected Accounts-->
+                                              
+</div>
                         <!--end::Sidebar-->
                         <!--begin::Content-->
                         <div class="flex-lg-row-fluid ms-lg-15">
@@ -1095,7 +1170,7 @@
                                                     </label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <select name="country" aria-label="{{ trans('main.Select') }}" data-control="select2" data-placeholder="{{ trans('main.Select') }}..." data-dropdown-parent="#kt_modal_update_customer" class="form-select form-select-solid fw-bold">
+                                                    <select name="country" aria-label="{{ trans('main.Select') }}" data-control="select2" data-dropdown-parent="#kt_modal_update_customer" class="form-select form-select-solid fw-bold">
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <option value="AF">Afghanistan</option>
                                                         <option value="AX">Aland Islands</option>

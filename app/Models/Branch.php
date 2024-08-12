@@ -16,6 +16,25 @@ class Branch extends Model
 
 
 
+    //this function use to make validation before destroy the record to refuse deleting if it has a related data in other tables
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($model) {
+            if
+            (
+                $model->employees()->count() > 0 ||
+                $model->contacts()->count() > 0  ||
+                $model->customers()->count() > 0
+            )
+            {
+                throw new \Exception(trans('main.Can Not Delete Beacause There Is A Related Data'));
+            }
+        });
+    }
+
+
+
     //start relations
     public function employees()
     {

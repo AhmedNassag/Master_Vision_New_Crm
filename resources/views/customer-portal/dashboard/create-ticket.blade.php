@@ -75,7 +75,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Project') }}</span>
                         </label>
-                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             @foreach ($sub_activities as $sub_activity)
                                 <option value="{{ @$sub_activity->id }}">{{ @$sub_activity->name }}</option>
@@ -87,7 +87,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span>{{ trans('main.Type') }}</span>
                         </label>
-                        <select name="ticket_type" data-control="select2" data-dropdown-parent="#ticket_type" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="ticket_type" data-control="select2" data-dropdown-parent="#ticket_type" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <option value="Technical Issue">{{ trans('main.Technical Issue') }}</option>
                             <option value="Inquiry">{{ trans('main.Inquiry') }}</option>

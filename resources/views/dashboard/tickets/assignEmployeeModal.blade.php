@@ -14,7 +14,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Branch') }}</span>
                         </label>
-                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" class="form-select form-select-solid" required>
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php
                                 if(Auth::user()->roles_name[0] == "Admin")
@@ -36,7 +36,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Employee') }}</span>
                         </label>
-                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid" required>
+                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" class="form-select form-select-solid" required>
                             <option value="">{{ trans('main.Select') }}...</option>
 
                         </select>

@@ -85,7 +85,7 @@ class TicketController extends Controller
                 ->paginate(config('myConfig.paginationCount'));
             }
             return view('dashboard.tickets.index',compact('data'));
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -147,11 +147,11 @@ class TicketController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             $service = new TicketService();
-            $service->assignToAgent($ticket,Employee::find($request->employee_id));
+            $service->assignToAgent($ticket,Employee::hidden()->find($request->employee_id));
 
             //send notification
             $data       = Ticket::findOrFail($ticket->id);
-            $notifiable = User::where('context_id',$request->employee_id)->first();
+            $notifiable = User::hidden()->where('context_id',$request->employee_id)->first();
             if ($notifiable)
             {
                 $notifiable->notify(new TicketAssignNotification($data));

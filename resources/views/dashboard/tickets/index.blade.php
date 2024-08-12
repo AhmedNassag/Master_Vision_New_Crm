@@ -42,16 +42,16 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span>{{ trans('main.Employee') }}</span>
                                                 </label>
-                                                <select name="assigned_agent_id" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="assigned_agent_id" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
                                                         {
-                                                            $employees = \App\Models\Employee::get(['id','name']);
+                                                            $employees = \App\Models\Employee::hidden()->get(['id','name']);
                                                         }
                                                         else
                                                         {
-                                                            $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                            $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
                                                         }
                                                     ?>
                                                     @foreach($employees as $employee)
@@ -63,7 +63,7 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span>{{ trans('main.Customer') }}</span>
                                                 </label>
-                                                <select name="customer_id" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="customer_id" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
@@ -88,7 +88,7 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span>{{ trans('main.Type') }}</span>
                                                 </label>
-                                                <select name="ticket_type" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="ticket_type" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <option value="Technical Issue">{{ trans('main.Technical Issue') }}</option>
                                                     <option value="Inquiry">{{ trans('main.Inquiry') }}</option>
@@ -99,7 +99,7 @@
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span>{{ trans('main.Status') }}</span>
                                                 </label>
-                                                <select name="status" data-control="select2" data-dropdown-parent="#kt_app_content" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                                <select name="status" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <option value="Pending">{{ trans('main.Pending') }}</option>
                                                     <option value="Open">{{ trans('main.Open') }}</option>

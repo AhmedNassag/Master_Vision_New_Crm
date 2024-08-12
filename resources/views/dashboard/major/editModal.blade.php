@@ -23,7 +23,7 @@
                             <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                 <span class="required">{{ trans('main.Industry') }}</span>
                             </label>
-                            <select name="industry_id" data-control="select2" data-dropdown-parent="#edit_modal_{{ @$item->id }}" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                            <select name="industry_id" data-control="select2" data-dropdown-parent="#edit_modal_{{ @$item->id }}" class="form-select form-select-solid">
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $industries = \App\Models\Industry::get(['id','name']); ?>
                                 @foreach($industries as $industry)

@@ -4,50 +4,42 @@ namespace App\Http\Controllers\Dashboard;
 
 use Hash;
 use App\Models\User;
-use App\Models\Employee;
-use App\Models\EmployeeTarget;
 use App\Models\Invoice;
 use App\Models\Meeting;
-use App\Models\Notification as NotificationModel;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\EmployeeTarget;
+use App\Notifications\UserAdded;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Scopes\HideSpecificUserScope;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Notifications\UserAdded;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\DB;
+use App\Models\Notification as NotificationModel;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:عرض المستخدمين', ['only' => ['index','show']]);
+        $this->middleware('permission:إضافة المستخدمين', ['only' => ['create', 'store']]);
+        $this->middleware('permission:تعديل المستخدمين', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:حذف المستخدمين', ['only' => ['destroy']]);
+    }
+
+
+
     public function index(Request $request)
     {
         try {
-                
-            $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like','%'.$request->name.'%');
-            })
-            ->when($request->email != null,function ($q) use($request){
-                return $q->where('email','like','%'.$request->email.'%');
-            })
-            ->when($request->mobile != null,function ($q) use($request){
-                return $q->where('mobile','like','%'.$request->mobile.'%');
-            })
-            ->when($request->branch_id != null,function ($q) use($request){
-                return $q->whereRelation('employee','branch_id',$request->branch_id);
-            })
-            ->when($request->dept != null,function ($q) use($request){
-                return $q->whereRelation('employee','dept',$request->dept);
-            })
-            ->paginate(config('myConfig.paginationCount'));
-
-
+            $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
 
             if(Auth::user()->roles_name[0] == "Admin")
             {
-                $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+                $data  = User::hidden()->with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
                 ->when($request->name != null,function ($q) use($request){
                     return $q->where('name','like','%'.$request->name.'%');
                 })
@@ -63,11 +55,11 @@ class UserController extends Controller
                 ->when($request->dept != null,function ($q) use($request){
                     return $q->whereRelation('employee','dept',$request->dept);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                ->paginate($perPage)->appends(request()->query());
             }
             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
             {
-                $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+                $data  = User::hidden()->with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
                 ->whereRelation('employee','branch_id', auth()->user()->employee->branch_id)
                 ->when($request->name != null,function ($q) use($request){
                     return $q->where('name','like','%'.$request->name.'%');
@@ -84,11 +76,11 @@ class UserController extends Controller
                 ->when($request->dept != null,function ($q) use($request){
                     return $q->whereRelation('employee','dept',$request->dept);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                ->paginate($perPage)->appends(request()->query());
             }
             else
             {
-                $data  = User::with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
+                $data  = User::hidden()->with(['employee.department'])->orderBy('id','ASC')->where('roles_name', '!=', null)
                 ->where('id', auth()->user()->id)
                 ->when($request->name != null,function ($q) use($request){
                     return $q->where('name','like','%'.$request->name.'%');
@@ -105,7 +97,7 @@ class UserController extends Controller
                 ->when($request->dept != null,function ($q) use($request){
                     return $q->whereRelation('employee','dept',$request->dept);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                ->paginate($perPage)->appends(request()->query());
             }
 
             /*
@@ -136,6 +128,7 @@ class UserController extends Controller
                 'mobile'    => $request->mobile,
                 'branch_id' => $request->branch_id,
                 'dept'      => $request->dept,
+                'perPage'   => $perPage,
             ]);
 
         } catch (\Exception $e) {
@@ -147,7 +140,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::hidden()->find($id);
         return view('dashboard.users.show',compact('user'));
     }
 
@@ -155,7 +148,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::pluck('name','name')->all();
+        $roles = Role::get();
         return view('dashboard.users.create',compact('roles'));
     }
 
@@ -164,7 +157,6 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(),[
                 'name'       => 'required',
                 'email'      => 'required|email|unique:users,email|unique:employees,email',
@@ -181,7 +173,6 @@ class UserController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-
             $employee = Employee::create([
                 'name'              => $request->name,
                 'email'             => $request->email,
@@ -197,7 +188,7 @@ class UserController extends Controller
                 'password'   => bcrypt($request->password),
                 'status'     => $request->status,
                 'active'     => $request->status,
-                'roles_name' => $request->roles_name,
+                'roles_name' => [$request->roles_name],
                 'context_id' => $employee->id,
             ]);
             //upload photo
@@ -234,9 +225,9 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user     = User::with('employee')->where('id', $id)->first();
+        $user     = User::hidden()->with('employee')->where('id', $id)->first();
         $userRole = $user->roles->pluck('name','name')->all();
-        $roles    = Role::pluck('name','name')->all();
+        $roles    = Role::get();
         return view('dashboard.users.edit',compact('user', 'userRole', 'roles'));
     }
 
@@ -260,8 +251,8 @@ class UserController extends Controller
                 session()->flash('error');
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            $user     = User::find($request->id);
-            $employee = Employee::find($user->context_id);
+            $user     = User::hidden()->find($request->id);
+            $employee = Employee::hidden()->find($user->context_id);
 
             $employee->update([
                 'name'              => $request->name,
@@ -278,7 +269,7 @@ class UserController extends Controller
                 'password'   => $request->password ? bcrypt($request->password) : $user->password,
                 'status'     => $request->status,
                 'active'     => $request->status,
-                'roles_name' => $request->roles_name ? $request->roles_name : $user->roles_name,
+                'roles_name' => $request->roles_name ? [$request->roles_name] : $user->roles_name,
                 'context_id' => $employee->id,
             ]);
             // update photo
@@ -320,8 +311,8 @@ class UserController extends Controller
 
             // $related_table = realed_model::where('user_id', $request->id)->pluck('user_id');
             // if($related_table->count() == 0) {
-                $user     = User::findOrFail($request->id);
-                $employee = Employee::findOrFail($user->context_id);
+                $user     = User::hidden()->findOrFail($request->id);
+                $employee = Employee::hidden()->findOrFail($user->context_id);
                 if (!$user) {
                     session()->flash('error');
                     return redirect()->back();
@@ -350,7 +341,7 @@ class UserController extends Controller
             $notification->update([
                 'read_at' => now(),
             ]);
-            $user = User::findOrFail($id);
+            $user = User::hidden()->findOrFail($id);
             return view('dashboard.users.show',compact('user'));
 
         } catch (\Exception $e) {
@@ -363,7 +354,7 @@ class UserController extends Controller
     public function changeStatus($id)
     {
         try {
-            $user = User::find($id);
+            $user = User::hidden()->find($id);
             if($user->status == 0)
             {
                 $user->update(['status' => 1]);
@@ -389,7 +380,7 @@ class UserController extends Controller
     function employeeByBranchId($id)
     {
         try {
-            $employees = DB::table('employees')->where('branch_id', $id)->select('name', 'id')->get();
+            $employees = DB::table('employees')->where('hidden',0)->where('branch_id', $id)->select('name', 'id')->get();
             if($employees)
             {
                 return response()->json($employees);
@@ -404,7 +395,7 @@ class UserController extends Controller
     function employeeByDept($id)
     {
         try {
-            $employees = DB::table('employees')->where('dept', $id)->select('name', 'id')->get();
+            $employees = DB::table('employees')->where('hidden',0)->where('dept', $id)->select('name', 'id')->get();
             if($employees)
             {
                 return response()->json($employees);
@@ -419,7 +410,7 @@ class UserController extends Controller
     public function ajaxEmployeesSelect(Request $request)
     {
         try {
-            $employees = Employee::where("branch_id",$request->branch_id)->get();
+            $employees = Employee::hidden()->where("branch_id",$request->branch_id)->get();
             $employees->each(function ($employee) {
             $employee->name = $employee->name." <b>( ".(($employee->has_branch_access)?"مدير فرع":"موظف")." )</b>";
             });

@@ -23,7 +23,7 @@
                             <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                 <span class="required">{{ trans('main.Country') }}</span>
                             </label>
-                            <select name="country_id" data-control="select2" data-dropdown-parent="#add_modal" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                            <select name="country_id" data-control="select2" data-dropdown-parent="#add_modal" class="form-select form-select-solid">
                                 <option value="">{{ trans('main.Select') }}...</option>
                                 <?php $countries = \App\Models\Country::get(['id','name']); ?>
                                 @foreach($countries as $country)

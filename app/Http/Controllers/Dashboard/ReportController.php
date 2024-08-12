@@ -40,6 +40,7 @@ class ReportController extends Controller
     public function meetingsReport(Request $request)
     {
         try {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
 
             if(Auth::user()->roles_name[0] == "Admin")
             {
@@ -70,7 +71,8 @@ class ReportController extends Controller
                 ->when($request->to_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '<=', $request->to_date);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                // ->paginate($perPage)->appends(request()->query());
+                ->get();
             }
             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
             {
@@ -102,7 +104,8 @@ class ReportController extends Controller
                 ->when($request->to_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '<=', $request->to_date);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                // ->paginate($perPage)->appends(request()->query());
+                ->get();
             }
             else
             {
@@ -134,7 +137,8 @@ class ReportController extends Controller
                 ->when($request->to_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '<=', $request->to_date);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                // ->paginate($perPage)->appends(request()->query());
+                ->get();
             }
             return view('dashboard.report.meetings',compact('data'))
             ->with([
@@ -146,6 +150,142 @@ class ReportController extends Controller
                 'follow_date_to'    => $request->follow_date_from,
                 'from_date'         => $request->from_date,
                 'to_date'           => $request->to_date,
+                'perPage'           => $perPage,
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    //contactMeetings report
+    public function contactMeetings()
+    {
+        return View('dashboard.report.contactMeetings');
+    }
+
+
+
+    public function contactMeetingsReport(Request $request)
+    {
+        try {
+            $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+
+            if(Auth::user()->roles_name[0] == "Admin")
+            {
+                $data = Meeting::with('notes','contact','createdBy')
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->interests_ids != null,function ($q) use($request){
+                    return $q->where('interests_ids', $request->interests_ids);
+                })
+                ->when($request->contact_id != null,function ($q) use($request){
+                    return $q->where('contact_id', $request->contact_id);
+                })
+                ->when($request->contact_source_id != null, function ($q) use ($request) {
+                    return $q->whereHas('contact', function ($query) use ($request) {
+                        $query->where('contact_source_id', $request->contact_source_id);
+                    });
+                })
+                ->when($request->follow_date_from != null,function ($q) use($request){
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_from);
+                })
+                ->when($request->follow_date_to != null,function ($q) use($request){
+                    return $q->whereRelation('notes','follow_date', '>=', $request->follow_date_to);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                // ->paginate($perPage)->appends(request()->query())
+                ->get()
+                ->groupBy('contact_id');
+            }
+            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+            {
+                $data = Meeting::with('notes','contact','createdBy')
+                ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->interests_ids != null,function ($q) use($request){
+                    return $q->where('interests_ids', $request->interests_ids);
+                })
+                ->when($request->contact_id != null,function ($q) use($request){
+                    return $q->where('contact_id', $request->contact_id);
+                })
+                ->when($request->contact_source_id != null, function ($q) use ($request) {
+                    return $q->whereHas('contact', function ($query) use ($request) {
+                        $query->where('contact_source_id', $request->contact_source_id);
+                    });
+                })
+                ->when($request->follow_date_from != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_from);
+                })
+                ->when($request->follow_date_to != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_to);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                // ->paginate($perPage)->appends(request()->query())
+                ->get()
+                ->groupBy('contact_id');
+            }
+            else
+            {
+                $data = Meeting::with('notes','contact','createdBy')
+                ->whereRelation('createdBy','id', auth()->user()->employee->id)
+                ->when($request->created_by != null,function ($q) use($request){
+                    return $q->where('created_by', $request->created_by);
+                })
+                ->when($request->interests_ids != null,function ($q) use($request){
+                    return $q->where('interests_ids', $request->interests_ids);
+                })
+                ->when($request->contact_id != null,function ($q) use($request){
+                    return $q->where('contact_id', $request->contact_id);
+                })
+                ->when($request->contact_source_id != null, function ($q) use ($request) {
+                    return $q->whereHas('contact', function ($query) use ($request) {
+                        $query->where('contact_source_id', $request->contact_source_id);
+                    });
+                })
+                ->when($request->follow_date_from != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_from);
+                })
+                ->when($request->follow_date_to != null,function ($q) use($request){
+                    return $q->whereRelation('notes.follow_date', '>=', $request->follow_date_to);
+                })
+                ->when($request->from_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '>=', $request->from_date);
+                })
+                ->when($request->to_date != null,function ($q) use($request){
+                    return $q->whereDate('created_at', '<=', $request->to_date);
+                })
+                // ->paginate($perPage)->appends(request()->query())
+                ->get()->appends(request()->query())
+                ->groupBy('contact_id');
+            }
+
+            return view('dashboard.report.contactMeetings',compact('data'))
+            ->with([
+                'created_by'        => $request->created_by,
+                'interests_ids'     => $request->interests_ids,
+                'contact_id'        => $request->contact_id,
+                'contact_source_id' => $request->contact_source_id,
+                'follow_date_from'  => $request->follow_date_from,
+                'follow_date_to'    => $request->follow_date_from,
+                'from_date'         => $request->from_date,
+                'to_date'           => $request->to_date,
+                'perPage'           => $perPage,
             ]);
 
         } catch (\Exception $e) {
@@ -170,6 +310,7 @@ class ReportController extends Controller
     public function contactsReport(Request $request)
     {
         try {
+            $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
 
             if(Auth::user()->roles_name[0] == "Admin")
             {
@@ -207,7 +348,8 @@ class ReportController extends Controller
                 ->when($request->to_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '<=', $request->to_date);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                // ->paginate($perPage)->appends(request()->query());
+                ->get();
             }
             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
             {
@@ -246,7 +388,8 @@ class ReportController extends Controller
                 ->when($request->to_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '<=', $request->to_date);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                // ->paginate($perPage)->appends(request()->query());
+                ->get();
             }
             else
             {
@@ -285,7 +428,8 @@ class ReportController extends Controller
                 ->when($request->to_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '<=', $request->to_date);
                 })
-                ->paginate(config('myConfig.paginationCount'));
+                // ->paginate($perPage)->appends(request()->query());
+                ->get();
             }
 
             return view('dashboard.report.contacts',compact('data'))
@@ -301,6 +445,7 @@ class ReportController extends Controller
                 'activity_id'         => $request->activity_id,
                 'from_date'           => $request->from_date,
                 'to_date'             => $request->to_date,
+                'perPage'             => $perPage,
             ]);
 
         } catch (\Exception $e) {
@@ -328,7 +473,7 @@ class ReportController extends Controller
 
             if($request->branch_id)
             {
-                $employees = Employee::when($request->branch_id, function ($query) use ($request) {
+                $employees = Employee::hidden()->when($request->branch_id, function ($query) use ($request) {
                     return $query->where('branch_id', $request->branch_id);
                 })->get();
             }
@@ -336,11 +481,15 @@ class ReportController extends Controller
             {
                 if(Auth::user()->roles_name[0] == "Admin")
                 {
-                    $employees = Employee::get();
+                    $employees = Employee::hidden()->get();
+                }
+                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                {
+                    $employees = Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get();
                 }
                 else
                 {
-                    $employees = Employee::where('branch_id', auth()->user()->employee->branch_id)->get();
+                    $employees = Employee::hidden()->where('id', auth()->user()->employee->id)->get();
                 }
             }
             $data = [];
@@ -422,7 +571,19 @@ class ReportController extends Controller
             $data = [];
             foreach ($branches as $branch)
             {
-                $employees = Employee::where('branch_id', $branch->id)->get();
+
+                if(Auth::user()->roles_name[0] == "Admin")
+                {
+                    $employees = Employee::hidden()->where('branch_id', $branch->id)->get();
+                }
+                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                {
+                    $employees = Employee::hidden()->where('branch_id', $branch->id)->get();
+                }
+                else
+                {
+                    $employees = Employee::hidden()->where('branch_id', $branch->id)->where('id', auth()->user()->employee->id)->get();
+                }
                 $reportData = [
                     'branch' => $branch->name, // Replace 'name' with the actual column name in your Employee model
                     'target' => 0,

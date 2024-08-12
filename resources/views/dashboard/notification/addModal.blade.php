@@ -52,11 +52,11 @@
                             <?php
                                 if(Auth::user()->roles_name[0] == "Admin")
                                 {
-                                    $employees = \App\Models\Employee::get(['id','name']);
+                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
                                 }
                                 else
                                 {
-                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
                                 }
                             ?>
                             @foreach($employees as $employee)

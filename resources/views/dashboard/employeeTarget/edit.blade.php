@@ -75,16 +75,16 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="required">{{ trans('main.Employee') }}</span>
                                         </label>
-                                        <select name="employee_id" data-control="select2" data-dropdown-parent="#edit_employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="employee_id" data-control="select2" data-dropdown-parent="#edit_employee_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
                                                 {
-                                                    $employees = \App\Models\Employee::get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
                                                 }
                                                 else
                                                 {
-                                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
                                                 }
                                             ?>
                                             @foreach($employees as $employee)
@@ -117,7 +117,7 @@
                                             }
                                             // $year  = date('Y');
                                         ?>
-                                        <select name="month" data-control="select2" data-dropdown-parent="#month" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="month" data-control="select2" data-dropdown-parent="#month" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             @foreach($months as $month)
                                                 <option value="{{ @$month }}-{{ @$year }}">{{ trans('main.'.$month) }} - {{ @$year }}</option>
@@ -284,7 +284,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Activity') }}</span>
                                 </label>
-                                <select name="activity_id[]" data-control="select2" data-dropdown-parent="#add_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid activity-select">
+                                <select name="activity_id[]" data-control="select2" data-dropdown-parent="#add_activity_id" class="form-select form-select-solid activity-select">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                     @foreach ($activities as $activity)

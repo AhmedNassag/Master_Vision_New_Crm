@@ -118,7 +118,6 @@ class CustomerController extends Controller
     public function addInvoice(Request $request)
 	{
         try {
-
             $validator = Validator::make($request->all(), [
                 'invoice'                => ['required','array','min:1'],
                 'invoice.invoice_number' => 'required|string',
@@ -128,9 +127,11 @@ class CustomerController extends Controller
                 'invoice.debt'           => 'required|numeric',
                 'invoice.description'    => 'required|string',
                 'invoice.status'         => 'required|string',
+                'invoice.activity_id'    => 'required|integer|exists:activates,id',
+                'invoice.interest_id'    => 'required|integer|exists:interests,id',
+                'invoice.service_id'     => 'required|integer|exists:services,id',
                 'invoice.customer_id'    => 'required',
             ]);
-
             if ($validator->fails()) {
                 session()->flash('error');
                 return redirect()->back()->withErrors($validator)->withInput();
@@ -150,7 +151,7 @@ class CustomerController extends Controller
             }
             session()->flash('success');
             return redirect()->back();
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -161,11 +162,13 @@ class CustomerController extends Controller
     public function editInvoice($id)
 	{
         try {
-
             $invoice = Invoice::find($id);
-            if(isset($invoice->id)) {
+            if(isset($invoice->id))
+            {
                 return view('dashboard.customer.editInvoice')->with('invoice', $invoice);
-            } else {
+            }
+            else
+            {
                 return view('404');
             }
 
@@ -179,8 +182,7 @@ class CustomerController extends Controller
     public function updateInvoice(Request $request)
 	{
         try {
-
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'invoice_number' => 'required|string',
                 'invoice_date'   => 'required|date',
                 'total_amount'   => 'required|numeric',
@@ -189,6 +191,11 @@ class CustomerController extends Controller
                 'description'    => 'required|string',
                 'status'         => 'required|string',
             ]);
+            if ($validator->fails())
+            {
+                session()->flash('error');
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             $inputs  = $request->all();
             $invoice = Invoice::find($request->id);
@@ -211,7 +218,6 @@ class CustomerController extends Controller
     public function addReminder(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'reminder'                 => ['required','array','min:1'],
                 'reminder.activity_id'     => 'required',
@@ -244,7 +250,6 @@ class CustomerController extends Controller
     public function addAttachment(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'files'   => 'required|array',
                 'files.*' => 'required|file|mimes:png,jpg,jpeg,webp',
@@ -291,7 +296,6 @@ class CustomerController extends Controller
     public function deleteAttachment($id)
     {
         try {
-
             $media = Media::findOrFail($id);
             if (!$media) {
                 session()->flash('error');
@@ -312,7 +316,6 @@ class CustomerController extends Controller
     public function postRetargetResults(Request $request)
 	{
         try {
-
             $validator = Validator::make($request->all(), [
                 'new_activity_id' => 'required',
                 'new_interest_id' => 'required',
@@ -321,7 +324,7 @@ class CustomerController extends Controller
             if ($validator->fails())
             {
                 session()->flash('error');
-                return redirect()->back();
+                return redirect()->back()->withErrors($validator)->withInput();
             }
 
             $customer = Customer::find($request->id);
@@ -369,7 +372,7 @@ class CustomerController extends Controller
             // foreach ($inputs['ids'] as $id) {
                 $id = $inputs['ids'];
                 $customer = Customer::find($id);
-                $contact  =  Contact::create([
+                $contact  = Contact::create([
                     'name'              => $customer->name,
                     'mobile'            => $customer->mobile,
                     'gender'            => $customer->gender,
@@ -382,6 +385,7 @@ class CustomerController extends Controller
                     'major_id'          => $customer->major_id,
                     'created_by'        => $customer->created_by,
                     'mobile2'           => $customer->mobile2,
+                    'whats_app_mobile'  => @$customer->whats_app_mobile,
                     'company_name'      => $customer->company_name,
                     'notes'             => $customer->notes,
                     'activity_id'       => $request->new_activity_id,
@@ -403,16 +407,28 @@ class CustomerController extends Controller
     public function importData(Request $request)
     {
         try {
-
             // Validate the form submission
-            $request->validate([
-                'contacts_file' => 'required|mimes:xlsx,xls',
-                'column_mappings' => 'required|array',
+            $validator = Validator::make($request->all(), [
+                'contact_source_id' => 'required|integer|exists:contact_sources,id',
+                'activity_id'       => 'required|integer|exists:activates,id',
+                'interest_id'       => 'required|integer|exists:interests,id',
+                'contacts_file'     => 'required|mimes:xlsx,xls',
+                'column_mappings'   => 'required|array',
             ]);
+            if ($validator->fails())
+            {
+                session()->flash('error');
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             // Retrieve column mappings from the request
             $columnMappings = $request->input('column_mappings');
             foreach ($columnMappings as $key => $value) {
+                if(!$value['contact_field'] = "name" || !$value['contact_field'] = "mobile")
+                {
+                    session()->flash('error');
+                    return redirect()->back();
+                }
                 // Check if "contact_field" is null or empty
                 if (isset($value['contact_field']) && ($value['contact_field'] === null || $value['contact_field'] === "")) {
                     // Update "contact_field" to "notes"
@@ -432,10 +448,16 @@ class CustomerController extends Controller
             // Define the path to the stored temporary file
             $filePath = storage_path('app/temp/' . $filename);
 
-            Excel::import(new CustomerImport($columnMappings,$request->contact_source_id,$request->activity_id), $filePath);
+            // Excel::import(new CustomerImport($columnMappings,$request->contact_source_id,$request->activity_id, $request->interest_id), $filePath);
 
-            return redirect()->back()->with('success', 'Contacts imported successfully.');
+            $importInstance = new CustomerImport($columnMappings, $request->contact_source_id, $request->activity_id, $request->interest_id);
+            Excel::import($importInstance, $filePath);
 
+            $rowsSavedCount   = strval($importInstance->getRowsSavedCount());
+            $rowsSkippedCount = strval($importInstance->getRowsSkippedCount());
+
+            session()->flash('success');
+            return redirect()->back()->with(['rowsSavedCount' => $rowsSavedCount, 'rowsSkippedCount' => $rowsSkippedCount]);
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -468,7 +490,7 @@ class CustomerController extends Controller
             ]);
             session()->flash('success');
             return redirect()->back();
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

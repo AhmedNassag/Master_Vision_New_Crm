@@ -219,7 +219,7 @@
                                             <span class="fs-3x fw-bold text-primary" data-kt-plan-price-month="39" data-kt-plan-price-annual="399">{{ $customers }}</span>
                                         </div>
                                     </div>
-                                    <a href="{{ route('contact.index') }}" class="btn btn-sm btn-primary">{{ trans('main.Details') }}</a>
+                                    <a href="{{ route('customer.index') }}" class="btn btn-sm btn-primary">{{ trans('main.Details') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -301,7 +301,7 @@
                     </div>
 
 
-                    @if(auth()->user()->roles_name[0] == "Admin")
+                    @if(auth()->user()->roles_name[0] == "Admin" || auth()->user()->employee->has_branch_access == 1)
                         <!--top-->
                         <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                             <!--Top 10 Sales Employee-->
@@ -387,7 +387,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+
 
                         <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                             <!--Top 5 Contact Sources-->
@@ -529,7 +529,7 @@
                                     </div>
                                 </div>
                             </div> -->
-                        </div>                    
+                        </div>
                     @endif
                 </div>
             </div>

@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Laravel\Sanctum\HasApiTokens;
+use App\Scopes\HideSpecificUserScope;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -26,6 +28,27 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $guarded = [];
 
+
+
+    //this function use to make validation before destroy the record to refuse deleting if it has a related data in other tables
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($model) {
+            if
+            (
+                $model->contactCompletions()->count() > 0 ||
+                $model->logs()->count() > 0
+            )
+            {
+                throw new \Exception(trans('main.Can Not Delete Beacause There Is A Related Data'));
+            }
+        });
+    }
+
+    public function scopeHidden($query) {
+        return $query->where('hidden',0);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -82,6 +105,11 @@ class User extends Authenticatable implements JWTSubject
     public function contactCompletions()
     {
         return $this->hasMany(ContactCompletion::class, 'completed_by');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(CommunicationLog::class, 'user_id');
     }
 
 

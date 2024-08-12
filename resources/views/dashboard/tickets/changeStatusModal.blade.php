@@ -14,7 +14,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Status') }}</span>
                         </label>
-                        <select id="status1" name="status" data-control="select2" data-dropdown-parent="#status" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select id="status1" name="status" data-control="select2" data-dropdown-parent="#status" class="form-select form-select-solid">
                             <option value="Pending" {{ @$ticket->status == 'Pending' ? 'selected' : ''}}>{{ trans('main.Pending') }}</option>
                             <option value="Open" {{ @$ticket->status == 'Open' ? 'selected' : ''}}>{{ trans('main.Open') }}</option>
                             <option value="In-Progress" {{ @$ticket->status == 'In-Progress' ? 'selected' : ''}}>{{ trans('main.In-Progress') }}</option>

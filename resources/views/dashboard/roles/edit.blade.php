@@ -97,7 +97,7 @@
                                                         </div>
                                                         <div class="card-footer p-3 text-center">
                                                             <label class="form-group toggle-switch mb-0">
-                                                                <input type="checkbox" class="toggle-switch-input" name="permission[]" value="{{ @$value->id }}" {{ in_array($value->id, $rolePermissions) ? 'checked' : '' }}>
+                                                                <input type="checkbox" class="toggle-switch-input" name="permission[]" value="{{ @$value->name }}" {{ in_array($value->id, $rolePermissions) ? 'checked' : '' }}>
                                                                 <span class="toggle-switch-label mx-auto">
                                                                     <span class="toggle-switch-indicator"></span>
                                                                 </span>

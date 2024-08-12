@@ -14,7 +14,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Campaign') }}</span>
                         </label>
-                        <select name="campaign_id" id="campaign_id" data-control="select2" data-dropdown-parent="#campaign_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="campaign_id" id="campaign_id" data-control="select2" data-dropdown-parent="#campaign_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $campaigns = \App\Models\Campaign::get(['id','name']); ?>
                             @foreach($campaigns as $campaign)
@@ -27,7 +27,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.Activity') }}</span>
                         </label>
-                        <select name="new_activity_id" id="new_activity_id" data-control="select2" data-dropdown-parent="#new_activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="new_activity_id" id="new_activity_id" data-control="select2" data-dropdown-parent="#new_activity_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                             @foreach($activities as $activity)
@@ -40,7 +40,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span class="required">{{ trans('main.SubActivity') }}</span>
                         </label>
-                        <select name="new_interest_id" id="new_interest_id" data-control="select2" data-dropdown-parent="#new_interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="new_interest_id" id="new_interest_id" data-control="select2" data-dropdown-parent="#new_interest_id" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
                         </select>

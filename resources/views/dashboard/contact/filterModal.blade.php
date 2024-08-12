@@ -24,10 +24,36 @@
                         <label class="form-label fs-5 fw-semibold mb-3">
                             <span>{{ trans('main.Gender') }}</span>
                         </label>
-                        <select name="gender" data-control="select2" data-dropdown-parent="#gender_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="gender" data-control="select2" data-dropdown-parent="#gender_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <option value="Male">{{ trans('main.Male') }}</option>
                             <option value="Female">{{ trans('main.Female') }}</option>
+                        </select>
+                    </div>
+                    <!-- religion -->
+                    <div class="mb-7" id="religion_filter">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span>{{ trans('main.Religion') }}</span>
+                        </label>
+                        <select name="religion" data-control="select2" data-dropdown-parent="#religion_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <option value="muslim">{{ trans('main.Muslim') }}</option>
+                            <option value="christian">{{ trans('main.Christian') }}</option>
+                            <option value="other">{{ trans('main.Other') }}</option>
+                        </select>
+                    </div>
+                    <!-- marital_status -->
+                    <div class="mb-7" id="marital_status_filter">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span>{{ trans('main.Marital Status') }}</span>
+                        </label>
+                        <select name="marital_status" data-control="select2" data-dropdown-parent="#marital_status_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <option value="single">{{ trans('main.Single') }}</option>
+                            <option value="married">{{ trans('main.Married') }}</option>
+                            <option value="absolute">{{ trans('main.Absolute') }}</option>
+                            <option value="widower">{{ trans('main.Widower') }}</option>
+                            <option value="other">{{ trans('main.Other') }}</option>
                         </select>
                     </div>
                     <!-- activity_id -->
@@ -35,7 +61,7 @@
                         <label class="form-label fs-5 fw-semibold mb-3">
                             <span>{{ trans('main.Activity') }}</span>
                         </label>
-                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                             @foreach($activities as $activity)
@@ -48,9 +74,22 @@
                         <label class="form-label fs-5 fw-semibold mb-3">
                             <span>{{ trans('main.SubActivity') }}</span>
                         </label>
-                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
+                        </select>
+                    </div>
+                    <!-- branch_id -->
+                    <div id="branch_id_filter" class="mb-7">
+                        <label class="form-label fs-5 fw-semibold mb-3">
+                            <span>{{ trans('main.Branch') }}</span>
+                        </label>
+                        <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <?php $branches = \App\Models\Branch::get(['id', 'name']); ?>
+                            @foreach($branches as $branch)
+                            <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <!-- city_id -->
@@ -58,7 +97,7 @@
                         <label class="form-label fs-5 fw-semibold mb-3">
                             <span>{{ trans('main.City') }}</span>
                         </label>
-                        <select name="city_id" data-control="select2" data-dropdown-parent="#city_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="city_id" data-control="select2" data-dropdown-parent="#city_id_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $cities = \App\Models\City::get(['id', 'name']); ?>
                             @foreach($cities as $city)
@@ -71,7 +110,7 @@
                         <label class="form-label fs-5 fw-semibold mb-3">
                             <span>{{ trans('main.Area') }}</span>
                         </label>
-                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
                         </select>
@@ -81,7 +120,7 @@
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                             <span>{{ trans('main.Campaign') }}</span>
                         </label>
-                        <select name="campaign_id" data-control="select2" data-dropdown-parent="#campaign_id_filter" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                        <select name="campaign_id" data-control="select2" data-dropdown-parent="#campaign_id_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $campaigns = \App\Models\Campaign::get(['id', 'name']); ?>
                             @foreach($campaigns as $campaign)
@@ -89,15 +128,28 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- tag_id -->
+                    <div id="tag_id_filter" class="mb-7">
+                        <label class="form-label fs-5 fw-semibold mb-3">
+                            <span>{{ trans('main.Tag') }}</span>
+                        </label>
+                        <select name="tag_id" data-control="select2" data-dropdown-parent="#tag_id_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <?php $tags = \App\Models\Tag::get(['id', 'name']); ?>
+                            @foreach($tags as $tag)
+                            <option value="{{ @$tag->id }}">{{ @$tag->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <!-- from_date -->
                     <div class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.From Date') }}</label>
-                        <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.From Date') }}" value="{{ old('from_date') }}" name="from_date" />
+                        <input type="datetime-local" class="form-control form-control-solid" placeholder="{{ trans('main.From Date') }}" value="{{ old('from_date') }}" name="from_date" />
                     </div>
                     <!-- to_date -->
                     <div class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.To Date') }}</label>
-                        <input type="date" class="form-control form-control-solid" placeholder="{{ trans('main.To Date') }}" value="{{ old('to_date') }}" name="to_date" />
+                        <input type="datetime-local" class="form-control form-control-solid" placeholder="{{ trans('main.To Date') }}" value="{{ old('to_date') }}" name="to_date" />
                     </div>
                     <div id="excel-columns-container"></div>
                 </div>

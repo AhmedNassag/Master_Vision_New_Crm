@@ -27,13 +27,16 @@ class StoreRequest extends FormRequest
             'name'              => 'required|string',
             'address'           => 'nullable|string',
             'email'             => 'nullable|email|unique:contacts,email,NULL,id,deleted_at,NULL',
-            'religion'          => 'required|in:muslim,christian,other',
+            'religion'          => 'nullable|in:muslim,christian,other',
+            'marital_satus'     => 'nullable|in:Single,Married,Absolute,Widower,Other',
             'mobile'            => 'required|numeric|unique:contacts,mobile,NULL,id,deleted_at,NULL',
+            'whats_app_mobile'  => 'nullable|numeric|unique:contacts,whats_app_mobile,NULL,id,deleted_at,NULL',
             'national_id'       => 'nullable|numeric|unique:contacts,national_id,NULL,id,deleted_at,NULL',
             'contact_source_id' => 'required|integer|exists:contact_sources,id',
             'activity_id'       => 'required|integer|exists:activates,id',
             'interest_id'       => 'required|integer|exists:interests,id',
             'branch_id'         => 'required|integer|exists:branches,id',
+            'has_special_needs' => 'nullable',
         ];
     }
 

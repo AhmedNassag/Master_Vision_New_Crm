@@ -125,7 +125,7 @@ class HomeController extends Controller
             }])->having("meetings_count",">",0)->orderBy("meetings_count","desc")->take(5)->get();
 
             //top 5 employees
-            $employees = Employee::withCount(['meetings'=>function($q) use ($emps) {
+            $employees = Employee::hidden()->withCount(['meetings'=>function($q) use ($emps) {
                 $q->whereNull("deleted_at");
                 if(count($emps)>0) {
                     $q->whereIn("created_by",$emps);
@@ -159,7 +159,7 @@ class HomeController extends Controller
 
             $todayBirthdays = Customer::whereDate('birth_date',Carbon::today())->count();
 
-            $mostSalesEmployees = Employee::whereHas('invoices')
+            $mostSalesEmployees = Employee::hidden()->whereHas('invoices')
                 ->withSum('invoices', 'total_amount')
                 ->orderBy('invoices_sum_total_amount', 'desc')
                 ->limit(10)

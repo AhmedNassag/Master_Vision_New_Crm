@@ -74,7 +74,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Branch') }}</span>
                                 </label>
-                                <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php
                                         if(Auth::user()->roles_name[0] == "Admin")
@@ -106,7 +106,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2 required">
                                     <span>{{ trans('main.ContactSource') }}</span>
                                 </label>
-                                <select name="contact_source_id" data-control="select2" data-dropdown-parent="#contact_source_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="contact_source_id" data-control="select2" data-dropdown-parent="#contact_source_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $contactSources = \App\Models\ContactSource::get(['id','name']); ?>
                                     @foreach($contactSources as $contactSource)
@@ -119,7 +119,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.Activity') }}</span>
                                 </label>
-                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                     @foreach($activities as $activity)
@@ -132,27 +132,31 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span class="required">{{ trans('main.SubActivity') }}</span>
                                 </label>
-                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
 
                                 </select>
                             </div>
                             <!-- mobile -->
-                            <div class="col-md-6 fv-row">
-                                <label class="required fs-5 fw-semibold mb-2">{{ trans('main.Mobile') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ old('mobile') }}" name="mobile" />
+                            <div class="col-md-6 fv-row mt-3">
+                                <label class="required fs-5 fw-semibold mb-2"> {{ trans('main.Mobile') }} </label>
+                                <input id="mobile_whatsapp" name="mobile_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled> هل هو رقم الواتس
+                                <input type="text" id="mobile" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ old('mobile') }}" name="mobile" />
                             </div>
                             <!-- mobile2 -->
-                            <div class="col-md-6 fv-row">
+                            <div class="col-md-6 fv-row mt-3">
                                 <label class="fs-5 fw-semibold mb-2">{{ trans('main.Mobile2') }}</label>
-                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile2') }}" value="{{ old('mobile2') }}" name="mobile2" />
+                                <input id="mobile2_whatsapp" name="mobile2_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled> هل هو رقم الواتس
+                                <input type="text" id="mobile2" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile2') }}" value="{{ old('mobile2') }}" name="mobile2" />
                             </div>
+                            <!-- whats_app_mobile -->
+                            <input type="hidden" id="whats_app_mobile" name="whats_app_mobile" value="">
                             <!-- contact_category_id -->
                             <div class="col-md-6 fv-row" id="contact_category_id">
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.ContactCategory') }}</span>
                                 </label>
-                                <select name="contact_category_id" data-control="select2" data-dropdown-parent="#contact_category_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="contact_category_id" data-control="select2" data-dropdown-parent="#contact_category_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $contacCategories = \App\Models\ContactCategory::get(['id','name']); ?>
                                     @foreach($contacCategories as $contactCategory)
@@ -172,10 +176,10 @@
                             </div>
                             <!-- gender -->
                             <div class="col-md-6 fv-row" id="gender">
-                                <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Gender') }}</span>
                                 </label>
-                                <select name="gender" data-control="select2" data-dropdown-parent="#gender" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="gender" data-control="select2" data-dropdown-parent="#gender" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <option value="Male">{{ trans('main.Male') }}</option>
                                     <option value="Female">{{ trans('main.Female') }}</option>
@@ -183,13 +187,27 @@
                             </div>
                             <!-- religion -->
                             <div class="col-md-6 fv-row" id="religion">
-                                <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Religion') }}</span>
                                 </label>
-                                <select name="religion" data-control="select2" data-dropdown-parent="#religion" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="religion" data-control="select2" data-dropdown-parent="#religion" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <option value="muslim">{{ trans('main.Muslim') }}</option>
                                     <option value="christian">{{ trans('main.Christian') }}</option>
+                                    <option value="other">{{ trans('main.Other') }}</option>
+                                </select>
+                            </div>
+                            <!-- marital_status -->
+                            <div class="col-md-6 fv-row" id="marital_status">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span>{{ trans('main.Marital Status') }}</span>
+                                </label>
+                                <select name="marital_status" data-control="select2" data-dropdown-parent="#marital_status" class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <option value="single">{{ trans('main.Single') }}</option>
+                                    <option value="married">{{ trans('main.Married') }}</option>
+                                    <option value="absolute">{{ trans('main.Absolute') }}</option>
+                                    <option value="widower">{{ trans('main.Widower') }}</option>
                                     <option value="other">{{ trans('main.Other') }}</option>
                                 </select>
                             </div>
@@ -198,7 +216,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.City') }}</span>
                                 </label>
-                                <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $cities = \App\Models\City::get(['id','name']); ?>
                                     @foreach($cities as $city)
@@ -211,7 +229,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Area') }}</span>
                                 </label>
-                                <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
 
                                 </select>
@@ -226,7 +244,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Industry') }}</span>
                                 </label>
-                                <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $industries = \App\Models\Industry::get(['id','name']); ?>
                                     @foreach($industries as $industry)
@@ -239,7 +257,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.Major') }}</span>
                                 </label>
-                                <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
 
                                 </select>
@@ -249,7 +267,7 @@
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                     <span>{{ trans('main.JobTitle') }}</span>
                                 </label>
-                                <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" class="form-select form-select-solid">
                                     <option value="">{{ trans('main.Select') }}...</option>
                                     <?php $jobTitles = \App\Models\JobTitle::get(['id','name']); ?>
                                     @foreach($jobTitles as $jobTitle)
@@ -267,10 +285,28 @@
                                 <label class="fs-5 fw-semibold mb-2">{{ trans('main.Notes') }}</label>
                                 <textarea type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Notes') }}" value="{{ old('notes') }}" name="notes"></textarea>
                             </div>
+                            <!-- tag_ids -->
+                            <div id="tag_ids" class="col-md-6 fv-row">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span>{{ trans('main.Tag') }}</span>
+                                </label>
+                                <select name="tag_ids[]" data-control="select2" data-dropdown-parent="#tag_ids" class="form-select form-select-solid" multiple>
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <?php $tags = \App\Models\Tag::get(['id','name']); ?>
+                                    @foreach($tags as $tag)
+                                        <option value="{{ @$tag->id }}">{{ @$tag->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <!-- photo -->
                             <div class="col-md-6 fv-row">
                                 <label class="fs-5 fw-semibold mb-2">{{ trans('main.Photo') }}</label>
                                 <input type="file" class="form-control form-control-solid" value="{{ old('photo') }}" name="photo" />
+                            </div>
+                            <!-- has_special_needs -->
+                            <div class="col-md-6 fv-row form-check form-check-custom form-check-solid">
+                                <input name="has_special_needs" class="form-check-input" type="checkbox" id="same_as_billing">
+                                <label class="form-check-label" for="same_as_billing">{{ trans('main.Has Special Needs') }}</label>
                             </div>
                         </div>
                     <!-- </div> -->
@@ -363,6 +399,57 @@
                     console.log('not work')
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileCheckbox      = document.getElementById('mobile_whatsapp');
+            const mobile2Checkbox     = document.getElementById('mobile2_whatsapp');
+            const mobileInput         = document.getElementById('mobile');
+            const mobile2Input        = document.getElementById('mobile2');
+            const whatsAppMobileInput = document.getElementById('whats_app_mobile');
+
+            function toggleCheckboxState() {
+                mobileCheckbox.disabled  = !mobileInput.value;
+                mobile2Checkbox.disabled = !mobile2Input.value;
+            }
+
+            mobileCheckbox.addEventListener('change', function () {
+                if (this.checked) {
+                    mobile2Checkbox.checked   = false;
+                    whatsAppMobileInput.value = mobileInput.value;
+                } else {
+                    whatsAppMobileInput.value = '';
+                }
+            });
+
+            mobile2Checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    mobileCheckbox.checked    = false;
+                    whatsAppMobileInput.value = mobile2Input.value;
+                } else {
+                    whatsAppMobileInput.value = '';
+                }
+            });
+
+            // Update hidden input value when mobile inputs change
+            mobileInput.addEventListener('input', function () {
+                if (mobileCheckbox.checked) {
+                    whatsAppMobileInput.value = this.value;
+                }
+                toggleCheckboxState();
+            });
+
+            mobile2Input.addEventListener('input', function () {
+                if (mobile2Checkbox.checked) {
+                    whatsAppMobileInput.value = this.value;
+                }
+                toggleCheckboxState();
+            });
+
+            // Initial check to enable/disable checkboxes based on input values
+            toggleCheckboxState();
         });
     </script>
 @endsection

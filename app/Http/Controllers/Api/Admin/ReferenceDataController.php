@@ -75,11 +75,11 @@ class ReferenceDataController extends Controller
             //employee_id
             if(auth()->guard('api')->user()->roles_name[0] == "Admin")
             {
-                $employee_id = \App\Models\Employee::get(['id','name']);
+                $employee_id = \App\Models\Employee::hidden()->get(['id','name']);
             }
             else
             {
-                $employee_id = \App\Models\Employee::where('branch_id', auth()->guard('api')->user()->employee->branch_id)->get(['id','name']);
+                $employee_id = \App\Models\Employee::hidden()->where('branch_id', auth()->guard('api')->user()->employee->branch_id)->get(['id','name']);
             }
 
 

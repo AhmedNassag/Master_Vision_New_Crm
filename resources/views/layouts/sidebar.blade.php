@@ -165,6 +165,17 @@
                                             </a>
                                         </div>
                                     @endcan
+                                    <!--Services-->
+                                    @can('عرض الأنشطة الفرعية')
+                                        <div class="menu-item">
+                                            <a class="menu-link {{ Request::is('admin/service') ? 'active' : '' }}" href="{{ route('service.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">{{ trans('main.Services') }}</span>
+                                            </a>
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                         @endcan
@@ -210,6 +221,17 @@
                                         <i class="ki-outline ki-message-text-2 fs-2"></i>
                                     </span>
                                     <span class="menu-title">{{ trans('main.SavedReplies') }}</span>
+                                </a>
+                            </div>
+                        @endcan
+                        <!--Tags-->
+                        @can('عرض الردود المحفوظة')
+                            <div class="menu-item">
+                                <a class="menu-link {{ Request::is('admin/tag') ? 'active' : '' }}" href="{{ route('tag.index') }}">
+                                    <span class="menu-icon">
+                                        <i class="ki-outline ki-message-text-2 fs-2"></i>
+                                    </span>
+                                    <span class="menu-title">{{ trans('main.Tags') }}</span>
                                 </a>
                             </div>
                         @endcan
@@ -344,6 +366,17 @@
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">{{ trans('main.MeetingsReport') }}</span>
+                                            </a>
+                                        </div>
+                                    @endcan
+                                    <!--ContactMeetingsReport-->
+                                    @can('عرض تقارير المكالمات والزيارات')
+                                        <div class="menu-item">
+                                            <a class="menu-link {{ Request::is('admin/report/contactMeetings', 'admin/report/contactMeetingsReport*') ? 'active' : '' }}" href="{{ route('report.contactMeetings') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">{{ trans('main.ContactMeetingsReport') }}</span>
                                             </a>
                                         </div>
                                     @endcan
@@ -491,7 +524,7 @@
 
 
                         <!--Support Tickets-->
-                        {{-- @can('عرض تذاكر الدعم') --}}
+                        @can('عرض تذكيرات اليوم')
                             <div class="menu-item pt-2">
                                 <div class="menu-content">
                                     <span class="menu-heading fw-bold text-uppercase fs-7">{{ trans('main.Support Tickets') }}</span>
@@ -520,7 +553,7 @@
                                     <span class="badge badge-circle badge-danger">{{ $tickets_count }}</span>
                                 </a>
                             </div>
-                        {{-- @endcan --}}
+                        @endcan
 
 
 

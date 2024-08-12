@@ -84,7 +84,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.Gender') }}
                                         </label>
-                                        <select name="gender" data-control="select2" data-dropdown-parent="#gender" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="gender" data-control="select2" data-dropdown-parent="#gender" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             <option value="Male">{{ trans('main.Male') }}</option>
                                             <option value="Female">{{ trans('main.Female') }}</option>
@@ -125,7 +125,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.Campaign') }}
                                         </label>
-                                        <select name="campaign_id" data-control="select2" data-dropdown-parent="#campaign_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="campaign_id" data-control="select2" data-dropdown-parent="#campaign_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($contactSources as $source)
                                                 <option value="{{ @$source->id }}">{{ @$source->name }}</option>
@@ -137,7 +137,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.City') }}
                                         </label>
-                                        <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($cities as $city)
                                                 <option value="{{ @$city->id }}">{{ @$city->name }}</option>
@@ -149,7 +149,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.Area') }}
                                         </label>
-                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($areas as $area)
                                                 <option value="{{ @$area->id }}">{{ @$area->name }}</option>
@@ -161,7 +161,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.Employee') }}
                                         </label>
-                                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                         </select>
                                     </div>
@@ -170,7 +170,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.Industry') }}
                                         </label>
-                                        <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($industries as $industry)
                                                 <option value="{{ @$industry->id }}">{{ @$industry->name }}</option>
@@ -182,7 +182,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.Major') }}
                                         </label>
-                                        <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($majors as $major)
                                                 <option value="{{ @$major->id }}">{{ @$major->name }}</option>
@@ -194,7 +194,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.JobTitle') }}
                                         </label>
-                                        <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $jobTitles = \App\Models\JobTitle::get(['id','name']); ?>
                                             @foreach($jobTitles as $jobTitle)
@@ -207,7 +207,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.Activity') }}
                                         </label>
-                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
                                             @foreach ($activities as $activity)
                                                 <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
@@ -219,7 +219,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             {{ trans('main.SubActivity') }}
                                         </label>
-                                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
+                                        <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.Select') }}...</option>
 
                                         </select>

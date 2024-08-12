@@ -62,7 +62,7 @@
                                     <!--begin::Contact group-->
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
-                                        <a href="" onclick="event.preventDefault();document.getElementById('new_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.New') }}</a>
+                                        <a href="{{ route('contact.index', ['status' => 'new']) }}" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.New') }}</a>
                                         <?php
                                             if(Auth::user()->roles_name[0] == "Admin")
                                             {
@@ -79,14 +79,13 @@
                                         ?>
                                         <div class="badge badge-light-success">{{ @$new_contacts}}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="new_contacts" style="display: none">
-                                            @csrf
                                             <input type="hidden" name="status" value="new" />
                                         </form>
                                     </div>
                                     <!--begin::Contact group-->
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
-                                        <a href="" onclick="event.preventDefault();document.getElementById('contacted_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Contacted') }}</a>
+                                        <a href="{{ route('contact.index', ['status' => 'contacted']) }}" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Contacted') }}</a>
                                         <?php
                                             if(Auth::user()->roles_name[0] == "Admin")
                                             {
@@ -103,14 +102,13 @@
                                         ?>
                                         <div class="badge badge-light-secondary">{{ @$contacted_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="contacted_contacts" style="display: none">
-                                            @csrf
                                             <input type="hidden" name="status" value="contacted" />
                                         </form>
                                     </div>
                                     <!--begin::Contact group-->
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
-                                        <a href="" onclick="event.preventDefault();document.getElementById('qualified_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Qualified') }}</a>
+                                        <a href="{{ route('contact.index', ['status' => 'qualified']) }}" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Qualified') }}</a>
                                         <?php
                                             if(Auth::user()->roles_name[0] == "Admin")
                                             {
@@ -127,14 +125,14 @@
                                         ?>
                                         <div class="badge badge-light-warning">{{ @$qualified_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="qualified_contacts" style="display: none">
-                                            @csrf
                                             <input type="hidden" name="status" value="qualified" />
                                         </form>
                                     </div>
                                     <!--begin::Contact group-->
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
-                                        <a href="" onclick="event.preventDefault();document.getElementById('converted_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Converted') }}</a>
+                                        <a href="{{ route('contact.index', ['status' => 'converted']) }}" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.Converted') }}</a>
+
                                         <?php
                                             if(Auth::user()->roles_name[0] == "Admin")
                                             {
@@ -151,14 +149,13 @@
                                         ?>
                                         <div class="badge badge-light-info">{{ @$converted_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="converted_contacts" style="display: none">
-                                            @csrf
                                             <input type="hidden" name="status" value="converted" />
                                         </form>
                                     </div>
                                     <!--begin::Contact group-->
                                     <!--begin::Contact group-->
                                     <div class="d-flex flex-stack">
-                                        <a href="" onclick="event.preventDefault();document.getElementById('inActive_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.InActive') }}</a>
+                                        <a href=""{{ route('contact.index', ['is_active' => 0]) }}"" onclick="event.preventDefault();document.getElementById('inActive_contacts').submit();" class="fs-6 fw-bold text-gray-800 text-hover-primary">{{ trans('main.InActive') }}</a>
                                         <?php
                                             if(Auth::user()->roles_name[0] == "Admin")
                                             {
@@ -175,7 +172,6 @@
                                         ?>
                                         <div class="badge badge-light-dark">{{ @$inActive_contacts }}</div>
                                         <form action="{{ route('contact.index') }}" method="get" id="inActive_contacts" style="display: none">
-                                            @csrf
                                             <input type="hidden" name="is_active" value="0" />
                                         </form>
                                     </div>
@@ -244,17 +240,27 @@
 
                             </div>
                         </div>
-                        <!--Search With Mobile-->
-                        {{-- <div class="container">
-                            <form action="{{ route('contact.index') }}" method="GET" class="col-12 mt-1">
+                        <!--Search With Mobile || Mobile-->
+                        <div class="container">
+                            <form action="{{ route('contact.index') }}" method="GET" class="col-12 mt-5">
                                 <div class="row">
-                                    <div class="col-5">
-                                        <input type="text" name="query" class="form-control" placeholder="{{ trans('main.Search With Mobile') }}...">
+                                    <div class="col-4">
+                                        <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Search With Name') }}</label>
+                                        <input type="text" name="name" class="form-control" placeholder="{{ trans('main.Search With Name') }}..." value="{{ @$name }}">
                                     </div>
-                                    <button type="submit" class="btn btn-primary col-1">{{ trans('main.Search') }}</button>
+                                    <div class="col-4">
+                                        <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Search With Mobile') }}</label>
+                                        <input type="text" name="mobile" class="form-control" placeholder="{{ trans('main.Search With Mobile') }}..." value="{{ @$mobile }}">
+                                    </div>
+                                    <div class="col-4 mt-10">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="ki-outline ki-eye fs-2"></i>
+                                            {{ trans('main.Search') }}
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
-                        </div> --}}
+                        </div>
                         <!--multi_selected-->
                         <div class="card-header border-0 pt-lg-6 px-3  ">
                             <div class="card-title"></div>
@@ -361,8 +367,23 @@
                                 }
                             </script>
                             @endif
-                            <div class="table-responsive">
 
+                            <!-- Imported Contacts -->
+                            @if (session()->has('rowsSavedCount') && session()->has('rowsSkippedCount'))
+                                <div class="alert alert-success">
+                                    <ul>
+                                        <li class="text-success">{{ trans('main.Rows Saved') }}: {{ session('rowsSavedCount') }}</li>
+                                        <li class="text-danger">{{ trans('main.Rows Skipped') }}: {{ session('rowsSkippedCount') }}</li>
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <div class="table-responsive">
+                                @if(request()->query())
+                                    <div class="alert">
+                                            {{ trans('main.Results Count') }} : <span style="font-weight:bold; color: #000">{{ $resultCount }}</span>
+                                    </div>
+                                @endif
                                 <!-- pagination -->
                                 <form method="GET" action="{{ url('admin/contact') }}">
                                     @foreach (request()->except('perPage') as $key => $value)
@@ -384,14 +405,17 @@
                                                     <input class="box1 form-check-input" name="select_all" id="example-select-all" type="checkbox" onclick="CheckAll('box1', this)" oninput="showBtnDeleteSelected()">
                                                 </div>
                                             </th>
+                                           <th class="text-center">#</th>
+
                                             <th class="text-center">{{ trans('main.Status') }}</th>
                                             <th class="text-center">{{ trans('main.Code') }}</th>
                                             <th class="text-center">{{ trans('main.Name') }}</th>
                                             <th class="text-center px-0">{{ trans('main.Mobile') }}</th>
                                             <th class="text-center min-w-150px">{{ trans('main.Source') }}</th>
-                                            <th class="text-center">{{ trans('main.City') }}</th>
                                             <th class="text-center">{{ trans('main.Area') }}</th>
-                                            <th class="text-center">{{ trans('main.Employee') }}</th>
+                                            <th class="text-center">{{ trans('main.SubActivity') }}</th>
+                                            <th class="text-center">{{ trans('main.Related Employee') }}</th>
+                                            <th class="text-center">{{ trans('main.CreatedBy') }}</th>
                                             <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
                                         </tr>
                                     </thead>
@@ -404,6 +428,7 @@
                                                     <input id="delete_selected_input" type="checkbox" value="{{ @$item->id }}" class="box1 form-check-input" oninput="showBtnDeleteSelected()">
                                                 </div>
                                             </td>
+                                            <td class="text-center"> {{ $key + 1 }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('contact.show', $item->id) }}">
                                                     @if (@$item->status == 'new')
@@ -433,9 +458,10 @@
                                             <td class="text-center"><a href="{{ route('contact.show', $item->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ @$item->name }}</a></td>
                                             <td class="text-center">{{ @$item->mobile }}</td>
                                             <td class="text-center">{{ @$item->contactSource->name }}</td>
-                                            <td class="text-center">{{ @$item->city->name }}</td>
                                             <td class="text-center">{{ @$item->area->name }}</td>
+                                            <td class="text-center">{{ @$item->subActivity->name }}</td>
                                             <td class="text-center">{{ @$item->employee->name }}</td>
+                                            <td class="text-center">{{ @$item->createdBy->name }}</td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                     {{ trans('main.Actions') }}

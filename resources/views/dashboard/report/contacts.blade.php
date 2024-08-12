@@ -1,4 +1,15 @@
 @extends('layouts.app0')
+
+@section('css')
+<style>
+    @media print {
+        .not_print {
+            display: none;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -45,8 +56,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.City') }}</span>
                                         </label>
-                                        <select name="city_id" data-control="select2" data-dropdown-parent="#city" data-placeholder="{{ trans('main.City') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.City') }}...</option>
+                                        <select name="city_id" data-control="select2" data-dropdown-parent="#city" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $cities = App\Models\City::get(['id', 'name']); ?>
                                             @foreach( $cities as $city )
                                             <option value="{{ @$city->id }}" {{ @$city->id == @$city_id ? 'selected' : '' }}>{{ @$city->name }}</option>
@@ -58,8 +69,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Area') }}</span>
                                         </label>
-                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" data-placeholder="{{ trans('main.Area') }}..." class="form-select form-select-solid">
-                                            <option value="">Select an Area...</option>
+                                        <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
 
                                         </select>
                                     </div>
@@ -72,8 +83,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.ContactSource') }}</span>
                                         </label>
-                                        <select name="contact_source_id" data-control="select2" data-dropdown-parent="#sources" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Select') }}...</option>
+                                        <select name="contact_source_id" data-control="select2" data-dropdown-parent="#sources" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $contactSources = App\Models\ContactSource::get(['id', 'name']); ?>
                                             @foreach( $contactSources as $contactSource )
                                             <option value="{{ @$contactSource->id }}" {{ @$contactSource->id == @$contact_source_id ? 'selected' : '' }}>{{ @$contactSource->name }}</option>
@@ -85,8 +96,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.ContactCategory') }}</span>
                                         </label>
-                                        <select name="contact_category_id" data-control="select2" data-dropdown-parent="#categories" data-placeholder="{{ trans('main.ContactCategory') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.ContactCategory') }}...</option>
+                                        <select name="contact_category_id" data-control="select2" data-dropdown-parent="#categories" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $contactCategories = App\Models\ContactCategory::get(['id', 'name']); ?>
                                             @foreach( $contactCategories as $contactCategory )
                                             <option value="{{ @$contactCategory->id }}" {{ @$contactCategory->id == @$contact_category_id ? 'selected' : '' }}>{{ @$contactCategory->name }}</option>
@@ -98,8 +109,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Industry') }}</span>
                                         </label>
-                                        <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Select') }}...</option>
+                                        <select name="industry_id" data-control="select2" data-dropdown-parent="#industry_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $industries = \App\Models\Industry::get(['id', 'name']); ?>
                                             @foreach($industries as $industry)
                                             <option value="{{ @$industry->id }}" {{ @$industry->id == @$industry_id ? 'selected' : '' }}>{{ @$industry->name }}</option>
@@ -111,8 +122,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span class="px-1" >{{ trans('main.Major') }}</span>
                                         </label>
-                                        <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                            <option value="" style="font-size: 10px;">{{ trans('main.Select') }}</option>
+                                        <select name="major_id" data-control="select2" data-dropdown-parent="#major_id" class="form-select form-select-solid">
+                                            <option value="" style="font-size: 10px;">{{ trans('main.All') }}</option>
 
                                         </select>
                                     </div>
@@ -125,8 +136,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.JobTitle') }}</span>
                                         </label>
-                                        <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Select') }}...</option>
+                                        <select name="job_title_id" data-control="select2" data-dropdown-parent="#job_title_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $jobTitles = \App\Models\JobTitle::get(['id', 'name']); ?>
                                             @foreach($jobTitles as $jobTitle)
                                             <option value="{{ @$jobTitle->id }}" {{ @$jobTitle->id == @$job_title_id ? 'selected' : '' }}>{{ @$jobTitle->name }}</option>
@@ -138,8 +149,8 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Activity') }}</span>
                                         </label>
-                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" data-placeholder="{{ trans('main.Activity') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Select') }}...</option>
+                                        <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                                             @foreach($activities as $activity)
                                             <option value="{{ @$activity->id }}" {{ @$activity->id == @$activity_id ? 'selected' : '' }}>{{ @$activity->name }}</option>
@@ -151,20 +162,20 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Employee') }}</span>
                                         </label>
-                                        <select name="created_by" data-control="select2" data-dropdown-parent="#employee" data-placeholder="{{ trans('main.Employee') }}..." class="form-select form-select-solid">
-                                            <option value="">{{ trans('main.Employee') }}...</option>
+                                        <select name="created_by" data-control="select2" data-dropdown-parent="#employee" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.All') }}</option>
                                             <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
                                                 {
-                                                    $employees = \App\Models\Employee::get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
                                                 }
-                                                else if(Auth::user()->roles_name[0] == "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                                 {
-                                                    $employees = \App\Models\Employee::where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
                                                 }
                                                 else
                                                 {
-                                                    $employees = \App\Models\Employee::where('id', auth()->user()->employee->id)->get(['id','name']);
+                                                    $employees = \App\Models\Employee::hidden()->where('id', auth()->user()->employee->id)->get(['id','name']);
                                                 }
                                             ?>
                                             @foreach( $employees as $employee )
@@ -247,7 +258,20 @@
                         @endif
 
                         @if(Request::is('admin/report/contactsReport'))
-                            <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div id="print" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button>
+                                <!-- pagination -->
+                                <form method="GET" action="{{ url('admin/report/contactsReport') }}" class="not_print">
+                                    @foreach (request()->except('perPage') as $key => $value)
+                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                    @endforeach
+                                    <select name="perPage" onchange="this.form.submit()">
+                                        <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                        <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                        <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                    </select>
+                                </form>
                                 <div class="table-responsive">
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
                                         <thead>
@@ -295,7 +319,9 @@
                                         @endif
                                     </tbody>
                                 </table>
-                                {{ @$data->links() }}
+                                <div class="not_print">
+                                    {{-- {{ @$data->links() }} --}}
+                                </div>
                             </div>
                         </div>
                         @endif
@@ -345,6 +371,7 @@
                     dataType: "json",
                     success: function(data) {
                         $('select[name="major_id"]').empty();
+                        $('select[name="major_id"]').append('<option class="form-control" value="">' + "{{ __('main.All') }}" + '</option>');
                         $.each(data, function(key, value) {
                             $('select[name="major_id"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
                         });
@@ -356,5 +383,17 @@
             }
         });
     });
+</script>
+
+<!-- Print -->
+<script type="text/javascript">
+    function printDiv() {
+        var printContents       = document.getElementById('print').innerHTML;
+        var originalContents    = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload();
+    }
 </script>
 @endsection

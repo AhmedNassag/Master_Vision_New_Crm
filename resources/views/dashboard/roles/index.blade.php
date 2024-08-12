@@ -146,16 +146,18 @@
                                                                 <a href="{{ route('role.show', $role->id) }}" class="menu-link px-3">{{ trans('main.Show') }}</a>
                                                             </div>
                                                         @endcan
-                                                        @can('تعديل الصلاحيات')
-                                                            <div class="menu-item px-3">
-                                                                <a href="{{ route('role.edit', $role->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
-                                                            </div>
-                                                        @endcan
-                                                        @can('حذف الصلاحيات')
-                                                            <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$role->id }}">{{ trans('main.Delete') }}</a>
-                                                            </div>
-                                                        @endcan
+                                                        @if($role->id != 1)
+                                                            @can('تعديل الصلاحيات')
+                                                                <div class="menu-item px-3">
+                                                                    <a href="{{ route('role.edit', $role->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
+                                                                </div>
+                                                            @endcan
+                                                            @can('حذف الصلاحيات')
+                                                                <div class="menu-item px-3">
+                                                                    <a href="#" class="menu-link px-3"  data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$role->id }}">{{ trans('main.Delete') }}</a>
+                                                                </div>
+                                                            @endcan
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>
