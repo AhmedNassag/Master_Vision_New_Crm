@@ -38,7 +38,6 @@
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
                         <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.activitySalesReport') }}" method="get" enctype="multipart/form-data">
-                            @csrf
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
                                 <div class="row w-100 align-items-center mb-10">
                                     <!-- activity_id -->

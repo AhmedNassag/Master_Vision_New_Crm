@@ -41,30 +41,12 @@
                                         </div>
                                         <div class="separator border-gray-200"></div>
                                         <form action="{{ route('employeeTarget.index') }}" method="get">
-                                            @csrf
                                             <div class="px-7 py-5">
-                                                <div class="mb-10">
-                                                    <label
-                                                        class="form-label fs-5 fw-semibold mb-3">{{ trans('main.AmountTarget') }}</label>
-                                                    <input type="text" class="form-control form-control-solid"
-                                                        placeholder="{{ trans('main.AmountTarget') }}"
-                                                        name="target_amount" />
-                                                </div>
-                                                <div class="mb-10">
-                                                    <label
-                                                        class="form-label fs-5 fw-semibold mb-3">{{ trans('main.CallsTarget') }}</label>
-                                                    <input type="text" class="form-control form-control-solid"
-                                                        placeholder="{{ trans('main.CallsTarget') }}"
-                                                        name="target_meeting" />
-                                                </div>
                                                 <div class="mb-10" id="employee_id">
                                                     <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                         <span class="required">{{ trans('main.Employee') }}</span>
                                                     </label>
-                                                    <select name="employee_id" data-control="select2"
-                                                        data-dropdown-parent="#employee_id"
-                                                        data-placeholder="{{ trans('main.Select') }}..."
-                                                        class="form-select form-select-solid">
+                                                    <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" data-placeholder="{{ trans('main.Select') }}..." class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
                                                         <?php
                                                         if (Auth::user()->roles_name[0] == 'Admin') {
@@ -74,8 +56,7 @@
                                                         }
                                                         ?>
                                                         @foreach ($employees as $employee)
-                                                            <option value="{{ @$employee->id }}">{{ @$employee->name }}
-                                                            </option>
+                                                            <option value="{{ @$employee->id }}" {{ @$employee->id == @$employee_id ? 'selected' : '' }}>{{ @$employee->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -89,40 +70,23 @@
                                                         data-placeholder="{{ trans('main.Select') }}..."
                                                         class="form-select form-select-solid">
                                                         <option value="">{{ trans('main.Select') }}...</option>
-                                                        <option value="Jan-{{ @$year }}">{{ trans('main.Jan') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Feb-{{ @$year }}">{{ trans('main.Feb') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Mar-{{ @$year }}">{{ trans('main.Mar') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Apr-{{ @$year }}">{{ trans('main.Apr') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="May-{{ @$year }}">{{ trans('main.May') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Jun-{{ @$year }}">{{ trans('main.Jun') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Jul-{{ @$year }}">{{ trans('main.Jul') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Aug-{{ @$year }}">{{ trans('main.Aug') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Sep-{{ @$year }}">{{ trans('main.Sep') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Oct-{{ @$year }}">{{ trans('main.Oct') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Nov-{{ @$year }}">{{ trans('main.Nov') }} -
-                                                            {{ @$year }}</option>
-                                                        <option value="Dec-{{ @$year }}">{{ trans('main.Dec') }} -
-                                                            {{ @$year }}</option>
+                                                        <option value="Jan-{{ @$year }}"  {{ @$month == 'Jan-'.$year ? 'selected' : '' }}>{{ trans('main.Jan') }} - {{ @$year }}</option>
+                                                        <option value="Feb-{{ @$year }}"  {{ @$month == 'Feb-'.$year ? 'selected' : '' }}>{{ trans('main.Feb') }} - {{ @$year }}</option>
+                                                        <option value="Mar-{{ @$year }}"  {{ @$month == 'Mar-'.$year ? 'selected' : '' }}>{{ trans('main.Mar') }} - {{ @$year }}</option>
+                                                        <option value="Apr-{{ @$year }}"  {{ @$month == 'Apr-'.$year ? 'selected' : '' }}>{{ trans('main.Apr') }} - {{ @$year }}</option>
+                                                        <option value="May-{{ @$year }}"  {{ @$month == 'May-'.$year ? 'selected' : '' }}>{{ trans('main.May') }} - {{ @$year }}</option>
+                                                        <option value="Jun-{{ @$year }}"  {{ @$month == 'Jun-'.$year ? 'selected' : '' }}>{{ trans('main.Jun') }} - {{ @$year }}</option>
+                                                        <option value="Jul-{{ @$year }}"  {{ @$month == 'Jul-'.$year ? 'selected' : '' }}>{{ trans('main.Jul') }} - {{ @$year }}</option>
+                                                        <option value="Aug-{{ @$year }}"  {{ @$month == 'Aug-'.$year ? 'selected' : '' }}>{{ trans('main.Aug') }} - {{ @$year }}</option>
+                                                        <option value="Sep-{{ @$year }}"  {{ @$month == 'Sep-'.$year ? 'selected' : '' }}>{{ trans('main.Sep') }} - {{ @$year }}</option>
+                                                        <option value="Oct-{{ @$year }}"  {{ @$month == 'Oct-'.$year ? 'selected' : '' }}>{{ trans('main.Oct') }} - {{ @$year }}</option>
+                                                        <option value="Nov-{{ @$year }}"  {{ @$month == 'Nov-'.$year ? 'selected' : '' }}>{{ trans('main.Nov') }} - {{ @$year }}</option>
+                                                        <option value="Dec-{{ @$year }}"  {{ @$month == 'Dec-'.$year ? 'selected' : '' }}>{{ trans('main.Dec') }} - {{ @$year }}</option>
                                                     </select>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
-                                                    <button type="reset"
-                                                        class="btn btn-light btn-active-light-primary me-2"
-                                                        data-kt-menu-dismiss="true"
-                                                        data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
-                                                    <button type="submit" class="btn btn-primary"
-                                                        data-kt-menu-dismiss="true"
-                                                        data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
+                                                    <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                    <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -218,29 +182,22 @@
                                                     </td>
                                                     <td class="text-center">{{ @$item->employee->name }}</td>
                                                     <td class="text-center">{{ @$item->month }}</td>
-                                                    <td class="text-center">{{ @$item->target_amount }}</td>
+                                                    <td class="text-center">{{ number_format(@$item->target_amount,0) }}</td>
                                                     <td class="text-center">{{ @$item->target_meeting }}</td>
                                                     <td class="text-center">
-                                                        <a href="#"
-                                                            class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary"
-                                                            data-kt-menu-trigger="click"
-                                                            data-kt-menu-placement="bottom-end">
+                                                        <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                             {{ trans('main.Actions') }}
                                                             <i class="ki-outline ki-down fs-5 ms-1"></i>
                                                         </a>
-                                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                                                            data-kt-menu="true">
+                                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             @can('تعديل تارجت الموظفين')
                                                                 <div class="menu-item px-3">
-                                                                    <a href="{{ route('employeeTarget.edit', $item->id) }}"
-                                                                        class="menu-link px-3">{{ trans('main.Edit') }}</a>
+                                                                    <a href="{{ route('employeeTarget.edit', $item->id) }}" class="menu-link px-3">{{ trans('main.Edit') }}</a>
                                                                 </div>
                                                             @endcan
                                                             @can('حذف تارجت الموظفين')
                                                                 <div class="menu-item px-3">
-                                                                    <a href="#" class="menu-link px-3"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
+                                                                    <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#delete_modal_{{ @$item->id }}">{{ trans('main.Delete') }}</a>
                                                                 </div>
                                                             @endcan
                                                         </div>

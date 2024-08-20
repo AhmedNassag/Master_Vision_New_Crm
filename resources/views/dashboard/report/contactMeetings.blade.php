@@ -39,7 +39,6 @@
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
                         <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.contactMeetingsReport') }}" method="get" enctype="multipart/form-data">
-                            @csrf
                             <div class="justify-content-start " data-kt-customer-table-toolbar="base">
                                 <div class="row align-items-center mb-10 w-100">
                                     <!-- from_date -->
@@ -69,7 +68,7 @@
                                     <!-- interests_ids -->
                                     <div id="interests" class="col-lg-4 position-relative me-md-5 me-lg-3">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.SubActivity') }}</span>
+                                            <span>{{ trans('main.Interests') }}</span>
                                         </label>
                                         <select name="interests_ids" data-control="select2" data-dropdown-parent="#interests" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
@@ -227,22 +226,35 @@
                                         <thead>
                                             <tr class="text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">{{ trans('main.Contact') }}</th>
-                                                <th class="text-center" colspan="4">
+                                                <th class="text-center">{{ trans('main.Type') }}</th>
+                                                <th class="text-center">{{ trans('main.Meeting Place') }}</th>
+                                                <th class="text-center">{{ trans('main.Meeting Date') }}</th>
+                                                <th class="text-center">{{ trans('main.Expected Amount') }}</th>
+                                                <th class="text-center">{{ trans('main.Reply') }}</th>
+                                                <th class="text-center">{{ trans('main.Notes') }}</th>
+                                                <th class="text-center">{{ trans('main.CreatedBy') }}</th>
+                                                {{-- <th class="text-center" colspan="4">
                                                     <div class="row">
                                                         <div class="col-2 text-center">
                                                             {{ trans('main.Type') }}
                                                         </div>
                                                         <div class="col-3 text-center">
-                                                            {{ trans('main.Meeting Place') }}
+                                                            {{ trans('main.Meeting Date') }}
                                                         </div>
                                                         <div class="col-3 text-center">
-                                                            {{ trans('main.Meeting Date') }}
+                                                            {{ trans('main.Expected Amount') }}
+                                                        </div>
+                                                        <div class="col-3 text-center">
+                                                            {{ trans('main.Reply') }}
+                                                        </div>
+                                                        <div class="col-3 text-center">
+                                                            {{ trans('main.Notes') }}
                                                         </div>
                                                         <div class="col-4 text-center">
                                                             {{ trans('main.CreatedBy') }}
                                                         </div>
                                                     </div>
-                                                </th>
+                                                </th> --}}
                                                 <th class="text-center">{{ trans('main.Total') }}</th>
                                             </tr>
                                         </thead>
@@ -250,8 +262,10 @@
                                             @foreach ($data as $key=>$item)
                                                 <tr>
                                                     <td class="text-center" rowspan="{{ count($item) }}">
-                                                        <a href="{{ route('contact.show', $item[0]->contact->id) }}" class="text-gray-800 text-hover-primary mb-1">
-                                                            {{ @$item[0]->contact->name }}
+                                                        <a href="@if($item[0]->contact){{ route('contact.show', $item[0]->contact->id) }}@endif" class="text-gray-800 text-hover-primary mb-1">
+                                                            @if($item[0]->contact)
+                                                                {{ @$item[0]->contact->name }}
+                                                            @endif
                                                         </a>
                                                     </td>
                                                     @foreach ($item as $index => $val)
@@ -267,6 +281,18 @@
                                                         </td>
                                                         <td class="text-center">
                                                             {{ @$val->meeting_date }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            {{ number_format(@$val->revenue,0) }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            {{ @$val->reply->reply }}
+                                                        </td>
+                                                        {{-- <td class="text-center">
+                                                            {{ @$val->notes[0]['follow_date'] }}
+                                                        </td> --}}
+                                                        <td class="text-center">
+                                                            {{ @$val->notes[0]['notes'] }}
                                                         </td>
                                                         <td class="text-center">
                                                             {{ @$val->createdBy->name }}

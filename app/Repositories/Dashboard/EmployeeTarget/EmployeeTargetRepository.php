@@ -22,10 +22,10 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
             ->when($request->month != null,function ($q) use($request){
                 return $q->where('month',$request->month);
             })
-            ->when($request->target_amount != null,function ($q) use($request){
+            ->when($request->target_amount != null && $request->target_amount != 0,function ($q) use($request){
                 return $q->where('target_amount',$request->target_amount);
             })
-            ->when($request->target_meeting != null,function ($q) use($request){
+            ->when($request->target_meeting != null && $request->target_meeting != 0,function ($q) use($request){
                 return $q->where('target_meeting',$request->target_meeting);
             })
             ->when($request->employee_id != null,function ($q) use($request){
@@ -46,10 +46,10 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
             ->when($request->month != null,function ($q) use($request){
                 return $q->where('month',$request->month);
             })
-            ->when($request->target_amount != null,function ($q) use($request){
+            ->when($request->target_amount != null && $request->target_amount != 0,function ($q) use($request){
                 return $q->where('target_amount',$request->target_amount);
             })
-            ->when($request->target_meeting != null,function ($q) use($request){
+            ->when($request->target_meeting != null && $request->target_meeting != 0,function ($q) use($request){
                 return $q->where('target_meeting',$request->target_meeting);
             })
             ->when($request->employee_id != null,function ($q) use($request){
@@ -70,10 +70,10 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
             ->when($request->month != null,function ($q) use($request){
                 return $q->where('month',$request->month);
             })
-            ->when($request->target_amount != null,function ($q) use($request){
+            ->when($request->target_amount != null && $request->target_amount != 0,function ($q) use($request){
                 return $q->where('target_amount',$request->target_amount);
             })
-            ->when($request->target_meeting != null,function ($q) use($request){
+            ->when($request->target_meeting != null && $request->target_meeting != 0,function ($q) use($request){
                 return $q->where('target_meeting',$request->target_meeting);
             })
             ->when($request->employee_id != null,function ($q) use($request){

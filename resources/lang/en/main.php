@@ -117,6 +117,15 @@ return [
     'Category'        => 'Category',
     'Parent Category' => 'Parent Category',
 
+    //ActivityLog
+    'ActivityLogs' => 'Activity Logs',
+    'ActivityLog'  => 'Activity Log',
+    'Log Name'     => 'Log Name',
+    'Event'        => 'Event',
+    'created'      => 'Created',
+    'updated'      => 'Updated',
+    'deleted'      => 'Deleted',
+
     //Country
     'Countries'  => 'Countries',
     'Phone Code' => 'Phone Code',
@@ -245,9 +254,13 @@ return [
     'Revenue'                             => 'Revenue',
     'Follow Date'                         => 'Follow Date',
     'Call'                                => 'Call',
+    'call'                                => 'Call',
     'Meeting'                             => 'Meeting',
+    'meeting'                             => 'Meeting',
     'In'                                  => 'In',
+    'in'                                  => 'In',
     'Out'                                 => 'Out',
+    'out'                                 => 'Out',
     'Added a new call/meeting'            => 'Added A New Call / Meeting',
     'Type & Place'                        => 'Type & Place',
     'Reply'                               => 'Reply',
@@ -313,6 +326,9 @@ return [
     'Total'                               => 'Total',
     'branch_id'                           => 'Branch',
     'Results Count'                       => 'Results Count',
+    'Custom Attributes'                   => 'Custom Attributes',
+    'Time'                                => 'Time',
+    'Call Details'                        => 'Meeting/Call Details',
 
     //Customer
     'Customers'         => 'Customers',
@@ -323,7 +339,7 @@ return [
     'Retarget'          => 'Retarget',
     'RecordReminders'   => 'Record Reminders',
     'RelatedCustomers'  => 'Related Customers',
-    'EGP'               => 'EGP',
+    'EGP'               => '',
     'Paid Amounts'      => 'Paid Amounts',
     'Remaining Amounts' => 'Remaining Amounts',
     'Add Invoice'       => 'Add Invoice',
@@ -409,10 +425,11 @@ return [
     'MeetingsReport'        => 'Meetings Report',
     'ContactMeetingsReport' => 'Contact Meetings Report',
     'ContactsReport'        => 'Contacts Report',
-    'EmployeeSalesReport'   => 'Employee Sales Report',
-    'BranchSalesReport'     => 'Branch Sales Report',
+    'EmployeeSalesReport'   => 'Employee Sales Target Report',
+    'BranchSalesReport'     => 'Branch Sales Target Report',
     'ActivitySalesReport'   => 'Activity Sales Report',
     'Print'                 => 'Print',
+    'Interests'             => 'Interests',
 
 
 

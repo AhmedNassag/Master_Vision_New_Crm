@@ -116,6 +116,19 @@
                                     <option value="{{ @$invoice->interest_id  }}">{{ @$invoice->interest ? $invoice->interest->name : " ---- " }} </option>
                                 </select>
                             </div>
+                            <!-- invoice[service_id] -->
+                            <div id="service_id" class="col-md-6 fv-row mb-6">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span class="required">{{ trans('main.Service') }}</span>
+                                </label>
+                                <select name="service_id" data-control="select2" data-dropdown-parent="#service_id" class="form-select form-select-solid" required>
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <?php $services = \App\Models\Service::get(['id','name']); ?>
+                                    @foreach($services as $service)
+                                        <option value="{{ @$service->id }}" @if($invoice->service_id == $service->id ) selected  @endif>{{ @$service->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <!-- status -->
                             <div id="status" class="col-md-6 fv-row mb-6">
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">

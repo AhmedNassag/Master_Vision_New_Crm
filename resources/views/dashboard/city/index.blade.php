@@ -36,11 +36,10 @@
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('city.index') }}" method="get">
-                                        @csrf
                                         <div class="px-7 py-5">
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" value="{{ @$name }}" />
                                             </div>
                                             <div class="mb-10">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -50,7 +49,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $countries = \App\Models\Country::get(['id','name']); ?>
                                                     @foreach($countries as $country)
-                                                        <option value="{{ @$country->id }}">{{ @$country->name }}</option>
+                                                        <option value="{{ @$country->id }}" {{ @$country->id == @$country_id ? 'selected' : '' }}>{{ @$country->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

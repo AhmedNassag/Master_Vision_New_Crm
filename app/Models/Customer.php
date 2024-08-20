@@ -9,13 +9,17 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\PointsCalculationService;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ActivityLogTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class Customer extends Authenticatable implements JWTSubject
 {
-    use HasFactory,SoftDeletes,Notifiable;
+    use HasFactory;
+    use SoftDeletes;
+    use ActivityLogTrait;
+    use Notifiable;
 
     protected $table   = 'customers';
     protected $guarded = [];

@@ -20,6 +20,12 @@ class RepoServiceProvider extends ServiceProvider
             'App\Repositories\Dashboard\Category\CategoryRepository',
         );
 
+        //ActivityLog
+        $this->app->bind(
+            'App\Repositories\Dashboard\ActivityLog\ActivityLogInterface',
+            'App\Repositories\Dashboard\ActivityLog\ActivityLogRepository',
+        );
+
         //Country
         $this->app->bind(
             'App\Repositories\Dashboard\Country\CountryInterface',

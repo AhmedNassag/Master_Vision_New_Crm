@@ -24,6 +24,99 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <div id="kt_app_content_container" class="app-container container-xxl">
                 <div class="card">
+                    <div class="card-header border-0 pt-6">
+                        <div class="card-title"></div>
+                        @if(Request::is('admin/todayFollowUps'))
+                        <div class="card-toolbar">
+                            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                                <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <i class="ki-outline ki-filter fs-2"></i>{{ trans('main.Filter') }}</button>
+                                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
+                                    <div class="px-7 py-5">
+                                        <div class="fs-4 text-gray-900 fw-bold">{{ trans('main.Filter') }}</div>
+                                    </div>
+                                    <div class="separator border-gray-200"></div>
+
+                                    <form action="{{ route('todayFollowUps.index') }}" method="get">
+                                        <div class="px-7 py-5">
+                                            <div id="contact_id_filter" class="mb-10">
+                                                <label class="form-label fs-5 fw-semibold mb-3">
+                                                    <span>{{ trans('main.Contact') }}</span>
+                                                </label>
+                                                <select name="contact_id" data-control="select2" data-dropdown-parent="#contact_id_filter" class="form-select form-select-solid">
+                                                    <option value="">{{ trans('main.All') }}</option>
+                                                    <?php
+                                                        if(Auth::user()->roles_name[0] == "Admin")
+                                                        {
+                                                            $contacts = \App\Models\Contact::
+                                                            where('is_trashed','!=' ,1)
+                                                            ->get(['id','name']);
+                                                        }
+                                                        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                                        {
+                                                            $contacts = \App\Models\Contact::
+                                                            where('is_trashed','!=' ,1)
+                                                            ->where(function ($query) use ($request) {
+                                                                $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                                ->orWhere('created_by', auth()->user()->employee->id)
+                                                                ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                                ->orWhere('employee_id', auth()->user()->employee->id);
+                                                            })
+                                                            ->get(['id','name']);
+                                                        }
+                                                        else
+                                                        {
+                                                            $contacts = \App\Models\Contact::
+                                                            where('is_trashed','!=' ,1)
+                                                            ->where(function ($query) use ($request) {
+                                                                $query->where('employee_id', auth()->user()->employee->id)
+                                                                ->orWhere('created_by', auth()->user()->employee->id);
+                                                            })
+                                                            ->get(['id','name']);
+                                                        }
+                                                    ?>
+                                                    @foreach( $contacts as $contact )
+                                                        <option value="{{ @$contact->id }}" {{ @$contact->id == @$contact_id ? 'selected' : '' }}>{{ @$contact->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <!-- created_by -->
+                                            <div id="created_by_filter" class="mb-10">
+                                                <label class="form-label fs-5 fw-semibold mb-3">
+                                                    <span>{{ trans('main.Employee') }}</span>
+                                                </label>
+                                                <select name="created_by" data-control="select2" data-dropdown-parent="#created_by_filter" class="form-select form-select-solid">
+                                                    <option value="">{{ trans('main.All') }}</option>
+                                                    <?php
+                                                        if(Auth::user()->roles_name[0] == "Admin")
+                                                        {
+                                                            $employees = \App\Models\Employee::hidden()->get(['id','name']);
+                                                        }
+                                                        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                                        {
+                                                            $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                        }
+                                                        else
+                                                        {
+                                                            $employees = \App\Models\Employee::hidden()->where('id', auth()->user()->employee->id)->get(['id','name']);
+                                                        }
+                                                    ?>
+                                                    @foreach( $employees as $employee )
+                                                        <option value="{{ @$employee->id }}" {{ @$employee->id == @$created_by ? 'selected' : '' }}>{{ @$employee->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="d-flex justify-content-end">
+                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
+                                                <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
                     <div class="card-body pt-0">
                         <!-- validationNotify -->
                         @if ($errors->any())

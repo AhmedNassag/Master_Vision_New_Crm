@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ActivityLogTrait;
 
 class ReorderReminder extends Model
 {
     use HasFactory;
+    use ActivityLogTrait;
+    
     protected $table = 'reorder_reminders';
 
     protected $fillable = [

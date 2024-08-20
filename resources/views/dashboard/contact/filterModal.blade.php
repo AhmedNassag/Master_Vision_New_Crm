@@ -3,7 +3,6 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form class="form" action="{{ route('contact.index') }}" method="get">
-                @csrf
                 <div class="modal-header">
                     <h2>{{ trans('main.Filter') }}</h2>
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal"><i class="ki-outline ki-cross fs-1"></i></div>
@@ -12,12 +11,12 @@
                     <!-- name -->
                     <div class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ old('name') }}" name="name" />
+                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" value="{{ @$name }}" name="name" />
                     </div>
                     <!-- mobile -->
                     <div class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Mobile') }}</label>
-                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ old('mobile') }}" name="mobile" />
+                        <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ @$mobile }}" name="mobile" />
                     </div>
                     <!-- gender -->
                     <div class="mb-7" id="gender_filter">
@@ -26,24 +25,20 @@
                         </label>
                         <select name="gender" data-control="select2" data-dropdown-parent="#gender_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
-                            <option value="Male">{{ trans('main.Male') }}</option>
-                            <option value="Female">{{ trans('main.Female') }}</option>
+                            <option value="Male" {{ @$gender == 'Male' ? 'selected' : '' }}>{{ trans('main.Male') }}</option>
+                            <option value="Female" {{ @$gender == 'Female' ? 'selected' : '' }}>{{ trans('main.Female') }}</option>
                         </select>
                     </div>
                     <!-- religion -->
                     <div class="mb-7" id="religion_filter">
-<<<<<<< HEAD
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-=======
-                        <label class="required d-flex align-items-center fs-5 fw-semibold mb-2">
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                             <span>{{ trans('main.Religion') }}</span>
                         </label>
                         <select name="religion" data-control="select2" data-dropdown-parent="#religion_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
-                            <option value="muslim">{{ trans('main.Muslim') }}</option>
-                            <option value="christian">{{ trans('main.Christian') }}</option>
-                            <option value="other">{{ trans('main.Other') }}</option>
+                            <option value="muslim" {{ @$religion == 'muslim' ? 'selected' : '' }}>{{ trans('main.Muslim') }}</option>
+                            <option value="christian" {{ @$religion == 'christian' ? 'selected' : '' }}>{{ trans('main.Christian') }}</option>
+                            <option value="other" {{ @$religion == 'other' ? 'selected' : '' }}>{{ trans('main.Other') }}</option>
                         </select>
                     </div>
                     <!-- marital_status -->
@@ -53,11 +48,11 @@
                         </label>
                         <select name="marital_status" data-control="select2" data-dropdown-parent="#marital_status_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
-                            <option value="single">{{ trans('main.Single') }}</option>
-                            <option value="married">{{ trans('main.Married') }}</option>
-                            <option value="absolute">{{ trans('main.Absolute') }}</option>
-                            <option value="widower">{{ trans('main.Widower') }}</option>
-                            <option value="other">{{ trans('main.Other') }}</option>
+                            <option value="single" {{ @$marital_status == 'single' ? 'selected' : '' }}>{{ trans('main.Single') }}</option>
+                            <option value="married" {{ @$marital_status == 'married' ? 'selected' : '' }}>{{ trans('main.Married') }}</option>
+                            <option value="absolute" {{ @$marital_status == 'absolute' ? 'selected' : '' }}>{{ trans('main.Absolute') }}</option>
+                            <option value="widower" {{ @$marital_status == 'widower' ? 'selected' : '' }}>{{ trans('main.Widower') }}</option>
+                            <option value="other" {{ @$marital_status == 'other' ? 'selected' : '' }}>{{ trans('main.Other') }}</option>
                         </select>
                     </div>
                     <!-- activity_id -->
@@ -69,7 +64,7 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $activities = \App\Models\Activity::get(['id', 'name']); ?>
                             @foreach($activities as $activity)
-                            <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
+                            <option value="{{ @$activity->id }}" {{ @$activity->id == @$activity_id ? 'selected' : '' }}>{{ @$activity->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -88,15 +83,63 @@
                         <label class="form-label fs-5 fw-semibold mb-3">
                             <span>{{ trans('main.Branch') }}</span>
                         </label>
-<<<<<<< HEAD
                         <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id_filter" class="form-select form-select-solid">
-=======
-                        <select name="activity_id" data-control="select2" data-dropdown-parent="#branch_id_filter" class="form-select form-select-solid">
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $branches = \App\Models\Branch::get(['id', 'name']); ?>
                             @foreach($branches as $branch)
-                            <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
+                            <option value="{{ @$branch->id }}" {{ @$branch->id == @$branch_id ? 'selected' : '' }}>{{ @$branch->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- created_by -->
+                    <div id="created_by_filter" class="mb-7">
+                        <label class="form-label fs-5 fw-semibold mb-3">
+                            <span>{{ trans('main.CreatedBy') }}</span>
+                        </label>
+                        <select name="created_by" data-control="select2" data-dropdown-parent="#created_by_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.All') }}</option>
+                            <?php
+                                if(Auth::user()->roles_name[0] == "Admin")
+                                {
+                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
+                                }
+                                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                {
+                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                }
+                                else
+                                {
+                                    $employees = \App\Models\Employee::hidden()->where('id', auth()->user()->employee->id)->get(['id','name']);
+                                }
+                            ?>
+                            @foreach( $employees as $employee )
+                                <option value="{{ @$employee->id }}" {{ @$employee->id == @$created_by ? 'selected' : '' }}>{{ @$employee->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- employee_id -->
+                    <div id="employee_id_filter" class="mb-7">
+                        <label class="form-label fs-5 fw-semibold mb-3">
+                            <span>{{ trans('main.Related Employee') }}</span>
+                        </label>
+                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.All') }}</option>
+                            <?php
+                                if(Auth::user()->roles_name[0] == "Admin")
+                                {
+                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
+                                }
+                                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                {
+                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                }
+                                else
+                                {
+                                    $employees = \App\Models\Employee::hidden()->where('id', auth()->user()->employee->id)->get(['id','name']);
+                                }
+                            ?>
+                            @foreach( $employees as $employee )
+                                <option value="{{ @$employee->id }}" {{ @$employee->id == @$employee_id ? 'selected' : '' }}>{{ @$employee->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -109,7 +152,7 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $cities = \App\Models\City::get(['id', 'name']); ?>
                             @foreach($cities as $city)
-                            <option value="{{ @$city->id }}">{{ @$city->name }}</option>
+                            <option value="{{ @$city->id }}" {{ @$city->id == @$city_id ? 'selected' : '' }}>{{ @$city->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -132,7 +175,34 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $campaigns = \App\Models\Campaign::get(['id', 'name']); ?>
                             @foreach($campaigns as $campaign)
-                            <option value="{{ @$campaign->id }}">{{ @$campaign->name }}</option>
+                            <option value="{{ @$campaign->id }}" {{ @$campaign->id == @$campaign_id ? 'selected' : '' }}>{{ @$campaign->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- custom_attributes -->
+                    <div id="custom_attributes_filter" class="col-md-12 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span>{{ trans('main.Custom Attributes') }}</span>
+                        </label>
+                        <select name="custom_attributes" data-control="select2" data-dropdown-parent="#custom_attributes_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <?php
+                                $contacts = \App\Models\Contact::pluck('custom_attributes');
+                                $values = [];
+                                foreach ($contacts as $contact) {
+                                    // Since custom_attributes is a JSON column, it should already be decoded as an array.
+                                    if (is_array($contact)) {
+                                        foreach ($contact as $attribute) {
+                                            if (is_array($attribute)) {
+                                                $values = array_merge($values, array_values($attribute));
+                                            }
+                                        }
+                                    }
+                                }
+                                $uniqueValues = array_unique($values);
+                            ?>
+                            @foreach($uniqueValues as $uniqueValue)
+                            <option value="{{ @$uniqueValue }}">{{ @$uniqueValue }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -145,19 +215,19 @@
                             <option value="">{{ trans('main.Select') }}...</option>
                             <?php $tags = \App\Models\Tag::get(['id', 'name']); ?>
                             @foreach($tags as $tag)
-                            <option value="{{ @$tag->id }}">{{ @$tag->name }}</option>
+                            <option value="{{ @$tag->id }}" {{ @$tag->id == @$tag_id ? 'selected' : '' }}>{{ @$tag->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <!-- from_date -->
                     <div class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.From Date') }}</label>
-                        <input type="datetime-local" class="form-control form-control-solid" placeholder="{{ trans('main.From Date') }}" value="{{ old('from_date') }}" name="from_date" />
+                        <input type="datetime-local" class="form-control form-control-solid" placeholder="{{ trans('main.From Date') }}" value="{{ @$from_date }}" name="from_date" />
                     </div>
                     <!-- to_date -->
                     <div class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.To Date') }}</label>
-                        <input type="datetime-local" class="form-control form-control-solid" placeholder="{{ trans('main.To Date') }}" value="{{ old('to_date') }}" name="to_date" />
+                        <input type="datetime-local" class="form-control form-control-solid" placeholder="{{ trans('main.To Date') }}" value="{{ @$to_date }}" name="to_date" />
                     </div>
                     <div id="excel-columns-container"></div>
                 </div>

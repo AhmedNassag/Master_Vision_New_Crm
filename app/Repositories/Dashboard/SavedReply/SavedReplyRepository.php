@@ -32,7 +32,7 @@ class SavedReplyRepository extends BaseRepository implements SavedReplyInterface
 
         return view('dashboard.savedReply.index',compact('data'))
         ->with([
-            'name'      => $request->name,
+            'reply'     => $request->reply,
             'from_date' => $request->from_date,
             'to_date'   => $request->to_date,
             'perPage'   => $perPage,

@@ -38,7 +38,6 @@
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
                         <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.branchSalesReport') }}" method="get" enctype="multipart/form-data">
-                            @csrf
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
                                 <div class="row w-100 align-items-center mb-10">
                                     <!-- month -->
@@ -46,7 +45,7 @@
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Month') }}</span>
                                         </label>
-                                        <select name="month" data-control="select2" data-dropdown-parent="#month" class="form-select form-select-solid">
+                                        <select name="month" data-control="select2" data-dropdown-parent="#month" class="form-select form-select-solid" required>
                                             <option value="">{{ trans('main.All') }}</option>
                                             <?php
                                                 $month_format = 'M-Y';
@@ -159,7 +158,12 @@
                                                         <td class="text-center px-0">{{ @$item['branch'] }}</td>
                                                         <td class="text-center px-0">{{ @$item['target'] }}</td>
                                                         <td class="text-center px-0">{{ @$item['actual'] }}</td>
-                                                        <td class="text-center px-0">{{ @$item['margin'] }}</td>
+                                                        <td class="text-center px-0">
+                                                            {{ @$item['margin'] }}
+                                                            <div class="h-8px w-100 bg-light-success rounded">
+                                                                <div class="bg-success rounded h-8px" role="progressbar" style="width: {{ @$item['margin'] }};" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @else

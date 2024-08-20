@@ -40,7 +40,7 @@
                                         <div class="px-7 py-5">
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Reply') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Reply') }}" name="reply" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Reply') }}" name="reply" value="{{ @$reply }}" />
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>

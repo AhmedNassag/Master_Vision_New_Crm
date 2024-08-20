@@ -25,7 +25,7 @@ class TicketController extends Controller
     public function index(Request $request)
     {
         try {
-
+            $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
             if(Auth::user()->roles_name[0] == "Admin")
             {
                 $data = Ticket::with('customer','activity','subActivity','agent','logs')
@@ -49,8 +49,8 @@ class TicketController extends Controller
             {
                 $data = Ticket::with('customer','activity','subActivity','agent','logs')
                 ->whereRelation('agent','branch_id', auth()->user()->employee->branch_id)
-                ->when($request->agent_id != null,function ($q) use($request){
-                    return $q->where('agent_id',$request->agent_id);
+                ->when($request->assigned_agent_id != null,function ($q) use($request){
+                    return $q->where('assigned_agent_id',$request->assigned_agent_id);
                 })
                 ->when($request->customer_id != null,function ($q) use($request){
                     return $q->where('customer_id', $request->customer_id);
@@ -69,8 +69,8 @@ class TicketController extends Controller
             {
                 $data = Ticket::with('customer','activity','subActivity','agent','logs')
                 ->where('agent', auth()->user()->employee->id)
-                ->when($request->agent_id != null,function ($q) use($request){
-                    return $q->where('agent_id',$request->agent_id);
+                ->when($request->assigned_agent_id != null,function ($q) use($request){
+                    return $q->where('assigned_agent_id',$request->assigned_agent_id);
                 })
                 ->when($request->customer_id != null,function ($q) use($request){
                     return $q->where('customer_id', $request->customer_id);
@@ -84,7 +84,14 @@ class TicketController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(config('myConfig.paginationCount'));
             }
-            return view('dashboard.tickets.index',compact('data'));
+            return view('dashboard.tickets.index',compact('data'))
+            ->with([
+                'perPage'           => $request->perPage,
+                'assigned_agent_id' => $request->assigned_agent_id,
+                'customer_id'       => $request->customer_id,
+                'ticket_type'       => $request->ticket_type,
+                'status'            => $request->status,
+            ]);
 
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);

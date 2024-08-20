@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\ExternalController;
 use App\Http\Controllers\Api\MarketingController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FileController;
@@ -20,8 +21,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->group(function () {
 });
 
+Route::post('store-landing', [ExternalController::class, 'storeContact'])->name('store.landing');
+
 Route::post('upload', [FileController::class, 'upload']);
 Route::post('campaign_contacts/{campaign_id}', [MarketingController::class, 'createCampaignContact']);
+Route::get('getCountries', [MarketingController::class, 'getCountries']);
+Route::get('getCities', [MarketingController::class, 'getCities']);
+Route::get('getCitiesByCountryId/{id}', [MarketingController::class, 'getCitiesByCountryId']);
 Route::post('login', [AuthController::class,'login']);
 
 

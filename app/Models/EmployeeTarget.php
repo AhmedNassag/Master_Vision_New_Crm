@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ActivityLogTrait;
 
 class EmployeeTarget extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use ActivityLogTrait;
 
     protected $table   = 'employee_targets';
     protected $guarded = [];

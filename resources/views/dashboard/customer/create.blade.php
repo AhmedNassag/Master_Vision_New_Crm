@@ -64,7 +64,7 @@
             </div>
             <!-- /Page Header -->
 
-            <form class="form" action="{{ route('customer.store') }}" method="POST" enctype="multipart/form-data">
+            <form class="form" action="{{ route('customer.store') }}" method="POST" enctype="multipart/form-data" id="customer-add-form">
                 @csrf
                 <div class="modal-body py-10 px-lg-17">
                     <!-- <div class="scroll-y me-n7 pe-7" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_new_address_header" data-kt-scroll-wrappers="#kt_modal_new_address_scroll" data-kt-scroll-offset="300px"> -->
@@ -312,11 +312,17 @@
                     <!-- </div> -->
                 </div>
                 <div class="modal-footer flex-center">
-                    <button type="submit" class="btn btn-primary">
+                    <button id="submitButton" type="submit" class="btn btn-primary" onclick="disableButton()">
                         <span class="indicator-label">{{ trans('main.Confirm') }}</span>
                     </button>
                 </div>
             </form>
+            <script>
+                function disableButton() {
+                    document.getElementById('submitButton').disabled = true;
+                    document.getElementById('customer-add-form').submit();
+                }
+            </script>
 
         </div>
         <!-- content container-fluid closed -->

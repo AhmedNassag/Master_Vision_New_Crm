@@ -2,9 +2,12 @@
 namespace App\Http\Controllers\Api;
 
 use Validator;
+use App\Models\City;
 use App\Models\User;
 use App\Models\Contact;
+use App\Models\Country;
 use App\Models\Campaign;
+use App\Models\SubActivity;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
 use App\Models\ContactCompletion;
@@ -21,10 +24,6 @@ class MarketingController extends Controller
         try
         {
             // Auth::login(User::first());
-<<<<<<< HEAD
-=======
-
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
             $validator = Validator::make($request->all(), [
                 "name"   => "required|string",
                 'mobile' => [
@@ -57,12 +56,13 @@ class MarketingController extends Controller
             $data = Contact::create([
                 'name'              => $request->name,
                 'mobile'            => $request->mobile,
+                'city_id'           => $request->city_id ?? null,
                 'contact_source_id' => @$campaign->contact_source_id,
                 'custom_attributes' => $request->custom_attributes,
                 'campaign_id'       => $campaign_id,
                 //'created_by'        => auth()->user()->id,
-                'activity_id'       => @$campaign->activity_id,
-                'interest_id'       => @$campaign->interest_id,
+                'activity_id'       => $request->activity_id ?? @$campaign->activity_id,
+                'interest_id'       => $request->interest_id ?? @$campaign->interest_id,
             ]);
             if (!$data) {
                 return $this->apiResponse(null, 'An Error Occur', 401);
@@ -76,10 +76,6 @@ class MarketingController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-<<<<<<< HEAD
-=======
-            return response()->json(['success'=>true]);
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
     }
 
 
@@ -106,6 +102,54 @@ class MarketingController extends Controller
                     // 'completed_by'  => auth()->user()->id,
                 ]);
             }
+        }
+    }
+
+
+
+    public function getCountries()
+    {
+        try
+        {
+            $data = Country::get(['id','name']);
+            if (!$data) {
+                return $this->apiResponse(null, 'An Error Occur', 401);
+            }
+            return $this->apiResponse($data, 'The Data Stored Successfully', 200);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    public function getCities()
+    {
+        try
+        {
+            $data = City::with(['country','areas'])->get(['id','name']);
+            if (!$data) {
+                return $this->apiResponse(null, 'An Error Occur', 401);
+            }
+            return $this->apiResponse($data, 'The Data Stored Successfully', 200);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    public function getCitiesByCountryId($id)
+    {
+        try
+        {
+            $data = City::with(['country','areas'])->where('country_id',$id)->get(['id','name','country_id']);
+            if (!$data) {
+                return $this->apiResponse(null, 'An Error Occur', 401);
+            }
+            return $this->apiResponse($data, 'The Data Stored Successfully', 200);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 }

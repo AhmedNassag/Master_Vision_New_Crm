@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ActivityLogTrait;
 
 class Target extends Model
 {
     use HasFactory;
+    use ActivityLogTrait;
 
     protected $table   = 'targets';
     protected $guarded = [];
 
-    
-    
+
+
     //start relations
     public function employee()
     {

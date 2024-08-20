@@ -36,17 +36,16 @@
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('country.index') }}" method="get">
-                                        @csrf
                                         <div class="px-7 py-5">
                                             <!--name-->
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" value="{{ @$name }}" />
                                             </div>
                                             <!--phonecode-->
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Phonecode') }}</label>
-                                                <input type="number" class="form-control form-control-solid" placeholder="{{ trans('main.Phonecode') }}" name="phonecode" />
+                                                <input type="number" class="form-control form-control-solid" placeholder="{{ trans('main.Phonecode') }}" name="phonecode" value="{{ @$phonecode }}" />
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <button type="reset" class="btn btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>

@@ -39,7 +39,6 @@
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
                         <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.meetingsReport') }}" method="get" enctype="multipart/form-data">
-                            @csrf
                             <div class="justify-content-start " data-kt-customer-table-toolbar="base">
                                 <div class="row align-items-center mb-10 w-100">
                                     <!-- from_date -->
@@ -69,7 +68,7 @@
                                     <!-- interests_ids -->
                                     <div id="interests" class="col-lg-4 position-relative me-md-5 me-lg-3">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                            <span>{{ trans('main.SubActivity') }}</span>
+                                            <span>{{ trans('main.Interests') }}</span>
                                         </label>
                                         <select name="interests_ids" data-control="select2" data-dropdown-parent="#interests" class="form-select form-select-solid">
                                             <option value="">{{ trans('main.All') }}</option>
@@ -232,6 +231,9 @@
                                                 <th class="text-center min-w-125px">{{ trans('main.Meeting Place') }}</th>
                                                 <th class="text-cente min-w-125px">{{ trans('main.Meeting Date') }}</th>
                                                 <th class="text-center min-w-150px">{{ trans('main.Expected Amount') }}</th>
+                                                <th class="text-center min-w-150px">{{ trans('main.Reply') }}</th>
+                                                {{-- <th class="text-center min-w-150px">{{ trans('main.Follow Date') }}</th> --}}
+                                                <th class="text-center min-w-150px">{{ trans('main.Notes') }}</th>
                                                 <th class="text-center min-w-150px">{{ trans('main.CreatedBy') }}</th>
                                             </tr>
                                         </thead>
@@ -244,8 +246,13 @@
                                                         <td class="text-center">@if(@$item->type == 'call') {{ trans('main.Call') }} @else {{ trans('main.Meeting') }}@endif</td>
                                                         <td class="text-center">@if(@$item->meeting_place == 'in') {{ trans('main.In') }} @else {{ trans('main.Out') }}@endif</td>
                                                         <td class="text-center">{{ @$item->meeting_date }}</td>
-                                                        <td class="text-center">{{ @$item->revenue }}</td>
+                                                        <td class="text-center">{{ number_format(@$item->revenue,0) }}</td>
+                                                        <td class="text-center">{{ @$item->reply->reply }}</td>
+                                                        {{-- <td class="text-center">{{ @$item->notes[0]['follow_date'] }}</td> --}}
+                                                        <td class="text-center">{{ @$item->notes[0]['notes'] }}</td>
                                                         <td class="text-center">{{ @$item->createdBy->name }}</td>
+
+
                                                     </tr>
                                                 @endforeach
                                             @else

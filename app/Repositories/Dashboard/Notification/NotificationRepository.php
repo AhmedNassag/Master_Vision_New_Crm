@@ -69,8 +69,10 @@ class NotificationRepository implements NotificationInterface
         else
         {*/
             $data = Notification::with(['createdBy','department','employee'])
-            ->whereRelation('employee','id', auth()->user()->employee->id)
-            ->orWhere('dept', auth()->user()->employee->dept)
+            ->where(function ($query) use ($request) {
+                $query->whereRelation('employee', 'id', auth()->user()->employee->id)
+                ->orWhere('dept', auth()->user()->employee->dept);
+            })
             ->when($request->notification != null,function ($q) use($request){
                 return $q->where('notification','like', '%'.$request->notification.'%');
             })
@@ -94,6 +96,9 @@ class NotificationRepository implements NotificationInterface
         return view('dashboard.notification.index',compact('data'))
         ->with([
             'notification' => $request->notification,
+            'dept'         => $request->dept,
+            'employee_id'  => $request->employee_id,
+            'created_by'   => $request->created_by,
             'from_date'    => $request->from_date,
             'to_date'      => $request->to_date,
         ]);
@@ -299,7 +304,8 @@ class NotificationRepository implements NotificationInterface
     {
         if(Auth::user()->roles_name[0] == "Admin")
         {
-            $data = ReorderReminder::whereDate('reminder_date', Carbon::today())->paginate(config('myConfig.paginationCount'));
+            $data = ReorderReminder::whereDate('reminder_date', Carbon::today())
+            ->paginate(config('myConfig.paginationCount'));
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
@@ -354,26 +360,45 @@ class NotificationRepository implements NotificationInterface
 
 
 
-    public function todayFollowUps()
+    public function todayFollowUps($request)
     {
         if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = MeetingNote::whereDate('follow_date',Carbon::today())
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by', $request->created_by);
+            })
+            ->when($request->contact_id != null,function ($q) use($request){
+                return $q->whereRelation('meeting','contact_id', $request->contact_id);
+            })
             ->paginate(config('myConfig.paginationCount'));
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
             $data = MeetingNote::whereDate('follow_date', Carbon::today())
             ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by', $request->created_by);
+            })
             ->paginate(config('myConfig.paginationCount'));
         }
         else
         {
             $data = MeetingNote::whereDate('follow_date', Carbon::today())
             ->where('created_by', auth()->user()->employee->id)
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by', $request->created_by);
+            })
+            ->when($request->contact_id != null,function ($q) use($request){
+                return $q->whereRelation('meeting','contact_id', $request->contact_id);
+            })
             ->paginate(config('myConfig.paginationCount'));
         }
-        return view('dashboard.notification.followUp',compact('data'));
+        return view('dashboard.notification.followUp',compact('data'))
+        ->with([
+            'contact_id' => $request->contact_id,
+            'created_by' => $request->created_by,
+        ]);
     }
 
 
@@ -412,7 +437,8 @@ class NotificationRepository implements NotificationInterface
         if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = Customer::
-            where('birth_date', Carbon::today())
+            whereMonth('birth_date', Carbon::today()->month)
+            ->whereDay('birth_date', Carbon::today()->day)
             ->orderBy('id', 'desc')
             ->paginate($perPage)->appends(request()->query());
         }

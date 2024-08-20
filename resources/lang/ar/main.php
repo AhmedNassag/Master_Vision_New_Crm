@@ -117,6 +117,16 @@ return [
     'Categories'      => 'الأصناف',
     'Parent Category' => 'الصنف الأساسي',
 
+    //ActivityLog
+    'ActivityLogs' => 'سجلات النشاط',
+    'ActivityLog'  => 'سجل النشاط',
+    'Log Name'     => 'اسم السجل',
+    'Event'        => 'السجل',
+    'created'      => 'إضافة',
+    'updated'      => 'تعديل',
+    'deleted'      => 'حذف',
+    'on'           => 'ب',
+
     //Country
     'Countries' => 'الدول',
     'Phonecode' => 'كود الهاتف',
@@ -249,9 +259,13 @@ return [
     'Revenue'                             => 'الإيراد المتوقع',
     'Follow Date'                         => 'تاريخ المتابعة القادمة',
     'Call'                                => 'مكالمة',
+    'call'                                => 'مكالمة',
     'Meeting'                             => 'زيارة',
+    'meeting'                             => 'زيارة',
     'In'                                  => 'داخل',
+    'in'                                  => 'داخل',
     'Out'                                 => 'خارج',
+    'out'                                 => 'خارج',
     'Added a new call/meeting'            => 'قام بإجراء مكالمة / زيارة',
     'Type & Place'                        => 'النوع والمكان',
     'Reply'                               => 'الرد',
@@ -317,7 +331,9 @@ return [
     'Total'                               => 'الإجمالي',
     'branch_id'                           => 'الفرع',
     'Results Count'                       => 'عدد النتائج',
-
+    'Custom Attributes'                   => 'صفة معينة',
+    'Time'                                => 'التوقيت',
+    'Call Details'                        => 'تفاصيل المكالمة/الزيارة',
 
     //Customer
     'Customers'         => 'العملاء',
@@ -328,7 +344,7 @@ return [
     'Retarget'          => 'إعادة الإستهداف',
     'RecordReminders'   => 'التذكيرات',
     'RelatedCustomers'  => 'العملاء المرتبطين',
-    'EGP'               => 'المبلغ',
+    'EGP'               => '',
     'Paid Amounts'      => 'المبالغ المدفوعة',
     'Remaining Amounts' => 'المبالغ المتبقية',
     'Add Invoice'       => 'أضف فاتورة',
@@ -415,8 +431,8 @@ return [
     'MeetingsReport'        => 'تقرير المكالمات والزيارات',
     'ContactMeetingsReport' => 'تقرير مكالمات العملاء المحتملين',
     'ContactsReport'        => 'تقرير العملاء المحتملين',
-    'EmployeeSalesReport'   => 'تقرير مبيعات الموظفين',
-    'BranchSalesReport'     => 'تقرير مبيعات الفروع',
+    'EmployeeSalesReport'   => 'تقرير تارجت مبيعات الموظفين',
+    'BranchSalesReport'     => 'تقرير تارجت مبيعات الفروع',
     'ActivitySalesReport'   => 'تقرير مبيعات الأنشطة',
     'Follow Up Date From'   => 'موعد المتابعة من',
     'Follow Up Date To'     => 'موعد المتابعة إلي',
@@ -425,6 +441,7 @@ return [
     'Margin'                => 'نسبة التحقيق',
     'Sales'                 => 'المبيعات',
     'Print'                 => 'طباعة',
+    'Interests'             => 'الإهتمامات',
 
 
 

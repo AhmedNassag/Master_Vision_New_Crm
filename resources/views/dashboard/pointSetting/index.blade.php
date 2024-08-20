@@ -36,16 +36,19 @@
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('pointSetting.index') }}" method="get">
-                                        @csrf
                                         <div class="px-7 py-5">
                                             <div class="mb-10">
-                                                <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" />
+                                                <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Points') }}</label>
+                                                <input type="numeric" class="form-control form-control-solid" placeholder="{{ trans('main.Points') }}" name="points" value="{{ @$points }}" />
+                                            </div>
+                                            {{-- <div class="mb-10">
+                                                <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Conversion Rate') }}</label>
+                                                <input type="numeric" class="form-control form-control-solid" placeholder="{{ trans('main.Conversion Rate') }}" name="conversion_rate" value="{{ @$conversion_rate }}" />
                                             </div>
                                             <div class="mb-10">
-                                                <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.url') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.url') }}" name="url" />
-                                            </div>
+                                                <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Sales Conversion Rate') }}</label>
+                                                <input type="numeric" class="form-control form-control-solid" placeholder="{{ trans('main.Sales Conversion Rate') }}" name="sales_conversion_rate" value="{{ @$sales_conversion_rate }}" />
+                                            </div> --}}
                                             <div class="mb-10">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Activity') }}</span>
@@ -54,7 +57,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                                     @foreach($activities as $activity)
-                                                        <option value="{{ @$activity->id }}">{{ @$activity->name }}</option>
+                                                        <option value="{{ @$activity->id }}" {{ @$activity->id == @$activity_id ? 'selected' : '' }}>{{ @$activity->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -66,7 +69,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $subActivities = \App\Models\SubActivity::get(['id','name']); ?>
                                                     @foreach($subActivities as $subActivity)
-                                                        <option value="{{ @$subActivity->id }}">{{ @$subActivity->name }}</option>
+                                                        <option value="{{ @$subActivity->id }}" {{ @$subActivity->id == @$sub_activity_id ? 'selected' : '' }}>{{ @$subActivity->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -169,8 +172,8 @@
                                                 </td>
                                                 <td class="text-center">{{ @$item->activity->name }}</td>
                                                 <td class="text-center">{{ @$item->subActivity->name }}</td>
-                                                <td class="text-center">{{ @$item->conversion_rate }}</td>
-                                                <td class="text-center">{{ @$item->sales_conversion_rate }} جنيه/{{ @$item->points }} نقطة</td>
+                                                <td class="text-center">{{ number_format(@$item->conversion_rate,0) }}</td>
+                                                <td class="text-center">{{ number_format(@$item->sales_conversion_rate,0) }} جنيه/{{ @$item->points }} نقطة</td>
                                                 <td class="text-center">{{ @$item->points }}</td>
                                                 <td class="text-center">{{ @$item->expiry_days }}</td>
                                                 <td class="text-center">

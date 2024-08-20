@@ -56,7 +56,7 @@
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group">
                                             <label>{{ trans('main.Name') }}</label>
-                                            <input class="form-control" type="text" name="name" value="{{ $name }}">
+                                            <input class="form-control" type="text" name="name" value="{{ @$name }}">
                                         </div>
                                     </div>
                                     <!-- parent_id -->

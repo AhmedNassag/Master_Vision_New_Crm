@@ -61,8 +61,16 @@ class CustomerRepository implements CustomerInterface
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
             })
+            ->when($request->service_id != null,function ($q) use($request){
+                return $q->whereHas('invoices', function ($query) use ($request) {
+                    $query->where('service_id', $request->service_id);
+                });
+            })
             ->when($request->branch_id != null,function ($q) use($request){
                 return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -106,12 +114,8 @@ class CustomerRepository implements CustomerInterface
             ->orWhere('created_by', auth()->user()->employee->id)*/
             where(function ($query) use ($request) {
                 $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
-<<<<<<< HEAD
                     ->orWhere('created_by', auth()->user()->employee->id)
                     ->orWhere('branch_id', auth()->user()->employee->branch_id);
-=======
-                    ->orWhere('created_by', auth()->user()->employee->id);
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
             })
             ->when($request->name != null,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
@@ -137,8 +141,16 @@ class CustomerRepository implements CustomerInterface
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
             })
+            ->when($request->service_id != null,function ($q) use($request){
+                return $q->whereHas('invoices', function ($query) use ($request) {
+                    $query->where('service_id', $request->service_id);
+                });
+            })
             ->when($request->branch_id != null,function ($q) use($request){
                 return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -209,8 +221,16 @@ class CustomerRepository implements CustomerInterface
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
             })
+            ->when($request->service_id != null,function ($q) use($request){
+                return $q->whereHas('invoices', function ($query) use ($request) {
+                    $query->where('service_id', $request->service_id);
+                });
+            })
             ->when($request->branch_id != null,function ($q) use($request){
                 return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -250,7 +270,30 @@ class CustomerRepository implements CustomerInterface
 
         return view('dashboard.customer.index',compact('data'))
         ->with([
-            'perPage' => $perPage,
+            'perPage'           => $perPage,
+            'name'              => $request->name,
+            'mobile'            => $request->mobile,
+            'birth_date'        => $request->birth_date,
+            'national_id'       => $request->national_id,
+            'gender'            => $request->gender,
+            'religion'          => $request->religion,
+            'marital_status'    => $request->marital_status,
+            'contact_source_id' => $request->contact_source_id,
+            'activity_id'       => $request->activity_id,
+            'interest_id'       => $request->interest_id,
+            'service_id'        => $request->service_id,
+            'branch_id'         => $request->branch_id,
+            'created_by'        => $request->created_by,
+            'employee_id'       => $request->employee_id,
+            'city_id'           => $request->city_id,
+            'area_id'           => $request->area_id,
+            'industry_id'       => $request->industry_id,
+            'major_id'          => $request->major_id,
+            'is_active'         => $request->is_active,
+            'status'            => $request->status,
+            'tag_id'            => $request->tag_id,
+            'from_date'         => $request->from_date,
+            'to_date'           => $request->to_date,
         ]);
     }
 

@@ -336,7 +336,7 @@
                                                                 <span class="text-gray-600 fw-bold fs-6">{{ @$uniqueCustomerCount }}</span>
                                                             </td>
                                                             <td class="text-center pe-0">
-                                                                <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$employee->invoices_sum_total_amount,0) }} ({{ trans('main.EGP') }})</span>
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$employee->invoices_sum_total_amount,0) }}</span>
                                                             </td>
                                                             <td class="text-center pe-0">
                                                                 <span class="text-gray-600 fw-bold fs-6">{{ $employee->branch ? $employee->branch->name : '---' }}</span>
@@ -376,7 +376,7 @@
                                                                 <span class="text-gray-600 fw-bold fs-6">{{ $branch->name ? @$branch->name : '---' }}</span>
                                                             </td>
                                                             <td class="text-center pe-0">
-                                                                <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$branch->total_sales,0) }} ({{ trans('main.EGP') }})</span>
+                                                                <span class="text-gray-600 fw-bold fs-6">{{ number_format(@$branch->total_sales,0) }}</span>
                                                             </td>
                                                         </tr>
                                                     @endforeach

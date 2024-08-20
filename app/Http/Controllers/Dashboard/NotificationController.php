@@ -74,9 +74,9 @@ class NotificationController extends Controller
 
 
 
-    public function todayFollowUps()
+    public function todayFollowUps(Request $request)
     {
-        return $this->notification->todayFollowUps();
+        return $this->notification->todayFollowUps($request);
     }
 
 

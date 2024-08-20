@@ -36,7 +36,6 @@
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('tickets.index') }}" method="get">
-                                        @csrf
                                         <div class="px-7 py-5">
                                             <div class="mb-10">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -55,7 +54,7 @@
                                                         }
                                                     ?>
                                                     @foreach($employees as $employee)
-                                                        <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
+                                                        <option value="{{ @$employee->id }}" {{ @$employee->id == @$assigned_agent_id ? 'selected' : '' }}>{{ @$employee->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -80,7 +79,7 @@
                                                         }
                                                     ?>
                                                     @foreach($customers as $customer)
-                                                        <option value="{{ @$customer->id }}">{{ @$customer->name }}</option>
+                                                        <option value="{{ @$customer->id }}" {{ @$customer->id == @$customer_id ? 'selected' : '' }}>{{ @$customer->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -90,9 +89,9 @@
                                                 </label>
                                                 <select name="ticket_type" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <option value="Technical Issue">{{ trans('main.Technical Issue') }}</option>
-                                                    <option value="Inquiry">{{ trans('main.Inquiry') }}</option>
-                                                    <option value="Request">{{ trans('main.Request') }}</option>
+                                                    <option value="Technical Issue" {{ 'Technical Issue' == @$ticket_type ? 'selected' : '' }}>{{ trans('main.Technical Issue') }}</option>
+                                                    <option value="Inquiry" {{ 'Inquiry' == @$ticket_type ? 'selected' : '' }}>{{ trans('main.Inquiry') }}</option>
+                                                    <option value="Request" {{ 'Request' == @$ticket_type ? 'selected' : '' }}>{{ trans('main.Request') }}</option>
                                                 </select>
                                             </div>
                                             <div class="mb-10">
@@ -101,10 +100,10 @@
                                                 </label>
                                                 <select name="status" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <option value="Pending">{{ trans('main.Pending') }}</option>
-                                                    <option value="Open">{{ trans('main.Open') }}</option>
-                                                    <option value="In-Progress">{{ trans('main.In-Progress') }}</option>
-                                                    <option value="Resolved">{{ trans('main.Resolved') }}</option>
+                                                    <option value="Pending" {{ 'Pending' == @$status ? 'selected' : '' }}>{{ trans('main.Pending') }}</option>
+                                                    <option value="Open" {{ 'Open' == @$status ? 'selected' : '' }}>{{ trans('main.Open') }}</option>
+                                                    <option value="In-Progress" {{ 'In-Progress' == @$status ? 'selected' : '' }}>{{ trans('main.In-Progress') }}</option>
+                                                    <option value="Resolved" {{ 'Resolved' == @$status ? 'selected' : '' }}>{{ trans('main.Resolved') }}</option>
                                                 </select>
                                             </div>
                                             <div class="d-flex justify-content-end">

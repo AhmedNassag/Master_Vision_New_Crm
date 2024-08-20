@@ -665,7 +665,7 @@
                                                     <div class="text-center fs-5x fw-semibold d-flex justify-content-center align-items-start lh-sm">
                                                         {{ number_format(@$item->calculatePointsValue(), 0) }}
                                                     </div>
-                                                    <div class="text-center text-muted fw-bold mb-7">{{ trans('main.EGP') }}</div>
+                                                    <div class="text-center text-muted fw-bold mb-7"></div>
                                                     <p>{{ trans('main.Points Value') }}</p>
                                                 </div>
                                             </div>

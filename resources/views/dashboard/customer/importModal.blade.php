@@ -2,7 +2,7 @@
 <div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form class="form" action="{{ route('customer.importData') }}" method="POST" enctype="multipart/form-data" id="contact-add-form">
+            <form class="form" action="{{ route('customer.importData') }}" method="POST" enctype="multipart/form-data" id="customer-add-form">
                 @csrf
                 <div class="modal-header">
                     <h2>{{ trans('main.Import') }} {{ trans('main.Customers') }}</h2>
@@ -65,7 +65,7 @@
             <script>
                 function disableButton() {
                     document.getElementById('submitButton').disabled = true;
-                    document.getElementById('contact-add-form').submit();
+                    document.getElementById('customer-add-form').submit();
                 }
             </script>
         </div>

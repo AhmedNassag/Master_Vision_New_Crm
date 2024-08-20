@@ -91,8 +91,11 @@ class CampaignRepository extends BaseRepository implements CampaignInterface
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
             $data = Customer::
-            whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
-            ->orWhere('created_by', auth()->user()->employee->id)
+            where(function ($query) use ($request) {
+                $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('branch_id', auth()->user()->employee->branch_id);
+            })
             ->whereHas('invoices', function ($query) use ($from, $to, $activity_id,$interest_id) {
                 return $query->where('activity_id', $activity_id)
                     ->when(($from && $to),function($query) use($from, $to){
@@ -104,8 +107,7 @@ class CampaignRepository extends BaseRepository implements CampaignInterface
         }
         else
         {
-            $data = Customer::
-            where('created_by', auth()->user()->employee->id)
+            $data = Customer::where('created_by', auth()->user()->employee->id)
             ->whereHas('invoices', function ($query) use ($from, $to, $activity_id,$interest_id) {
                 return $query->where('activity_id', $activity_id)
                     ->when(($from && $to),function($query) use($from, $to){

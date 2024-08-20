@@ -129,7 +129,7 @@
                                     <div class="d-flex flex-center flex-column mb-5">
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-100px symbol-circle mb-7">
-                                            @if($customer->media)
+                                            @if(@$customer->media)
                                                 <img src="{{ asset('attachments/customer/'.@$customer->media->file_name) }}" alt="image" />
                                             @else
                                                 <img src="assets/media/avatars/blank.png" alt="image" />
@@ -144,7 +144,7 @@
                                         <div class="fs-5 fw-semibold text-muted mb-6">{{ @$customer->mobile }} - {{ @$customer->mobile2 }}</div>
                                         <!--end::Position-->
                                         <!--begin::Card toolbar-->
-                                        @if($customer->customer_id)
+                                        @if(@$customer->customer_id)
                                             <div class="card-toolbar mb-3">
                                                 <!--begin::Show-->
                                                 <a href="{{ route('customer.show', $customer->id) }}" class="btn btn-sm btn-light-primary">
@@ -171,7 +171,7 @@
                                     <div id="kt_customer_view_details" class="collapse show">
                                         <div class="py-5 fs-6">
                                             <!--begin::Details item-->
-                                            @if($customer->employee)
+                                            @if(@$customer->employee)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Employee') }}:</div>
@@ -183,7 +183,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->gender)
+                                            @if(@$customer->gender)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Gender') }}:</div>
@@ -195,7 +195,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->name)
+                                            @if(@$customer->name)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Name') }}:</div>
@@ -207,7 +207,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->mobile)
+                                            @if(@$customer->mobile)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Mobile') }}:</div>
@@ -219,7 +219,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->mobile2)
+                                            @if(@$customer->mobile2)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Mobile2') }}:</div>
@@ -231,7 +231,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->activity)
+                                            @if(@$customer->activity)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Activity') }}:</div>
@@ -243,7 +243,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->subActivity)
+                                            @if(@$customer->subActivity)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.SubActivity') }}:</div>
@@ -255,7 +255,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->national_id)
+                                            @if(@$customer->national_id)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.NationalId') }}:</div>
@@ -267,7 +267,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->birth_date)
+                                            @if(@$customer->birth_date)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Birth Date') }}:</div>
@@ -279,7 +279,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->company_name)
+                                            @if(@$customer->company_name)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Company Name') }}:</div>
@@ -291,7 +291,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->city)
+                                            @if(@$customer->city)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.City') }}:</div>
@@ -303,7 +303,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->industry)
+                                            @if(@$customer->industry)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Industry') }}:</div>
@@ -315,7 +315,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->major)
+                                            @if(@$customer->major)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.Major') }}:</div>
@@ -327,7 +327,7 @@
                                             @endif
                                             <!--begin::Details item-->
                                             <!--begin::Details item-->
-                                            @if($customer->contactSource)
+                                            @if(@$customer->contactSource)
                                                 <div class="row mb-7">
                                                     <div class="col-5">
                                                         <div class="fw-bold">{{ trans('main.ContactSource') }}:</div>
@@ -346,7 +346,7 @@
                             </div>
                             <!--end::Card-->
                             <!--begin::Connected Accounts-->
-                            @if($customer->notes)
+                            @if(@$customer->notes)
                                 <div class="card mb-5 mb-xl-8">
                                     <!--begin::Card header-->
                                     <div class="card-header border-0">

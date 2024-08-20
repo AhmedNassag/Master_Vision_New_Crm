@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ActivityLogTrait;
 
 class LeadHistory extends Model
 {
     use HasFactory;
+    use ActivityLogTrait;
 
     protected $table   = 'lead_histories';
     // protected $guarded = [];

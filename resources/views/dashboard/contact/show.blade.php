@@ -460,8 +460,8 @@
                                 </div>
                             @endif
                             <!--end::Connected Accounts-->
-  
-@if($item->custom_attributes)
+
+                            @if($item->custom_attributes)
                                 <div class="card mb-5 mb-xl-8">
                                     <!--begin::Card header-->
                                     <div class="card-header border-0">
@@ -480,38 +480,37 @@
                                             <!--begin::Wrapper-->
                                             <div class="d-flex flex-stack flex-grow-1">
                                                 <!--begin::Content-->
-                                              <div class="fw-semibold">
-    @if(!empty($item->custom_attributes['mobile2']))
-        <div class="fs-6 text-gray-700">
-            <strong>رقم موبايل آخر: </strong> {{ $item->custom_attributes['mobile2'] }}
-        </div>
-    @endif
+                                                <div class="fw-semibold">
+                                                    @if(!empty($item->custom_attributes['mobile2']))
+                                                        <div class="fs-6 text-gray-700">
+                                                            <strong>رقم موبايل آخر: </strong> {{ $item->custom_attributes['mobile2'] }}
+                                                        </div>
+                                                    @endif
 
-    @if(!empty($item->custom_attributes['program']))
-        <div class="fs-6 text-gray-700">
-            <strong>البرنامج: </strong> {{ $item->custom_attributes['program'] }}
-        </div>
-    @endif
+                                                    @if(!empty($item->custom_attributes['program']))
+                                                        <div class="fs-6 text-gray-700">
+                                                            <strong>البرنامج: </strong> {{ $item->custom_attributes['program'] }}
+                                                        </div>
+                                                    @endif
 
-    @if(!empty($item->custom_attributes['isomra']))
-    
-    <div class="fs-6 text-gray-700">
-            <strong>نوع البرنامج: </strong> عمرة
-        </div>
-    <div class="fs-6 text-gray-700">
-            <strong>هل قام بالعمرة من قبل: </strong> {{ $item->custom_attributes['isomra'] }}
-        </div>
-    @endif
+                                                    @if(!empty($item->custom_attributes['isomra']))
+                                                        <div class="fs-6 text-gray-700">
+                                                            <strong>نوع البرنامج: </strong> عمرة
+                                                        </div>
+                                                        <div class="fs-6 text-gray-700">
+                                                            <strong>هل قام بالعمرة من قبل: </strong> {{ $item->custom_attributes['isomra'] }}
+                                                        </div>
+                                                    @endif
 
-    @if(!empty($item->custom_attributes['ishajj']))
- <div class="fs-6 text-gray-700">
-            <strong>نوع البرنامج: </strong> حج
-        </div>     
-   <div class="fs-6 text-gray-700">
-            <strong>هل قام بالحج من قبل: </strong> {{ $item->custom_attributes['ishajj'] }}
-        </div>
-    @endif
-</div>
+                                                    @if(!empty($item->custom_attributes['ishajj']))
+                                                        <div class="fs-6 text-gray-700">
+                                                            <strong>نوع البرنامج: </strong> حج
+                                                        </div>
+                                                        <div class="fs-6 text-gray-700">
+                                                            <strong>هل قام بالحج من قبل: </strong> {{ $item->custom_attributes['ishajj'] }}
+                                                        </div>
+                                                    @endif
+                                                </div>
                                                 <!--end::Content-->
                                             </div>
                                             <!--end::Wrapper-->
@@ -522,8 +521,7 @@
                                 </div>
                             @endif
                             <!--end::Connected Accounts-->
-                                              
-</div>
+                        </div>
                         <!--end::Sidebar-->
                         <!--begin::Content-->
                         <div class="flex-lg-row-fluid ms-lg-15">
@@ -646,46 +644,52 @@
                                                     @foreach ($history as $timelineItem)
                                                         @if ($timelineItem->action == App\Constants\LeadHistory\Actions::CALL_CREATED)
                                                             <li>
+                                                                <span class="time"><i class="fa fa-clock-o"></i>
+                                                                    {{ trans('main.Time') }} : {{ @$timelineItem->created_at->format('H:i') }}
+                                                                </span>
+                                                                <br>
+                                                                <br>
                                                                 <div class="timeline-item">
-                                                                    <span class="time">
-                                                                        {{ @$timelineItem->created_at->format('H:i') }}
-                                                                    </span>
                                                                     <h3 class="timeline-header">
-                                                                        &nbsp;
                                                                         {{ @$timelineItem->createdBy->name }}
-                                                                        &nbsp;
                                                                         {{ trans('main.Added a new call/meeting') }}
-                                                                        &nbsp;
                                                                     </h3>
                                                                     <div class="timeline-body">
                                                                         @php
                                                                             $meeting = \App\Models\Meeting::find($timelineItem->related_model_id);
                                                                         @endphp
                                                                         <b>{{ trans('main.Type & Place') }}</b>
-                                                                        <p>{{ @$meeting->type . ' (' . $meeting->meeting_place . ') ' }}</p>
+                                                                        <p>{{ trans( 'main.' .@$meeting->type) . ' (' . trans( 'main.' .$meeting->meeting_place) . ') ' }}</p>
                                                                         <b>{{ trans('main.Reply') }}</b>
                                                                         <p>{{ @$meeting->reply->reply ?? '' }}</p>
                                                                         <b>{{ trans('main.Notes') }}:</b>
                                                                         <p>{{strip_tags($timelineItem->placeholders_array['notes']) }}</p>
                                                                         <b>{{ trans('main.Next Followup date') }}:</b>
                                                                         <p>{{ @$timelineItem->placeholders_array['follow_date'] }}</p>
+                                                                        <b>{{ trans('main.SubActivities') }}:</b>
+                                                                        <p>
+                                                                            <ul>
+                                                                                @foreach ($meeting->interests as $interest)
+                                                                                    <li>{{ @$interest->name }}</li>
+                                                                                @endforeach
+                                                                            </ul>
                                                                     </div>
                                                                 </div>
                                                             </li>
                                                         @elseif($timelineItem->action == App\Constants\LeadHistory\Actions::STATUES_CHANGED)
                                                             <li>
+                                                                <span class="time"><i class="fa fa-clock-o"></i>
+                                                                    {{ trans('main.Time') }} : {{ @$timelineItem->created_at->format('H:i') }}
+                                                                </span>
+                                                                <br>
+                                                                <br>
                                                                 <div class="timeline-item">
-                                                                    <span class="time"><i class="fa fa-clock-o"></i>
-                                                                        {{ @$timelineItem->created_at->format('H:i') }}</span>
                                                                     @php
                                                                         $logContact = \App\Models\Contact::find($timelineItem->related_model_id);
                                                                     @endphp
                                                                     <h3 class="timeline-header">
-                                                                        &nbsp;
                                                                         {{ @$timelineItem->createdBy->name }}
-                                                                        &nbsp;
                                                                         {{ trans('main.changed status from') }}
-                                                                        &nbsp;
                                                                         {{ @$timelineItem->placeholders_array['from'] }} {{ trans('main.To') }}
                                                                         <span>{{ @$timelineItem->placeholders_array['to'] }}</span>
                                                                     </h3>

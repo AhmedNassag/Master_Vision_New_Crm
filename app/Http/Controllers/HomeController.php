@@ -157,7 +157,7 @@ class HomeController extends Controller
                 ->whereMonth('follow_date', Carbon::now()->month)
                 ->count();
 
-            $todayBirthdays = Customer::whereDate('birth_date',Carbon::today())->count();
+            $todayBirthdays = Customer::whereMonth('birth_date', Carbon::today()->month)->whereDay('birth_date', Carbon::today()->day)->count();
 
             $mostSalesEmployees = Employee::hidden()->whereHas('invoices')
                 ->withSum('invoices', 'total_amount')

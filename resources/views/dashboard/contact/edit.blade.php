@@ -64,7 +64,7 @@
                     </div>
                     <!-- /Page Header -->
 
-                    <form class="form" action="{{ route('contact.update', 'test') }}" method="POST" enctype="multipart/form-data">
+                    <form class="form" action="{{ route('contact.update', 'test') }}" method="POST" enctype="multipart/form-data" id="contact-edit-form">
                         {{ method_field('patch') }}
                         @csrf
                         <div class="modal-body py-10 px-lg-17">
@@ -311,11 +311,17 @@
                             <input class="form-control" type="hidden" name="id" value="{{ @$contact->id }}">
                         </div>
                         <div class="modal-footer flex-center">
-                            <button type="submit" class="btn btn-primary">
+                            <button id="submitButton" type="submit" class="btn btn-primary" onclick="disableButton()">
                                 <span class="indicator-label">{{ trans('main.Confirm') }}</span>
                             </button>
                         </div>
                     </form>
+                    <script>
+                        function disableButton() {
+                            document.getElementById('submitButton').disabled = true;
+                            document.getElementById('contact-edit-form').submit();
+                        }
+                    </script>
 
                 </div>
                 <!-- content container-fluid closed -->

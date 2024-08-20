@@ -36,29 +36,28 @@
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('notification.index') }}" method="get">
-                                        @csrf
                                         <div class="px-7 py-5">
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Notification') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Notification') }}" name="notification" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Notification') }}" name="notification" value="{{ @$notification }}" />
                                             </div>
-                                            <div class="mb-10" id="created_by">
+                                            <div class="mb-10" id="dept">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                                    <span class="required">{{ trans('main.Created By') }}</span>
+                                                    <span class="required">{{ trans('main.Department') }}</span>
                                                 </label>
-                                                <select name="created_by" data-control="select2" data-dropdown-parent="#created_by" class="form-select form-select-solid">
+                                                <select name="dept" data-control="select2" data-dropdown-parent="#dept" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <?php $users = \App\Models\User::hidden()->get(['id','name']); ?>
-                                                    @foreach($users as $user)
-                                                        <option value="{{ @$user->id }}">{{ @$user->name }}</option>
+                                                    <?php $departments = \App\Models\Department::get(['id','name']); ?>
+                                                    @foreach($departments as $department)
+                                                        <option value="{{ @$department->id }}" {{ @$department->id == @$dept ? 'selected' : '' }}>{{ @$department->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            {{-- <div class="mb-10" id="employee_id_filter">
+                                            <div class="mb-10" id="employee_id_filter">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.Employee') }}</span>
                                                 </label>
-                                                <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id_filter" data-placeholder="{{ trans('main.Select') }}e..." class="form-select form-select-solid">
+                                                <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id_filter" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php
                                                         if(Auth::user()->roles_name[0] == "Admin")
@@ -71,22 +70,31 @@
                                                         }
                                                     ?>
                                                     @foreach($employees as $employee)
-                                                        <option value="{{ @$employee->id }}">{{ @$employee->name }}</option>
+                                                        <option value="{{ @$employee->id }}" {{ @$employee->id == @$employee_id ? 'selected' : '' }}>{{ @$employee->name }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div> --}}
-                                            {{-- <div class="mb-10" id="dept">
+                                            </div>
+                                            <div class="mb-10" id="created_by">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
-                                                    <span class="required">{{ trans('main.Department') }}</span>
+                                                    <span class="required">{{ trans('main.Created By') }}</span>
                                                 </label>
-                                                <select name="dept" data-control="select2" data-dropdown-parent="#dept" class="form-select form-select-solid">
+                                                <select name="created_by" data-control="select2" data-dropdown-parent="#created_by" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
-                                                    <?php $departments = \App\Models\Department::get(['id','name']); ?>
-                                                    @foreach($departments as $department)
-                                                        <option value="{{ @$department->id }}">{{ @$department->name }}</option>
+                                                    <?php
+                                                        if(Auth::user()->roles_name[0] == "Admin")
+                                                        {
+                                                            $users = \App\Models\Employee::hidden()->get(['id','name']);
+                                                        }
+                                                        else
+                                                        {
+                                                            $users = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                        }
+                                                    ?>
+                                                    @foreach($users as $user)
+                                                        <option value="{{ @$user->id }}" {{ @$user->id == @$created_by ? 'selected' : '' }}>{{ @$user->name }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div> --}}
+                                            </div>
                                             <div class="d-flex justify-content-end">
                                                 <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
                                                 <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">{{ trans('main.Apply') }}</button>

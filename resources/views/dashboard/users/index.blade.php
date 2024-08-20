@@ -36,22 +36,21 @@
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('user.index') }}" method="get">
-                                        @csrf
                                         <div class="px-7 py-5">
                                             <!--name-->
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" value="{{ @$name }}" />
                                             </div>
                                             <!--mobile-->
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Mobile') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" name="mobile" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" name="mobile" value="{{ @$mobile }}" />
                                             </div>
                                             <!--email-->
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Email') }}</label>
-                                                <input type="email" class="form-control form-control-solid" placeholder="{{ trans('main.Email') }}" name="email" />
+                                                <input type="email" class="form-control form-control-solid" placeholder="{{ trans('main.Email') }}" name="email" value="{{ @$email }}" />
                                             </div>
                                             <!--branch_id-->
                                             <div class="mb-10">
@@ -71,7 +70,7 @@
                                                         }
                                                     ?>
                                                     @foreach($branches as $branch)
-                                                        <option value="{{ @$branch->id }}">{{ @$branch->name }}</option>
+                                                        <option value="{{ @$branch->id }}" {{ @$branch->id == @$branch_id ? 'selected' : '' }}>{{ @$branch->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -84,7 +83,7 @@
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $departments = \App\Models\Department::get(['id','name']); ?>
                                                     @foreach($departments as $department)
-                                                        <option value="{{ @$department->id }}">{{ @$department->name }}</option>
+                                                        <option value="{{ @$department->id }}" {{ @$department->id == @$dept ? 'selected' : '' }}>{{ @$department->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

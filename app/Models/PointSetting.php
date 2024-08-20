@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ActivityLogTrait;
 
 class PointSetting extends Model
 {
     use HasFactory;
+    use ActivityLogTrait;
 
     protected $table   = 'point_settings';
     protected $guarded = [];
@@ -21,7 +23,7 @@ class PointSetting extends Model
     }
 
 
-    
+
     public function subActivity()
     {
         return $this->belongsTo(SubActivity::class, 'sub_activity_id');

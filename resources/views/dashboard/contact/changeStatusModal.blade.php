@@ -51,6 +51,17 @@
                             <label class="fs-5 fw-semibold mb-2" for="description">{{ trans('main.Description') }}:</label>
                             <textarea class="form-control" id="description" name="invoice[description]" rows="3"></textarea>
                         </div>
+                        <!-- service_id -->
+                        <div id="service_id" class="form-group">
+                            <label class="fs-5 fw-semibold mb-2" for="service_id">{{ trans('main.Service') }}:</label>
+                            <select name="invoice[service_id]" id="service_id" data-control="select2" data-dropdown-parent="#service_id" class="form-select form-select-solid">
+                                <option value="">{{ trans('main.Select') }}...</option>
+                                <?php $services = \App\Models\Service::where('interest_id',@$item->subActivity->id)->get(['id','name']); ?>
+                                @foreach($services as $service)
+                                    <option value="{{ @$service->id }}">{{ @$service->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label>{{ trans('main.Activity') }}:</label>
                             <input class="form-control disabled" disabled value="{{ @$item->activity->name ?? '' }}" readonly>

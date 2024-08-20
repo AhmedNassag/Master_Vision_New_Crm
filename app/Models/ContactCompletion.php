@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ActivityLogTrait;
 
 class ContactCompletion extends Model
 {
     use HasFactory;
+    use ActivityLogTrait;
 
     protected $table   = 'contact_completions';
     protected $guarded = [];

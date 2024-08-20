@@ -36,21 +36,20 @@
                                     </div>
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('area.index') }}" method="get">
-                                        @csrf
                                         <div class="px-7 py-5">
                                             <div class="mb-10">
                                                 <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" />
+                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" value="{{ @$name }}" />
                                             </div>
                                             <div class="mb-10">
                                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                                     <span class="required">{{ trans('main.City') }}</span>
                                                 </label>
-                                                <select name="country_id" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
+                                                <select name="city_id" data-control="select2" data-dropdown-parent="#kt_app_content" class="form-select form-select-solid">
                                                     <option value="">{{ trans('main.Select') }}...</option>
                                                     <?php $cities = \App\Models\City::get(['id','name']); ?>
                                                     @foreach($cities as $city)
-                                                        <option value="{{ @$city->id }}">{{ @$city->name }}</option>
+                                                        <option value="{{ @$city->id }}" {{ @$city->id == @$city_id ? 'selected' : '' }}>{{ @$city->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

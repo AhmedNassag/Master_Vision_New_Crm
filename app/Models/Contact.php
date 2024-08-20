@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ActivityLogTrait;
 use App\Observers\ContactDataObserver;
 use stdClass;
 
@@ -12,6 +13,7 @@ class Contact extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use ActivityLogTrait;
 
     protected $table   = 'contacts';
     protected $guarded = [];

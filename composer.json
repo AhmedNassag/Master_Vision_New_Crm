@@ -16,6 +16,7 @@
         "laravelcollective/html": "^6.4",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "*",
+        "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "*",
         "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables": "^1.5"

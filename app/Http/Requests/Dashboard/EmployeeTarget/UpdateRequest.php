@@ -27,8 +27,8 @@ class UpdateRequest extends FormRequest
             'month'           => 'required',
             'employee_id'     => 'required|exists:employees,id',
             'activity_id.*'   => 'required|exists:activates,id',
-            'amount_target.*' => 'required|integer|min:0',
-            'calls_target.*'  => 'required|integer|min:0',
+            'amount_target.*' => 'required|numeric|min:0',
+            'calls_target.*'  => 'required|numeric|min:0',
         ];
     }
 

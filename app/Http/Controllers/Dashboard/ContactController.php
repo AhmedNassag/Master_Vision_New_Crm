@@ -154,7 +154,6 @@ class ContactController extends Controller
     public function changeStatus(Request $request, LeadConversionService $leadConversionService)
 	{
         try {
-
             $validator = Validator::make($request->all(), [
                 'status'                 => 'required|in:new,contacted,qualified,converted',
                 'invoice'                => ['required_if:status,converted','array','min:1'],
@@ -165,6 +164,7 @@ class ContactController extends Controller
                 'invoice.debt'           => 'required_if:status,converted',
                 'invoice.description'    => 'nullable:status,converted',
                 'invoice.status'         => 'required_if:status,converted',
+                'invoice.service_id'     => 'nullable:status,converted',
             ]);
 
             if ($validator->fails())

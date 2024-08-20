@@ -40,7 +40,7 @@ class ReportController extends Controller
     public function meetingsReport(Request $request)
     {
         try {
-        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
+            $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
 
             if(Auth::user()->roles_name[0] == "Admin")
             {
@@ -49,7 +49,7 @@ class ReportController extends Controller
                     return $q->where('created_by', $request->created_by);
                 })
                 ->when($request->interests_ids != null,function ($q) use($request){
-                    return $q->where('interests_ids', $request->interests_ids);
+                    return $q->whereJsonContains('interests_ids', $request->interests_ids);
                 })
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
@@ -82,7 +82,7 @@ class ReportController extends Controller
                     return $q->where('created_by', $request->created_by);
                 })
                 ->when($request->interests_ids != null,function ($q) use($request){
-                    return $q->where('interests_ids', $request->interests_ids);
+                    return $q->whereJsonContains('interests_ids', $request->interests_ids);
                 })
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
@@ -115,7 +115,7 @@ class ReportController extends Controller
                     return $q->where('created_by', $request->created_by);
                 })
                 ->when($request->interests_ids != null,function ($q) use($request){
-                    return $q->where('interests_ids', $request->interests_ids);
+                    return $q->whereJsonContains('interests_ids', $request->interests_ids);
                 })
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
@@ -180,7 +180,7 @@ class ReportController extends Controller
                     return $q->where('created_by', $request->created_by);
                 })
                 ->when($request->interests_ids != null,function ($q) use($request){
-                    return $q->where('interests_ids', $request->interests_ids);
+                    return $q->whereJsonContains('interests_ids', $request->interests_ids);
                 })
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
@@ -214,7 +214,7 @@ class ReportController extends Controller
                     return $q->where('created_by', $request->created_by);
                 })
                 ->when($request->interests_ids != null,function ($q) use($request){
-                    return $q->where('interests_ids', $request->interests_ids);
+                    return $q->whereJsonContains('interests_ids', $request->interests_ids);
                 })
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
@@ -248,7 +248,7 @@ class ReportController extends Controller
                     return $q->where('created_by', $request->created_by);
                 })
                 ->when($request->interests_ids != null,function ($q) use($request){
-                    return $q->where('interests_ids', $request->interests_ids);
+                    return $q->whereJsonContains('interests_ids', $request->interests_ids);
                 })
                 ->when($request->contact_id != null,function ($q) use($request){
                     return $q->where('contact_id', $request->contact_id);
@@ -526,7 +526,7 @@ class ReportController extends Controller
                     'target'          => $target,
                     'actual'          => $actual,
                     'customers_count' => $uniqueCustomerCount,
-                    'margin'          =>  number_format($margin, 2) . "%",
+                    'margin'          => number_format($margin, 2) . "%",
                     'branch'          => Branch::find($employee->branch_id)->name ?? "", // You can add the year if needed
                 ];
             }

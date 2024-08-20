@@ -38,7 +38,6 @@
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
                         <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.contactsReport') }}" method="get" enctype="multipart/form-data">
-                            @csrf
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
                                 <div class="row align-items-center mb-10 w-100">
                                     <!-- from_date -->

@@ -55,6 +55,12 @@ class ContactRepository implements ContactInterface
             ->when($request->gender != null,function ($q) use($request){
                 return $q->where('gender',$request->gender);
             })
+            ->when($request->religion != null,function ($q) use($request){
+                return $q->where('religion',$request->religion);
+            })
+            ->when($request->marital_status != null,function ($q) use($request){
+                return $q->where('marital_status',$request->marital_status);
+            })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
             })
@@ -66,6 +72,12 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->branch_id != null,function ($q) use($request){
                 return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -82,11 +94,8 @@ class ContactRepository implements ContactInterface
             ->when($request->campaign_id != null,function ($q) use($request){
                 return $q->where('campaign_id',$request->campaign_id);
             })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->where('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->where('created_at', '<=', $request->to_date);
+            ->when($request->custom_attributes != null, function ($q) use ($request) {
+                return $q->whereRaw("JSON_SEARCH(custom_attributes, 'one', ?) IS NOT NULL", [$request->custom_attributes]);
             })
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
@@ -102,6 +111,12 @@ class ContactRepository implements ContactInterface
                     $query->where('tag_id', $request->input('tag_id'));
                 });
             })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->where('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->where('created_at', '<=', $request->to_date);
+            })
             ->orderBy('id', 'desc')
             /*->paginate($perPage)->appends(request()->query())*/;
         }
@@ -114,10 +129,7 @@ class ContactRepository implements ContactInterface
             ->where(function ($query) use ($request) {
                 $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
                 ->orWhere('created_by', auth()->user()->employee->id)
-<<<<<<< HEAD
                 ->orWhere('branch_id', auth()->user()->employee->branch_id)
-=======
->>>>>>> b84542779b463f5ad863339bceca911ba0a0a68f
                 ->orWhere('employee_id', auth()->user()->employee->id);
             })
             ->when($request->name != null,function ($q) use($request){
@@ -135,6 +147,12 @@ class ContactRepository implements ContactInterface
             ->when($request->gender != null,function ($q) use($request){
                 return $q->where('gender',$request->gender);
             })
+            ->when($request->religion != null,function ($q) use($request){
+                return $q->where('religion',$request->religion);
+            })
+            ->when($request->marital_status != null,function ($q) use($request){
+                return $q->where('marital_status',$request->marital_status);
+            })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
             })
@@ -146,6 +164,12 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->branch_id != null,function ($q) use($request){
                 return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -162,11 +186,8 @@ class ContactRepository implements ContactInterface
             ->when($request->campaign_id != null,function ($q) use($request){
                 return $q->where('campaign_id',$request->campaign_id);
             })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->where('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->where('created_at', '<=', $request->to_date);
+            ->when($request->custom_attributes != null, function ($q) use ($request) {
+                return $q->whereRaw("JSON_SEARCH(custom_attributes, 'one', ?) IS NOT NULL", [$request->custom_attributes]);
             })
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
@@ -181,6 +202,12 @@ class ContactRepository implements ContactInterface
                 return $q->whereHas('tags', function ($query) use ($request) {
                     $query->where('tag_id', $request->input('tag_id'));
                 });
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->where('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->where('created_at', '<=', $request->to_date);
             })
             ->orderBy('id', 'desc')
             /*->paginate($perPage)->appends(request()->query())*/;
@@ -227,6 +254,12 @@ class ContactRepository implements ContactInterface
             ->when($request->branch_id != null,function ($q) use($request){
                 return $q->where('branch_id',$request->branch_id);
             })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -242,11 +275,8 @@ class ContactRepository implements ContactInterface
             ->when($request->campaign_id != null,function ($q) use($request){
                 return $q->where('campaign_id',$request->campaign_id);
             })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->where('created_at', '>=', $request->from_date);
-            })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->where('created_at', '<=', $request->to_date);
+            ->when($request->custom_attributes != null, function ($q) use ($request) {
+                return $q->whereRaw("JSON_SEARCH(custom_attributes, 'one', ?) IS NOT NULL", [$request->custom_attributes]);
             })
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
@@ -262,6 +292,12 @@ class ContactRepository implements ContactInterface
                     $query->where('tag_id', $request->input('tag_id'));
                 });
             })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->where('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->where('created_at', '<=', $request->to_date);
+            })
             ->orderBy('id', 'desc')
             /*->paginate($perPage)->appends(request()->query())*/;
         }
@@ -271,9 +307,31 @@ class ContactRepository implements ContactInterface
 
         return view('dashboard.contact.index',compact('data','resultCount'))
         ->with([
-            'perPage' => $perPage,
-            'mobile'  => $request->mobile,
-            'name'    => $request->name,
+            'perPage'           => $perPage,
+            'name'              => $request->name,
+            'mobile'            => $request->mobile,
+            'birth_date'        => $request->birth_date,
+            'national_id'       => $request->national_id,
+            'gender'            => $request->gender,
+            'religion'          => $request->religion,
+            'marital_status'    => $request->marital_status,
+            'contact_source_id' => $request->contact_source_id,
+            'activity_id'       => $request->activity_id,
+            'interest_id'       => $request->interest_id,
+            'branch_id'         => $request->branch_id,
+            'created_by'        => $request->created_by,
+            'employee_id'       => $request->employee_id,
+            'city_id'           => $request->city_id,
+            'area_id'           => $request->area_id,
+            'industry_id'       => $request->industry_id,
+            'major_id'          => $request->major_id,
+            'campaign_id'       => $request->campaign_id,
+            'custom_attributes' => $request->custom_attributes,
+            'is_active'         => $request->is_active,
+            'status'            => $request->status,
+            'tag_id'            => $request->tag_id,
+            'from_date'         => $request->from_date,
+            'to_date'           => $request->to_date,
         ]);
     }
 
@@ -627,10 +685,11 @@ class ContactRepository implements ContactInterface
 
     public function trashed($request)
     {
+        $perPage = (int) $request->get('perPage', config('myConfig.paginationCount', 50));
         if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = Contact::where('is_trashed', 1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
-            ->when($request->name != null,function ($q) use($request){
+            ->when($request->name != null ,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
             ->when($request->mobile != null,function ($q) use($request){
@@ -639,8 +698,17 @@ class ContactRepository implements ContactInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
+            })
+            ->when($request->religion != null,function ($q) use($request){
+                return $q->where('religion',$request->religion);
+            })
+            ->when($request->marital_status != null,function ($q) use($request){
+                return $q->where('marital_status',$request->marital_status);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -650,6 +718,15 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -663,20 +740,34 @@ class ContactRepository implements ContactInterface
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
             })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
+            ->when($request->campaign_id != null,function ($q) use($request){
+                return $q->where('campaign_id',$request->campaign_id);
             })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
+            ->when($request->custom_attributes != null, function ($q) use ($request) {
+                return $q->whereRaw("JSON_SEARCH(custom_attributes, 'one', ?) IS NOT NULL", [$request->custom_attributes]);
             })
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
             })
+            ->when($request->status != null,function ($q) use($request){
+                return $q->where('status',$request->status);
+            })
+            ->when(!$request->status,function ($q) use($request){
+                return $q->where('status', '!=', 'converted');
+            })
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->where('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->where('created_at', '<=', $request->to_date);
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage);
         }
         else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
         {
@@ -688,7 +779,7 @@ class ContactRepository implements ContactInterface
                     ->orWhere('created_by', auth()->user()->employee->id)
                     ->orWhere('employee_id', auth()->user()->employee->id);
             })
-            ->when($request->name != null,function ($q) use($request){
+            ->when($request->name != null ,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
             ->when($request->mobile != null,function ($q) use($request){
@@ -697,8 +788,17 @@ class ContactRepository implements ContactInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
+            })
+            ->when($request->religion != null,function ($q) use($request){
+                return $q->where('religion',$request->religion);
+            })
+            ->when($request->marital_status != null,function ($q) use($request){
+                return $q->where('marital_status',$request->marital_status);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -708,6 +808,15 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -721,26 +830,40 @@ class ContactRepository implements ContactInterface
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
             })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
+            ->when($request->campaign_id != null,function ($q) use($request){
+                return $q->where('campaign_id',$request->campaign_id);
             })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
+            ->when($request->custom_attributes != null, function ($q) use ($request) {
+                return $q->whereRaw("JSON_SEARCH(custom_attributes, 'one', ?) IS NOT NULL", [$request->custom_attributes]);
             })
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
             })
+            ->when($request->status != null,function ($q) use($request){
+                return $q->where('status',$request->status);
+            })
+            ->when(!$request->status,function ($q) use($request){
+                return $q->where('status', '!=', 'converted');
+            })
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->where('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->where('created_at', '<=', $request->to_date);
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage);
         }
         else
         {
             $data = Contact::where('is_trashed', 1)->with(['media','contactSource','city','area','contactCategory','activity','subActivity','employee'])
             ->where('employee_id', auth()->user()->employee->id)
-            ->when($request->name != null,function ($q) use($request){
+            ->when($request->name != null ,function ($q) use($request){
                 return $q->where('name','like', '%'.$request->name.'%');
             })
             ->when($request->mobile != null,function ($q) use($request){
@@ -749,8 +872,17 @@ class ContactRepository implements ContactInterface
             ->when($request->birth_date != null,function ($q) use($request){
                 return $q->where('birth_date','like', '%'.$request->birth_date.'%');
             })
+            ->when($request->national_id != null,function ($q) use($request){
+                return $q->where('national_id','like', '%'.$request->national_id.'%');
+            })
             ->when($request->gender != null,function ($q) use($request){
-                return $q->where('gender','like', '%'.$request->gender.'%');
+                return $q->where('gender',$request->gender);
+            })
+            ->when($request->religion != null,function ($q) use($request){
+                return $q->where('religion',$request->religion);
+            })
+            ->when($request->marital_status != null,function ($q) use($request){
+                return $q->where('marital_status',$request->marital_status);
             })
             ->when($request->contact_source_id != null,function ($q) use($request){
                 return $q->where('contact_source_id',$request->contact_source_id);
@@ -760,6 +892,15 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->interest_id != null,function ($q) use($request){
                 return $q->where('interest_id',$request->interest_id);
+            })
+            ->when($request->branch_id != null,function ($q) use($request){
+                return $q->where('branch_id',$request->branch_id);
+            })
+            ->when($request->created_by != null,function ($q) use($request){
+                return $q->where('created_by',$request->created_by);
+            })
+            ->when($request->employee_id != null,function ($q) use($request){
+                return $q->where('employee_id',$request->employee_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -773,27 +914,63 @@ class ContactRepository implements ContactInterface
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
             })
-            ->when($request->from_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '>=', $request->from_date);
+            ->when($request->campaign_id != null,function ($q) use($request){
+                return $q->where('campaign_id',$request->campaign_id);
             })
-            ->when($request->to_date != null,function ($q) use($request){
-                return $q->whereDate('created_at', '<=', $request->to_date);
-            })
-            ->when($request->status != null,function ($q) use($request){
-                return $q->where('status',$request->status);
+            ->when($request->custom_attributes != null, function ($q) use ($request) {
+                return $q->whereRaw("JSON_SEARCH(custom_attributes, 'one', ?) IS NOT NULL", [$request->custom_attributes]);
             })
             ->when($request->is_active != null,function ($q) use($request){
                 return $q->where('is_active',$request->is_active);
             })
+            ->when($request->status != null,function ($q) use($request){
+                return $q->where('status',$request->status);
+            })
+            ->when(!$request->status,function ($q) use($request){
+                return $q->where('status', '!=', 'converted');
+            })
+            ->when($request->input('tag_id') != null, function ($q) use ($request) {
+                return $q->whereHas('tags', function ($query) use ($request) {
+                    $query->where('tag_id', $request->input('tag_id'));
+                });
+            })
+            ->when($request->from_date != null,function ($q) use($request){
+                return $q->where('created_at', '>=', $request->from_date);
+            })
+            ->when($request->to_date != null,function ($q) use($request){
+                return $q->where('created_at', '<=', $request->to_date);
+            })
             ->orderBy('id', 'desc')
-            ->paginate(config('myConfig.paginationCount'));
+            ->paginate($perPage);
         }
 
         return view('dashboard.contact.index',compact('data'))
         ->with([
-            'name'         => $request->name,
-            'from_date'    => $request->from_date,
-            'to_date'      => $request->to_date,
+            'perPage'           => $request->perPage,
+            'name'              => $request->name,
+            'mobile'            => $request->mobile,
+            'birth_date'        => $request->birth_date,
+            'national_id'       => $request->national_id,
+            'gender'            => $request->gender,
+            'religion'          => $request->religion,
+            'marital_status'    => $request->marital_status,
+            'contact_source_id' => $request->contact_source_id,
+            'activity_id'       => $request->activity_id,
+            'interest_id'       => $request->interest_id,
+            'branch_id'         => $request->branch_id,
+            'created_by'        => $request->created_by,
+            'employee_id'       => $request->employee_id,
+            'city_id'           => $request->city_id,
+            'area_id'           => $request->area_id,
+            'industry_id'       => $request->industry_id,
+            'major_id'          => $request->major_id,
+            'campaign_id'       => $request->campaign_id,
+            'custom_attributes' => $request->custom_attributes,
+            'is_active'         => $request->is_active,
+            'status'            => $request->status,
+            'tag_id'            => $request->tag_id,
+            'from_date'         => $request->from_date,
+            'to_date'           => $request->to_date,
         ]);
     }
 

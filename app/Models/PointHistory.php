@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ActivityLogTrait;
 
 class PointHistory extends Model
 {
+    use ActivityLogTrait;
+    
     protected $fillable = [
         'customer_id',
         'activity_id',
