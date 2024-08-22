@@ -227,10 +227,10 @@
                                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">#</th>
                                                 <th class="text-center min-w-125px">{{ trans('main.Contact') }}</th>
+                                                <th class="text-center min-w-150px">{{ trans('main.Expected Amount') }}</th>
                                                 <th class="text-center">{{ trans('main.Type') }}</th>
                                                 <th class="text-center min-w-125px">{{ trans('main.Meeting Place') }}</th>
                                                 <th class="text-cente min-w-125px">{{ trans('main.Meeting Date') }}</th>
-                                                <th class="text-center min-w-150px">{{ trans('main.Expected Amount') }}</th>
                                                 <th class="text-center min-w-150px">{{ trans('main.Reply') }}</th>
                                                 {{-- <th class="text-center min-w-150px">{{ trans('main.Follow Date') }}</th> --}}
                                                 <th class="text-center min-w-150px">{{ trans('main.Notes') }}</th>
@@ -240,19 +240,23 @@
                                         <tbody class="fw-semibold text-gray-600">
                                             @if(@$data->count() > 0)
                                                 @foreach (@$data as $key=>$item)
+                                                    @php
+                                                        $totalRevenue = 0;
+                                                        foreach ($data as $val) {
+                                                            $totalRevenue += $val->revenue;
+                                                        }
+                                                    @endphp
                                                     <tr>
                                                         <td class="text-center">{{ @$key+1 }}</td>
                                                         <td class="text-center">{{ @$item->contact->name }}</td>
+                                                        <td class="text-center">{{ number_format(@$item->revenue,0) }}</td>
                                                         <td class="text-center">@if(@$item->type == 'call') {{ trans('main.Call') }} @else {{ trans('main.Meeting') }}@endif</td>
                                                         <td class="text-center">@if(@$item->meeting_place == 'in') {{ trans('main.In') }} @else {{ trans('main.Out') }}@endif</td>
                                                         <td class="text-center">{{ @$item->meeting_date }}</td>
-                                                        <td class="text-center">{{ number_format(@$item->revenue,0) }}</td>
                                                         <td class="text-center">{{ @$item->reply->reply }}</td>
                                                         {{-- <td class="text-center">{{ @$item->notes[0]['follow_date'] }}</td> --}}
                                                         <td class="text-center">{{ @$item->notes[0]['notes'] }}</td>
                                                         <td class="text-center">{{ @$item->createdBy->name }}</td>
-
-
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -268,6 +272,10 @@
                                                     </th>
                                                 </tr>
                                             @endif
+                                        </tbody>
+                                        <tbody class="fw-semibold text-gray-600" style="border-top: 1px solid #333;">
+                                            <th class="text-center min-w-150px" colspan="2">{{ trans('main.Total') }}</th>
+                                            <td class="text-center">{{ @$totalRevenue }}</td>
                                         </tbody>
                                     </table>
                                     <div class="not_print">

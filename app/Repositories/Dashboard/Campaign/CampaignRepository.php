@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\Campaign;
 use App\Models\Customer;
 use App\Models\SubActivity;
+use App\Models\ContactCompletion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Dashboard\BaseRepository;
@@ -188,12 +189,68 @@ class CampaignRepository extends BaseRepository implements CampaignInterface
                     session()->flash('error');
                     return redirect()->back();
                 }
+
+                //create in completion
+                $completionInputs = [
+                    'name'                => $customer->name ?? null,
+                    'mobile'              => $customer->mobile ?? null,
+                    'mobile2'             => $customer->mobile2 ?? null,
+                    'whats_app_mobile'    => $customer->whats_app_mobile ?? null,
+                    'email'               => $customer->email ?? null,
+                    'company_name'        => $customer->company_name ?? null,
+                    'notes'               => $customer->notes ?? null,
+                    'gender'              => $customer->gender ?? null,
+                    'birth_date'          => $customer->birth_date ?? null,
+                    'national_id'         => $customer->national_id ?? null,
+                    'city_id'             => $customer->city_id ?? null,
+                    'area_id'             => $customer->area_id ?? null,
+                    'contact_source_id'   => $customer->contact_source_id ?? null,
+                    'contact_category_id' => $customer->contact_category_id ?? null,
+                    'job_title_id'        => $customer->job_title_id ?? null,
+                    'industry_id'         => $customer->industry_id ?? null,
+                    'major_id'            => $customer->major_id ?? null,
+                    'activity_id'         => $request->retarget_activity_id ? $request->retarget_activity_id : $customer->activity_id,
+                    'interest_id'         => $request->retarget_interest_id ? $request->retarget_interest_id : $customer->interest_id,
+                    'branch_id'           => $customer->branch_id ?? null,
+                    'created_by'          => $customer->created_by ?? null,
+                    'code'                => $customer->code ?? null,
+                    'address'             => $customer->address ?? null,
+                    'religion'            => $customer->religion ?? null,
+                ];
+                $this->completionData($completionInputs, $contact->id);
             }
 
             session()->flash('success');
             return redirect()->route('reTarget.index');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    public function completionData($inputs, $id)
+    {
+        //delete old records
+        $oldContactCompletions = ContactCompletion::where('contact_id',$id)->get();
+        if($oldContactCompletions->count() > 0)
+        {
+            foreach($oldContactCompletions as $oldContactCompletion)
+            {
+                $oldContactCompletion->delete();
+            }
+        }
+        foreach($inputs as $key=>$input)
+        {
+            //insert new records
+            if($key != "_token" && $key != "_method" && $key != "id" && $key != "created_by" && $input != null)
+            {
+                $contactCompletion = ContactCompletion::create([
+                    'contact_id'    => $id,
+                    'completed_by'  => Auth::user()->id,
+                    'property_name' => $key,
+                ]);
+            }
         }
     }
 

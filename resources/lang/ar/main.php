@@ -11,7 +11,7 @@ return [
     'Reports'                                         => 'التقارير',
     'Team'                                            => 'الفريق',
     'Main Data'                                       => 'البيانات الأساسية',
-    'Marketing'                                       => 'التسوق',
+    'Marketing'                                       => 'التسويق',
     'Alerts'                                          => 'التنبيهات',
     'Reminders'                                       => 'التذكيرات',
     'Data List'                                       => 'قائمة البيانات',
@@ -42,6 +42,7 @@ return [
     'Email'                                           => 'البريد الإلكترونى',
     'Mobile'                                          => 'رقم الموبايل',
     'Password'                                        => 'كلمة المرور',
+    'Old Password'                                        => 'كلمة المرور القديمة',
     'Confirm Password'                                => 'تأكيد كلمة المرور',
     'Email Or Mobile'                                 => 'البريد الإلكترونى أو رقم الموبايل',
     'Dashboard'                                       => 'لوحة التحكم',
@@ -101,6 +102,7 @@ return [
     //User
     'Users'             => 'المستخدمين',
     'User'              => 'المستخدم',
+    'user'              => 'المستخدم',
     'Status'            => 'الحالة',
     'Role'              => 'الدور',
     'Roles'             => 'الصلاحيات',
@@ -113,24 +115,106 @@ return [
     'Has Branch Access' => 'لديه صلاحية الفرع',
 
     //Category
-    'Category'        => 'الصنف',
     'Categories'      => 'الأصناف',
+    'Category'        => 'الصنف',
+    'category'        => 'الصنف',
     'Parent Category' => 'الصنف الأساسي',
 
     //ActivityLog
-    'ActivityLogs' => 'سجلات النشاط',
-    'ActivityLog'  => 'سجل النشاط',
-    'Log Name'     => 'اسم السجل',
-    'Event'        => 'السجل',
-    'created'      => 'إضافة',
-    'updated'      => 'تعديل',
-    'deleted'      => 'حذف',
-    'on'           => 'ب',
+    'ActivityLogs'       => 'سجلات النشاط',
+    'ActivityLog'        => 'سجل النشاط',
+    'activity_log'       => 'سجل النشاط',
+    'Log Name'           => 'اسم السجل',
+    'Event'              => 'الحدث',
+    'created'            => 'تم الإضافة',
+    'updated'            => 'تم التعديل',
+    'deleted'            => 'تم الحذف',
+    'on'                 => 'في',
+    'Old Data'           => 'البيانات القديمة',
+    'New Data'           => 'البيانات الجديدة',
+    'country'            => 'الدولة',
+    'city'               => 'المدينة',
+    'area'               => 'المنطقة',
+    'contact_source'     => 'مصدر العميل',
+    'activity'           => 'النشاط',
+    'sub_activity'       => 'النشاط الفرعي',
+    'service'            => 'المنتج و الخدمة',
+    'contact_category'   => 'فئة العميل',
+    'industry'           => 'قطاع الأعمال',
+    'major'              => 'التخصص',
+    'job_title'          => 'المسمي الوظيفي',
+    'saved_reply'        => 'الرد المحفوظ',
+    'tag'                => 'كلمة دلالية',
+    'employee_target'    => 'تارجت الموظف',
+    'contact'            => 'عميل محتمل',
+    'customer'           => 'العميل',
+    'campaign'           => 'الحملة',
+    'point_setting'      => 'تظام النقاط',
+    'notification'       => 'الإشعار',
+    'branch'             => 'الفرع',
+    'department'         => 'القسم',
+    'employee'           => 'الموظف',
+    'ticket'             => 'تذكرة دعم',
+    'activate'           => 'النشاط',
+    'activity_log'       => 'سجل النشاط',
+    'area'               => 'المنطقة',
+    'attachment'         => 'الملف',
+    'blog'               => 'المدونة',
+    'branch'             => 'الفرع',
+    'campaign'           => 'الحملة',
+    'category'           => 'الصنف',
+    'city'               => 'المدينة',
+    'communication_log'  => 'سجل التواصل',
+    'contact'            => 'عميل محتمل',
+    'contact_category'   => 'تصنيف العميل المحتمل',
+    'contact_completion' => 'إستكمال العميل المحتمل',
+    'contact_source'     => 'مصدر العميل المحتمل',
+    'contact_tag'        => 'كلمة دلالية للعميل المحتمل',
+    'country'            => 'الدولة',
+    'customer'           => 'العميل',
+    'customer_category'  => 'تصنيف العميل',
+    'customer_tag'       => 'كلمة دلالية للعميل',
+    'department'         => 'القسم',
+    'employee'           => 'الموظف',
+    'employee_target'    => 'تارجت الموظف',
+    'failed_job'         => 'المهمات الفاشلة',
+    'industry'           => 'قطاعات الأعمال',
+    'interest'           => 'النشاط الفرعي',
+    'interest_meeting'   => 'مكالمة وزيارة الأنشطة الفرعية',
+    'invoice'            => 'الفاتورة',
+    'job_title'          => 'المسمي الوظيفي',
+    'la_config'          => 'إعدادات النظام',
+    'lead_category'      => 'تصنيف العميل المحتمل',
+    'lead_cteagory'      => 'تصنيف العميل المحتمل',
+    'lead_history'       => 'تاريخ العميل المحتمل',
+    'major'              => 'التخصص',
+    'media'              => 'الميديا',
+    'meeting'            => 'المكالمة والزيارة',
+    'meeting_note'       => 'تفاصيل المكالمة والزيارة',
+    'notification'       => 'الإشعار',
+    'notification'       => 'الإشعار',
+    'organization'       => 'المؤسسة',
+    'permission'         => 'الصلاحية',
+    'point'              => 'النقاط',
+    'point_history'      => 'تفاصيل النقاط',
+    'point_setting'      => 'نظام النقاط',
+    'recorder_reminder'  => 'التذكير',
+    'reorder_reminder'   => 'التذكير',
+    'role'               => 'الدور',
+    'saved_reply'        => 'الرد المحفوظ',
+    'service'            => 'الخدمة والمنتج',
+    'support'            => 'الدعم',
+    'tag'                => 'الكلمة الدلالية',
+    'target'             => 'التارجت',
+    'ticket'             => 'تذكرة الدعم',
+    'upload'             => 'الملف',
+    'user'               => 'المستخدم',
+    'nationality'        => 'الجنسية',
 
     //Country
     'Countries' => 'الدول',
-    'Phonecode' => 'كود الهاتف',
     'Country'   => 'الدولة',
+    'Phonecode' => 'كود الهاتف',
 
     //City
     'Cities' => 'المدن',
@@ -139,6 +223,11 @@ return [
     //Area
     'Areas' => 'المناطق',
     'Area'  => 'المنطقة',
+    'area'  => 'المنطقة',
+
+    //Blog
+    'Blogs' => 'المدونات',
+    'Blog'  => 'مدونة',
 
     //ContactSource
     'ContactSources' => 'مصادر العملاء',
@@ -178,8 +267,12 @@ return [
     'Reply'        => 'الرد',
 
     //Tag
-    'Tag' => 'كلمة دلالية',
     'Tags' => 'كلمات دلالية',
+    'Tag'  => 'كلمة دلالية',
+
+    //Support
+    'Supports' => 'الدعم',
+    'Support'  => 'دعم',
 
     //EmployeeTarget
     'EmployeeTargets'               => 'تارجت الموظفين',
@@ -253,6 +346,7 @@ return [
     'created_by'                          => 'الإضافة بواسطة',
     'CompeltionReportByDateAndPercentage' => 'تقرير إستكمال البيانات بتاريخ ونسبة الإستكمال',
     'Show Profile'                        => 'عرض الملف',
+    'Edit Profile'                        => 'تعديل الملف الشخصي',
     'Type'                                => 'النوع',
     'Meeting Place'                       => 'مكان المقابلة',
     'Meeting Date'                        => 'تاريخ المقابلة',
@@ -334,6 +428,10 @@ return [
     'Custom Attributes'                   => 'صفة معينة',
     'Time'                                => 'التوقيت',
     'Call Details'                        => 'تفاصيل المكالمة/الزيارة',
+    'new'                                 => 'جديد',
+    'contacted'                           => 'تم التواصل',
+    'qualified'                           => 'مؤهل',
+    'converted'                           => 'تم التحويل',
 
     //Customer
     'Customers'         => 'العملاء',
@@ -416,11 +514,14 @@ return [
     //Branch
     'Branches' => 'الفروع',
     'Branch'   => 'تابع لفرع',
-    'branch'   => 'الفرع',
 
     //Department
     'Departments' => 'الأقسام',
     'Department'  => 'القسم',
+
+    //Nationality
+    'Nationalities' => 'الجنسيات',
+    'Nationality'   => 'الجنسية',
 
     //Employee
     'Employees' => 'الموظفين',
@@ -442,10 +543,11 @@ return [
     'Sales'                 => 'المبيعات',
     'Print'                 => 'طباعة',
     'Interests'             => 'الإهتمامات',
+    'Total Revenues'        => 'إجمالي المبالغ المتوقعة',
 
 
 
-    /************************* Customer **************************/
+    /************************* Customer Dashboard **************************/
     'Support Tickets'           => 'تذاكر الدعم',
     'Support Ticket'            => 'تذكرة دعم',
     'Lists'                     => 'قائمة',

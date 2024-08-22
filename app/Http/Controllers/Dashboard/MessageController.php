@@ -211,13 +211,16 @@ class MessageController extends Controller
 
             // Prefix the mobile numbers with +2
             $all_mobiles = array_map(function ($mobile) {
-				 if(substr($mobile, 0, 2) == '01')
+				if(substr($mobile, 0, 2) == '01')
                 {
                     return '+2' . $mobile;
                 }
 				if(substr($mobile, 0, 1) == '1')
                 {
                     return '+20' . $mobile;
+                }
+                if (substr($mobile, 0, 1) == '+') {
+                    return $mobile;
                 }
 				return '+' . $mobile;
             }, $mobile_recievers);
@@ -355,6 +358,9 @@ class MessageController extends Controller
                 }
                 if (substr($mobile, 0, 1) == '1') {
                     return '+20' . $mobile;
+                }
+                if (substr($mobile, 0, 1) == '+') {
+                    return $mobile;
                 }
                 return '+' . $mobile;
             }, $mobile_recievers);
@@ -496,6 +502,9 @@ class MessageController extends Controller
                 {
                     return '+20' . $mobile;
                 }
+                if (substr($mobile, 0, 1) == '+') {
+                    return $mobile;
+                }
 				return '+' . $mobile;
             }, $mobile_recievers);
 
@@ -634,6 +643,9 @@ class MessageController extends Controller
 				if(substr($mobile, 0, 1) == '1')
                 {
                     return '+20' . $mobile;
+                }
+                if (substr($mobile, 0, 1) == '+') {
+                    return $mobile;
                 }
 				return '+' . $mobile;
             }, $mobile_recievers);

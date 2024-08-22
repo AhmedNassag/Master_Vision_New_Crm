@@ -124,6 +124,8 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    'phone' => 'The :attribute must be start with a county code and valid with the county numbers.',
+
 
     /*
     |--------------------------------------------------------------------------

@@ -226,10 +226,10 @@
                                         <thead>
                                             <tr class="text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">{{ trans('main.Contact') }}</th>
+                                                <th class="text-center">{{ trans('main.Expected Amount') }}</th>
                                                 <th class="text-center">{{ trans('main.Type') }}</th>
                                                 <th class="text-center">{{ trans('main.Meeting Place') }}</th>
                                                 <th class="text-center">{{ trans('main.Meeting Date') }}</th>
-                                                <th class="text-center">{{ trans('main.Expected Amount') }}</th>
                                                 <th class="text-center">{{ trans('main.Reply') }}</th>
                                                 <th class="text-center">{{ trans('main.Notes') }}</th>
                                                 <th class="text-center">{{ trans('main.CreatedBy') }}</th>
@@ -256,10 +256,17 @@
                                                     </div>
                                                 </th> --}}
                                                 <th class="text-center">{{ trans('main.Total') }}</th>
+                                                <th class="text-center">{{ trans('main.Total Revenues') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fw-semibold text-gray-600">
                                             @foreach ($data as $key=>$item)
+                                                @php
+                                                    $totalRevenue = 0;
+                                                    foreach ($item as $val) {
+                                                        $totalRevenue += $val->revenue;
+                                                    }
+                                                @endphp
                                                 <tr>
                                                     <td class="text-center" rowspan="{{ count($item) }}">
                                                         <a href="@if($item[0]->contact){{ route('contact.show', $item[0]->contact->id) }}@endif" class="text-gray-800 text-hover-primary mb-1">
@@ -272,7 +279,9 @@
                                                         @if ($index > 0)
                                                             </tr><tr>
                                                         @endif
-
+                                                        <td class="text-center">
+                                                            {{ number_format(@$val->revenue,0) }}
+                                                        </td>
                                                         <td class="text-center">
                                                             @if(@$val->type == 'call') {{ trans('main.Call') }} @else {{ trans('main.Meeting') }}@endif
                                                         </td>
@@ -281,9 +290,6 @@
                                                         </td>
                                                         <td class="text-center">
                                                             {{ @$val->meeting_date }}
-                                                        </td>
-                                                        <td class="text-center">
-                                                            {{ number_format(@$val->revenue,0) }}
                                                         </td>
                                                         <td class="text-center">
                                                             {{ @$val->reply->reply }}
@@ -300,6 +306,7 @@
 
                                                         @if ($index == 0)
                                                             <td class="text-center" rowspan="{{ count($item) }}">{{ count($item) }}</td>
+                                                            <td class="text-center" rowspan="{{ count($item) }}">{{ number_format($totalRevenue, 0) }}</td>
                                                         @endif
                                                     @endforeach
                                                 </tr>

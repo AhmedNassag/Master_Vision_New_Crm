@@ -140,6 +140,19 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- nationality_id -->
+                    <div id="nationality_id_filter" class="col-md-12 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span>{{ trans('main.Nationality') }}</span>
+                        </label>
+                        <select name="nationality_id" data-control="select2" data-dropdown-parent="#nationality_id_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <?php $nationalities = \App\Models\Nationality::get(['id', 'name']); ?>
+                            @foreach($nationalities as $nationality)
+                            <option value="{{ @$nationality->id }}" {{ @$nationality->id == @$nationality_id ? 'selected' : '' }}>{{ @$nationality->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <!-- city_id -->
                     <div id="city_id_filter" class="col-md-12 fv-row">
                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">

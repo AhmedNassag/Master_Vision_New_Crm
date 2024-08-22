@@ -15,7 +15,7 @@
                             <li class="breadcrumb-item">
                                 <span class="bullet bg-gray-500 w-5px h-2px"></span>
                             </li>
-                            <li class="breadcrumb-item text-muted">{{ trans('main.Activities') }}</li>
+                            <li class="breadcrumb-item text-muted">{{ trans('main.ActivityLogs') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -37,10 +37,33 @@
                                     <div class="separator border-gray-200"></div>
                                     <form action="{{ route('activityLog.index') }}" method="get">
                                         <div class="px-7 py-5">
-                                            <!-- name -->
-                                            <div class="mb-10">
-                                                <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.Name') }}</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Name') }}" name="name" value="{{ @$name }}" />
+                                            <!-- causer_id -->
+                                            <div class="mb-10" id="causer_id">
+                                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">{{ trans('main.User') }}</label>
+                                                <select name="causer_id" data-control="select2" data-dropdown-parent="#causer_id" class="form-select form-select-solid">
+                                                    <option value="">{{ trans('main.Select') }}...</option>
+                                                    <?php
+                                                        if(Auth::user()->roles_name[0] == "Admin")
+                                                        {
+                                                            $users  = \App\Models\User::hidden()->get(['id','name']);
+                                                        }
+                                                        else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+                                                        {
+                                                            $users  = \App\Models\User::hidden()
+                                                            ->whereRelation('employee','branch_id', auth()->user()->employee->branch_id)
+                                                            ->get(['id','name']);
+                                                        }
+                                                        else
+                                                        {
+                                                            $users  = \App\Models\User::hidden()
+                                                            ->where('id', auth()->user()->id)
+                                                            ->get(['id','name']);
+                                                        }
+                                                    ?>
+                                                    @foreach ($users as $user)
+                                                        <option value="{{ @$user->id }}" {{ @$user->id == @$causer_id ? 'selected' : '' }}>{{ @$user->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">{{ trans('main.Reset') }}</button>
@@ -120,9 +143,10 @@
                                         <th class="text-center">#</th>
                                         <th class="text-center">{{ trans('main.Name') }}</th>
                                         <th class="text-center">{{ trans('main.Log Name') }}</th>
-                                        <th class="text-center">{{ trans('main.Description') }}</th>
                                         <th class="text-center">{{ trans('main.Event') }}</th>
-                                        <th class="text-center">{{ trans('main.Created At') }}</th>
+                                        <th class="text-center">{{ trans('main.Description') }}</th>
+                                        <th class="text-center">{{ trans('main.Date') }} {{ trans('main.And') }} {{ trans('main.Time') }}</th>
+                                        <th class="text-center">{{ trans('main.Actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="fw-semibold text-gray-600">
@@ -143,10 +167,26 @@
                                                     ?>
                                                     {{ @$userName }}
                                                 </td>
-                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ @$item->log_name }}</td>
-                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ @$description }}</td>
-                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ trans('main.'.$item->event) }}</td>
+                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ trans('main.'.@$item->log_name) }}</td>
+                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ trans('main.'.@$item->event) }}</td>
+                                                <?php
+                                                    $descriptions=explode(' on ',$item->description);
+                                                    if(count($descriptions) >= 2)
+                                                    {
+                                                        $desc = trans('main.' . $descriptions[0]) . ' ' . trans('main.on') . ' ' . trans('main.' . $descriptions[1]);
+                                                    }
+                                                    else
+                                                    {
+                                                        $desc = $item->description;
+                                                    }
+                                                ?>
+                                                <td class="text-center text-gray-800 text-hover-primary mb-1">{{ @$desc }}</td>
                                                 <td class="text-center text-gray-800 text-hover-primary mb-1">{{ !empty($item->created_at) ? $item->created_at->format('Y-m-d H:i:s') : null }}</td>
+                                                <td class="text-center text-gray-800 text-hover-primary mb-1">
+                                                    <a href="{{ route('activityLog.show',$item->id) }}" class="menu-link px-3">
+                                                        <i class="ki-outline ki-eye"></i> {{ trans('main.Show') }}
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @else

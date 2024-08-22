@@ -81,6 +81,7 @@
                                             <span class="required">{{ trans('main.Branch') }}</span>
                                         </label>
                                         <select name="branch_id" data-control="select2" data-dropdown-parent="#branch_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.Select') }}...</option>
                                             <?php
                                                 if(Auth::user()->roles_name[0] == "Admin")
                                                 {
@@ -107,6 +108,7 @@
                                             <span class="required">{{ trans('main.ContactSource') }}</span>
                                         </label>
                                         <select name="contact_source_id" data-control="select2" data-dropdown-parent="#contact_source_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $contactSources = \App\Models\ContactSource::get(['id','name']); ?>
                                             @foreach($contactSources as $contactSource)
                                                 <option value="{{ @$contactSource->id }}" {{ @$contactSource->id == @$contact->contact_source_id ? 'selected' : '' }}>{{ @$contactSource->name }}</option>
@@ -119,6 +121,7 @@
                                             <span class="required">{{ trans('main.Activity') }}</span>
                                         </label>
                                         <select name="activity_id" data-control="select2" data-dropdown-parent="#activity_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $activities = \App\Models\Activity::get(['id','name']); ?>
                                             @foreach($activities as $activity)
                                                 <option value="{{ @$activity->id }}" {{ @$activity->id == @$contact->activity_id ? 'selected' : '' }}>{{ @$activity->name }}</option>
@@ -131,6 +134,7 @@
                                             <span class="required">{{ trans('main.SubActivity') }}</span>
                                         </label>
                                         <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $oldSubActivity = \App\Models\SubActivity::where('id', @$contact->interest_id)->first(); ?>
                                             <option value="{{ @$oldSubActivity->id }}" selected>{{ @$oldSubActivity->name }}</option>
                                         </select>
@@ -201,12 +205,26 @@
                                             <option value="other" {{ @$contact->marital_status == 'Other' ? 'selected' : '' }}>{{ trans('main.Other') }}</option>
                                         </select>
                                     </div>
+                                    <!-- nationality_id -->
+                                    <div id="nationality_id" class="col-md-6 fv-row">
+                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                            <span class="">{{ trans('main.Nationality') }}</span>
+                                        </label>
+                                        <select name="nationality_id" data-control="select2" data-dropdown-parent="#nationality_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.Select') }}...</option>
+                                            <?php $nationalities = \App\Models\Nationality::get(['id','name']); ?>
+                                            @foreach($nationalities as $nationality)
+                                                <option value="{{ @$nationality->id }}" {{ @$nationality->id == @$contact->nationality_id ? 'selected' : '' }}>{{ @$nationality->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <!-- city_id -->
                                     <div id="city_id" class="col-md-6 fv-row">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.City') }}</span>
                                         </label>
                                         <select name="city_id" data-control="select2" data-dropdown-parent="#city_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $cities = \App\Models\City::get(['id','name']); ?>
                                             @foreach($cities as $city)
                                                 <option value="{{ @$city->id }}" {{ @$city->id == @$contact->city_id ? 'selected' : '' }}>{{ @$city->name }}</option>
@@ -219,6 +237,7 @@
                                             <span>{{ trans('main.Area') }}</span>
                                         </label>
                                         <select name="area_id" data-control="select2" data-dropdown-parent="#area_id" class="form-select form-select-solid">
+                                            <option value="">{{ trans('main.Select') }}...</option>
                                             <?php $area = \App\Models\Area::where('id', @$contact->area_id)->first(); ?>
                                             <option value="{{ @$area->id }}" selected>{{ @$area->name }}</option>
                                         </select>
@@ -369,6 +388,7 @@
                         dataType:"json",
                         success:function(data){
                             $('select[name="area_id"]').empty();
+                            $('select[name="area_id"]').append('<option class="form-control" value=""> اختر</option>');
                             $.each(data,function(key,value) {
                                 $('select[name="area_id"]').append('<option class="form-control" value="'+ value["id"] +'">' + value["name"] + '</option>');
                             });

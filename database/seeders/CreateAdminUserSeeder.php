@@ -36,7 +36,7 @@ class CreateAdminUserSeeder extends Seeder
             'hidden'     => 1,
         ]);
         //admin role
-        $role        = Role::/*create(['name' => 'Admin'])*/find(1);
+        $role        = Role::create(['name' => 'Admin']);
         $permissions = Permission::pluck('id','id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);

@@ -79,6 +79,9 @@ class ContactRepository implements ContactInterface
             ->when($request->employee_id != null,function ($q) use($request){
                 return $q->where('employee_id',$request->employee_id);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -87,6 +90,11 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->industry_id != null,function ($q) use($request){
                 return $q->where('industry_id',$request->industry_id);
+            })
+            ->when($request->reply_id != null,function ($q) use($request){
+                return $q->whereHas('meetings', function ($query) use ($request) {
+                    $query->where('reply_id', $request->reply_id);
+                });
             })
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
@@ -171,6 +179,9 @@ class ContactRepository implements ContactInterface
             ->when($request->employee_id != null,function ($q) use($request){
                 return $q->where('employee_id',$request->employee_id);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -179,6 +190,11 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->industry_id != null,function ($q) use($request){
                 return $q->where('industry_id',$request->industry_id);
+            })
+            ->when($request->reply_id != null,function ($q) use($request){
+                return $q->whereHas('meetings', function ($query) use ($request) {
+                    $query->where('reply_id', $request->reply_id);
+                });
             })
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
@@ -260,6 +276,9 @@ class ContactRepository implements ContactInterface
             ->when($request->employee_id != null,function ($q) use($request){
                 return $q->where('employee_id',$request->employee_id);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -271,6 +290,11 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
+            })
+            ->when($request->reply_id != null,function ($q) use($request){
+                return $q->whereHas('meetings', function ($query) use ($request) {
+                    $query->where('reply_id', $request->reply_id);
+                });
             })
             ->when($request->campaign_id != null,function ($q) use($request){
                 return $q->where('campaign_id',$request->campaign_id);
@@ -321,10 +345,12 @@ class ContactRepository implements ContactInterface
             'branch_id'         => $request->branch_id,
             'created_by'        => $request->created_by,
             'employee_id'       => $request->employee_id,
+            'nationality_id'    => $request->nationality_id,
             'city_id'           => $request->city_id,
             'area_id'           => $request->area_id,
             'industry_id'       => $request->industry_id,
             'major_id'          => $request->major_id,
+            'reply_id'          => $request->reply_id,
             'campaign_id'       => $request->campaign_id,
             'custom_attributes' => $request->custom_attributes,
             'is_active'         => $request->is_active,
@@ -419,6 +445,7 @@ class ContactRepository implements ContactInterface
             // Attach tags to the contact
             $tagIds = $request->input('tag_ids', []);
             $data->tags()->sync($tagIds);
+
             //create in completion
             $this->completionData($inputs, $data->id);
 
@@ -728,6 +755,9 @@ class ContactRepository implements ContactInterface
             ->when($request->employee_id != null,function ($q) use($request){
                 return $q->where('employee_id',$request->employee_id);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -739,6 +769,11 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
+            })
+            ->when($request->reply_id != null,function ($q) use($request){
+                return $q->whereHas('meetings', function ($query) use ($request) {
+                    $query->where('reply_id', $request->reply_id);
+                });
             })
             ->when($request->campaign_id != null,function ($q) use($request){
                 return $q->where('campaign_id',$request->campaign_id);
@@ -818,6 +853,9 @@ class ContactRepository implements ContactInterface
             ->when($request->employee_id != null,function ($q) use($request){
                 return $q->where('employee_id',$request->employee_id);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -829,6 +867,11 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
+            })
+            ->when($request->reply_id != null,function ($q) use($request){
+                return $q->whereHas('meetings', function ($query) use ($request) {
+                    $query->where('reply_id', $request->reply_id);
+                });
             })
             ->when($request->campaign_id != null,function ($q) use($request){
                 return $q->where('campaign_id',$request->campaign_id);
@@ -902,6 +945,9 @@ class ContactRepository implements ContactInterface
             ->when($request->employee_id != null,function ($q) use($request){
                 return $q->where('employee_id',$request->employee_id);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -910,6 +956,11 @@ class ContactRepository implements ContactInterface
             })
             ->when($request->industry_id != null,function ($q) use($request){
                 return $q->where('industry_id',$request->industry_id);
+            })
+            ->when($request->reply_id != null,function ($q) use($request){
+                return $q->whereHas('meetings', function ($query) use ($request) {
+                    $query->where('reply_id', $request->reply_id);
+                });
             })
             ->when($request->major_id != null,function ($q) use($request){
                 return $q->where('major_id',$request->major_id);
@@ -960,10 +1011,12 @@ class ContactRepository implements ContactInterface
             'branch_id'         => $request->branch_id,
             'created_by'        => $request->created_by,
             'employee_id'       => $request->employee_id,
+            'nationality_id'    => $request->nationality_id,
             'city_id'           => $request->city_id,
             'area_id'           => $request->area_id,
             'industry_id'       => $request->industry_id,
             'major_id'          => $request->major_id,
+            'reply_id'          => $request->reply_id,
             'campaign_id'       => $request->campaign_id,
             'custom_attributes' => $request->custom_attributes,
             'is_active'         => $request->is_active,

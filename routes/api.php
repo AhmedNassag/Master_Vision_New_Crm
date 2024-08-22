@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\Admin\ExternalController;
 use App\Http\Controllers\Api\MarketingController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Blog\BlogController;
+use App\Http\Controllers\Api\Customer\InvoicesController;
 use App\Http\Controllers\Api\FileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -153,6 +155,8 @@ Route::group(['prefix' => 'admin'], function($router)
         Route::get('report/branchSalesReport',[App\Http\Controllers\Api\Admin\ReportController::class, 'branchSalesReport']);
         Route::get('report/activitySales',[App\Http\Controllers\Api\Admin\ReportController::class, 'activitySales']);
         Route::get('report/activitySalesReport',[App\Http\Controllers\Api\Admin\ReportController::class, 'activitySalesReport']);
+   
+
     });
 });
 ############################## End Admin Routes ##############################
@@ -195,5 +199,13 @@ Route::group(['middleware' => 'auth:customer_api'],function()
     Route::get('customer-unreadNotifications', [App\Http\Controllers\Api\Customer\NotificationController::class, 'unreadNotifications']);
     Route::get('customer-readNotifications', [App\Http\Controllers\Api\Customer\NotificationController::class, 'readNotifications']);
     Route::get('customer-markAsReadNotifications', [App\Http\Controllers\Api\Customer\NotificationController::class, 'markAsReadNotifications']);
+
+    //Blog
+
+    //invoice
+    Route::get('invoice/current',[InvoicesController::class,'current']);
+    Route::get('invoice/finished',[InvoicesController::class,'finished']);
 });
 ############################## End Customer Routes ##############################
+Route::get('all-blogs',[BlogController::class,'index']);
+Route::get('blog/{id}',[BlogController::class,'show']);

@@ -139,13 +139,24 @@
                                             </a>
                                         </div>
                                     @endcan
+                                    <!--Nationalities-->
+                                    @can('عرض فئات جهات الإتصال')
+                                        <div class="menu-item">
+                                            <a class="menu-link {{ Request::is('admin/nationality*') ? 'active' : '' }}" href="{{ route('nationality.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">{{ trans('main.Nationalities') }}</span>
+                                            </a>
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                         @endcan
                         <!--end:Contacts Data-->
                         <!--begin:Activities Data-->
                         @can('بيانات الأنشطة')
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/activity*','admin/subActivity*','admin/service*') ? 'show' : '' }}">
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/activity','admin/subActivity*','admin/service*') ? 'show' : '' }}">
                                 <span class="menu-link">
                                     <span class="menu-icon">
                                         <i class="ki-outline ki-abstract-41 fs-2"></i>
@@ -157,7 +168,7 @@
                                     <!--Activities-->
                                     @can('عرض الأنشطة الرئيسية')
                                         <div class="menu-item">
-                                            <a class="menu-link {{ Request::is('admin/activity*') ? 'active' : '' }}" href="{{ route('activity.index') }}">
+                                            <a class="menu-link {{ Request::is('admin/activity') ? 'active' : '' }}" href="{{ route('activity.index') }}">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -347,6 +358,16 @@
                                     </a>
                                 </div>
                             @endcan
+                            @can('عرض المناطق')
+                                <div class="menu-item">
+                                    <a class="menu-link" href="{{ route('blog.index') }}">
+                                        <span class="menu-icon">
+                                            <i class="ki-outline ki-abstract-28 fs-2"></i>
+                                        </span>
+                                        <span class="menu-title">{{ trans('main.Blogs') }}</span>
+                                    </a>
+                                </div>
+                            @endcan
                         @endcan
                         <!--end:Marketing-->
 
@@ -360,7 +381,7 @@
                                 </div>
                             </div>
 
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/report/meetings*','admin/report/meetingsReport*','admin/report/contacts*','admin/report/contactsReport*','admin/report/employeeSales*','admin/report/employeeSalesReport*','admin/report/branchSales*','admin/report/branchSalesReport*','admin/report/activitySales*','admin/report/activitySalesReport*') ? 'show' : '' }}">
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/report*') ? 'show' : '' }}">
                                 <span class="menu-link">
                                     <span class="menu-icon">
                                         <i class="ki-outline ki-abstract-26 fs-2"></i>

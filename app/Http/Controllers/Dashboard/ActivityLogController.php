@@ -21,4 +21,11 @@ class ActivityLogController extends Controller
     {
         return $this->activityLog->index($request);
     }
+
+
+
+    public function show($id)
+    {
+        return $this->activityLog->show($id);
+    }
 }

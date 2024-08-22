@@ -595,6 +595,7 @@
                     dataType: "json",
                     success: function(data) {
                         $('select[name="area_id"]').empty();
+                        $('select[name="area_id"]').append('<option class="form-control" value=""> الكل</option>');
                         $.each(data, function(key, value) {
                             $('select[name="area_id"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
                         });

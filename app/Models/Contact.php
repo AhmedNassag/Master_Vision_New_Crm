@@ -130,6 +130,12 @@ class Contact extends Model
     }
 
 
+    public function nationality()
+    {
+        return $this->belongsTo(Nationality::class, 'nationality_id');
+    }
+
+
 
     public function jobTitle()
     {

@@ -143,6 +143,19 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- nationality_id -->
+                    <div id="nationality_id_filter" class="col-md-12 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span>{{ trans('main.Nationality') }}</span>
+                        </label>
+                        <select name="nationality_id" data-control="select2" data-dropdown-parent="#nationality_id_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <?php $nationalities = \App\Models\Nationality::get(['id', 'name']); ?>
+                            @foreach($nationalities as $nationality)
+                            <option value="{{ @$nationality->id }}" {{ @$nationality->id == @$nationality_id ? 'selected' : '' }}>{{ @$nationality->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <!-- city_id -->
                     <div id="city_id_filter" class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">
@@ -164,6 +177,19 @@
                         <select name="area_id" data-control="select2" data-dropdown-parent="#area_id_filter" class="form-select form-select-solid">
                             <option value="">{{ trans('main.Select') }}...</option>
 
+                        </select>
+                    </div>
+                    <!-- reply_id -->
+                    <div id="reply_id_filter" class="col-md-12 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span>{{ trans('main.Reply') }}</span>
+                        </label>
+                        <select name="reply_id" data-control="select2" data-dropdown-parent="#reply_id_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.Select') }}...</option>
+                            <?php $replies = \App\Models\SavedReply::get(['id', 'reply']); ?>
+                            @foreach($replies as $reply)
+                            <option value="{{ @$reply->id }}" {{ @$reply->id == @$reply_id ? 'selected' : '' }}>{{ @$reply->reply }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <!-- campaign_id -->

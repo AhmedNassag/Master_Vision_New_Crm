@@ -3,25 +3,27 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Validator;
-use App\Models\ReorderReminder;
-use App\Models\Activity;
-use App\Models\SubActivity;
-use App\Models\Campaign;
-use App\Models\Customer;
+use App\Models\Media;
 use App\Models\Contact;
 use App\Models\Invoice;
-use App\Models\Media;
+use App\Models\Activity;
+use App\Models\Campaign;
+use App\Models\Customer;
+use App\Traits\ImageTrait;
+use App\Models\SubActivity;
 use Illuminate\Http\Request;
+use App\Imports\CustomerImport;
+use App\Models\ReorderReminder;
+use App\Imports\CustomersImport;
+use App\Models\ContactCompletion;
 use App\Http\Controllers\Controller;
-use App\Repositories\Dashboard\Customer\CustomerInterface;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Services\PointAdditionService;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Dashboard\Customer\StoreRequest;
 use App\Http\Requests\Dashboard\Customer\UpdateRequest;
-use App\Services\PointAdditionService;
-use App\Imports\CustomersImport;
-use App\Imports\CustomerImport;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
-use App\Traits\ImageTrait;
+use App\Repositories\Dashboard\Customer\CustomerInterface;
 
 class CustomerController extends Controller
 {
@@ -388,11 +390,35 @@ class CustomerController extends Controller
                     'whats_app_mobile'  => @$customer->whats_app_mobile,
                     'company_name'      => $customer->company_name,
                     'notes'             => $customer->notes,
+                    'code'              => $customer->code,
                     'activity_id'       => $request->new_activity_id,
                     'interest_id'       => $request->new_interest_id,
                     'campaign_id'       => $campaign->id,
                     'customer_id'       => $customer->id,
                 ]);
+
+                //create in completion
+                $completionInputs = [
+                    'name'              => $customer->name,
+                    'mobile'            => $customer->mobile,
+                    'gender'            => $customer->gender,
+                    'email'             => $customer->email,
+                    'contact_source_id' => $customer->contact_source_id,
+                    'city_id'           => $customer->city_id,
+                    'area_id'           => $customer->area_id,
+                    'job_title_id'      => $customer->job_title_id,
+                    'industry_id'       => $customer->industry_id,
+                    'major_id'          => $customer->major_id,
+                    'created_by'        => $customer->created_by,
+                    'mobile2'           => $customer->mobile2,
+                    'whats_app_mobile'  => @$customer->whats_app_mobile,
+                    'company_name'      => $customer->company_name,
+                    'notes'             => $customer->notes,
+                    'code'              => $customer->code,
+                    'activity_id'       => $request->new_activity_id,
+                    'interest_id'       => $request->new_interest_id,
+                ];
+                $this->completionData($completionInputs, $contact->id);
             // }
             session()->flash('success');
             return redirect()->back();
@@ -493,6 +519,33 @@ class CustomerController extends Controller
 
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    public function completionData($inputs, $id)
+    {
+        //delete old records
+        $oldContactCompletions = ContactCompletion::where('contact_id',$id)->get();
+        if($oldContactCompletions->count() > 0)
+        {
+            foreach($oldContactCompletions as $oldContactCompletion)
+            {
+                $oldContactCompletion->delete();
+            }
+        }
+        foreach($inputs as $key=>$input)
+        {
+            //insert new records
+            if($key != "_token" && $key != "_method" && $key != "id" && $key != "created_by" && $input != null)
+            {
+                $contactCompletion = ContactCompletion::create([
+                    'contact_id'    => $id,
+                    'completed_by'  => Auth::user()->id,
+                    'property_name' => $key,
+                ]);
+            }
         }
     }
 }

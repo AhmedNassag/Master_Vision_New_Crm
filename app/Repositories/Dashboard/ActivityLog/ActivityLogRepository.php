@@ -23,8 +23,8 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
         if(Auth::user()->roles_name[0] == "Admin")
         {
             $data = ActivityLog::
-            when($request->name != null ,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
+            when($request->causer_id != null,function ($q) use($request){
+                return $q->where('causer_id','like', '%'.$request->causer_id.'%');
             })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->where('created_at', '>=', $request->from_date);
@@ -42,8 +42,8 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
                 $query->whereRelation('user', 'employee.branch_id', auth()->user()->employee->branch_id)
                 ->orWhereRelation('user','employee.id', auth()->user()->employee->id);
             })
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
+            ->when($request->causer_id != null,function ($q) use($request){
+                return $q->where('causer_id','like', '%'.$request->causer_id.'%');
             })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->where('created_at', '>=', $request->from_date);
@@ -60,8 +60,8 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
             where(function ($query) use ($request) {
                 $query->whereRelation('user','employee.id', auth()->user()->employee->id);;
             })
-            ->when($request->name != null,function ($q) use($request){
-                return $q->where('name','like', '%'.$request->name.'%');
+            ->when($request->causer_id != null,function ($q) use($request){
+                return $q->where('causer_id','like', '%'.$request->causer_id.'%');
             })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->where('created_at', '>=', $request->from_date);
@@ -75,10 +75,18 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
 
         return view('dashboard.activityLog.index',compact('data'))
         ->with([
-            'name'      => $request->name,
+            'causer_id' => $request->causer_id,
             'from_date' => $request->from_date,
             'to_date'   => $request->to_date,
             'perPage'   => $perPage,
         ]);
+    }
+
+
+
+    public function show($id)
+    {
+        $item = ActivityLog::find($id);
+        return view('dashboard.activityLog.show',compact('item'));
     }
 }

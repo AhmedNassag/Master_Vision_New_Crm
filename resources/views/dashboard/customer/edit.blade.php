@@ -139,8 +139,8 @@
                                     <span class="required">{{ trans('main.SubActivity') }}</span>
                                 </label>
                                 <select name="interest_id" data-control="select2" data-dropdown-parent="#interest_id" class="form-select form-select-solid">
-                                    <?php $oldSubActivity = \App\Models\SubActivity::where('id', @$customer->interest_id)->select(['id','name'])->first(); ?>
                                     <option value="">{{ trans('main.Select') }}...</option>
+                                    <?php $oldSubActivity = \App\Models\SubActivity::where('id', @$customer->interest_id)->select(['id','name'])->first(); ?>
                                     <option value="{{ @$oldSubActivity->id }}" selected>{{ @$oldSubActivity->name }}</option>
                                 </select>
                             </div>
@@ -217,6 +217,19 @@
                                     <option value="absolute" {{ @$customer->marital_status == 'Absolute' ? 'selected' : '' }}>{{ trans('main.Absolute') }}</option>
                                     <option value="widower" {{ @$customer->marital_status == 'Widower' ? 'selected' : '' }}>{{ trans('main.Widower') }}</option>
                                     <option value="other" {{ @$customer->marital_status == 'Other' ? 'selected' : '' }}>{{ trans('main.Other') }}</option>
+                                </select>
+                            </div>
+                            <!-- nationality_id -->
+                            <div id="nationality_id" class="col-md-6 fv-row">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span class="">{{ trans('main.Nationality') }}</span>
+                                </label>
+                                <select name="nationality_id" data-control="select2" data-dropdown-parent="#nationality_id" class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <?php $nationalities = \App\Models\Nationality::get(['id','name']); ?>
+                                    @foreach($nationalities as $nationality)
+                                        <option value="{{ @$nationality->id }}" {{ @$nationality->id == @$customer->nationality_id ? 'selected' : '' }}>{{ @$nationality->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <!-- city_id -->
@@ -389,6 +402,7 @@
                         dataType:"json",
                         success:function(data){
                             $('select[name="area_id"]').empty();
+                            $('select[name="area_id"]').append('<option class="form-control" value=""> اختر</option>');
                             $.each(data,function(key,value) {
                                 $('select[name="area_id"]').append('<option class="form-control" value="'+ value["id"] +'">' + value["name"] + '</option>');
                             });

@@ -490,6 +490,18 @@ License: For each use you must have a valid license purchased only from above li
                                                     <a href="account/settings.html" class="menu-link px-5">Account Settings</a>
                                                 </div>-->
                                                 <!--end::Menu item-->
+												@if (Auth::check())
+													<div class="menu-item px-5">
+														<?php $user_id = Auth::id() ?>
+														<a href="{{ url("customer/profile/edit/$user_id") }}" class="menu-link px-5">{{ trans('main.Edit Profile') }}</a>
+													</div>
+												@endif
+												@if (Auth::check())
+													<div class="menu-item px-5">
+														<?php $user_id = Auth::id() ?>
+														<a href="{{ route('password.edit',["$user_id"]) }}" class="menu-link px-5">{{ trans('main.Edit') }} {{ trans('main.Password') }}</a>
+													</div>
+												@endif
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-5">
                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

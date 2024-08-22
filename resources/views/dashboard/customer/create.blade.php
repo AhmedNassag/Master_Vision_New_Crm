@@ -211,6 +211,19 @@
                                     <option value="other">{{ trans('main.Other') }}</option>
                                 </select>
                             </div>
+                            <!-- nationality_id -->
+                            <div class="col-md-6 fv-row" id="nationality_id">
+                                <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                    <span>{{ trans('main.Nationality') }}</span>
+                                </label>
+                                <select name="nationality_id" data-control="select2" data-dropdown-parent="#nationality_id" class="form-select form-select-solid">
+                                    <option value="">{{ trans('main.Select') }}...</option>
+                                    <?php $nationalities = \App\Models\Nationality::get(['id','name']); ?>
+                                    @foreach($nationalities as $nationality)
+                                        <option value="{{ @$nationality->id }}">{{ @$nationality->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <!-- city_id -->
                             <div id="city_id" class="col-md-6 fv-row">
                                 <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
@@ -371,6 +384,7 @@
                         dataType:"json",
                         success:function(data){
                             $('select[name="area_id"]').empty();
+                            $('select[name="area_id"]').append('<option class="form-control" value=""> اختر</option>');
                             $.each(data,function(key,value) {
                                 $('select[name="area_id"]').append('<option class="form-control" value="'+ value["id"] +'">' + value["name"] + '</option>');
                             });

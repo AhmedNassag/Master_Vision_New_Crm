@@ -27,6 +27,7 @@ class AuthController extends Controller
 
             $credentials = $request->only('email', 'password');
 
+
             if (Auth::guard('customer')->attempt($credentials)) {
                 return redirect()->route('customer.home'); // Change '/dashboard' to your desired redirect path
             }

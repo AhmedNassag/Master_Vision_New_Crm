@@ -164,7 +164,7 @@ class UserController extends Controller
                 'password'   => 'required|same:confirm-password',
                 'branch_id'  => 'required|integer|exists:branches,id',
                 'dept'       => 'required|integer|exists:departments,id',
-                'status'     => 'required',
+                'status'     => 'nullable',
                 'roles_name' => 'required',
             ]);
             if($validator->fails())
@@ -243,7 +243,7 @@ class UserController extends Controller
                 'mobile'     => 'required|unique:users,mobile,'.$request->id,'|unique:employees,mobile,'.$request->id,
                 'branch_id'  => 'required|integer|exists:branches,id',
                 'dept'       => 'required|integer|exists:departments,id',
-                'status'     => 'required',
+                'status'     => 'nullable',
                 'roles_name' => 'required',
             ]);
             if($validator->fails())

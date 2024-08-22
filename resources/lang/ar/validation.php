@@ -124,6 +124,7 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    'phone' => 'حقل :attribute يجب أن يبدأ بكود الدولة ومتوافق مع أرقامها.',
 
     /*
     |--------------------------------------------------------------------------

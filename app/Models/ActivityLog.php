@@ -10,14 +10,17 @@ class ActivityLog extends Activity
 {
     use HasFactory;
 
-    public function getDescriptionAttribute($description)
+    public function getDescAttribute($description)
     {
         $descriptions=explode(' on ',$description);
         if(count($descriptions) >= 2)
         {
-            return __($descriptions[0]). ' '.__('on').' '.__($descriptions[1]);
+            return __('main.'.$descriptions[0]). ' '.__('on').' '.__('main.'.$descriptions[1]);
         }
-        return $description;
+        else
+        {
+            return $description;
+        }
     }
 
 

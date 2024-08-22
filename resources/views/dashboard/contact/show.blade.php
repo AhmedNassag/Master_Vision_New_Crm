@@ -652,7 +652,7 @@
                                                                 <div class="timeline-item">
                                                                     <h3 class="timeline-header">
                                                                         {{ @$timelineItem->createdBy->name }}
-                                                                        {{ trans('main.Added a new call/meeting') }}
+                                                                        {{ trans('main.Added a new call/meeting') }} &nbsp;
                                                                     </h3>
                                                                     <div class="timeline-body">
                                                                         @php
@@ -690,8 +690,8 @@
                                                                     <h3 class="timeline-header">
                                                                         {{ @$timelineItem->createdBy->name }}
                                                                         {{ trans('main.changed status from') }}
-                                                                        {{ @$timelineItem->placeholders_array['from'] }} {{ trans('main.To') }}
-                                                                        <span>{{ @$timelineItem->placeholders_array['to'] }}</span>
+                                                                        {{ trans( 'main.' .@$timelineItem->placeholders_array['from']) }} {{ trans('main.To') }}
+                                                                        <span>{{ trans( 'main.' .@$timelineItem->placeholders_array['to']) }}</span>
                                                                     </h3>
                                                                 </div>
                                                             </li>

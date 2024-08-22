@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CustomerPortalController;
 use App\Http\Controllers\AuthController as LoginCustomerController;
+use App\Http\Controllers\CustomerProfileController;
+use App\Http\Controllers\Dashboard\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,7 @@ Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');
     Artisan::call('route:clear');
+    Artisan::call('migrate');
 
     return "Cache Cleared Successfully";
 });
@@ -65,6 +68,12 @@ Route::middleware(['auth:customer', 'lang', 'ActivePackage'])->prefix('/customer
     Route::get('tickets/{ticket}', [CustomerPortalController::class, 'showTicket'])->name('customer.tickets.show');
     Route::post('tickets/{ticket}/reply', [CustomerPortalController::class, 'postReply'])->name('customer.ticket.reply');
     Route::post('tickets/create', [CustomerPortalController::class, 'storeTicket'])->name('customer.tickets.store');
+
+    //Customer Prodile
+    Route::get('profile/edit/{id}', [CustomerProfileController::class,'edit'])->name('profile.edit');
+    Route::put('profileUpdate', [CustomerProfileController::class, 'update'])->name('profile.update');
+    Route::get('edit/password/{id}', [CustomerProfileController::class,'editPassword'])->name('password.edit');
+    Route::patch('passwordUpdate', [CustomerProfileController::class, 'updatePassword'])->name('profile.password.update');
 });
 
 

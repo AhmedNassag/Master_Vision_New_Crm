@@ -41,6 +41,7 @@ return [
     'Logout'                                          => 'Logout',
     'Email'                                           => 'Email',
     'Mobile'                                          => 'Mobile',
+    'Old Password'                                        => 'Old Password',
     'Password'                                        => 'Password',
     'Confirm Password'                                => 'Confirm Password',
     'Email Or Mobile'                                 => 'Email Or Mobile',
@@ -101,6 +102,7 @@ return [
     //User
     'Users'             => 'Users',
     'User'              => 'User',
+    'user'              => 'User',
     'Status'            => 'Status',
     'Role'              => 'Role',
     'Roles'             => 'Roles',
@@ -115,21 +117,102 @@ return [
     //Category
     'Categories'      => 'Categories',
     'Category'        => 'Category',
+    'category'        => 'Category',
     'Parent Category' => 'Parent Category',
 
     //ActivityLog
-    'ActivityLogs' => 'Activity Logs',
-    'ActivityLog'  => 'Activity Log',
-    'Log Name'     => 'Log Name',
-    'Event'        => 'Event',
-    'created'      => 'Created',
-    'updated'      => 'Updated',
-    'deleted'      => 'Deleted',
+    'ActivityLogs'       => 'Activity Logs',
+    'ActivityLog'        => 'Activity Log',
+    'activity_log'       => 'Activity Log',
+    'Log Name'           => 'Log Name',
+    'Event'              => 'Event',
+    'created'            => 'Created',
+    'updated'            => 'Updated',
+    'deleted'            => 'Deleted',
+    'on'                 => 'On',
+    'Old Data'           => 'Old Data',
+    'New Data'           => 'New Data',
+    'country'            => 'Country',
+    'city'               => 'City',
+    'area'               => 'Area',
+    'contact_source'     => 'Contact Source',
+    'activity'           => 'Activity',
+    'sub_activity'       => 'Sub Activity',
+    'service'            => 'Service',
+    'industry'           => 'Industry',
+    'major'              => 'Major',
+    'job_title'          => 'JobTitle',
+    'saved_reply'        => 'Saved Reply',
+    'employee_target'    => 'Employee Target',
+    'contact'            => 'Contact',
+    'customer'           => 'Customer',
+    'campaign'           => 'Campaign',
+    'point_setting'      => 'Point Setting',
+    'notification'       => 'Notification',
+    'branch'             => 'Branch',
+    'department'         => 'Department',
+    'employee'           => 'Employee',
+    'ticket'             => 'Ticket',
+    'activate'           => 'Activate',
+    'activity_log'       => 'Activity Log',
+    'area'               => 'Area',
+    'attachment'         => 'Attachment',
+    'blog'               => 'Blog',
+    'branch'             => 'Branch',
+    'campaign'           => 'Campaign',
+    'category'           => 'Category',
+    'city'               => 'City',
+    'communication_log'  => 'Communication Log',
+    'contact'            => 'Contact',
+    'contact_category'   => 'Contact Category',
+    'contact_completion' => 'Contact Completion',
+    'contact_source'     => 'Contact Source',
+    'contact_tag'        => 'Contact Tag',
+    'country'            => 'Country',
+    'customer'           => 'Customer',
+    'customer_category'  => 'Customer Category',
+    'customer_tag'       => 'Customer Tag',
+    'department'         => 'Department',
+    'employee'           => 'Employee',
+    'employee_target'    => 'Employee Target',
+    'failed_job'         => 'Failed Job',
+    'industry'           => 'Industry',
+    'interest'           => 'Interest',
+    'interest_meeting'   => 'Interest Meeting',
+    'invoice'            => 'Invoice',
+    'job_title'          => 'Job Title',
+    'la_config'          => 'La Config',
+    'lead_category'      => 'Lead Category',
+    'lead_cteagory'      => 'Lead Cteagory',
+    'lead_history'       => 'Lead History',
+    'major'              => 'Major',
+    'media'              => 'Media',
+    'meeting'            => 'Meeting',
+    'meeting_note'       => 'Meeting Note',
+    'notification'       => 'Notification',
+    'notification'       => 'Notification',
+    'organization'       => 'Organization',
+    'permission'         => 'Permission',
+    'point'              => 'Point',
+    'point_history'      => 'Point History',
+    'point_setting'      => 'Point Setting',
+    'recorder_reminder'  => 'Recorder Reminder',
+    'reorder_reminder'   => 'Reorder Reminder',
+    'role'               => 'Role',
+    'saved_reply'        => 'Saved Reply',
+    'service'            => 'Service',
+    'support'            => 'Support',
+    'tag'                => 'Tag',
+    'target'             => 'Target',
+    'ticket'             => 'Ticket',
+    'upload'             => 'Upload',
+    'user'               => 'User',
+    'nationality'        => 'Nationality',
 
     //Country
     'Countries'  => 'Countries',
-    'Phone Code' => 'Phone Code',
     'Country'    => 'Country',
+    'Phone Code' => 'Phone Code',
 
     //City
     'Cities' => 'Cities',
@@ -139,9 +222,13 @@ return [
     'Areas' => 'Areas',
     'Area'  => 'Area',
 
+    //Blog
+    'Blogs' => 'Blogs',
+    'Blog'  => 'Blog',
+
     //ContactSource
     'ContactSources' =>  'Contact Sources',
-    'ContactSource'   => 'Contact Source',
+    'ContactSource'  => 'Contact Source',
 
     //Activity
     'Activities' => 'Activities',
@@ -158,6 +245,7 @@ return [
     //ContactCategory
     'ContactCategories' =>  'Contact Categories',
     'ContactCategory'   => 'Contact Category',
+    'contact_category'  => 'Contact Category',
 
     //Industry
     'Industries' => 'Industries',
@@ -172,8 +260,8 @@ return [
     'JobTitle'  => 'JobTitle',
 
     //SavedReply
-    'SavedReplies' => 'SavedReplies',
-    'SavedReply'   => 'SavedReply',
+    'SavedReplies' => 'Saved Replies',
+    'SavedReply'   => 'Saved Reply',
     'Reply'        => 'Reply',
 
     //EmployeeTarget
@@ -248,6 +336,7 @@ return [
     'created_by'                          => 'Created By',
     'CompeltionReportByDateAndPercentage' => 'Compeltion Report By Date And Percentage',
     'Show Profile'                        => 'Show Profile',
+    'Edit Profile'                        => 'Edit Profile',
     'Type'                                => 'Type',
     'Meeting Place'                       => 'Meeting Place',
     'Meeting Date'                        => 'Meeting Date',
@@ -329,6 +418,10 @@ return [
     'Custom Attributes'                   => 'Custom Attributes',
     'Time'                                => 'Time',
     'Call Details'                        => 'Meeting/Call Details',
+    'new'                                 => 'New',
+    'contacted'                           => 'Contacted',
+    'qualified'                           => 'Qualified',
+    'converted'                           => 'Converted',
 
     //Customer
     'Customers'         => 'Customers',
@@ -381,12 +474,12 @@ return [
     'url'       => 'URL',
 
     //PointSetting
-    'PointSettings'         => 'PointSettings',
-    'PointSetting'          => 'PointSetting',
+    'PointSettings'         => 'Point Settings',
+    'PointSetting'          => 'Point Setting',
     'Points'                => 'Points',
-    'SalesConversionRate'   => 'SalesConversionRate',
-    'ConversionRate'        => 'ConversionRate',
-    'ExpiryDays'            => 'ExpiryDays',
+    'SalesConversionRate'   => 'Sales Conversion Rate',
+    'ConversionRate'        => 'Conversion Rate',
+    'ExpiryDays'            => 'Expiry Days',
     'Conversion Rate'       => 'Conversion Rate',
     'Sales Conversion Rate' => 'Sales Conversion Rate',
     'Expiry Days'           => 'Expiry Days',
@@ -416,10 +509,18 @@ return [
     'Departments' => 'Departments',
     'Department'  => 'Department',
 
+    //Nationality
+    'Nationalities' => 'Nationalities',
+    'Nationality'   => 'Nationality',
+
     //Employee
     'Employees' => 'Employees',
     'Employee'  => 'Employee',
     'Target'    => 'Target',
+
+    //Support
+    'Supports' => 'Supports',
+    'Support'  => 'Support',
 
     //Report
     'MeetingsReport'        => 'Meetings Report',
@@ -430,10 +531,11 @@ return [
     'ActivitySalesReport'   => 'Activity Sales Report',
     'Print'                 => 'Print',
     'Interests'             => 'Interests',
+    'Total Revenues'        => 'Total Revenues',
 
 
 
-    /************************* Customer **************************/
+    /************************* Customer Dashboard **************************/
     'Support Tickets'           => 'Support Tickets',
     'Support Ticket'            => 'Support Ticket',
     'Lists'                     => 'Lists',

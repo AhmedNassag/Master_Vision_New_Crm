@@ -113,6 +113,12 @@ class Customer extends Authenticatable implements JWTSubject
     }
 
 
+    public function nationality()
+    {
+        return $this->belongsTo(Nationality::class, 'nationality_id');
+    }
+
+
 
     public function activity()
     {

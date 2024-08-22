@@ -173,12 +173,14 @@ class AuthController extends Controller
             }
             //update data
             $customer->update([
+                'name' => $request->name,
                 'email'   => $request->email,
                 'mobile'  => $request->mobile,
                 'mobile2' => $request->mobile2,
+                'national_id' => $request->national_id,
             ]);
             if ($customer) {
-                return $this->apiResponse($user, 'The Data Updated Successfully', 200);
+                return $this->apiResponse($customer, 'The Data Updated Successfully', 200);
             }
             return $this->apiResponse(null, 'Something Error Happened Try Again Please', 404);
 

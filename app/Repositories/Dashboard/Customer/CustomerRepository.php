@@ -72,6 +72,9 @@ class CustomerRepository implements CustomerInterface
             ->when($request->created_by != null,function ($q) use($request){
                 return $q->where('created_by',$request->created_by);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -151,6 +154,9 @@ class CustomerRepository implements CustomerInterface
             })
             ->when($request->created_by != null,function ($q) use($request){
                 return $q->where('created_by',$request->created_by);
+            })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
             })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
@@ -232,6 +238,9 @@ class CustomerRepository implements CustomerInterface
             ->when($request->created_by != null,function ($q) use($request){
                 return $q->where('created_by',$request->created_by);
             })
+            ->when($request->nationality_id != null,function ($q) use($request){
+                return $q->where('nationality_id',$request->nationality_id);
+            })
             ->when($request->city_id != null,function ($q) use($request){
                 return $q->where('city_id',$request->city_id);
             })
@@ -285,6 +294,7 @@ class CustomerRepository implements CustomerInterface
             'branch_id'         => $request->branch_id,
             'created_by'        => $request->created_by,
             'employee_id'       => $request->employee_id,
+            'nationality_id'    => $request->nationality_id,
             'city_id'           => $request->city_id,
             'area_id'           => $request->area_id,
             'industry_id'       => $request->industry_id,

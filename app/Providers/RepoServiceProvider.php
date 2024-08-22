@@ -86,6 +86,12 @@ class RepoServiceProvider extends ServiceProvider
             'App\Repositories\Dashboard\Major\MajorRepository',
         );
 
+        //Nationality
+        $this->app->bind(
+            'App\Repositories\Dashboard\Nationality\NationalityInterface',
+            'App\Repositories\Dashboard\Nationality\NationalityRepository',
+        );
+
         //JobTitle
         $this->app->bind(
             'App\Repositories\Dashboard\JobTitle\JobTitleInterface',
@@ -157,6 +163,35 @@ class RepoServiceProvider extends ServiceProvider
             'App\Repositories\Dashboard\Department\DepartmentInterface',
             'App\Repositories\Dashboard\Department\DepartmentRepository',
         );
+
+        //Blog
+        $this->app->bind(
+            'App\Repositories\Dashboard\Blog\BlogInterface',
+            'App\Repositories\Dashboard\Blog\BlogRepository',
+        );
+        $this->app->bind(
+            'App\Repositories\Api\Blog\BlogInterface',
+            'App\Repositories\Api\Blog\BlogRepository',
+        );
+
+        //CustomerProfile
+        $this->app->bind(
+            'App\Repositories\Dashboard\CustomerPortal\CustomerPortalInterface',
+            'App\Repositories\Dashboard\CustomerPortal\CustomerPortalRepository',
+        );
+
+        //Invoice
+        $this->app->bind(
+            'App\Repositories\Api\Invoice\InvoiceInterface',
+            'App\Repositories\Api\Invoice\InvoiceRepository',
+        );
+
+        //Support
+        $this->app->bind(
+            'App\Repositories\Dashboard\Support\SupportInterface',
+            'App\Repositories\Dashboard\Support\SupportRepository',
+        );
+
     }
 
     /**

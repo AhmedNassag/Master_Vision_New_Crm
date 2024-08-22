@@ -7,6 +7,7 @@ use App\Http\Controllers\LangController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\Dashboard\TagController;
 use App\Http\Controllers\Dashboard\AreaController;
+use App\Http\Controllers\Dashboard\BlogController;
 use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -20,8 +21,8 @@ use App\Http\Controllers\Dashboard\CountryController;
 use App\Http\Controllers\Dashboard\MeetingController;
 use App\Http\Controllers\Dashboard\MessageController;
 use App\Http\Controllers\Dashboard\ServiceController;
+use App\Http\Controllers\Dashboard\SupportController;
 use App\Http\Controllers\Dashboard\ActivityController;
-use App\Http\Controllers\Dashboard\ActivityLogController;
 use App\Http\Controllers\Dashboard\CampaignController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CustomerController;
@@ -29,15 +30,15 @@ use App\Http\Controllers\Dashboard\IndustryController;
 use App\Http\Controllers\Dashboard\JobTitleController;
 use App\Http\Controllers\Dashboard\DepartmentController;
 use App\Http\Controllers\Dashboard\SavedReplyController;
+use App\Http\Controllers\Dashboard\ActivityLogController;
 use App\Http\Controllers\Dashboard\AttachmentsController;
+use App\Http\Controllers\Dashboard\NationalityController;
 use App\Http\Controllers\Dashboard\SubActivityController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\PointSettingController;
 use App\Http\Controllers\Dashboard\ContactSourceController;
 use App\Http\Controllers\Dashboard\EmployeeTargetController;
 use App\Http\Controllers\Dashboard\ContactCategoryController;
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +116,10 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang','ActivePackage
     Route::resource('contactCategory', ContactCategoryController::class);
 
 
+    //nationality
+    Route::resource('nationality', NationalityController::class);
+
+
     //industry
     Route::resource('industry', IndustryController::class);
 
@@ -139,6 +144,11 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang','ActivePackage
     //employeeTarget
     Route::resource('employeeTarget', EmployeeTargetController::class);
 
+    //Blog
+    Route::resource('blog', BlogController::class);
+
+    //Support
+    Route::resource('support', SupportController::class);
 
     //contact
     Route::resource('contact', ContactController::class);

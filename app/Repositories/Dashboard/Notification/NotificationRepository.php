@@ -93,7 +93,7 @@ class NotificationRepository implements NotificationInterface
             })
             ->paginate(config('myConfig.paginationCount'))->appends(request()->query());
         // }
-        return view('dashboard.notification.index',compact('data'))
+        return view('dashboard.notification.index',compact('data','request'))
         ->with([
             'notification' => $request->notification,
             'dept'         => $request->dept,
@@ -394,7 +394,7 @@ class NotificationRepository implements NotificationInterface
             })
             ->paginate(config('myConfig.paginationCount'));
         }
-        return view('dashboard.notification.followUp',compact('data'))
+        return view('dashboard.notification.followUp',compact('data','request'))
         ->with([
             'contact_id' => $request->contact_id,
             'created_by' => $request->created_by,
@@ -460,7 +460,7 @@ class NotificationRepository implements NotificationInterface
             ->paginate($perPage)->appends(request()->query());
         }
 
-        return view('dashboard.notification.birthday',compact('data'))
+        return view('dashboard.notification.birthday',compact('data','request'))
         ->with([
             'perPage' => $perPage,
         ]);
