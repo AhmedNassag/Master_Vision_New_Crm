@@ -56,8 +56,9 @@
                                                         {
                                                             $contacts = \App\Models\Contact::
                                                             where('is_trashed','!=' ,1)
-                                                            ->where(function ($query) use ($request) {
+                                                            ->where(function ($query) {
                                                                 $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                                ->orWhereRelation('employee','branch_id', auth()->user()->employee->branch_id)
                                                                 ->orWhere('created_by', auth()->user()->employee->id)
                                                                 ->orWhere('branch_id', auth()->user()->employee->branch_id)
                                                                 ->orWhere('employee_id', auth()->user()->employee->id);
@@ -68,7 +69,7 @@
                                                         {
                                                             $contacts = \App\Models\Contact::
                                                             where('is_trashed','!=' ,1)
-                                                            ->where(function ($query) use ($request) {
+                                                            ->where(function ($query) {
                                                                 $query->where('employee_id', auth()->user()->employee->id)
                                                                 ->orWhere('created_by', auth()->user()->employee->id);
                                                             })

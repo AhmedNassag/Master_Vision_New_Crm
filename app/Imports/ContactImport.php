@@ -124,14 +124,16 @@ class ContactImport implements ToCollection
 
                 $contactData['created_by'] = auth()->user()->context_id;
 
-				$contact = Contact::where('mobile',$contactData['mobile'])->first();
+				// $contact = Contact::where('mobile',$contactData['mobile'])->first();
+                $normalizedIncomingNumber = substr(preg_replace('/\D/', '', $contactData['mobile']), -10);
+                $contact = Contact::whereRaw("SUBSTRING(mobile, -10) = ?", [$normalizedIncomingNumber])->first();
 				if(!$contact)
                 {
                     $data = Contact::create($contactData);
-                    
+
                     //create code
                     $data->update(['code' => $this->createCode($data)]);
-                    
+
                     //create in completion
                     $this->completionData($contactData, $data->id);
 					$this->rowsSaved++;
@@ -226,9 +228,9 @@ class ContactImport implements ToCollection
             }
         }
     }
-    
 
-    
+
+
     public function createCode($contact)
     {
         // Retrieve the branch code from the branch

@@ -271,7 +271,7 @@ class ReportController extends Controller
                     return $q->whereDate('created_at', '<=', $request->to_date);
                 })
                 // ->paginate($perPage)->appends(request()->query())
-                ->get()->appends(request()->query())
+                ->get()
                 ->groupBy('contact_id');
             }
 
@@ -342,6 +342,9 @@ class ReportController extends Controller
                 ->when($request->activity_id != null,function ($q) use($request){
                     return $q->where('activity_id', $request->activity_id);
                 })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status', $request->status);
+                })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
                 })
@@ -354,7 +357,14 @@ class ReportController extends Controller
             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
             {
                 $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
-                ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                ->where(function ($query) use ($request) {
+                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('employee_id', auth()->user()->employee->id);
+                })
                 ->when($request->created_by != null,function ($q) use($request){
                     return $q->where('created_by', $request->created_by);
                 })
@@ -381,6 +391,9 @@ class ReportController extends Controller
                 })
                 ->when($request->activity_id != null,function ($q) use($request){
                     return $q->where('activity_id', $request->activity_id);
+                })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status', $request->status);
                 })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
@@ -395,6 +408,7 @@ class ReportController extends Controller
             {
                 $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
                 ->whereRelation('createdBy','id', auth()->user()->employee->id)
+                ->orWhere('employee', auth()->user()->employee->id)
                 ->when($request->created_by != null,function ($q) use($request){
                     return $q->where('created_by', $request->created_by);
                 })
@@ -422,6 +436,9 @@ class ReportController extends Controller
                 ->when($request->activity_id != null,function ($q) use($request){
                     return $q->where('activity_id', $request->activity_id);
                 })
+                ->when($request->status != null,function ($q) use($request){
+                    return $q->where('status', $request->status);
+                })
                 ->when($request->from_date != null,function ($q) use($request){
                     return $q->whereDate('created_at', '>=', $request->from_date);
                 })
@@ -432,7 +449,9 @@ class ReportController extends Controller
                 ->get();
             }
 
-            return view('dashboard.report.contacts',compact('data'))
+            $resultCount = $data->count();
+
+            return view('dashboard.report.contacts',compact('data','resultCount'))
             ->with([
                 'created_by'          => $request->created_by,
                 'city_id'             => $request->city_id,
@@ -443,6 +462,7 @@ class ReportController extends Controller
                 'major_id'            => $request->major_id,
                 'job_title_id'        => $request->job_title_id,
                 'activity_id'         => $request->activity_id,
+                'status'              => $request->status,
                 'from_date'           => $request->from_date,
                 'to_date'             => $request->to_date,
                 'perPage'             => $perPage,
@@ -470,7 +490,6 @@ class ReportController extends Controller
     public function employeeSalesReport(Request $request)
     {
         try {
-
             if($request->branch_id)
             {
                 $employees = Employee::hidden()->when($request->branch_id, function ($query) use ($request) {
@@ -559,7 +578,6 @@ class ReportController extends Controller
     public function branchSalesReport(Request $request)
     {
         try {
-
             if(Auth::user()->roles_name[0] == "Admin")
             {
                 $branches = Branch::get();
@@ -571,7 +589,6 @@ class ReportController extends Controller
             $data = [];
             foreach ($branches as $branch)
             {
-
                 if(Auth::user()->roles_name[0] == "Admin")
                 {
                     $employees = Employee::hidden()->where('branch_id', $branch->id)->get();
@@ -647,7 +664,6 @@ class ReportController extends Controller
     public function activitySalesReport(Request $request)
     {
         try {
-
             $from        = $request->from_date;
             $to          = $request->to_date;
             $activity_id = $request->activity_id;

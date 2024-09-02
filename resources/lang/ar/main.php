@@ -425,13 +425,14 @@ return [
     'Total'                               => 'الإجمالي',
     'branch_id'                           => 'الفرع',
     'Results Count'                       => 'عدد النتائج',
-    'Custom Attributes'                   => 'صفة معينة',
+    'Custom Attributes'                   => 'عناصر الحملة',
     'Time'                                => 'التوقيت',
     'Call Details'                        => 'تفاصيل المكالمة/الزيارة',
     'new'                                 => 'جديد',
     'contacted'                           => 'تم التواصل',
     'qualified'                           => 'مؤهل',
     'converted'                           => 'تم التحويل',
+    'Active Status'                       => 'حالة التفعيل',
 
     //Customer
     'Customers'         => 'العملاء',
@@ -544,6 +545,18 @@ return [
     'Print'                 => 'طباعة',
     'Interests'             => 'الإهتمامات',
     'Total Revenues'        => 'إجمالي المبالغ المتوقعة',
+    'Export Report'         => 'تصدير التقرير',
+    'Export as Excel'       => 'تصدير بصيغة إكسيل',
+
+    //Whatsapp Message Service
+    'Whatsapp Messages Service' => 'خدمة رسائل الواتس',
+    'QR Code'                   => 'قارئ الكود',
+    'Sent Messages'             => 'رسائل مرسلة',
+    'Queue Messages'            => 'رسائل قيد الإرسال',
+    'Unsend Messages'           => 'رسائل غير مرسلة',
+    'Invalid Messages'          => 'رسائل غير معروفة',
+    'Expired Messages'          => 'رسائل تالفة',
+    'Total Messages'            => 'إجمالي الرسائل',
 
 
 

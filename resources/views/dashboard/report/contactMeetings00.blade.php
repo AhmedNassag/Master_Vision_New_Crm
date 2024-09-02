@@ -14,7 +14,7 @@
 @section('content')
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <div id="print" class="d-flex flex-column flex-column-fluid">
+    <div class="d-flex flex-column flex-column-fluid">
         <div id="kt_app_toolbar" class="app-toolbar pt-5 pt-lg-10">
             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack flex-wrap px-0">
                 <div class="app-toolbar-wrapper d-flex flex-stack flex-wrap gap-4 w-100">
@@ -27,7 +27,7 @@
                             <li class="breadcrumb-item">
                                 <span class="bullet bg-gray-500 w-5px h-2px"></span>
                             </li>
-                            <li class="breadcrumb-item text-muted">{{ trans('main.MeetingsReport') }}</li>
+                            <li class="breadcrumb-item text-muted">{{ trans('main.ContactMeetingsReport') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="card">
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
-                        <form id="meeting_search_form" class="not_print form container-fluid" action="{{ route('report.meetingsReport') }}" method="get" enctype="multipart/form-data">
+                        <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.contactMeetingsReport') }}" method="get" enctype="multipart/form-data">
                             <div class="justify-content-start " data-kt-customer-table-toolbar="base">
                                 <div class="row align-items-center mb-10 w-100">
                                     <!-- from_date -->
@@ -159,7 +159,7 @@
                                     <!-- search submit -->
                                     @can('عرض تقارير المكالمات والزيارات')
                                         <div class="d-flex align-items-center col-lg-2">
-                                            <input class="not_print btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
                                         </div>
                                     @endcan
                                 </div>
@@ -215,11 +215,27 @@
                         </script>
                         @endif
 
-                        @if(Request::is('admin/report/meetingsReport'))
-                            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-                                <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button>
+                        @if(Request::is('admin/report/contactMeetingsReport'))
+                            <div id="print" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                {{-- <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button> --}}
+                                <!--begin::Export buttons-->
+                                <div id="kt_ecommerce_report_views_export" class="d-none"></div>
+                                <!--end::Export buttons-->
+                                <!--begin::Export dropdown-->
+                                <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                    <i class="ki-outline ki-exit-up fs-2"></i>{{ trans('main.Export Report') }}</button>
+                                    <!--begin::Menu-->
+                                    <div id="kt_ecommerce_report_views_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="#" class="menu-link px-3" data-kt-ecommerce-export="excel">{{ trans('main.Export as Excel') }}</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                    </div>
+                                    <!--end::Menu-->
+                                <!--end::Export dropdown-->
                                 <!-- pagination -->
-                                {{-- <form method="GET" action="{{ url('admin/report/meetingsReport') }}" class="not_print">
+                                {{-- <form method="GET" action="{{ url('admin/report/contactMeetingsReport') }}" class="not_print">
                                     @foreach (request()->except('perPage') as $key => $value)
                                         <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                                     @endforeach
@@ -231,63 +247,98 @@
                                     </select>
                                 </form> --}}
                                 <div class="table-responsive">
-                                    <h1 class="text-center text-decoration-underline">{{ trans('main.MeetingsReport') }}</h1>
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_report_views_table">
                                         <thead>
-                                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                                <th class="text-center">#</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.Contact') }}</th>
-                                                <th class="text-center min-w-150px">{{ trans('main.Expected Amount') }}</th>
+                                            <tr class="text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                                <th class="text-center">{{ trans('main.Contact') }}</th>
+                                                <th class="text-center">{{ trans('main.Expected Amount') }}</th>
                                                 <th class="text-center">{{ trans('main.Type') }}</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.Meeting Place') }}</th>
-                                                <th class="text-cente min-w-125px">{{ trans('main.Meeting Date') }}</th>
-                                                <th class="text-center min-w-150px">{{ trans('main.Reply') }}</th>
-                                                {{-- <th class="text-center min-w-150px">{{ trans('main.Follow Date') }}</th> --}}
-                                                <th class="text-center min-w-150px">{{ trans('main.Notes') }}</th>
-                                                <th class="text-center min-w-150px">{{ trans('main.CreatedBy') }}</th>
+                                                <th class="text-center">{{ trans('main.Meeting Place') }}</th>
+                                                <th class="text-center">{{ trans('main.Meeting Date') }}</th>
+                                                <th class="text-center">{{ trans('main.Reply') }}</th>
+                                                <th class="text-center">{{ trans('main.Notes') }}</th>
+                                                <th class="text-center">{{ trans('main.CreatedBy') }}</th>
+                                                {{-- <th class="text-center" colspan="4">
+                                                    <div class="row">
+                                                        <div class="col-2 text-center">
+                                                            {{ trans('main.Type') }}
+                                                        </div>
+                                                        <div class="col-3 text-center">
+                                                            {{ trans('main.Meeting Date') }}
+                                                        </div>
+                                                        <div class="col-3 text-center">
+                                                            {{ trans('main.Expected Amount') }}
+                                                        </div>
+                                                        <div class="col-3 text-center">
+                                                            {{ trans('main.Reply') }}
+                                                        </div>
+                                                        <div class="col-3 text-center">
+                                                            {{ trans('main.Notes') }}
+                                                        </div>
+                                                        <div class="col-4 text-center">
+                                                            {{ trans('main.CreatedBy') }}
+                                                        </div>
+                                                    </div>
+                                                </th> --}}
+                                                <th class="text-center">{{ trans('main.Total') }}</th>
+                                                <th class="text-center">{{ trans('main.Total Revenues') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fw-semibold text-gray-600">
-                                            @if(@$data->count() > 0)
-                                                @foreach (@$data as $key=>$item)
-                                                    @php
-                                                        $totalRevenue = 0;
-                                                        foreach ($data as $val) {
-                                                            $totalRevenue += $val->revenue;
-                                                        }
-                                                    @endphp
-                                                    <tr>
-                                                        <td class="text-center">{{ @$key+1 }}</td>
-                                                        <td class="text-center">{{ @$item->contact->name }}</td>
-                                                        <td class="text-center">{{ number_format(@$item->revenue,0) }}</td>
-                                                        <td class="text-center">@if(@$item->type == 'call') {{ trans('main.Call') }} @else {{ trans('main.Meeting') }}@endif</td>
-                                                        <td class="text-center">@if(@$item->meeting_place == 'in') {{ trans('main.In') }} @else {{ trans('main.Out') }}@endif</td>
-                                                        <td class="text-center">{{ @$item->meeting_date }}</td>
-                                                        <td class="text-center">{{ @$item->reply->reply }}</td>
-                                                        {{-- <td class="text-center">{{ @$item->notes[0]['follow_date'] }}</td> --}}
-                                                        <td class="text-center">{{ @$item->notes[0]['notes'] }}</td>
-                                                        <td class="text-center">{{ @$item->createdBy->name }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            @else
+                                            @foreach ($data as $key=>$item)
+                                                @php
+                                                    $totalRevenue = 0;
+                                                    foreach ($item as $val) {
+                                                        $totalRevenue += $val->revenue;
+                                                    }
+                                                @endphp
                                                 <tr>
-                                                    <th class="text-center" colspan="10">
-                                                        <div class="col mb-3 d-flex">
-                                                            <div class="card flex-fill">
-                                                                <div class="card-body p-3 text-center">
-                                                                    <p class="card-text f-12">{{ trans('main.No Data Founded') }}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </th>
+                                                    <td class="text-center" rowspan="{{ count($item) }}">
+                                                        <a href="@if($item[0]->contact){{ route('contact.show', $item[0]->contact->id) }}@endif" class="text-gray-800 text-hover-primary mb-1">
+                                                            @if($item[0]->contact)
+                                                                {{ @$item[0]->contact->name }}
+                                                            @endif
+                                                        </a>
+                                                    </td>
+                                                    @foreach ($item as $index => $val)
+                                                        @if ($index > 0)
+                                                            </tr><tr>
+                                                        @endif
+                                                        <td class="text-center">
+                                                            {{ number_format(@$val->revenue,0) }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if(@$val->type == 'call') {{ trans('main.Call') }} @else {{ trans('main.Meeting') }}@endif
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if(@$val->meeting_place == 'in') {{ trans('main.In') }} @else {{ trans('main.Out') }}@endif
+                                                        </td>
+                                                        <td class="text-center">
+                                                            {{ @$val->meeting_date }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            {{ @$val->reply->reply }}
+                                                        </td>
+                                                        {{-- <td class="text-center">
+                                                            {{ @$val->notes[0]['follow_date'] }}
+                                                        </td> --}}
+                                                        <td class="text-center">
+                                                            {{ @$val->notes[0]['notes'] }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            {{ @$val->createdBy->name }}
+                                                        </td>
+
+                                                        @if ($index == 0)
+                                                            <td class="text-center" rowspan="{{ count($item) }}">{{ count($item) }}</td>
+                                                            <td class="text-center" rowspan="{{ count($item) }}">{{ number_format($totalRevenue, 0) }}</td>
+                                                        @endif
+                                                    @endforeach
                                                 </tr>
-                                            @endif
-                                        </tbody>
-                                        <tbody class="fw-semibold text-gray-600" style="border-top: 1px solid #333;">
-                                            <th class="text-center min-w-150px" colspan="2">{{ trans('main.Total') }}</th>
-                                            <td class="text-center">{{ @$totalRevenue }}</td>
+                                            @endforeach
                                         </tbody>
                                     </table>
+
                                     <div class="not_print">
                                         {{-- {{ @$data->links() }} --}}
                                     </div>
@@ -318,4 +369,8 @@
         location.reload();
     }
 </script>
+
+
+
+<script src="{{ asset('assets/js/custom/apps/ecommerce/reports/views/views.js') }}"></script>
 @endsection

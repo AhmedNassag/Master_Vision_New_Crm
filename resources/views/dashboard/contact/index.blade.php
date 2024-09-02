@@ -50,7 +50,16 @@
                                             }
                                             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                             {
-                                                $all_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                                $all_contacts = App\Models\Contact::where('is_trashed','!=' ,1)
+                                                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                ->where(function ($query) {
+                                                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('created_by', auth()->user()->employee->id)
+                                                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('employee_id', auth()->user()->employee->id);
+                                                })
+                                                ->count();
                                             }
                                             else
                                             {
@@ -70,7 +79,17 @@
                                             }
                                             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                             {
-                                                $new_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)->where('status', 'new')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                                $new_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)
+                                                ->where('status', 'new')
+                                                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                ->where(function ($query) {
+                                                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('created_by', auth()->user()->employee->id)
+                                                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('employee_id', auth()->user()->employee->id);
+                                                })
+                                                ->count();
                                             }
                                             else
                                             {
@@ -93,7 +112,16 @@
                                             }
                                             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                             {
-                                                $contacted_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)->where('status', 'contacted')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                                $contacted_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)->where('status', 'contacted')
+                                                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                ->where(function ($query) {
+                                                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('created_by', auth()->user()->employee->id)
+                                                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('employee_id', auth()->user()->employee->id);
+                                                })
+                                                ->count();
                                             }
                                             else
                                             {
@@ -116,7 +144,16 @@
                                             }
                                             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                             {
-                                                $qualified_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)->where('status', 'qualified')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                                $qualified_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)->where('status', 'qualified')
+                                                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                ->where(function ($query) {
+                                                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('created_by', auth()->user()->employee->id)
+                                                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('employee_id', auth()->user()->employee->id);
+                                                })
+                                                ->count();
                                             }
                                             else
                                             {
@@ -140,7 +177,16 @@
                                             }
                                             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                             {
-                                                $converted_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)->where('status', 'converted')->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                                $converted_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', '!=' ,0)->where('status', 'converted')
+                                                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                ->where(function ($query) {
+                                                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('created_by', auth()->user()->employee->id)
+                                                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('employee_id', auth()->user()->employee->id);
+                                                })
+                                                ->count();
                                             }
                                             else
                                             {
@@ -163,7 +209,16 @@
                                             }
                                             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                             {
-                                                $inActive_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', 0)->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                                $inActive_contacts = App\Models\Contact::where('is_trashed','!=' ,1)->where('is_active', 0)
+                                                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                ->where(function ($query) {
+                                                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('created_by', auth()->user()->employee->id)
+                                                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('employee_id', auth()->user()->employee->id);
+                                                })
+                                                ->count();
                                             }
                                             else
                                             {
@@ -186,7 +241,16 @@
                                             }
                                             else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                             {
-                                                $trashed_contacts = App\Models\Contact::where('is_trashed', 1)->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->count();
+                                                $trashed_contacts = App\Models\Contact::where('is_trashed', 1)
+                                                // ->whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                ->where(function ($query) {
+                                                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('created_by', auth()->user()->employee->id)
+                                                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                    ->orWhere('employee_id', auth()->user()->employee->id);
+                                                })
+                                                ->count();
                                             }
                                             else
                                             {
@@ -405,8 +469,7 @@
                                                     <input class="box1 form-check-input" name="select_all" id="example-select-all" type="checkbox" onclick="CheckAll('box1', this)" oninput="showBtnDeleteSelected()">
                                                 </div>
                                             </th>
-                                           <th class="text-center">#</th>
-
+                                            <th class="text-center">#</th>
                                             <th class="text-center">{{ trans('main.Status') }}</th>
                                             <th class="text-center">{{ trans('main.Code') }}</th>
                                             <th class="text-center">{{ trans('main.Name') }}</th>
@@ -415,6 +478,7 @@
                                             <th class="text-center">{{ trans('main.Area') }}</th>
                                             <th class="text-center">{{ trans('main.SubActivity') }}</th>
                                             <th class="text-center">{{ trans('main.Related Employee') }}</th>
+                                            <th class="text-center">{{ trans('main.Active Status') }}</th>
                                             <th class="text-center">{{ trans('main.CreatedBy') }}</th>
                                             <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
                                         </tr>
@@ -461,6 +525,17 @@
                                             <td class="text-center">{{ @$item->area->name }}</td>
                                             <td class="text-center">{{ @$item->subActivity->name }}</td>
                                             <td class="text-center">{{ @$item->employee->name }}</td>
+                                            <td class="text-center">
+                                                @if (@$item->is_active == 1)
+                                                <label class="badge badge-light-success">
+                                                    {{ app()->getLocale() == 'ar' ? 'مفعل' : 'Active' }}
+                                                </label>
+                                                @else
+                                                <label class="badge badge-light-danger">
+                                                    {{ app()->getLocale() == 'ar' ? 'غير مفعل' : 'Not Active' }}
+                                                </label>
+                                                @endif
+                                            </td>
                                             <td class="text-center">{{ @$item->createdBy->name }}</td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">

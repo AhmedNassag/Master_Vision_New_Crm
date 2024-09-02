@@ -139,10 +139,10 @@
                                         @if(isset($item->properties['old']))
                                             @foreach($item->properties['old'] as $key => $value)
                                                 <div class="row container">
-                                                    <div class="col-2">
+                                                    <div class="col-3">
                                                         <span class="btn btn-light mb-1">{{ $key }}</span>
                                                     </div>
-                                                    <div class="col-10">
+                                                    <div class="col-9">
                                                         <span class="btn btn-light mb-1">{{ $value }}</span>
                                                     </div>
                                                 </div>
@@ -156,10 +156,10 @@
                                         @if(isset($item->properties['attributes']))
                                             @foreach($item->properties['attributes'] as $key => $value)
                                                 <div class="row container">
-                                                    <div class="col-2">
+                                                    <div class="col-3">
                                                         <span class="btn btn-light mb-1">{{ $key }}</span>
                                                     </div>
-                                                    <div class="col-10">
+                                                    <div class="col-9">
                                                         <span class="btn btn-light mb-1">{{ $value }}</span>
                                                     </div>
                                                 </div>

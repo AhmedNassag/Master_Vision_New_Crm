@@ -245,6 +245,19 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- status -->
+                    <div id="status_filter" class="mb-7">
+                        <label class="form-label fs-5 fw-semibold mb-3">
+                            <span>{{ trans('main.Status') }}</span>
+                        </label>
+                        <select name="status" data-control="select2" data-dropdown-parent="#status_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.All') }}</option>
+                            <option value="new" {{ @$status == 'new' ? 'selected' : '' }}>{{ trans('main.New') }}</option>
+                            <option value="contacted" {{ @$status == 'contacted' ? 'selected' : '' }}>{{ trans('main.Contacted') }}</option>
+                            <option value="qualified" {{ @$status == 'qualified' ? 'selected' : '' }}>{{ trans('main.Qualified') }}</option>
+                            <option value="converted" {{ @$status == 'converted' ? 'selected' : '' }}>{{ trans('main.Converted') }}</option>
+                        </select>
+                    </div>
                     <!-- from_date -->
                     <div class="mb-7">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.From Date') }}</label>

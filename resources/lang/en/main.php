@@ -319,7 +319,7 @@ return [
     'birth_date'                          => 'Birth Date',
     'national_id'                         => 'National Id',
     'is_active'                           => 'Activate',
-    'custom_attributes'                   => 'Custom Attributes',
+    'custom_attributes'                   => 'Campaign Items',
     'code'                                => 'Code',
     'city_id'                             => 'City',
     'area_id'                             => 'Area',
@@ -422,6 +422,7 @@ return [
     'contacted'                           => 'Contacted',
     'qualified'                           => 'Qualified',
     'converted'                           => 'Converted',
+    'Active Status'                       => 'Active Status',
 
     //Customer
     'Customers'         => 'Customers',
@@ -532,6 +533,18 @@ return [
     'Print'                 => 'Print',
     'Interests'             => 'Interests',
     'Total Revenues'        => 'Total Revenues',
+    'Export Report'         => 'Export Report',
+    'Export as Excel'       => 'Export as Excel',
+
+    //Whatsapp Message Service
+    'Whatsapp Messages Service' => 'Whatsapp Messages Service',
+    'QR Code'                   => 'QR Code',
+    'Sent Messages'             => 'Sent Messages',
+    'Queue Messages'            => 'Queue Messages',
+    'Unsend Messages'           => 'Unsend Messages',
+    'Invalid Messages'          => 'Invalid Messages',
+    'Expired Messages'          => 'Expired Messages',
+    'Total Messages'            => 'Total Messages',
 
 
 

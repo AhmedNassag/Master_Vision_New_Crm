@@ -91,7 +91,16 @@ class ReferenceDataController extends Controller
             }
             else if(auth()->guard('api')->user()->roles_name[0] != "Admin" && auth()->guard('api')->user()->employee->has_branch_access == 1)
             {
-                $contact_id = \App\Models\Contact::whereRelation('createdBy','branch_id', auth()->guard('api')->user()->employee->branch_id)->get(['id','name']);
+                $contact_id = \App\Models\Contact::
+                // whereRelation('createdBy','branch_id', auth()->guard('api')->user()->employee->branch_id)
+                where(function ($query) use ($request) {
+                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('employee_id', auth()->user()->employee->id);
+                })
+                ->get(['id','name']);
             }
             else
             {

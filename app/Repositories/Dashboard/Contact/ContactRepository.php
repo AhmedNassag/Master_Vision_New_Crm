@@ -136,6 +136,7 @@ class ContactRepository implements ContactInterface
             ->orWhere('employee_id', auth()->user()->employee->id)*/
             ->where(function ($query) use ($request) {
                 $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
                 ->orWhere('created_by', auth()->user()->employee->id)
                 ->orWhere('branch_id', auth()->user()->employee->branch_id)
                 ->orWhere('employee_id', auth()->user()->employee->id);
@@ -811,6 +812,7 @@ class ContactRepository implements ContactInterface
             ->orWhere('employee_id', auth()->user()->employee->id)*/
             ->where(function ($query) use ($request) {
                 $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhereRelation('employee','branch_id', auth()->user()->employee->branch_id)
                     ->orWhere('created_by', auth()->user()->employee->id)
                     ->orWhere('employee_id', auth()->user()->employee->id);
             })

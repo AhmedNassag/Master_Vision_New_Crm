@@ -14,7 +14,7 @@
 @section('content')
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <div class="d-flex flex-column flex-column-fluid">
+    <div id="print" class="d-flex flex-column flex-column-fluid">
         <div id="kt_app_toolbar" class="app-toolbar pt-5 pt-lg-10">
             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack flex-wrap">
                 <div class="app-toolbar-wrapper d-flex flex-stack flex-wrap gap-4 w-100">
@@ -38,7 +38,7 @@
                 <div class="card">
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
-                        <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.employeeSalesReport') }}" method="get" enctype="multipart/form-data">
+                        <form id="meeting_search_form" class="not_print form container-fluid" action="{{ route('report.employeeSalesReport') }}" method="get" enctype="multipart/form-data">
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
                                 <div class="row w-100 align-items-center mb-10">
                                     <!-- branch_id -->
@@ -89,7 +89,7 @@
                                     <!-- search submit -->
                                     @can('عرض تقارير مبيعات الموظفين')
                                         <div class="d-flex align-items-center col-1">
-                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                            <input class="not_print btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
                                         </div>
                                     @endcan
                                 </div>
@@ -146,10 +146,10 @@
                         @endif
 
                         @if(Request::is('admin/report/employeeSalesReport'))
-                            <div id="print" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button>
                                 <!-- pagination -->
-                                <form method="GET" action="{{ url('admin/report/employeeSalesReport') }}" class="not_print">
+                                {{-- <form method="GET" action="{{ url('admin/report/employeeSalesReport') }}" class="not_print">
                                     @foreach (request()->except('perPage') as $key => $value)
                                         <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                                     @endforeach
@@ -159,8 +159,9 @@
                                         <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
                                         <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
                                     </select>
-                                </form>
+                                </form> --}}
                                 <div class="table-responsive">
+                                    <h1 class="text-center text-decoration-underline">{{ trans('main.EmployeeSalesReport') }}</h1>
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
                                         <thead>
                                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">

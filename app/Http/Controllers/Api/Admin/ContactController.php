@@ -145,7 +145,14 @@ class ContactController extends Controller
             {
                 $data = Contact::where('is_trashed','!=' ,1)
                 ->with(['city','area','contactSource','contactCategory','jobTitle','industry','major','activity','subActivity','campaign','customer','employee','createdBy','contactCompletions','meetings','leadCategories','leadHistories','categories','media'])
-                ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                // ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                ->where(function ($query) use ($request) {
+                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->whereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('employee_id', auth()->user()->employee->id);
+                })
                 ->when($request->name != null,function ($q) use($request){
                     return $q->where('name','like', '%'.$request->name.'%');
                 })
@@ -783,7 +790,14 @@ class ContactController extends Controller
             else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
             {
                 $main_data = Contact::where('is_trashed',1)->with(['contactSource','city','area','contactCategory','activity','subActivity','employee'])
-                ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                // ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                ->where(function ($query) use ($request) {
+                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('employee_id', auth()->user()->employee->id);
+                })
                 ->when($request->name != null,function ($q) use($request){
                     return $q->where('name','like', '%'.$request->name.'%');
                 })

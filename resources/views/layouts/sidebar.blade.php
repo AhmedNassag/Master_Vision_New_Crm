@@ -27,7 +27,7 @@
                             <!--begin:Home-->
                             <div class="menu-item">
                                 <!--Dashboard-->
-                                <a class="menu-link" href="{{ route('home') }}">
+                                <a class="menu-link {{ Request::is('admin/home*') ? 'active' : '' }}" href="{{ route('home') }}">
                                     <span class="menu-icon">
                                         <i class="ki-outline ki-element-11 fs-2"></i>
                                     </span>
@@ -108,7 +108,7 @@
                         <!--end:Places-->
                         <!--begin:Contacts Data-->
                         @can('بيانات جهات الإتصال')
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/contactSource*','admin/contactCategory*') ? 'show' : '' }}">
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/contactSource*','admin/contactCategory*','admin/nationality*') ? 'show' : '' }}">
                                 <span class="menu-link">
                                     <span class="menu-icon">
                                         <i class="ki-outline ki-address-book fs-2"></i>
@@ -358,16 +358,14 @@
                                     </a>
                                 </div>
                             @endcan
-                            @can('عرض المناطق')
-                                <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('blog.index') }}">
-                                        <span class="menu-icon">
-                                            <i class="ki-outline ki-abstract-28 fs-2"></i>
-                                        </span>
-                                        <span class="menu-title">{{ trans('main.Blogs') }}</span>
-                                    </a>
-                                </div>
-                            @endcan
+                            <div class="menu-item">
+                                <a class="menu-link {{ Request::is('admin/blog*') ? 'active' : '' }}" href="{{ route('blog.index') }}">
+                                    <span class="menu-icon">
+                                        <i class="ki-outline ki-abstract-28 fs-2"></i>
+                                    </span>
+                                    <span class="menu-title">{{ trans('main.Blogs') }}</span>
+                                </a>
+                            </div>
                         @endcan
                         <!--end:Marketing-->
 
@@ -472,7 +470,7 @@
                             </div>
 
                             <!--begin:Reminders-->
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/todayReminders*','admin/monthReminders*','admin/todayFollowUps*','admin/monthFollowUps*') ? 'show' : '' }}">
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::is('admin/todayReminders*','admin/monthReminders*','admin/todayFollowUps*','admin/monthFollowUps*','admin/todayBirthdays*') ? 'show' : '' }}">
                                 <span class="menu-link">
                                     <span class="menu-icon">
                                         <i class="ki-outline ki-call fs-2"></i>
@@ -587,6 +585,28 @@
                             </div>
                         @endcan
 
+
+
+                        <!--Whatsapp-->
+                        <?php
+                            $instance = \App\Models\LAConfigs::where('key','whatsapp_instance')->first();
+                            $token    = \App\Models\LAConfigs::where('key','whatsapp_token')->first();
+                        ?>
+                        @if(@$instance && @$token)
+                        <div class="menu-item pt-2">
+                            <div class="menu-content">
+                                <span class="menu-heading fw-bold text-uppercase fs-7">{{ trans('main.Whatsapp Messages Service') }}</span>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <a class="menu-link {{ Request::is('admin/whatsapp*') ? 'active' : '' }}" href="{{ route('whatsapp.index') }}">
+                                <span class="menu-icon">
+                                    <i class="ki-outline ki-messages fs-1"></i>
+                                </span>
+                                <span class="menu-title">{{ trans('main.Whatsapp Messages Service') }}</span>
+                            </a>
+                        </div>
+                        @endif
 
 
                         <!--begin:Team-->

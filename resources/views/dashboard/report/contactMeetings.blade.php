@@ -14,7 +14,7 @@
 @section('content')
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <div class="d-flex flex-column flex-column-fluid">
+    <div id="print" class="d-flex flex-column flex-column-fluid">
         <div id="kt_app_toolbar" class="app-toolbar pt-5 pt-lg-10">
             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack flex-wrap px-0">
                 <div class="app-toolbar-wrapper d-flex flex-stack flex-wrap gap-4 w-100">
@@ -38,7 +38,7 @@
                 <div class="card">
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
-                        <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.contactMeetingsReport') }}" method="get" enctype="multipart/form-data">
+                        <form id="meeting_search_form" class="not_print form container-fluid" action="{{ route('report.contactMeetingsReport') }}" method="get" enctype="multipart/form-data">
                             <div class="justify-content-start " data-kt-customer-table-toolbar="base">
                                 <div class="row align-items-center mb-10 w-100">
                                     <!-- from_date -->
@@ -109,7 +109,16 @@
                                                 }
                                                 else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
                                                 {
-                                                    $contacts = App\Models\Contact::whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                    $contacts = App\Models\Contact::
+                                                    // whereRelation('createdBy','branch_id', auth()->user()->employee->branch_id)
+                                                    where(function ($query) {
+                                                        $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                                                        ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                                                        ->orWhere('created_by', auth()->user()->employee->id)
+                                                        ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                                                        ->orWhere('employee_id', auth()->user()->employee->id);
+                                                    })
+                                                    ->get(['id','name']);
                                                 }
                                                 else
                                                 {
@@ -150,7 +159,7 @@
                                     <!-- search submit -->
                                     @can('عرض تقارير المكالمات والزيارات')
                                         <div class="d-flex align-items-center col-lg-2">
-                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                            <input class="not_print btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
                                         </div>
                                     @endcan
                                 </div>
@@ -207,10 +216,10 @@
                         @endif
 
                         @if(Request::is('admin/report/contactMeetingsReport'))
-                            <div id="print" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button>
                                 <!-- pagination -->
-                                <form method="GET" action="{{ url('admin/report/contactMeetingsReport') }}" class="not_print">
+                                {{-- <form method="GET" action="{{ url('admin/report/contactMeetingsReport') }}" class="not_print">
                                     @foreach (request()->except('perPage') as $key => $value)
                                         <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                                     @endforeach
@@ -220,8 +229,9 @@
                                         <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
                                         <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
                                     </select>
-                                </form>
+                                </form> --}}
                                 <div class="table-responsive">
+                                    <h1 class="text-center text-decoration-underline">{{ trans('main.ContactMeetingsReport') }}</h1>
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
                                         <thead>
                                             <tr class="text-gray-500 fw-bold fs-7 text-uppercase gs-0">

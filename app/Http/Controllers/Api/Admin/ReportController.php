@@ -63,7 +63,16 @@ class ReportController extends Controller
             }
             else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
             {
-                $contact_id = Contact::whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)->get(['id','name']);
+                $contact_id = Contact::
+                // whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                where(function ($query) use ($request) {
+                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('employee_id', auth()->user()->employee->id);
+                })
+                ->get(['id','name']);
             }
             else
             {
@@ -336,7 +345,14 @@ class ReportController extends Controller
             else if($auth_user->roles_name[0] != "Admin" && $auth_user->employee->has_branch_access == 1)
             {
                 $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
-                ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                // ->whereRelation('createdBy','branch_id', $auth_user->employee->branch_id)
+                ->where(function ($query) use ($request) {
+                    $query->whereRelation('createdBy', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhereRelation('employee', 'branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('created_by', auth()->user()->employee->id)
+                    ->orWhere('branch_id', auth()->user()->employee->branch_id)
+                    ->orWhere('employee_id', auth()->user()->employee->id);
+                })
                 ->when($request->created_by != null,function ($q) use($request){
                     return $q->where('created_by', $request->created_by);
                 })
@@ -376,6 +392,7 @@ class ReportController extends Controller
             {
                 $data = Contact::with('jobTitle','contactCategory','contactSource','city','area','industry','major','activity','createdBy')
                 ->whereRelation('createdBy','id', $auth_user->employee->id)
+                ->orWhere('employee_id',$auth_user->employee->id)
                 ->when($request->created_by != null,function ($q) use($request){
                     return $q->where('created_by', $request->created_by);
                 })

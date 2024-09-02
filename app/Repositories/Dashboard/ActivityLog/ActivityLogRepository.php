@@ -24,7 +24,7 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
         {
             $data = ActivityLog::
             when($request->causer_id != null,function ($q) use($request){
-                return $q->where('causer_id','like', '%'.$request->causer_id.'%');
+                return $q->where('causer_id', $request->causer_id);
             })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->where('created_at', '>=', $request->from_date);
@@ -39,11 +39,13 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
         {
             $data = ActivityLog::
             where(function ($query) use ($request) {
-                $query->whereRelation('user', 'employee.branch_id', auth()->user()->employee->branch_id)
-                ->orWhereRelation('user','employee.id', auth()->user()->employee->id);
+                $query->whereHas('user.employee', function ($subQuery) {
+                    $subQuery->where('branch_id', auth()->user()->employee->branch_id)
+                        ->orWhere('id', auth()->user()->employee->id);
+                });
             })
             ->when($request->causer_id != null,function ($q) use($request){
-                return $q->where('causer_id','like', '%'.$request->causer_id.'%');
+                return $q->where('causer_id',$request->causer_id);
             })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->where('created_at', '>=', $request->from_date);
@@ -58,10 +60,12 @@ class ActivityLogRepository extends BaseRepository implements ActivityLogInterfa
         {
             $data = ActivityLog::
             where(function ($query) use ($request) {
-                $query->whereRelation('user','employee.id', auth()->user()->employee->id);;
+                $query->whereHas('user.employee', function ($subQuery) {
+                    $subQuery->where('id', auth()->user()->employee->id);
+                });
             })
             ->when($request->causer_id != null,function ($q) use($request){
-                return $q->where('causer_id','like', '%'.$request->causer_id.'%');
+                return $q->where('causer_id', $request->causer_id);
             })
             ->when($request->from_date != null,function ($q) use($request){
                 return $q->where('created_at', '>=', $request->from_date);

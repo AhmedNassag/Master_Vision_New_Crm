@@ -12,8 +12,8 @@
 
 @section('content')
 <!--begin::Main-->
-<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-    <div id="print" class="d-flex flex-column flex-column-fluid">
+<div class="app-main flex-column flex-row-fluid" id="print">
+    <div id="" class="d-flex flex-column flex-column-fluid">
         <div id="kt_app_toolbar" class="app-toolbar pt-5 pt-lg-10">
             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack flex-wrap">
                 <div class="app-toolbar-wrapper d-flex flex-stack flex-wrap gap-4 w-100">
@@ -37,7 +37,7 @@
                 <div class="card">
                     <div class="card-header border-0 pt-6 px-lg-0">
                         <!-- Start Search -->
-                        <form id="meeting_search_form" class="not_print form container-fluid" action="{{ route('report.activitySalesReport') }}" method="get" enctype="multipart/form-data">
+                        <form id="meeting_search_form" class="form container-fluid" action="{{ route('report.activitySalesReport') }}" method="get" enctype="multipart/form-data">
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
                                 <div class="row w-100 align-items-center mb-10">
                                     <!-- activity_id -->
@@ -80,7 +80,7 @@
                                     <!-- search submit -->
                                     @can('عرض تقارير مبيعات الأنشظة')
                                         <div class="d-flex align-items-center">
-                                            <input class="not_print btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
+                                            <input class="btn btn-primary mt-10" type="submit" value="{{ trans('main.Search') }}" id="filter" name="filter">
                                         </div>
                                     @endcan
                                 </div>
@@ -139,6 +139,22 @@
                         @if(Request::is('admin/report/activitySalesReport'))
                         <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <button class="btn btn-light-primary m-3 not_print" id="print_Button" onclick="printDiv()"><i class="ki-outline bi bi-printer fs-2"></i> {{ trans('main.Print') }} </button>
+                                <!--begin::Export buttons-->
+                                <div id="kt_ecommerce_report_views_export" class="d-none"></div>
+                                <!--end::Export buttons-->
+                                <!--begin::Export dropdown-->
+                                <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                    <i class="ki-outline ki-exit-up fs-2"></i>{{ trans('main.Export Report') }}</button>
+                                    <!--begin::Menu-->
+                                    <div id="kt_ecommerce_report_views_export_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4" data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="#" class="menu-link px-3" data-kt-ecommerce-export="excel">{{ trans('main.Export as Excel') }}</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                    </div>
+                                    <!--end::Menu-->
+                                <!--end::Export dropdown-->
                                 <!-- pagination -->
                                 {{-- <form method="GET" action="{{ url('admin/report/activitySalesReport') }}" class="not_print">
                                     @foreach (request()->except('perPage') as $key => $value)
@@ -152,8 +168,7 @@
                                     </select>
                                 </form> --}}
                                 <div class="table-responsive">
-                                    <h1 class="text-center text-decoration-underline">{{ trans('main.ActivitySalesReport') }}</h1>
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="data_table">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_report_views_table">
                                         <thead>
                                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">#</th>
@@ -245,4 +260,7 @@
     }
 </script>
 
+
+
+<script src="{{ asset('assets/js/custom/apps/ecommerce/reports/views/views.js') }}"></script>
 @endsection

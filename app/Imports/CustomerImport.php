@@ -117,13 +117,15 @@ class CustomerImport implements ToCollection
                 $contactData['interest_id']       = $this->interestId;
                 $contactData['created_by']        = auth()->user()->context_id;
 
-				$customer = Customer::where('mobile',$contactData['mobile'])->first();
+				// $customer = Customer::where('mobile',$contactData['mobile'])->first();
+				$normalizedIncomingNumber = substr(preg_replace('/\D/', '', $contactData['mobile']), -10);
+                $customer = Customer::whereRaw("SUBSTRING(mobile, -10) = ?", [$normalizedIncomingNumber])->first();
 				if(!$customer)
                 {
                     $data = Customer::create($contactData);
                     //create code
                     $data->update(['code' => $this->createCode($data)]);
-                    
+
                     /*
                     //create invoice
                     $randomNumber = str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
@@ -208,9 +210,9 @@ class CustomerImport implements ToCollection
         $modelClassName = "App\Models\\".$modelClassName;
         return  $modelClassName::firstOrCreate(['name' => trim($excelValue)]);
     }
-    
 
-    
+
+
     public function createCode($customer)
     {
         // Retrieve the branch code from the branch

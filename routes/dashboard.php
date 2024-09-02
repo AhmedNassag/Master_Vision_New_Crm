@@ -28,6 +28,7 @@ use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\IndustryController;
 use App\Http\Controllers\Dashboard\JobTitleController;
+use App\Http\Controllers\Dashboard\WhatsappController;
 use App\Http\Controllers\Dashboard\DepartmentController;
 use App\Http\Controllers\Dashboard\SavedReplyController;
 use App\Http\Controllers\Dashboard\ActivityLogController;
@@ -246,6 +247,9 @@ Route::Group(['prefix' => 'admin', 'middleware' => ['auth','lang','ActivePackage
     Route::post('tickets/{ticket}/assign-agent',[TicketController::class,'assignAgent'])->name('ticket.assign.agent');
     Route::post('tickets/{ticket}/reply',[TicketController::class,'replyToTicket'])->name('ticket.reply');
 
+
+    //tickets
+    Route::get('whatsapp', [WhatsappController::class, 'index'])->name('whatsapp.index');
 
 
     //branch
