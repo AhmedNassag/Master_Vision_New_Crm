@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Ticket;
-use App\Models\Customer;
 use App\Models\Activity;
+use App\Models\Customer;
 use App\Models\SubActivity;
 use Illuminate\Http\Request;
 use App\Services\TicketService;
@@ -40,12 +41,19 @@ class CustomerPortalController extends Controller
     public function tickets()
     {
         try {
-
-            $data = Ticket::where('customer_id', Auth::user()->id)
+            $data = Ticket::where(function ($query) {
+                $query->where('customer_id', Auth::user()->id) // Direct customer
+                    ->orWhereHas('customer', function ($query) {
+                        $query->where('parent_id', Auth::user()->id); // Customer's parent
+                    })
+                    ->orWhereHas('customer.customers', function ($query) {
+                        $query->where('id', Auth::user()->id); // Customer in the customer's 'customers'
+                    });
+            })
             ->with('customer','agent')
+            ->orderBy('id', 'desc')
             ->paginate(config('myConfig.paginationCount'));
             return view('customer-portal.dashboard.tickets',compact('data'));
-
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -63,7 +71,6 @@ class CustomerPortalController extends Controller
     public function postReply(Ticket $ticket,Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'notes' => 'required|string',
             ]);
@@ -72,7 +79,7 @@ class CustomerPortalController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             $service = new TicketService();
-            $service->replyToTicket($ticket,auth()->user(),'customer',$request->notes);
+            $service->replyToTicket($ticket,auth()->user(),'customer',$request->notes,$request->photo);
 
             //send notification
             $ticketRecord = Ticket::findOrFail($ticket->id);
@@ -87,14 +94,12 @@ class CustomerPortalController extends Controller
             if ($notifiable) {
                 $notifiable->notify(new TicketReplyNotification($ticketRecord));
             }
-
             if (!$service) {
                 session()->flash('error');
                 return redirect()->back();
             }
             session()->flash('success');
             return redirect()->back();
-
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -105,7 +110,6 @@ class CustomerPortalController extends Controller
     public function showCreateTicket()
     {
         try {
-
             if(Auth::user()->activity_id != null)
             {
                 $activity       = Activity::find(Auth::user()->activity_id);
@@ -127,11 +131,11 @@ class CustomerPortalController extends Controller
     public function storeTicket(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'interest_id' => 'required|exists:interests,id',
                 'ticket_type' => 'required|string|in:Technical Issue,Inquiry,Request',
                 'notes'       => 'required|string',
+                'photo'       => 'nullable|file'/*|mimes:png,jpg,jpeg,webp*/,
             ]);
             if ($validator->fails()) {
                 session()->flash('error');
@@ -145,6 +149,7 @@ class CustomerPortalController extends Controller
                 'activity_id' => $interest->activity_id,
                 'interest_id' => $interest->id,
                 'description' => $request->notes,
+                'photo'       => $request->photo,
             );
             $ticket = $service->createTicket($ticketData);
             if (!$ticket) {
@@ -153,7 +158,6 @@ class CustomerPortalController extends Controller
             }
             session()->flash('success');
             return redirect()->route('customer.tickets.show',$ticket->id);
-
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }

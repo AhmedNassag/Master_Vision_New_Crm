@@ -2,7 +2,7 @@
 <div class="modal fade" id="add_modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <form class="form" action="{{ route('employeeTarget.store') }}" method="POST" enctype="multipart/form-data">
+            <form class="form" action="{{ route('employeeTarget.store') }}" method="POST" enctype="multipart/form-data" id="add-form">
                 @csrf
                 <div class="modal-header">
                     <h2>{{ trans('main.Add') }} {{ trans('main.EmployeeTarget') }}</h2>
@@ -109,6 +109,14 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="col-lg-4">
+                                        <div class="row mb-5">
+                                            <div class="col-md-12 fv-row">
+                                                <label class="required fs-5 fw-semibold mb-2">{{ trans('main.ContactsTarget') }}</label>
+                                                <input type="text" class="form-control form-control-solid contacts-input" placeholder="{{ trans('main.ContactsTarget') }}" value="0" name="contacts_target[]" />
+                                            </div>
+                                        </div>
+                                    </td>
 
                                 </tr>
 
@@ -178,11 +186,15 @@
                             <label class="required fs-5 fw-semibold mb-2" for="target_meeting">{{ trans('main.Total Calls / Meetings Target') }}* :</label>
                             <input class="form-control form-control-solid calls-input" readonly name="target_meeting" type="number" value="0">
                         </div>
+                        <div class="col-lg-6 fv-row">
+                            <label class="required fs-5 fw-semibold mb-2" for="target_meeting">{{ trans('main.Total Contacts') }}* :</label>
+                            <input class="form-control form-control-solid calls-input" readonly name="target_contact" type="number" value="0">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">{{ trans('main.Close') }}</button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="submitButton" onclick="disableButton()">
                         <span class="indicator-label">{{ trans('main.Confirm') }}</span>
                     </button>
                 </div>
@@ -191,3 +203,32 @@
     </div>
 </div>
 <!--end::Add Modal-->
+
+
+
+{{--
+<script>
+    function disableButton() {
+        document.getElementById('submitButton').disabled = true;
+        document.getElementById('add-form').submit();
+    }
+</script>
+--}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select the form by ID
+        var form = document.getElementById('add-form');
+
+        // Listen for the form's submit event
+        form.addEventListener('submit', function (event) {
+            // Select the button inside the form
+            var submitButton = document.getElementById('submitButton');
+
+            // Disable the button to prevent multiple clicks
+            submitButton.disabled = true;
+
+            // Optional: Change button text or add loading indicator
+            submitButton.innerHTML = '<span class="indicator-label">جاري الحفظ</span>';
+        });
+    });
+</script>

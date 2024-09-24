@@ -490,44 +490,39 @@ class ReportController extends Controller
     public function employeeSalesReport(Request $request)
     {
         try {
-            if($request->branch_id)
+            if(Auth::user()->roles_name[0] == "Admin")
             {
-                $employees = Employee::hidden()->when($request->branch_id, function ($query) use ($request) {
-                    return $query->where('branch_id', $request->branch_id);
-                })->get();
+                $employees = Employee::hidden()
+                ->when($request->branch_id != null,function ($q) use($request){
+                    return $q->where('branch_id',$request->branch_id);
+                })
+                ->when($request->employee_id != null,function ($q) use($request){
+                    return $q->where('id',$request->employee_id);
+                })
+                ->get();
+            }
+            else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
+            {
+                $employees = Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)
+                ->when($request->employee_id != null,function ($q) use($request){
+                    return $q->where('id',$request->employee_id);
+                })
+                ->get();
             }
             else
             {
-                if(Auth::user()->roles_name[0] == "Admin")
-                {
-                    $employees = Employee::hidden()->get();
-                }
-                else if(Auth::user()->roles_name[0] != "Admin" && Auth::user()->employee->has_branch_access == 1)
-                {
-                    $employees = Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get();
-                }
-                else
-                {
-                    $employees = Employee::hidden()->where('id', auth()->user()->employee->id)->get();
-                }
+                $employees = Employee::hidden()->where('id', auth()->user()->employee->id)->get();
             }
+
             $data = [];
             foreach ($employees as $index=>$employee)
             {
-                // Get the target for the current employee and year
-                $target = EmployeeTarget::where('employee_id', $employee->id)
+                /****************************** start target_amount ******************************/
+                $target_amount = EmployeeTarget::where('employee_id', $employee->id)
                     ->where('month', Carbon::create($request->month)->format('M-Y'))
                     ->sum('target_amount');
 
-                // $targetCalls = Employee_target::where('employee_id', $employee->id)
-                //     ->where('month', $request->month)
-                //     ->sum('target_calls');
-                // $actualCalls = Meeting::where('employee_id', $employee->id)
-                //     ->where('month', $request->month)
-                //     ->sum('target_calls');
-
-                // Get the actual total amount for invoices created by the current employee and year
-                $actual = Invoice::where('created_by', $employee->id)
+                $actual_amount = Invoice::where('created_by', $employee->id)
                     ->where(DB::raw('DATE_FORMAT(invoice_date, "%Y-%m")'), $request->month)
                     ->sum('total_amount');
 
@@ -537,23 +532,67 @@ class ReportController extends Controller
                     ->count();
 
                 // Calculate the margin percentage
-                $margin = ($actual > 0 && $target > 0) ? ($actual / $target) * 100 : 0;
+                $margin_amount = ($actual_amount > 0 && $target_amount > 0) ? ($actual_amount / $target_amount) * 100 : 0;
+                /****************************** end target_amount ******************************/
+
+
+
+                /****************************** start calls_with_repeater ******************************/
+                $actual_calls_with_repeater = Meeting::where('created_by', $employee->id)
+                    ->where('meeting_date', 'LIKE', $request->month . '%')
+                    ->count();
+
+                $target_calls_with_repeater = EmployeeTarget::where('employee_id', $employee->id)
+                    ->where('month', Carbon::create($request->month)->format('M-Y'))
+                    ->sum('target_meeting');
+
+                // Calculate the margin_calls_with_repeater percentage
+                $margin_calls_with_repeater = ($actual_calls_with_repeater > 0 && $target_calls_with_repeater > 0) ? ($actual_calls_with_repeater / $target_calls_with_repeater) * 100 : 0;
+                /****************************** end calls_with_repeater ******************************/
+
+
+
+                /****************************** start target_calls_without_repeater ******************************/
+                $target_calls_without_repeater = EmployeeTarget::where('employee_id', $employee->id)
+                    ->where('month', Carbon::create($request->month)->format('M-Y'))
+                    ->sum('target_contact');
+
+                $actual_calls_without_repeater = Meeting::where('created_by', $employee->id)
+                    ->where('meeting_date', 'LIKE', $request->month . '%')
+                    ->distinct('contact_id')
+                    ->count();
+
+                // Calculate the margin_calls_without_repeater percentage
+                $margin_calls_without_repeater = ($actual_calls_without_repeater > 0 && $target_calls_without_repeater > 0) ? ($actual_calls_without_repeater / $target_calls_without_repeater) * 100 : 0;
+                /****************************** end calls_without_repeater ******************************/
+
+
 
                 // Create a data entry for the report
                 $data[] = [
-                    'employee'        => $employee->name, // Replace 'name' with the actual column name in your Employee model
-                    'target'          => $target,
-                    'actual'          => $actual,
-                    'customers_count' => $uniqueCustomerCount,
-                    'margin'          => number_format($margin, 2) . "%",
-                    'branch'          => Branch::find($employee->branch_id)->name ?? "", // You can add the year if needed
+                    'branch'                        => Branch::find($employee->branch_id)->name ?? "", // You can add the year if needed
+                    'employee'                      => $employee->name,
+
+                    'target_amount'                 => $target_amount,
+                    'actual_amount'                 => $actual_amount,
+                    'margin_amount'                 => number_format($margin_amount, 2) . "%",
+                    'customers_count'               => $uniqueCustomerCount,
+
+                    'target_calls_with_repeater'    => $target_calls_with_repeater,
+                    'actual_calls_with_repeater'    => $actual_calls_with_repeater,
+                    'margin_calls_with_repeater'    => number_format($margin_calls_with_repeater, 2) . "%",
+
+                    'target_calls_without_repeater' => $target_calls_without_repeater,
+                    'actual_calls_without_repeater' => $actual_calls_without_repeater,
+                    'margin_calls_without_repeater' => number_format($margin_calls_without_repeater, 2) . "%",
                 ];
             }
 
             return view('dashboard.report.employeeSales',compact('data'))
             ->with([
-                'month'     => $request->month,
-                'branch_id' => $request->branch_id,
+                'month'       => $request->month,
+                'branch_id'   => $request->branch_id,
+                'employee_id' => $request->employee_id,
             ]);
 
         } catch (\Exception $e) {

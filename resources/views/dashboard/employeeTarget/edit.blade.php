@@ -145,12 +145,17 @@
                                     <!-- target_amount -->
                                     <div id="activity_id" class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2" for="target_amount">{{ trans('main.Total Amount') }}</label>
-                                        <input class="form-control form-control-solid calls-input" readonly name="target_amount" type="number" value="{{ @$employee_target->target_amount }}">
+                                        <input class="form-control form-control-solid amount-input" readonly name="target_amount" type="number" value="{{ @$employee_target->target_amount }}">
                                     </div>
-                                    <!-- interest_id -->
+                                    <!-- target_meeting -->
                                     <div id="interest_id" class="col-md-6 fv-row">
                                         <label class="required fs-5 fw-semibold mb-2" for="target_meeting">{{ trans('main.Total Calls') }}</label>
                                         <input class="form-control form-control-solid calls-input" readonly name="target_meeting" type="number" value="{{ @$employee_target->target_amount }}">
+                                    </div>
+                                    <!-- target_contact -->
+                                    <div id="contact_id" class="col-md-6 fv-row">
+                                        <label class="required fs-5 fw-semibold mb-2" for="target_contact">{{ trans('main.Total Contacts') }}</label>
+                                        <input class="form-control form-control-solid contacts-input" readonly name="target_contact" type="number" value="{{ @$employee_target->target_contact }}">
                                     </div>
                                 </div>
                             <!-- </div> -->
@@ -273,6 +278,14 @@
                                 </div>
                             </div>
                         </td>
+                        <td class="col-4">
+                            <div class="row mb-5">
+                                <div class="col-md-12 fv-row">
+                                    <label class="required fs-5 fw-semibold mb-2">{{ trans('main.ContactsTarget') }}</label>
+                                    <input type="text" class="form-control form-control-solid contacts-input" placeholder="{{ trans('main.ContactsTarget') }}" value="{{ @$target->contacts_target }}" name="contacts_target[]" />
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
             `;
@@ -306,6 +319,14 @@
                                 <div class="col-md-12 fv-row">
                                     <label class="required fs-5 fw-semibold mb-2">{{ trans('main.CallsTarget') }}</label>
                                     <input type="text" class="form-control form-control-solid calls-input" placeholder="{{ trans('main.CallsTarget') }}" value="0" name="calls_target[]" />
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row mb-5">
+                                <div class="col-md-12 fv-row">
+                                    <label class="required fs-5 fw-semibold mb-2">{{ trans('main.ContactsTarget') }}</label>
+                                    <input type="text" class="form-control form-control-solid contacts-input" placeholder="{{ trans('main.ContactsTarget') }}" value="0" name="contacts_target[]" />
                                 </div>
                             </div>
                         </td>
@@ -378,20 +399,24 @@
                 var sumCalls  = 0;
 
                 $('#activity-table tbody tr').each(function() {
-                    var amount = parseInt($(this).find('input[name="amount_target[]"]').val()) || 0;
-                    var calls = parseInt($(this).find('input[name="calls_target[]"]').val()) || 0;
+                    var amount   = parseInt($(this).find('input[name="amount_target[]"]').val()) || 0;
+                    var calls    = parseInt($(this).find('input[name="calls_target[]"]').val()) || 0;
+                    var contacts = parseInt($(this).find('input[name="contacts_target[]"]').val()) || 0;
 
-                    sumAmount += amount;
-                    sumCalls += calls;
+                    sumAmount   += amount;
+                    sumCalls    += calls;
+                    sumContacts += contacts;
                 });
 
                 $('input[name="target_amount"]').val(sumAmount);
                 $('input[name="target_meeting"]').val(sumCalls);
+                $('input[name="target_contact"]').val(sumContacts);
             }
 
 
             $(document).on('keyup','.amount-input',updateSums);
             $(document).on('keyup','.calls-input',updateSums);
+            $(document).on('keyup','.contacts-input',updateSums);
 
 
         });

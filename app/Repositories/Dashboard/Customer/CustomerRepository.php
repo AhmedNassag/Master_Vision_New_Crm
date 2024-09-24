@@ -23,7 +23,6 @@ use App\Models\ReorderReminder;
 use App\Models\Attachment;
 use App\Models\Invoice;
 use App\Models\Major;
-use App\Services\PointAdditionService;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -106,6 +105,12 @@ class CustomerRepository implements CustomerInterface
                 return $q->whereHas('tags', function ($query) use ($request) {
                     $query->where('tag_id', $request->input('tag_id'));
                 });
+            })
+            ->when($request->have_related_contacts != null && $request->have_related_contacts === '1',function ($q) use($request){
+                return $q->whereHas('contacts');
+            })
+            ->when($request->have_related_contacts != null && $request->have_related_contacts === '0',function ($q) use($request){
+                return $q->whereDoesntHave('contacts');
             })
             ->orderBy('id', 'desc')
             ->paginate($perPage)->appends(request()->query());
@@ -190,6 +195,12 @@ class CustomerRepository implements CustomerInterface
                     $query->where('tag_id', $request->input('tag_id'));
                 });
             })
+            ->when($request->have_related_contacts != null && $request->have_related_contacts === '1',function ($q) use($request){
+                return $q->whereHas('contacts');
+            })
+            ->when($request->have_related_contacts != null && $request->have_related_contacts === '0',function ($q) use($request){
+                return $q->whereDoesntHave('contacts');
+            })
             ->orderBy('id', 'desc')
             ->paginate($perPage)->appends(request()->query());
         }
@@ -273,37 +284,44 @@ class CustomerRepository implements CustomerInterface
                     $query->where('tag_id', $request->input('tag_id'));
                 });
             })
+            ->when($request->have_related_contacts != null && $request->have_related_contacts === '1',function ($q) use($request){
+                return $q->whereHas('contacts');
+            })
+            ->when($request->have_related_contacts != null && $request->have_related_contacts === '0',function ($q) use($request){
+                return $q->whereDoesntHave('contacts');
+            })
             ->orderBy('id', 'desc')
             ->paginate($perPage)->appends(request()->query());
         }
 
         return view('dashboard.customer.index',compact('data'))
         ->with([
-            'perPage'           => $perPage,
-            'name'              => $request->name,
-            'mobile'            => $request->mobile,
-            'birth_date'        => $request->birth_date,
-            'national_id'       => $request->national_id,
-            'gender'            => $request->gender,
-            'religion'          => $request->religion,
-            'marital_status'    => $request->marital_status,
-            'contact_source_id' => $request->contact_source_id,
-            'activity_id'       => $request->activity_id,
-            'interest_id'       => $request->interest_id,
-            'service_id'        => $request->service_id,
-            'branch_id'         => $request->branch_id,
-            'created_by'        => $request->created_by,
-            'employee_id'       => $request->employee_id,
-            'nationality_id'    => $request->nationality_id,
-            'city_id'           => $request->city_id,
-            'area_id'           => $request->area_id,
-            'industry_id'       => $request->industry_id,
-            'major_id'          => $request->major_id,
-            'is_active'         => $request->is_active,
-            'status'            => $request->status,
-            'tag_id'            => $request->tag_id,
-            'from_date'         => $request->from_date,
-            'to_date'           => $request->to_date,
+            'perPage'               => $perPage,
+            'name'                  => $request->name,
+            'mobile'                => $request->mobile,
+            'birth_date'            => $request->birth_date,
+            'national_id'           => $request->national_id,
+            'gender'                => $request->gender,
+            'religion'              => $request->religion,
+            'marital_status'        => $request->marital_status,
+            'contact_source_id'     => $request->contact_source_id,
+            'activity_id'           => $request->activity_id,
+            'interest_id'           => $request->interest_id,
+            'service_id'            => $request->service_id,
+            'branch_id'             => $request->branch_id,
+            'created_by'            => $request->created_by,
+            'employee_id'           => $request->employee_id,
+            'nationality_id'        => $request->nationality_id,
+            'city_id'               => $request->city_id,
+            'area_id'               => $request->area_id,
+            'industry_id'           => $request->industry_id,
+            'major_id'              => $request->major_id,
+            'is_active'             => $request->is_active,
+            'status'                => $request->status,
+            'tag_id'                => $request->tag_id,
+            'have_related_contacts' => $request->have_related_contacts,
+            'from_date'             => $request->from_date,
+            'to_date'               => $request->to_date,
         ]);
     }
 

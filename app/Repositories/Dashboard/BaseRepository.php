@@ -21,7 +21,7 @@ abstract class BaseRepository
         try {
             $validated = $request->validated();
             $inputs    = $request->all();
-            $data      = $this->model::create($inputs);
+            $data      = $this->model::create($validated);
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
@@ -45,7 +45,7 @@ abstract class BaseRepository
                 session()->flash('error');
                 return redirect()->back();
             }
-            $data->update($inputs);
+            $data->update($validated);
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();

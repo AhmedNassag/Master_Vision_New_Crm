@@ -40,9 +40,8 @@ class Customer extends Authenticatable implements JWTSubject
             (
                 $model->invoices()->count() > 0       ||
                 $model->points()->count() > 0         ||
-                $model->pointHistories()->count() > 0 ||
-                $model->reorderReminder() > 0         ||
-                $model->reminders()->count() > 0      ||
+                // $model->reorderReminder() > 0         ||
+                // $model->reminders()->count() > 0      ||
                 $model->contacts()->count() > 0       ||
                 $model->customers()->count() > 0      ||
                 $model->tickets()->count() > 0        ||

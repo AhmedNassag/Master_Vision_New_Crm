@@ -169,7 +169,8 @@
                                             <th class="text-center">{{ trans('main.Employee') }}</th>
                                             <th class="text-center">{{ trans('main.Month') }}</th>
                                             <th class="text-center">{{ trans('main.AmountTarget') }}</th>
-                                            <th class="text-center ">{{ trans('main.CallsTarget') }}</th>
+                                            <th class="text-center">{{ trans('main.CallsTarget') }}</th>
+                                            <th class="text-center">{{ trans('main.ContactsTarget') }}</th>
                                             <th class="text-center min-w-70px">{{ trans('main.Actions') }}</th>
                                         </tr>
                                     </thead>
@@ -184,6 +185,7 @@
                                                     <td class="text-center">{{ @$item->month }}</td>
                                                     <td class="text-center">{{ number_format(@$item->target_amount,0) }}</td>
                                                     <td class="text-center">{{ @$item->target_meeting }}</td>
+                                                    <td class="text-center">{{ @$item->target_contact }}</td>
                                                     <td class="text-center">
                                                         <a href="#" class="btn btn-sm btn-light-primary btn-flex btn-center btn-active-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                             {{ trans('main.Actions') }}
@@ -421,6 +423,14 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td class="col-lg-3">
+                                                    <div class="row mb-5">
+                                                        <div class="col-md-12 fv-row">
+                                                            <label class="required fs-5 fw-semibold mb-2">{{ trans('main.ContactsTarget') }}</label>
+                                                            <input type="text" class="form-control form-control-solid contacts-input" placeholder="{{ trans('main.ContactsTarget') }}" value="0" name="contacts_target[]" />
+                                                        </div>
+                                                    </div>
+                                                </td>
                             <td class="col-lg-2">
                                 <button class="btn btn-danger mt-5" onclick="deleteProduct(this)">Delete</button>
                             </td>
@@ -481,21 +491,26 @@
         function updateSums() {
             var sumAmount = 0;
             var sumCalls = 0;
+            var sumContacts = 0;
 
             $('#activity-table tbody tr').each(function() {
                 var amount = parseInt($(this).find('input[name="amount_target[]"]').val()) || 0;
                 var calls = parseInt($(this).find('input[name="calls_target[]"]').val()) || 0;
+                var contacts = parseInt($(this).find('input[name="contacts_target[]"]').val()) || 0;
 
                 sumAmount += amount;
                 sumCalls += calls;
+                sumContacts += contacts;
             });
 
             $('input[name="target_amount"]').val(sumAmount);
             $('input[name="target_meeting"]').val(sumCalls);
+            $('input[name="target_contact"]').val(sumContacts);
         }
 
         $(document).on('keyup', '.amount-input', updateSums);
         $(document).on('keyup', '.calls-input', updateSums);
+        $(document).on('keyup', '.contacts-input', updateSums);
 
     });
 </script>

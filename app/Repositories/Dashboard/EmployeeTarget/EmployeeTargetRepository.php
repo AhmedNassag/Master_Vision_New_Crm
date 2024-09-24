@@ -112,20 +112,24 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
                 'employee_id'    => $request->employee_id,
                 'target_amount'  => $request->target_amount,
                 'target_meeting' => $request->target_meeting,
+                'target_contact' => $request->target_contact,
             ]);
             //insert data in target
-            $activityIds   = $request->activity_id;
-			$amountTargets = $request->amount_target;
-			$callsTargets  = $request->calls_target;
+            $activityIds     = $request->activity_id;
+			$amountTargets   = $request->amount_target;
+			$callsTargets    = $request->calls_target;
+			$contactsTargets = $request->contacts_target;
             for ($i = 0; $i < count($activityIds); $i++)
             {
-				$activityId   = $activityIds[$i];
-				$amountTarget = $amountTargets[$i];
-				$callsTarget  = $callsTargets[$i];
+				$activityId     = $activityIds[$i];
+				$amountTarget   = $amountTargets[$i];
+				$callsTarget    = $callsTargets[$i];
+				$contactsTarget = $contactsTargets[$i];
 				$target       = Target::create([
 					'activity_id'        => $activityId,
 					'amount_target'      => $amountTarget,
 					'calls_target'       => $callsTarget,
+					'contacts_target'    => $contactsTarget,
 					'employee_target_id' => $employeeTarget->id,
 					'employee_id'        => $request->employee_id,
                 ]);
@@ -185,20 +189,24 @@ class EmployeeTargetRepository implements EmployeeTargetInterface
                 'employee_id'    => $request->employee_id,
                 'target_amount'  => $request->target_amount,
                 'target_meeting' => $request->target_meeting,
+                'target_contact' => $request->target_contact,
             ]);
             //insert data in target
-            $activityIds   = $request->activity_id;
-			$amountTargets = $request->amount_target;
-			$callsTargets  = $request->calls_target;
+            $activityIds     = $request->activity_id;
+			$amountTargets   = $request->amount_target;
+			$callsTargets    = $request->calls_target;
+			$contactsTargets = $request->contacts_target;
             for ($i = 0; $i < count($activityIds); $i++)
             {
-				$activityId   = $activityIds[$i];
-				$amountTarget = $amountTargets[$i];
-				$callsTarget  = $callsTargets[$i];
+				$activityId     = $activityIds[$i];
+				$amountTarget   = $amountTargets[$i];
+				$callsTarget    = $callsTargets[$i];
+				$contactsTarget = $contactsTargets[$i];
 				$target->update([
 					'activity_id'        => $activityId,
 					'amount_target'      => $amountTarget,
 					'calls_target'       => $callsTarget,
+					'contacts_target'    => $contactsTarget,
 					'employee_target_id' => $employeeTarget->id,
 					'employee_id'        => $request->employee_id,
                 ]);

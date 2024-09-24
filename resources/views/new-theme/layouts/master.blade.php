@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 Author: Keenthemes
-Product Name: Metronic
+Product Name: Master Vision
 Product Version: 8.2.2
 Purchase: https://1.envato.market/EA4JP
 Website: http://www.keenthemes.com

@@ -65,7 +65,7 @@
     </div>
     <!-- /Page Header -->
 
-    <form class="form" action="{{ route('customer.tickets.store') }}" method="POST" enctype="multipart/form-data">
+    <form class="form" action="{{ route('customer.tickets.store') }}" method="POST" enctype="multipart/form-data" id="add-form">
         @csrf
         <div class="modal-body py-10 px-lg-17">
             <!-- <div class="scroll-y me-n7 pe-7" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_new_address_header" data-kt-scroll-wrappers="#kt_modal_new_address_scroll" data-kt-scroll-offset="300px"> -->
@@ -99,11 +99,16 @@
                         <label class="fs-5 fw-semibold mb-2">{{ trans('main.Description') }}</label>
                         <textarea id="replyTextNode" type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Enter Your Message Here') }}" value="{{ old('notes') }}" name="notes" rows="5"></textarea>
                     </div>
+                    <!-- photo -->
+                    <div class="col-md-12 fv-row mt-3">
+                        <label class="fs-5 fw-semibold mb-2">{{ trans('main.Photo') }}</label>
+                        <input type="file" class="form-control form-control-solid" value="{{ old('photo') }}" name="photo" />
+                    </div>
                 </div>
             <!-- </div> -->
         </div>
         <div class="modal-footer flex-center">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" id="submitButton">
                 <span class="indicator-label">{{ trans('main.Confirm') }}</span>
             </button>
         </div>
@@ -115,6 +120,35 @@
 <!-- page-wrapper closed -->
 </div>
 <!-- /Main Wrapper -->
+
+
+
+        {{--
+        <script>
+            function disableButton() {
+                document.getElementById('submitButton').disabled = true;
+                document.getElementById('add-form').submit();
+            }
+        </script>
+        --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Select the form by ID
+                var form = document.getElementById('add-form');
+
+                // Listen for the form's submit event
+                form.addEventListener('submit', function (event) {
+                    // Select the button inside the form
+                    var submitButton = document.getElementById('submitButton');
+
+                    // Disable the button to prevent multiple clicks
+                    submitButton.disabled = true;
+
+                    // Optional: Change button text or add loading indicator
+                    submitButton.innerHTML = '<span class="indicator-label">جاري الحفظ</span>';
+                });
+            });
+        </script>
 @endsection
 
 

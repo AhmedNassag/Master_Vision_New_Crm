@@ -18,7 +18,9 @@ use App\Imports\CustomersImport;
 use App\Models\ContactCompletion;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\CustomerLoginDetailsMail;
 use App\Services\PointAdditionService;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Dashboard\Customer\StoreRequest;
@@ -494,7 +496,6 @@ class CustomerController extends Controller
     public function makePassword(Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'email'    => 'required|email|unique:customers,email,'.$request->id,
                 'password' => 'required',
@@ -514,6 +515,7 @@ class CustomerController extends Controller
                 'email'    => $request->email,
                 'password' => $request->password,
             ]);
+            Mail::to($request->email)->send(new CustomerLoginDetailsMail($request->email, $request->password));
             session()->flash('success');
             return redirect()->back();
 

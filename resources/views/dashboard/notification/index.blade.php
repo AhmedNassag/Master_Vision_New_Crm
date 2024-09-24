@@ -257,28 +257,28 @@
         });
     </script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('select[name="dept"]').on('change', function() {
-            var dept = $(this).val();
-            if (dept) {
-                $.ajax({
-                    url: "{{URL::to('admin/employeeByDept')}}/" + dept,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $('select[name="employee_ids[]"]').empty();
-                        $('select[name="employee_ids[]"]').append('<option class="form-control" value="" selected>All</option>');
-                        $.each(data, function(key, value) {
-                            $('select[name="employee_ids[]"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
-                        });
-                    }
-                });
-            } else {
-                $('select[name="employee_ids[]"]').empty();
-                console.log('not work')
-            }
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('select[name="dept"]').on('change', function() {
+                var dept = $(this).val();
+                if (dept) {
+                    $.ajax({
+                        url: "{{URL::to('admin/employeeByDept')}}/" + dept,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="employee_ids[]"]').empty();
+                            $('select[name="employee_ids[]"]').append('<option class="form-control" value="" selected>All</option>');
+                            $.each(data, function(key, value) {
+                                $('select[name="employee_ids[]"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="employee_ids[]"]').empty();
+                    console.log('not work')
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection

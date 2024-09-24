@@ -132,7 +132,7 @@
                                             @if(@$customer->media)
                                                 <img src="{{ asset('attachments/customer/'.@$customer->media->file_name) }}" alt="image" />
                                             @else
-                                                <img src="assets/media/avatars/blank.png" alt="image" />
+                                                <img src="{{ asset('assets/media/avatars/blank.png') }}" alt="image" />
                                             @endif
                                         </div>
                                         <!--end::Avatar-->
@@ -478,6 +478,14 @@
                                                                     <th class="text-start">{{ trans('main.Description') }}</th>
                                                                     <td class="text-start">{{ @$ticket->description }}</td>
                                                                 </tr>
+                                                                @if($ticket->media)
+                                                                <tr>
+                                                                    <th class="text-start">{{ trans('main.Photo') }}</th>
+                                                                    <td class="text-start">
+                                                                        <img src="{{ asset('attachments/ticket/'.@$ticket->media->file_name) }}" alt="image" width="100%" height="100%"/>
+                                                                    </td>
+                                                                </tr>
+                                                                @endif
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -505,8 +513,18 @@
                                                         <div class="timeline-body">
                                                             {{ @$ticket->description }}
                                                         </div>
+                                                        @if($ticket->media)
+                                                            <div class="timeline-body pt-5">
+                                                                <img src="{{ asset('attachments/ticket/'.@$ticket->media->file_name) }}" alt="image" width="100%" height="100%"/>
+                                                            </div>
+                                                        @endif
+                                                        <!--end::Preview media-->
                                                     </div>
                                                 </li>
+                                                <hr>
+                                                <hr>
+                                                <h3 class="text-center">{{ trans('main.Replies') }}</h3>
+                                                <hr>
                                                 <hr>
                                                 @foreach ($ticket->logs()->orderBy('id','desc')->get() as $log)
                                                     <li>
@@ -529,6 +547,11 @@
                                                             <div class="timeline-body">
                                                                 {!! $log->comment !!}
                                                             </div>
+                                                            @if($log->media)
+                                                            <div class="timeline-body pt-5">
+                                                                <img src="{{ asset('attachments/communicationLog/'.@$log->media->file_name) }}" alt="image" width="100%" height="100%"/>
+                                                            </div>
+                                                            @endif
                                                         </div>
                                                     </li>
                                                     <hr>

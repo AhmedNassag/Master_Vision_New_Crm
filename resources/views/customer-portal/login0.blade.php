@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 Author: Keenthemes
-Product Name: Metronic - Bootstrap 5 HTML, VueJS, React, Angular & Laravel Admin Dashboard Theme
+Product Name: Master Vision - Bootstrap 5 HTML, VueJS, React, Angular & Laravel Admin Dashboard Theme
 Purchase: https://1.envato.market/EA4JP
 Website: http://www.keenthemes.com
 Contact: support@keenthemes.com

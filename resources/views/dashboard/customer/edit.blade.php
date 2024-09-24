@@ -147,13 +147,17 @@
                             <!-- mobile -->
                             <div class="col-md-6 fv-row mt-3">
                                 <label class="required fs-5 fw-semibold mb-2"> {{ trans('main.Mobile') }} </label>
-                                <input id="mobile_whatsapp" name="mobile_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled {{ @$customer->mobile == @$customer->whats_app_mobile ? 'checked' : '' }}> هل هو رقم الواتس
+                                <span class="d-none">
+                                    <input id="mobile_whatsapp" name="mobile_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled {{ @$customer->mobile == @$customer->whats_app_mobile ? 'checked' : '' }}> هل هو رقم الواتس
+                                </span>
                                 <input type="text" id="mobile" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ @$customer->mobile, old('mobile') }}" name="mobile" />
                             </div>
                             <!-- mobile2 -->
                             <div class="col-md-6 fv-row mt-3">
                                 <label class="fs-5 fw-semibold mb-2">{{ trans('main.Mobile2') }}</label>
-                                <input id="mobile2_whatsapp" name="mobile2_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled {{ @$customer->mobile2 == @$customer->whats_app_mobile ? 'checked' : '' }}> هل هو رقم الواتس
+                                <span class="d-none">
+                                    <input id="mobile2_whatsapp" name="mobile2_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled {{ @$customer->mobile2 == @$customer->whats_app_mobile ? 'checked' : '' }}> هل هو رقم الواتس
+                                </span>
                                 <input type="text" id="mobile2" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile2') }}" value="{{ @$customer->mobile2, old('mobile2') }}" name="mobile2" />
                             </div>
                             <!-- whats_app_mobile -->

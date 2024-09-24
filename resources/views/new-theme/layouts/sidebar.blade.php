@@ -3070,7 +3070,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/base/utilities" target="_blank">
+                        <a class="menu-link" href="https://preview.keenthemes.com/html/Master Vision/docs/base/utilities" target="_blank">
                             <span class="menu-icon">
                                 <i class="ki-outline ki-rocket fs-2"></i>
                             </span>
@@ -3082,7 +3082,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="https://preview.keenthemes.com/metronic8/demo42/layout-builder.html">
+                        <a class="menu-link" href="https://preview.keenthemes.com/Master Vision8/demo42/layout-builder.html">
                             <span class="menu-icon">
                                 <i class="ki-outline ki-abstract-13 fs-2"></i>
                             </span>
@@ -3094,7 +3094,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs" target="_blank">
+                        <a class="menu-link" href="https://preview.keenthemes.com/html/Master Vision/docs" target="_blank">
                             <span class="menu-icon">
                                 <i class="ki-outline ki-abstract-26 fs-2"></i>
                             </span>
@@ -3106,7 +3106,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/getting-started/changelog" target="_blank">
+                        <a class="menu-link" href="https://preview.keenthemes.com/html/Master Vision/docs/getting-started/changelog" target="_blank">
                             <span class="menu-icon">
                                 <i class="ki-outline ki-code fs-2"></i>
                             </span>

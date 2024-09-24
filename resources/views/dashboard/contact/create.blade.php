@@ -140,13 +140,17 @@
                                     <!-- mobile -->
                                     <div class="col-md-6 fv-row mt-3">
                                         <label class="required fs-5 fw-semibold mb-2"> {{ trans('main.Mobile') }} </label>
-                                        <input id="mobile_whatsapp" name="mobile_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled> هل هو رقم الواتس
+                                        <span class="d-none">
+                                            <input id="mobile_whatsapp" name="mobile_whatsapp_checkbox" class="form-check-input d-none" type="checkbox" disabled> هل هو رقم الواتس
+                                        </span>
                                         <input type="text" id="mobile" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile') }}" value="{{ old('mobile') }}" name="mobile" />
                                     </div>
                                     <!-- mobile2 -->
                                     <div class="col-md-6 fv-row mt-3">
                                         <label class="fs-5 fw-semibold mb-2">{{ trans('main.Mobile2') }}</label>
-                                        <input id="mobile2_whatsapp" name="mobile2_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled> هل هو رقم الواتس
+                                        <span class="d-none">
+                                            <input id="mobile2_whatsapp" name="mobile2_whatsapp_checkbox" class="form-check-input" type="checkbox" disabled> هل هو رقم الواتس
+                                        </span>
                                         <input type="text" id="mobile2" class="form-control form-control-solid" placeholder="{{ trans('main.Mobile2') }}" value="{{ old('mobile2') }}" name="mobile2" />
                                     </div>
                                     <!-- whats_app_mobile -->
@@ -317,13 +321,6 @@
                             </button>
                         </div>
                     </form>
-                    <script>
-                        function disableButton() {
-                            document.getElementById('submitButton').disabled = true;
-                            document.getElementById('contact-add-form').submit();
-                        }
-                    </script>
-
                 </div>
                 <!-- content container-fluid closed -->
             </div>
@@ -335,6 +332,35 @@
 
 
 @section('js')
+
+
+
+    {{--
+    <script>
+        function disableButton() {
+            document.getElementById('submitButton').disabled = true;
+            document.getElementById('add-form').submit();
+        }
+    </script>
+    --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Select the form by ID
+            var form = document.getElementById('contact-add-form');
+
+            // Listen for the form's submit event
+            form.addEventListener('submit', function (event) {
+                // Select the button inside the form
+                var submitButton = document.getElementById('submitButton');
+
+                // Disable the button to prevent multiple clicks
+                submitButton.disabled = true;
+
+                // Optional: Change button text or add loading indicator
+                submitButton.innerHTML = '<span class="indicator-label">جاري الحفظ</span>';
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('select[name="activity_id"]').on('change',function(){

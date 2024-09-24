@@ -332,7 +332,7 @@ class CustomerController extends Controller
             $validator = Validator::make($request->all(), [
                 // 'auth_id'             => 'required|exists:users,id',
                 'name'                => 'required|string',
-                'mobile'              => 'required|numeric|unique:customers,mobile,NULL,id,deleted_at,NULL',
+                'mobile'              => 'required|numeric|regex:/^\d{11,}$/|unique:customers,mobile,NULL,id,deleted_at,NULL',
                 'national_id'         => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL',
                 'contact_source_id'   => 'required|integer|exists:contact_sources,id',
                 'activity_id'         => 'required|integer|exists:activates,id',
@@ -446,7 +446,7 @@ class CustomerController extends Controller
             $validator = Validator::make($request->all(), [
                 // 'auth_id'             => 'required|exists:users,id',
                 'name'                => 'required|string',
-                'mobile'              => 'required|numeric|unique:customers,mobile,'.$request->id,
+                'mobile'              => 'required|numeric|regex:/^\d{11,}$/|unique:customers,mobile,'.$request->id,
                 'national_id'         => 'nullable|numeric|unique:customers,national_id,'.$request->id,
                 'contact_source_id'   => 'required|integer|exists:contact_sources,id',
                 'activity_id'         => 'required|integer|exists:activates,id',
@@ -556,7 +556,7 @@ class CustomerController extends Controller
                 // 'auth_id'             => 'required|exists:users,id',
                 'parent_id'           => 'required|exists:customers,id',
                 'name'                => 'required|string',
-                'mobile'              => 'required|numeric|unique:customers,mobile,NULL,id,deleted_at,NULL',
+                'mobile'              => 'required|numeric|regex:/^\d{11,}$/|unique:customers,mobile,NULL,id,deleted_at,NULL',
                 'national_id'         => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL',
                 'contact_source_id'   => 'required|integer|exists:contact_sources,id',
                 'activity_id'         => 'required|integer|exists:activates,id',

@@ -32,6 +32,8 @@ class PointsCalculationService
         return $points;
     }
 
+
+
     public function getPointsSetting($activityId, $subActivityId)
     {
         $query = PointSetting::query();
@@ -58,6 +60,8 @@ class PointsCalculationService
         return $setting;
     }
 
+
+
     public function getGeneralPointsSetting()
     {
         // Retrieve general settings when both activity_id and sub_activity_id are null
@@ -67,10 +71,11 @@ class PointsCalculationService
     }
 
 
+
     public function getPointsValue($customer_id)
     {
         $points = Point::where('customer_id',$customer_id)->get();
-        $value = 0;
+        $value  = 0;
         foreach($points as $point)
         {
             $pointsSetting = $this->getPointsSetting($point->activity_id, $point->sub_activity_id);
@@ -81,9 +86,9 @@ class PointsCalculationService
             }
             if($pointsSetting)
             {
-                $pointsCount = $point->points;
-                $valuePerOnePoint = $pointsSetting->sales_conversion_rate/$pointsSetting->points;
-                $value += $pointsCount*$valuePerOnePoint;
+                $pointsCount      = $point->points;
+                $valuePerOnePoint = $pointsSetting->sales_conversion_rate / $pointsSetting->points;
+                $value            += $pointsCount*$valuePerOnePoint;
             }
         }
         return $value;

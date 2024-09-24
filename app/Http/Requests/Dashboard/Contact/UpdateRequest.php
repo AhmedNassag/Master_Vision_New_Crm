@@ -33,7 +33,7 @@ class UpdateRequest extends FormRequest
                 \Illuminate\Validation\Rule::unique('contacts', 'email')->whereNull('deleted_at')->ignore(request()->id),
             ],
             'mobile' => [
-                'required', 'numeric', /*'phone:AUTO',*/
+                'required', 'numeric','regex:/^\d{11,}$/', /*'phone:AUTO',*/
                 \Illuminate\Validation\Rule::unique('contacts', 'mobile')->whereNull('deleted_at')->ignore(request()->id),
             ],
             'whats_app_mobile' => [
@@ -69,6 +69,7 @@ class UpdateRequest extends FormRequest
             'religion.required'          => trans('validation.required'),
             'religion.in'                => trans('validation.in'),
             'mobile.required'            => trans('validation.required'),
+            'mobile.regex'               => trans('validation.The mobile number must be at least 11 numbers'),
             'mobile.phone'               => trans('validation.phone'),
             'national_id.numeric'        => trans('validation.numeric'),
             'contact_source_id.required' => trans('validation.required'),

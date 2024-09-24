@@ -19,7 +19,7 @@
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">{{ trans('main.Close') }}</button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="submitDeleteButton-{{ @$item->id }}">
                         <span class="indicator-label">{{ trans('main.Confirm') }}</span>
                     </button>
                 </div>
@@ -28,3 +28,22 @@
     </div>
 </div>
 <!--end::Add Modal-->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select the form by ID
+        var form = document.getElementById('delete_multi_category_form');
+
+        // Listen for the form's submit event
+        form.addEventListener('submit', function (event) {
+            // Select the button inside the form
+            var submitButton = document.getElementById('submitDeleteButton-{{ @$item->id }}');
+
+            // Disable the button to prevent multiple clicks
+            submitButton.disabled = true;
+
+            // Optional: Change button text or add loading indicator
+            submitButton.innerHTML = '<span class="indicator-label">جاري الحذف</span>';
+        });
+    });
+</script>

@@ -132,6 +132,14 @@
                     </div>
                 </div>
                 <!--end::Message content-->
+
+                <!--begin::Preview media-->
+                @if($ticket->media)
+                    <div class="fw-bold mw-450px">
+                        <img src="{{ asset('attachments/ticket/'.@$ticket->media->file_name) }}" alt="image" width="100%" height="100%"/>
+                    </div>
+                @endif
+                <!--end::Preview media-->
             </div>
             <!--end::Message accordion-->
             @foreach ($ticket->logs()->orderBy('id','desc')->get() as $log)
@@ -169,10 +177,18 @@
                                 <!--end::Author details-->
 
                                 <!--begin::Preview message-->
-                                <div class=" fw-bold mw-450px" data-kt-inbox-message="preview">
+                                <div class="fw-bold mw-450px" data-kt-inbox-message="preview">
                                     {!! $log->comment !!}
                                 </div>
                                 <!--end::Preview message-->
+
+                                <!--begin::Preview media-->
+                                @if($log->media)
+                                    <div class="fw-bold mw-450px">
+                                        <img src="{{ asset('attachments/communicationLog/'.@$log->media->file_name) }}" alt="image" width="100%" height="100%"/>
+                                    </div>
+                                @endif
+                                <!--end::Preview media-->
                             </div>
                         </div>
                         <!--end::Author-->
@@ -199,15 +215,20 @@
                     right: 0!important;
                 }
             </style>
-            <form id="kt_inbox_reply_form" class="rounded border mt-10" action="{{ route('customer.ticket.reply',$ticket->id) }}" method="POST">
+            <form id="kt_inbox_reply_form" class="rounded border mt-10" action="{{ route('customer.ticket.reply',$ticket->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!--begin::Body-->
                 <div class="d-block">
-                    <!--begin::Message-->
-                    {{-- <div id="kt_inbox_form_editor" class="border-0 h-250px px-3 text-right" dir="rtl"></div> --}}
-                    {{-- <textarea name="notes" style="display:none" id="replyTextNode"></textarea> --}}
+                    <!--begin::notes-->
                     <textarea id="replyTextNode" type="text" class="form-control form-control-solid" placeholder="{{ trans('main.Enter Your Message Here') }}" value="{{ old('notes') }}" name="notes" rows="5"></textarea>
-                    <!--end::Message-->
+                    <!--end::notes-->
+
+                    <!-- begin::photo -->
+                    <div id="photo" class="col-md-12 fv-row">
+                        <label class="fs-5 fw-semibold mb-2">{{ trans('main.Photo') }}</label>
+                        <input type="file" class="form-control form-control-solid" value="{{ old('photo') }}" name="photo" />
+                    </div>
+                    <!--end::photo-->
                 </div>
                 <!--end::Body-->
                 <!--begin::Footer-->
@@ -217,7 +238,7 @@
                         <!--begin::Send-->
                         <div class="btn-group me-4">
                             <!--begin::Submit-->
-                            <button class="btn btn-primary fs-bold px-6"  type="sub">
+                            <button class="btn btn-primary fs-bold px-6" type="sub" id="submitButton">
                                 <span class="indicator-label">{{ trans('main.Send') }}</span>
                             </button>
                             <!--end::Submit-->
@@ -230,6 +251,35 @@
             <!--end::Form-->
         </div>
     </div>
+
+
+
+    {{--
+    <script>
+        function disableButton() {
+            document.getElementById('submitButton').disabled = true;
+            document.getElementById('add-form').submit();
+        }
+    </script>
+    --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Select the form by ID
+            var form = document.getElementById('kt_inbox_reply_form');
+
+            // Listen for the form's submit event
+            form.addEventListener('submit', function (event) {
+                // Select the button inside the form
+                var submitButton = document.getElementById('submitButton');
+
+                // Disable the button to prevent multiple clicks
+                submitButton.disabled = true;
+
+                // Optional: Change button text or add loading indicator
+                submitButton.innerHTML = '<span class="indicator-label">جاري الإرسال</span>';
+            });
+        });
+    </script>
 @endsection
 
 

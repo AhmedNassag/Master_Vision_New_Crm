@@ -25,7 +25,7 @@ class Nationality extends Model
         static::deleting(function($model) {
             if
             (
-                $model->contacts()->count() > 0       ||
+                $model->contacts()->count() > 0 ||
                 $model->customers()->count() > 0
             )
             {

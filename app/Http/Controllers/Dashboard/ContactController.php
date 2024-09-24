@@ -210,7 +210,6 @@ class ContactController extends Controller
     public function exportView()
     {
         try {
-
             $jobTitles         = JobTitle::get(['id','name']);
             $contactCategories = ContactCategory::get(['id','name']);
             $contactSources    = ContactSource::get(['id','name']);
@@ -233,7 +232,6 @@ class ContactController extends Controller
     public function exportData(Request $request)
     {
         try {
-
             session()->flash('success');
             return Excel::download(new ContactExport($request), 'contacts.xlsx');
 

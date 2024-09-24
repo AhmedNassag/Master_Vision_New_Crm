@@ -2,7 +2,7 @@
 <div class="modal fade" id="edit_modal_{{ @$item->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{ route('activity.update', 'test') }}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form action="{{ route('activity.update', 'test') }}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate id="edit-form-{{ @$item->id }}">
                 {{ method_field('patch') }}
                 @csrf
                 <div class="modal-header">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">{{ trans('main.Close') }}</button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="submitEditButton-{{ @$item->id }}">
                         <span class="indicator-label">{{ trans('main.Confirm') }}</span>
                     </button>
                 </div>
@@ -35,3 +35,24 @@
     </div>
 </div>
 <!--end::Add Modal-->
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select the form by ID
+        var form = document.getElementById('edit-form-{{ @$item->id }}');
+
+        // Listen for the form's submit event
+        form.addEventListener('submit', function (event) {
+            // Select the button inside the form
+            var submitButton = document.getElementById('submitEditButton-{{ @$item->id }}');
+
+            // Disable the button to prevent multiple clicks
+            submitButton.disabled = true;
+
+            // Optional: Change button text or add loading indicator
+            submitButton.innerHTML = '<span class="indicator-label">جاري التعديل</span>';
+        });
+    });
+</script>

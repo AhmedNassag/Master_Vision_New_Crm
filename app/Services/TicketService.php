@@ -15,7 +15,28 @@ class TicketService
     {
         return DB::transaction(function () use ($data)
         {
-            $ticket = Ticket::create($data);
+            $ticket = Ticket::create([
+                'ticket_type' => $data['ticket_type'],
+                'customer_id' => $data['customer_id'],
+                'activity_id' => $data['activity_id'],
+                'interest_id' => $data['interest_id'],
+                'description' => $data['description'],
+            ]);
+            //upload photo
+            if ($data['photo']) {
+                $file      = $data['photo'];
+                $file_size = $file->getSize();
+                $file_type = $file->getMimeType();
+                $file_name = time() . '.' . $file->getClientOriginalName();
+                $file->storeAs('ticket', $file_name, 'attachments');
+                $ticket->media()->create([
+                    'file_path' => asset('attachments/ticket/' . $file_name),
+                    'file_name' => $file_name,
+                    'file_size' => $file_size,
+                    'file_type' => $file_type,
+                    'file_sort' => 1,
+                ]);
+            }
             // Send notification about the new ticket
             // $this->sendNotification($ticket, 'New ticket created.');
             return $ticket;
@@ -59,15 +80,30 @@ class TicketService
     }
 
 
-    public function replyToTicket(Ticket $ticket, $user, string $userType, string $comment)
+    public function replyToTicket(Ticket $ticket, $user, string $userType, string $comment, $photo)
     {
-        return DB::transaction(function () use ($ticket, $user, $userType, $comment) {
+        return DB::transaction(function () use ($ticket, $user, $userType, $comment, $photo) {
             $log = CommunicationLog::create([
                 'ticket_id' => $ticket->id,
                 'user_id'   => $user->id,
                 'user_type' => $userType,
                 'comment'   => $comment,
             ]);
+            //upload photo
+            if ($photo) {
+                $file      = $photo;
+                $file_size = $file->getSize();
+                $file_type = $file->getMimeType();
+                $file_name = time() . '.' . $file->getClientOriginalName();
+                $file->storeAs('communicationLog', $file_name, 'attachments');
+                $log->media()->create([
+                    'file_path' => asset('attachments/communicationLog/' . $file_name),
+                    'file_name' => $file_name,
+                    'file_size' => $file_size,
+                    'file_type' => $file_type,
+                    'file_sort' => 1,
+                ]);
+            }
             // Notify about the reply based on user type
             // if ($userType === 'customer') {
             //     // Notify assigned agent about customer reply

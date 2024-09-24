@@ -160,7 +160,7 @@ class AuthController extends Controller
                 // 'auth_id' => 'required|exists:users,id',
                 'name'    => 'required|string',
                 'email'   => 'required|string|email|max:100|unique:users,email,'.auth()->guard('api')->user()->id,
-                'mobile'  => 'required|numeric|unique:users,mobile,'.auth()->guard('api')->user()->id,
+                'mobile'  => 'required|numeric|regex:/^\d{11,}$/|unique:users,mobile,'.auth()->guard('api')->user()->id,
                 'file'    => 'nullable'. ($request->hasFile('file') ? '|mimes:jpeg,jpg,png,webp|max:5048' : ''),
             ]);
             if($validator->fails())

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 Author: Keenthemes
-Product Name: Metronic
+Product Name: Master Vision
 Product Version: 8.2.2
 Purchase: https://1.envato.market/EA4JP
 Website: http://www.keenthemes.com
@@ -23,10 +23,10 @@ License: For each use you must have a valid license purchased only from above li
             <meta property="og:locale" content="en_US" />
             <meta property="og:type" content="article" />
             <meta property="og:title" content="Our CRM - Master Vision" />
-            <meta property="og:url" content="https://keenthemes.com/metronic" />
+            <meta property="og:url" content="https://keenthemes.com/Master Vision" />
             <meta property="og:site_name" content="Our CRM - Master Vision" />
 			<meta name="csrf-token" content="{{ csrf_token() }}">
-            <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
+            <link rel="canonical" href="https://preview.keenthemes.com/Master Vision8" />
             <link rel="shortcut icon" href="{{ asset('new-theme/assets/media/logos/favicon.png') }}" />
             <!--begin::Fonts(mandatory for all pages)-->
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />

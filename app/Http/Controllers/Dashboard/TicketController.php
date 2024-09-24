@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Ticket;
-use App\Models\Employee;
 use App\Models\Customer;
-use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Services\TicketService;
+use App\Notifications\UserAdded;
+use App\Traits\NotificationTrait;
 use App\DataTables\TicketDataTable;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomerTicketReplyMail;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\TicketReplyNotification;
 use App\Notifications\TicketAssignNotification;
-use App\Notifications\UserAdded;
-use App\Traits\NotificationTrait;
 
 class TicketController extends Controller
 {
@@ -103,7 +105,6 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         try {
-
             $branches = Branch::all();
             return view('dashboard.tickets.show',['ticket'=>$ticket, 'branches'=>$branches]);
 
@@ -117,7 +118,6 @@ class TicketController extends Controller
     public function changeStatus(Ticket $ticket,Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'status' => 'required|string|in:Pending,Open,In-Progress,Resolved',
             ]);
@@ -145,7 +145,6 @@ class TicketController extends Controller
     public function assignAgent(Ticket $ticket,Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'employee_id' => 'required|exists:employees,id',
             ]);
@@ -182,7 +181,6 @@ class TicketController extends Controller
     public function replyToTicket(Ticket $ticket,Request $request)
     {
         try {
-
             $validator = Validator::make($request->all(), [
                 'notes' => 'required|string',
             ]);
@@ -191,11 +189,13 @@ class TicketController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             $service = new TicketService();
-            $service->replyToTicket($ticket,auth()->user(),'agent',$request->notes);
+            $service->replyToTicket($ticket,auth()->user(),'agent',$request->notes, $request->photo);
 
             //send notification
             $ticketRecord = Ticket::findOrFail($ticket->id);
             $notifiable   = Customer::where('id',$ticketRecord->customer_id)->first();
+            Mail::to($notifiable->email)->send(new CustomerTicketReplyMail($ticketRecord, $request->notes));
+
             if ($notifiable) {
                 $notifiable->notify(new TicketReplyNotification($ticketRecord));
             }

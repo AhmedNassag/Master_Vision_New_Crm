@@ -32,6 +32,16 @@ return [
     |            "postmark", "log", "array", "failover"
     |
     */
+    /**************************************************
+        MAIL_MAILER=smtp
+        MAIL_HOST=smtp.gmail.com
+        MAIL_PORT=587
+        MAIL_USERNAME=ahmednassag@gmail.com
+        MAIL_PASSWORD=ukyumnqeuamqizle
+        MAIL_ENCRYPTION=tls
+        MAIL_FROM_ADDRESS="ahmednassag@gmail.com"
+        MAIL_FROM_NAME="Ahmed Nabil"
+    **************************************************/
 
     'mailers' => [
         'smtp' => [

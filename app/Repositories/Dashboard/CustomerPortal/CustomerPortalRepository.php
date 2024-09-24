@@ -25,7 +25,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Observers\ContactDataObserver;
-use App\Services\PointAdditionService;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -129,7 +128,7 @@ class CustomerPortalRepository implements CustomerPortalInterface
             $validated = $request->validate([
                 'name' => "required|string|max:255",
                 "email" => "required|email|string|max:255",
-                "mobile" => "required",
+                "mobile" => "required|regex:/^\d{11,}$/",
                 "password" => "nullable|confirmed",
                 "national_id" => "nullable",
                 "job_title_id" => "nullable|integer"
@@ -154,7 +153,7 @@ class CustomerPortalRepository implements CustomerPortalInterface
                 }
                 $validated->password = Hash::make($validated->password);
             }
-        
+
             //update data
             $dataUpdate = $data->update($validated);
             // update photo
@@ -203,13 +202,13 @@ class CustomerPortalRepository implements CustomerPortalInterface
                 "old_Password" =>"required",
                 "password" => "required|min:8|confirmed",
             ]);
-  
+
             $data = Customer::findOrFail($request->id);
             if (!$data) {
                 session()->flash('error');
                 return redirect()->back();
             }
-            
+
             $password_verify = password_verify($request->old_Password,$data->password);
             if(!$password_verify)
             {
@@ -217,12 +216,12 @@ class CustomerPortalRepository implements CustomerPortalInterface
                 return redirect()->back();
             }
             $request->password = Hash::make($request->password);
-        
+
             //update data
             $dataUpdate = $data->update([
                 'password' => $validated['password']
             ]);
-        
+
             if ($dataUpdate)
             {
                 return "success";

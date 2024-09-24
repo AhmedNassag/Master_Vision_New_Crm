@@ -42,7 +42,7 @@
                             <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
                                 <div class="row w-100 align-items-center mb-10">
                                     <!-- branch_id -->
-                                    <div id="branches" class="position-relative col-lg-5 me-md-2">
+                                    <div id="branches" class="position-relative col-lg-4">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Branch') }}</span>
                                         </label>
@@ -63,8 +63,30 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <!-- employee_id -->
+                                    <div id="employee_id" class="position-relative col-lg-4">
+                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                                            <span class="required">{{ trans('main.Employee') }}</span>
+                                        </label>
+                                        <select name="employee_id" data-control="select2" data-dropdown-parent="#employee_id" class="form-select form-select-solid">
+                                            <option value="" selected>{{ trans('main.All') }}</option>
+                                            <?php
+                                                if(Auth::user()->roles_name[0] == "Admin")
+                                                {
+                                                    $employees = \App\Models\Employee::hidden()->get(['id','name']);
+                                                }
+                                                else
+                                                {
+                                                    $employees = \App\Models\Employee::hidden()->where('branch_id', auth()->user()->employee->branch_id)->get(['id','name']);
+                                                }
+                                            ?>
+                                            @foreach($employees as $employee)
+                                                <option value="{{ @$employee->id }}" {{ $employee->id == @$employee_id ? 'selected' : '' }}>{{ @$employee->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <!-- month -->
-                                    <div id="month" class="position-relative col-lg-5 me-md-2">
+                                    <div id="month" class="position-relative col-lg-4">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
                                             <span>{{ trans('main.Month') }}</span>
                                         </label>
@@ -167,11 +189,20 @@
                                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">#</th>
                                                 <th class="text-center">{{ trans('main.Employee') }}</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.Target') }}</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.Actual') }}</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.Margin') }}</th>
-                                                <th class="text-center min-w-125px">{{ trans('main.Customers Number') }}</th>
                                                 <th class="text-center">{{ trans('main.Branch') }}</th>
+                                                <!--amount-->
+                                                <th class="text-center min-w-125px">{{ trans('main.TargetAmount') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.ActualAmount') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.MarginAmount') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.Customers Number') }}</th>
+                                                <!--calls_with_repeater-->
+                                                <th class="text-center min-w-125px">{{ trans('main.TargetCallsWithRepeater') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.ActualCallsWithRepeater') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.MarginCallsWithRepeater') }}</th>
+                                                <!--calls_without_repeater-->
+                                                <th class="text-center min-w-125px">{{ trans('main.TargetCallsWithoutRepeater') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.ActualCallsWithoutRepeater') }}</th>
+                                                <th class="text-center min-w-125px">{{ trans('main.MarginCallsWithoutRepeater') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody class="fw-semibold text-gray-600">
@@ -182,16 +213,35 @@
                                                             {{ @$key+1 }}
                                                         </td>
                                                         <td class="text-center">{{ @$item['employee'] }}</td>
-                                                        <td class="text-center">{{ number_format(@$item['target'], 0) }}</td>
-                                                        <td class="text-center">{{ number_format(@$item['actual'], 0) }}</td>
+                                                        <td class="text-center">{{ @$item['branch'] }}</td>
+                                                        <!--amount-->
+                                                        <td class="text-center">{{ number_format(@$item['target_amount'], 0) }}</td>
+                                                        <td class="text-center">{{ number_format(@$item['actual_amount'], 0) }}</td>
                                                         <td class="text-center">
-                                                            {{ @$item['margin'] }}
+                                                            {{ @$item['margin_amount'] }}
                                                             <div class="h-8px w-100 bg-light-success rounded">
-                                                                <div class="bg-success rounded h-8px" role="progressbar" style="width: {{ @$item['margin'] }};" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="bg-success rounded h-8px" role="progressbar" style="width: {{ @$item['margin_amount'] }};" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                             </div>
                                                         </td>
                                                         <td class="text-center">{{ @$item['customers_count'] }}</td>
-                                                        <td class="text-center">{{ @$item['branch'] }}</td>
+                                                        <!--calls_with_repeater-->
+                                                        <td class="text-center">{{ number_format(@$item['target_calls_with_repeater'], 0) }}</td>
+                                                        <td class="text-center">{{ number_format(@$item['actual_calls_with_repeater'], 0) }}</td>
+                                                        <td class="text-center">
+                                                            {{ @$item['margin_calls_with_repeater'] }}
+                                                            <div class="h-8px w-100 bg-light-success rounded">
+                                                                <div class="bg-success rounded h-8px" role="progressbar" style="width: {{ @$item['margin_calls_with_repeater'] }};" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </td>
+                                                        <!--calls_without_repeater-->
+                                                        <td class="text-center">{{ number_format(@$item['target_calls_without_repeater'], 0) }}</td>
+                                                        <td class="text-center">{{ number_format(@$item['actual_calls_without_repeater'], 0) }}</td>
+                                                        <td class="text-center">
+                                                            {{ @$item['margin_calls_without_repeater'] }}
+                                                            <div class="h-8px w-100 bg-light-success rounded">
+                                                                <div class="bg-success rounded h-8px" role="progressbar" style="width: {{ @$item['margin_calls_without_repeater'] }};" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -225,15 +275,42 @@
 
 
 @section('js')
-<!-- Print -->
-<script type="text/javascript">
-    function printDiv() {
-        var printContents       = document.getElementById('print').innerHTML;
-        var originalContents    = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-        location.reload();
-    }
-</script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('select[name="branch_id"]').on('change', function() {
+                var branch_id = $(this).val();
+                if (branch_id) {
+                    $.ajax({
+                        url: "{{URL::to('admin/employeeByBranchId')}}/" + branch_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="employee_ids[]"]').empty();
+                            $('select[name="employee_ids[]"]').append('<option class="form-control" value="" selected>All</option>');
+                            $.each(data, function(key, value) {
+                                $('select[name="employee_ids[]"]').append('<option class="form-control" value="' + value["id"] + '">' + value["name"] + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="employee_ids[]"]').empty();
+                    console.log('not work')
+                }
+            });
+        });
+    </script>
+
+
+
+    <!-- Print -->
+    <script type="text/javascript">
+        function printDiv() {
+            var printContents       = document.getElementById('print').innerHTML;
+            var originalContents    = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        }
+    </script>
 @endsection

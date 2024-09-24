@@ -64,7 +64,7 @@
                     </div>
                     <!-- /Page Header -->
 
-                    <form action="{{ Route('role.store') }}" method="post">
+                    <form action="{{ Route('role.store') }}" method="post" id="add-form">
                         @csrf
                         <div class="row">
 
@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-block mt-5">{{ trans('main.Confirm') }}</button>
+                                <button type="submit" class="btn btn-primary btn-block mt-5" id="submitButton" onclick="disableButton()">{{ trans('main.Confirm') }}</button>
                             </div>
 
                             <div class="col-lg-8">
@@ -117,7 +117,6 @@
                         </div>
                         <!-- row closed -->
                     </form>
-
                 </div>
                 <!-- content container-fluid closed -->
             </div>
@@ -129,5 +128,30 @@
 
 
 @section('js')
+{{--
+<script>
+    function disableButton() {
+        document.getElementById('submitButton').disabled = true;
+        document.getElementById('add-form').submit();
+    }
+</script>
+--}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select the form by ID
+        var form = document.getElementById('add-form');
 
+        // Listen for the form's submit event
+        form.addEventListener('submit', function (event) {
+            // Select the button inside the form
+            var submitButton = document.getElementById('submitButton');
+
+            // Disable the button to prevent multiple clicks
+            submitButton.disabled = true;
+
+            // Optional: Change button text or add loading indicator
+            submitButton.innerHTML = '<span class="indicator-label">جاري الحفظ</span>';
+        });
+    });
+</script>
 @endsection

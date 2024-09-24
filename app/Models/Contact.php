@@ -28,7 +28,6 @@ class Contact extends Model
             if
             (
                 $model->meetings()->count() > 0       ||
-                $model->leadCategories()->count() > 0 ||
                 $model->leadHistories()->count() > 0
             )
             {

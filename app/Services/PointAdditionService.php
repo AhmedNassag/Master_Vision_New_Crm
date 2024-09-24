@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Point;
+use App\Services\PointsCalculationService;
 
 class PointAdditionService
 {

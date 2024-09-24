@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Dashboard\Customer;
 
+use App\Models\Customer;
+use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -16,6 +18,16 @@ class StoreRequest extends FormRequest
         return true;
     }
 
+
+
+    public function other_validations()
+	{
+		$normalizedIncomingNumber = substr(preg_replace('/\D/', '', request()->mobile), -10);
+        $customer = Customer::whereRaw("SUBSTRING(mobile, -10) = ?", [$normalizedIncomingNumber])->get();
+
+        return $customer;
+	}
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,7 +41,7 @@ class StoreRequest extends FormRequest
             'religion'          => 'nullable|in:muslim,christian,other',
             'marital_satus'     => 'nullable|in:Single,Married,Absolute,Widower,Other',
             'email'             => 'nullable|email|unique:customers,email,NULL,id,deleted_at,NULL',
-            'mobile'            => 'required|unique:customers,mobile,NULL,id,deleted_at,NULL', //|phone:AUTO
+            'mobile'            => 'required|regex:/^\d{11,}$/|unique:customers,mobile,NULL,id,deleted_at,NULL', //|phone:AUTO
             'whats_app_mobile'  => 'nullable|unique:customers,whats_app_mobile,NULL,id,deleted_at,NULL', //|phone:AUTO
             'national_id'       => 'nullable|numeric|unique:customers,national_id,NULL,id,deleted_at,NULL',
             'contact_source_id' => 'required|integer|exists:contact_sources,id',
@@ -72,5 +84,15 @@ class StoreRequest extends FormRequest
             'branch_id.required'         => trans('validation.required'),
             'branch_id.integer'          => trans('validation.integer'),
         ];
+    }
+
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->other_validations()->count() > 0) {
+                $validator->errors()->add('mobile', trans('main.The mobile number already exists'));
+            }
+        });
     }
 }

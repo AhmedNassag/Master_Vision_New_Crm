@@ -189,6 +189,17 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- have_related_contacts -->
+                    <div id="have_related_contacts_filter" class="col-md-12 fv-row">
+                        <label class="d-flex align-items-center fs-5 fw-semibold mb-2">
+                            <span>{{ trans('main.Have A Related Contacts') }}</span>
+                        </label>
+                        <select name="have_related_contacts" data-control="select2" data-dropdown-parent="#have_related_contacts_filter" class="form-select form-select-solid">
+                            <option value="">{{ trans('main.All') }}...</option>
+                            <option value="1" {{ @$have_related_contacts == 1 ? 'selected' : '' }}>{{ trans('main.Yes') }}</option>
+                            <option value="0" {{ @$have_related_contacts == 0 && @$have_related_contacts != null ? 'selected' : '' }}>{{ trans('main.No') }}</option>
+                        </select>
+                    </div>
                     <!-- from_date -->
                     <div class="col-md-12 fv-row">
                         <label class="form-label fs-5 fw-semibold mb-3">{{ trans('main.From Date') }}</label>

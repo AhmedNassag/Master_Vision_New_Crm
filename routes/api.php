@@ -27,6 +27,7 @@ Route::post('store-landing', [ExternalController::class, 'storeContact'])->name(
 
 Route::post('upload', [FileController::class, 'upload']);
 Route::post('campaign_contacts/{campaign_id}', [MarketingController::class, 'createCampaignContact']);
+Route::post('campaign_contacts', [MarketingController::class, 'campaignContact']);
 Route::get('getCountries', [MarketingController::class, 'getCountries']);
 Route::get('getCities', [MarketingController::class, 'getCities']);
 Route::get('getCitiesByCountryId/{id}', [MarketingController::class, 'getCitiesByCountryId']);
@@ -155,7 +156,7 @@ Route::group(['prefix' => 'admin'], function($router)
         Route::get('report/branchSalesReport',[App\Http\Controllers\Api\Admin\ReportController::class, 'branchSalesReport']);
         Route::get('report/activitySales',[App\Http\Controllers\Api\Admin\ReportController::class, 'activitySales']);
         Route::get('report/activitySalesReport',[App\Http\Controllers\Api\Admin\ReportController::class, 'activitySalesReport']);
-   
+
 
     });
 });

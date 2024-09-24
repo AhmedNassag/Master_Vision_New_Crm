@@ -91,4 +91,9 @@ class Ticket extends Model
     {
         return $this->hasMany(CommunicationLog::class);
     }
+
+    public function media()
+    {
+        return $this->morphOne(Media::class,'mediable');
+    }
 }

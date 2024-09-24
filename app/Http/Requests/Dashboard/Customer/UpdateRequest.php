@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
         return [
             'name'              => 'required|string',
             'email'             => 'nullable|email|unique:customers,email,' . request()->id,
-            'mobile'            => 'required|unique:customers,mobile,' . request()->id, //|phone:AUTO
+            'mobile'            => 'required|regex:/^\d{11,}$/|unique:customers,mobile,' . request()->id, //|phone:AUTO
             'whats_app_mobile'  => 'nullable|unique:customers,whats_app_mobile,' . request()->id, //|phone:AUTO
             'national_id'       => 'nullable|numeric|unique:customers,national_id,' . request()->id,
             'address'           => 'nullable|string',
